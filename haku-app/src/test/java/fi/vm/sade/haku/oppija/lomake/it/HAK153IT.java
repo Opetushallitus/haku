@@ -32,11 +32,11 @@ public class HAK153IT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
-        findByAndAjaxClick(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
+        click(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
         findBy(By.cssSelector("a.popup-link[href='#'][data-po-show='sora-popup']"));
-        findByAndAjaxClick(By.cssSelector("#preference1-Koulutus option[value='Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)']"));
+        click(By.cssSelector("#preference1-Koulutus option[value='Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)']"));
         elementsNotPresentBy(By.cssSelector("a.popup-link[href='#'][data-po-show='sora-popup']"));
-        findByAndAjaxClick(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
+        click(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
     }

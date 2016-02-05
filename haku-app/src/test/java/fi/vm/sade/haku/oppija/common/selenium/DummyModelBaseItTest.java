@@ -41,18 +41,16 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void nextPhase(String expectedPhase) {
-        findByAndAjaxClick(new By.ByClassName("right"));
+        click(new By.ByClassName("right"));
         elementsNotPresentById("phase-contains-errors");
         expectPhase(expectedPhase);
         waitForElement(10, By.id("overlay-fixed"));
-        waitForAjax();
     }
 
     protected void prevPhase(String expectedPhase) {
-        findByAndAjaxClick(new By.ByClassName("left"));
+        click(new By.ByClassName("left"));
         expectPhase(expectedPhase);
         waitForElement(10, By.id("overlay-fixed"));
-        waitForAjax();
     }
 
     protected void expectPhase(String expected) {
@@ -81,6 +79,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         String tagName = element.getTagName();
         if ("select".equals(tagName)) {
             new Select(element).selectByValue(value);
+            waitForAjax();
         } else if ("input".equals(tagName)) {
             String type = element.getAttribute("type");
             if ("radio".equals(type)) {
@@ -93,7 +92,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         } else {
             type(id, value, true);
         }
-        waitForAjax();
     }
 
     protected void navigateToFirstPhase() {

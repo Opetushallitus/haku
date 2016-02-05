@@ -95,7 +95,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void clickByNameAndValue(final String name, final String value) {
-        findByXPathAndAjaxClick("//*[@name='" + name + "' and @value='" + value + "']");
+        clickByXPath("//*[@name='" + name + "' and @value='" + value + "']");
     }
 
     protected WebElement findBy(final By by) {
@@ -116,6 +116,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         while(attempt <= 3) {
             try {
                 seleniumContainer.getDriver().findElement(by).click();
+                waitForAjax();
                 return;
             } catch(StaleElementReferenceException e) {
                 lastException = e;
@@ -126,13 +127,8 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         throw lastException;
     }
 
-    protected void findByXPathAndAjaxClick(final String xpath) {
-        findByAndAjaxClick(By.xpath(xpath));
-    }
-
-    protected void findByAndAjaxClick(By by){
-        click(by);
-        waitForAjax();
+    protected void clickByXPath(final String xpath) {
+        click(By.xpath(xpath));
     }
 
     protected void clickByHref(final String... locations) {
@@ -149,6 +145,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void type(final String id, final String text, boolean includeTab) {
         seleniumContainer.getDriver().findElement(By.id(id)).sendKeys(text + ((includeTab) ? "\t" : ""));
+        waitForAjax();
     }
 
     protected void typeWithoutTab(final String id, final String text) {
@@ -187,7 +184,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void clickLinkByText(final String text) {
-        findByAndAjaxClick(By.linkText(text));
+        click(By.linkText(text));
     }
 
     protected void elementsPresentByName(final String... names) {

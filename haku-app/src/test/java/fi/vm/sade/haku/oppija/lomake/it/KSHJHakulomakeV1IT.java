@@ -21,6 +21,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
+import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
+import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
+
 public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
 
     @Test
@@ -28,22 +31,20 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         navigateToPath("lomake", "1.2.246.562.29.173465377510");
 
         fillOut(defaultValues.kkHenkilotiedot);
-        waitForMillis(500);
 
+        waitForMillis(500);
         elementsNotPresentById("huoltajannimi", "huoltajanpuhelinnumero", "huoltajansahkoposti");
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        waitForMillis(500);
 
         findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_false");
+        waitForElement(20, By.id("pohjakoulutus_am"));
         findByIdAndClick("pohjakoulutus_am");
-        waitForMillis(500);
-        setValue("pohjakoulutus_am_vuosi", "2012", true);
+        setValue("pohjakoulutus_am_vuosi", "2012");
         setValue("pohjakoulutus_am_nimike", "400000");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "1.2.246.562.10.57118763500");
         setValue("pohjakoulutus_am_nayttotutkintona", "false");
-        waitForMillis(500);
 
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
@@ -51,7 +52,6 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         typeWithoutTab("preference1-Opetuspiste", "anna");
         clickLinkByText("Anna Tapion koulu");
         clickAllElementsByXPath("//option[@value='Kymppiluokka']");
-        waitForMillis(500);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
 

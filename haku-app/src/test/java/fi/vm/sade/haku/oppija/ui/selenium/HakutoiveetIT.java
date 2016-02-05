@@ -34,8 +34,8 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
         toApplicationOptionPhase();
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
-        findByAndAjaxClick(By.linkText("FAKTIA, Espoo op"));
-        findByAndAjaxClick(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
+        click(By.linkText("FAKTIA, Espoo op"));
+        click(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
         isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");

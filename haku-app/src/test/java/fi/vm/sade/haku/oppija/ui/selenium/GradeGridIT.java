@@ -39,7 +39,7 @@ public class GradeGridIT extends DummyModelBaseItTest {
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 
         clickLinkByText(DefaultValues.OPETUSPISTE);
-        findByAndAjaxClick(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']"));
+        click(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']"));
 
         fillOut(defaultValues.preference1);
 

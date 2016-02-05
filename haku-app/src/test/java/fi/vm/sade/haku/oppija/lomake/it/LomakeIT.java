@@ -68,7 +68,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("huoltajanpuhelinnumero", "0500111011");
         setValue("huoltajansahkoposti", "aiti.ankka@ankkalinna.al");
 
-        findByAndAjaxClick(new By.ByClassName("right"));
+        click(new By.ByClassName("right"));
         findById("phase-contains-errors");
 
         setValue("asuinmaa", "FIN");
@@ -118,12 +118,11 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         //Skip toimipiste
         findByIdAndClick("preference1-reset");
-        waitForAjax();
 
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 
-        findByAndAjaxClick(By.linkText("FAKTIA, Espoo op"));
-        findByAndAjaxClick(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']"));
+        click(By.linkText("FAKTIA, Espoo op"));
+        click(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']"));
 
         fillOut(defaultValues.getPreference1(ImmutableMap.of("preference1-discretionary", "true")));
 
@@ -144,21 +143,21 @@ public class LomakeIT extends DummyModelBaseItTest {
         // Lisätiedot
 
         // Ei mene läpi, työkokemus syöttämättä
-        findByAndAjaxClick(new By.ByClassName("right"));
+        click(new By.ByClassName("right"));
         findById("phase-contains-errors");
 
         clickAllElementsByXPath("//input[@type='checkbox']");
         setValue("TYOKOKEMUSKUUKAUDET", "1001");
 
         // Ei mene läpi, työkokemus > 1000 kuukautta
-        findByAndAjaxClick(new By.ByClassName("right"));
+        click(new By.ByClassName("right"));
         findById("phase-contains-errors");
 
         findById("TYOKOKEMUSKUUKAUDET");
         setValue("TYOKOKEMUSKUUKAUDET", StringUtils.repeat("\b", "1001".length()) + "2"); //\b is backspace
 
         // Ei mene läpi, asiointikieli valitsematta
-        findByAndAjaxClick(new By.ByClassName("right"));
+        click(new By.ByClassName("right"));
         findById("phase-contains-errors");
         clickByNameAndValue("asiointikieli", "suomi");
 
@@ -200,7 +199,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
         // Ei mene läpi, tyhjä lomake
-        findByAndAjaxClick(new By.ByClassName("right"));
+        click(new By.ByClassName("right"));
         findById("phase-contains-errors");
     }
 
@@ -208,7 +207,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_KESKEYTYNYT);
         findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
-        waitForAjax();
         findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }
