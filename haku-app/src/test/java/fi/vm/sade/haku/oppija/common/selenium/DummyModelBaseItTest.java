@@ -41,7 +41,8 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void nextPhase(String expectedPhase) {
-        click(new By.ByClassName("right"));
+        findByAndAjaxClick(new By.ByClassName("right"));
+        elementsNotPresentById("phase-contains-errors");
         expectPhase(expectedPhase);
     }
 
