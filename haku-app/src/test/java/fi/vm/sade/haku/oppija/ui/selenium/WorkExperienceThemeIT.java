@@ -49,7 +49,8 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         gotoHakutoiveet("010113A668B");
 
         findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
-        waitForAjax();
+        waitForMillis(500);
+
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
