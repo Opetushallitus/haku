@@ -37,10 +37,11 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
         findByAndAjaxClick(By.linkText("FAKTIA, Espoo op"));
         findByAndAjaxClick(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
         isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
+        clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
-        findByAndAjaxClick(By.xpath("//button[@class='right']"));
+        nextPhase(OppijaConstants.PHASE_GRADES);
     }
 
     @Test
