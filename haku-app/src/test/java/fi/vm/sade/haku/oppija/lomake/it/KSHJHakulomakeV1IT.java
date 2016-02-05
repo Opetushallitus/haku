@@ -51,7 +51,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "anna");
         clickLinkByText("Anna Tapion koulu");
-        clickAllElementsByXPath("//option[@value='Kymppiluokka']");
+        clickByXPath("//option[@value='Kymppiluokka']");
 
         nextPhase(OppijaConstants.PHASE_GRADES);
 

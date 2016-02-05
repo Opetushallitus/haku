@@ -114,7 +114,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
-        clickAllElementsByXPath("//option[@value='Kaivosalan perustutkinto, pk']");
+        clickByXPath("//option[@value='Kaivosalan perustutkinto, pk']");
         fillOut(defaultValues.preference1);
     }
 

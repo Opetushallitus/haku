@@ -46,7 +46,7 @@ public class AdditionalGradeQuestionIT extends DummyModelBaseItTest {
 
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText(DefaultValues.OPETUSPISTE);
-        clickAllElementsByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
+        clickByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
