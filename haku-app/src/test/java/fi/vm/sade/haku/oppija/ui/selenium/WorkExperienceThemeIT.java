@@ -30,8 +30,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
 
-        findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
-        waitForAjax();
+        findByXPathAndAjaxClick("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
@@ -48,8 +47,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
 
-        findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
-        waitForMillis(500);
+        findByXPathAndAjaxClick("//option[@data-id='1.2.246.562.14.79893512065']");
 
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_sora_terveys", "false");

@@ -63,7 +63,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         select();
         selectByValue("PK_AI_OPPIAINE", "SV");
         selectByValue("PK_A2_OPPIAINE", "SE");
-        findByXPathAndClick("//td[@id='PK_B1_column1']//a");
+        findByXPathAndAjaxClick("//td[@id='PK_B1_column1']//a");
         clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
         clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
         clickByNameAndValue("peruskoulun_paattotodistus_vahintaan_seitseman_fi", "true");

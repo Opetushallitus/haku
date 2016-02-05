@@ -94,7 +94,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void clickByNameAndValue(final String name, final String value) {
-        findByXPathAndClick("//*[@name='" + name + "' and @value='" + value + "']");
+        findByXPathAndAjaxClick("//*[@name='" + name + "' and @value='" + value + "']");
     }
 
     protected WebElement findBy(final By by) {
@@ -103,7 +103,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void findByIdAndClick(final String... ids) {
-        findByIdAndClick(0, ids);
+        for (String id : ids) {
+            click(By.id(id));
+        }
     }
 
     protected void click(By by) {
@@ -123,21 +125,8 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         throw lastException;
     }
 
-    protected void findByXPathAndClick(final String xpath) {
-        click(By.xpath(xpath));
-    }
-
-    protected void findByIdAndClick(long sleepMillis, final String... ids ) {
-        for (String id : ids) {
-            click(By.id(id));
-            if (sleepMillis > 0 ) {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(sleepMillis);
-                } catch (InterruptedException e) {
-                    // Not interested
-                }
-            }
-        }
+    protected void findByXPathAndAjaxClick(final String xpath) {
+        findByAndAjaxClick(By.xpath(xpath));
     }
 
     protected void findByAndAjaxClick(By by){
