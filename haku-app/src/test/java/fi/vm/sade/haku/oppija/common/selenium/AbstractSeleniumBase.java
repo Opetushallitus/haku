@@ -72,6 +72,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     protected void waitForElement(final long seconds, final By by) {
         new WebDriverWait(seleniumContainer.getDriver(), seconds)
                 .until(ExpectedConditions.presenceOfElementLocated(by));
+        waitForAjax();
     }
 
     protected ApplicationSystemHelper updateApplicationSystem(final ApplicationSystem applicationSystem) {
