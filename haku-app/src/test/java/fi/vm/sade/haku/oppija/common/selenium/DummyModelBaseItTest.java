@@ -64,6 +64,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         for (WebElement webElement : elements) {
             webElement.click();
         }
+        waitForAjax();
     }
 
     protected void setValue(final String id, final String value, final boolean wait) {
