@@ -61,7 +61,6 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         selectByValue("PK_B1_OPPIAINE", "SE");
 
         nextPhase(OppijaConstants.PHASE_MISC);
-        waitForMillis(1000L);
         elementsNotPresentById("TYOKOKEMUSKUUKAUDET");
     }
 
@@ -70,7 +69,6 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         fillOut(defaultValues.getHenkilotiedot(ImmutableMap.of("Henkilotunnus", hetu)));
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        waitForMillis(500);
         fillOut(defaultValues.koulutustausta_pk);
 
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
