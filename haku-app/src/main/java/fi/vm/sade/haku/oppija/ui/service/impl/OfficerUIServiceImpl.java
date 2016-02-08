@@ -784,7 +784,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         LOGGER.debug("Got attachementsAndEligibilities " + StringUtils.join(attachmentsAndEligibilities.getEligibilities(), ","));
         final Application application = applicationService.getApplicationByOid(oid);
 
-        checkUpdateDate(application.getUpdated(), attachmentsAndEligibilities.getUpdated());
+        checkUpdateDate(application.getEligibilitiesAndAttachmentsUpdated(), attachmentsAndEligibilities.getUpdated());
 
         final Map<String, PreferenceEligibility> preferenceEligibilities = new HashMap<>();
         final Map<String, PreferenceChecked> preferenceCheckeds = new HashMap<>();
@@ -818,20 +818,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 updateAttachmentRequestStatus(application, attachmentDTO, attachment);
             }
         }
+        application.setEligibilitiesAndAttachmentsUpdated(new Date());
         applicationService.update(new Application(oid), application);
     }
 
-    private void checkUpdateDate(Date lastUpdateDate, Date versionUpdateDate) {
-        if(null == lastUpdateDate) {
+    private void checkUpdateDate(Date lastApplicationUpdateDate, Date updateDateInUsersVersion) {
+        if(null == lastApplicationUpdateDate) {
             return;
         }
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(lastUpdateDate);
+        calendar.setTime(lastApplicationUpdateDate);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        if(calendar.getTime().getTime() > versionUpdateDate.getTime()) {
-            LOGGER.warn("Last update date {} is after update date {} of the application version user is updating.", lastUpdateDate, versionUpdateDate);
+        if(null == updateDateInUsersVersion || calendar.getTime().getTime() > updateDateInUsersVersion.getTime()) {
+            LOGGER.warn("Last update date {} is after update date {} of the application version user is updating.", lastApplicationUpdateDate, updateDateInUsersVersion);
             throw new IllegalStateException("Application has been updated since last reload.");
         }
     }
