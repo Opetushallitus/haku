@@ -55,16 +55,10 @@ public class ApplicationOptionDTO {
         vastaanottoTietoTranslations = new HashMap<ValintatuloksenTila, I18nText>();
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EI_VASTAANOTETTU_MAARA_AIKANA,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.eimaaraaikana", OppijaConstants.MESSAGES_BUNDLE_NAME));
-        vastaanottoTietoTranslations.put(ValintatuloksenTila.ILMOITETTU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ilmoitettu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.PERUNUT,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.perunut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.PERUUTETTU,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.peruutettu", OppijaConstants.MESSAGES_BUNDLE_NAME));
-        vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_LASNA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.lasna", OppijaConstants.MESSAGES_BUNDLE_NAME));
-        vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_POISSAOLEVA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.poissa", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.vastaanottanut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EHDOLLISESTI_VASTAANOTTANUT,

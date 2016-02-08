@@ -826,7 +826,7 @@ public class ValintaServiceMockImpl implements ValintaService {
                 "\"varasijanNumero\": null,"+
                 "\"tila\": \"HYVAKSYTTY\","+
                 "\"tilanKuvaukset\": {},"+
-                "\"vastaanottotieto\": \"ILMOITETTU\","+
+                "\"vastaanottotieto\": \"KESKEN\","+
                 "\"hyvaksyttyHarkinnanvaraisesti\": false,"+
                 "\"tasasijaJonosija\": 1,"+
                 "\"pisteet\": 18,"+
