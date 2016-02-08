@@ -405,7 +405,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 if(!eligibility.getStatus().equals(status)) {
                     updateEligibilityStatusToApplicationNotes(application, eligibility);
                 }
-                
+                application.setEligibilitiesAndAttachmentsUpdated(new Date());
             }
         }
         return application;

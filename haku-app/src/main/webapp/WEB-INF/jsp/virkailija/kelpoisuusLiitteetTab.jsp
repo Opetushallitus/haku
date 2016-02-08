@@ -11,15 +11,12 @@
 
 <jsp:include page="../error/conflict.jsp"/>
 
-<input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet"
-       onclick="kjal.tallennaKelpoisuusJaLiitteet('${application.oid}', '${application.updated}')" value="Tallenna" disabled />
-
 <div class="grid16-16 inline-block hidden" id="error-kelpoisuus-liitteet">
     <h3 style="color: red">Tallennus ei onnistunut</h3>
 </div>
-<div class="grid16-16 inline-block hidden" id="lock-kelpoisuus-liitteet">
-    <h3 style="color: red">Joku muokkasi lomaketta</h3>
-</div>
+
+<input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet"
+       onclick="kjal.tallennaKelpoisuusJaLiitteet('${application.oid}', '${application.eligibilitiesAndAttachmentsUpdated}')" value="Tallenna" disabled />
 
 <h3 id="kun">Kk-haut: Kelpoisuus ja liitteet</h3>
 <script type="text/javascript">
@@ -62,7 +59,6 @@
             </div>
             <div class="grid16-16 inline-block">
                 <br>
-                <!--input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${application.oid}','${hakukohde.index}', '${application.updated}')" value="Tallenna" disabled /-->
                 <input type="button" class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetSaapuneet('${hakukohde.index}')"  value="Kaikki liitteet saapuneet" disabled />
                 <input type="button" class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" value="Kaikki liitteet tarkastettu" disabled/>
             </div>
