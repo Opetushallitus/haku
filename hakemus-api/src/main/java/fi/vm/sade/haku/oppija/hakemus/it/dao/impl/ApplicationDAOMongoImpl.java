@@ -351,12 +351,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             dbCursor = dbCursor.hint(INDEX_PAYMENT_DUE_DATE);
         }
 
-        return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
-            @Override
-            public Application apply(DBObject dbObject) {
-                return objectMapper.convertValue(dbObject, Application.class);
-            }
-        }));
+        return ImmutableList.copyOf(Iterables.transform(dbCursor, fromDBObject));
     }
 
     @Override
