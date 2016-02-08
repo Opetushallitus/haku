@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.*;
 import com.google.common.collect.Maps;
-import com.sun.xml.internal.ws.api.message.Attachment;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
