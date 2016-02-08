@@ -521,7 +521,7 @@ var kjal = {
      * tallennetaan kelpoisuus ja liitteet
      * @param indx hakutoiveen index numero
      */
-    tallennaKelpoisuusJaLiitteet: function (applicationOid, updated) {
+    tallennaKelpoisuusJaLiitteet: function (applicationOid, eligibilitiesAndAttachmentsUpdated) {
         var submitData = _.clone(hakutoiveet);
         for (var s in submitData) {
             delete submitData[s].indx;
@@ -534,8 +534,9 @@ var kjal = {
 
         var submitData2 = {
             eligibilities: submitData,
-            updated: updated
+            updated: eligibilitiesAndAttachmentsUpdated || null
         };
+
         this.LOGS('Lähettävä data:', submitData2);
         $.ajax({
             type: 'POST',
