@@ -10,7 +10,7 @@ var config = {
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
     tietolahdeRekisteri: "REGISTER",
-    showlogs: true
+    showlogs: false
 };
 var kjal = {
     /**
