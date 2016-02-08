@@ -3,6 +3,7 @@ lomake = initSelectors({
     autocomplete: function(text) {
         return "a.ui-corner-all:contains(" + text + ")";
     },
+    overlay: "div#overlay-fixed",
 
     // Henkilötiedot
     sukunimi: "input#Sukunimi",

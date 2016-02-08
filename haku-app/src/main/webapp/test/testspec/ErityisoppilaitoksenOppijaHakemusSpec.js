@@ -267,20 +267,24 @@ describe('Erityisoppilaitosten lomake', function () {
                             describe('hakutoiveiden järjestyksen muuttaminen', function () {
                                 before(seqDone(
                                     openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet"),
-                                    visible(lomake.tyhjenna(3)),
+                                    exists(lomake.overlay),
                                     click(lomake.sortDown(1))
                                 ));
 
-                                it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
-                                    hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
-                                    hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
-                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
-                                ));
+                                describe('järjestyksen vaihdon jälkeen', function () {
+                                    it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
+                                        hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
+                                        hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
+                                        hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
+                                    ));
+                                });
 
-                                it('siirtyminen arvosanoihin yhä onnistuu', seqDone(
-                                    pageChange(lomake.fromHakutoiveet),
-                                    headingVisible("Arvosanat")
-                                ));
+                                describe('siirtyminen arvosanoihin', function () {
+                                    it('yhä onnistuu', seqDone(
+                                        pageChange(lomake.fromHakutoiveet),
+                                        headingVisible("Arvosanat")
+                                    ));
+                                });
                             });
                         });
                      });
