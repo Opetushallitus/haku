@@ -10,7 +10,7 @@ var config = {
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
     tietolahdeRekisteri: "REGISTER",
-    showlogs: false
+    showlogs: true
 };
 var kjal = {
     /**
@@ -547,9 +547,9 @@ var kjal = {
             dataType: "json",
             cache: false,
             success: function () {
-                window.location.reload(false);
                 var navToY = kjal.documentYposition();
                 window.location.href = page_settings.contextPath + '/virkailija/hakemus/' + applicationOid + '/#liitteetkelpoisuusTab#'+navToY;
+                window.location.reload(true);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 kjal.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', jqXHR, textStatus, errorThrown);
