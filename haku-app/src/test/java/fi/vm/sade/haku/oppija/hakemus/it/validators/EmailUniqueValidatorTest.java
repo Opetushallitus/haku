@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 @ActiveProfiles("it")
 public class EmailUniqueValidatorTest extends IntegrationTestSupport {

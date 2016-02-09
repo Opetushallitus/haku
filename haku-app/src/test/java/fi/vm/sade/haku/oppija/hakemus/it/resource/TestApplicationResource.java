@@ -14,7 +14,7 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.util.List;
 import java.util.Locale;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 @ActiveProfiles("it")
 public class TestApplicationResource extends IntegrationTestSupport {

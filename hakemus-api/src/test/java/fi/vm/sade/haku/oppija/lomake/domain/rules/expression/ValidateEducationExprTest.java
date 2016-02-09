@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 
-import junit.framework.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
