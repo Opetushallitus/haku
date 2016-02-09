@@ -55,20 +55,31 @@ public class PaymentDueDateProcessingWorker {
     }
 
     private int updateApplicationStates(Application application, final Application original) {
+
+        boolean addHistoryAndUpdate = false;
+
         if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
             application.setState(State.PASSIVE);
             addPassivationNoteToApplication(application);
+            addHistoryAndUpdate = true;
         }
 
-        application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
-        addPaymentStateNoteToApplication(application, Application.PaymentState.NOT_OK);
+        if(!Application.PaymentState.NOT_OK.equals(original.getRequiredPaymentState())) {
+            application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
+            addPaymentStateNoteToApplication(application, Application.PaymentState.NOT_OK);
+            addHistoryAndUpdate = true;
+        }
 
-        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Payment Due Date Post Processing");
+        if(addHistoryAndUpdate) {
+            addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Payment Due Date Post Processing");
 
-        return applicationDAO.update(new Application() {{
-            setOid(original.getOid());
-            setUpdated(original.getUpdated());
-        }}, application);
+            return applicationDAO.update(new Application() {{
+                setOid(original.getOid());
+                setUpdated(original.getUpdated());
+            }}, application);
+        } else {
+            return 1;
+        }
     }
 
     /**
@@ -114,9 +125,11 @@ public class PaymentDueDateProcessingWorker {
      */
     public Application processPaymentDueDate(Application application) {
         if (PaymentDueDateRules.evaluatePaymentDueDateRules(application)) {
-            application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
-            addPaymentStateNoteToApplication(application, Application.PaymentState.NOT_OK);
-            log.info("Application {} requiredPaymentState set to NOT_OK", application.getOid());
+            if(!Application.PaymentState.NOT_OK.equals(application.getRequiredPaymentState())) {
+                application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
+                addPaymentStateNoteToApplication(application, Application.PaymentState.NOT_OK);
+                log.info("Application {} requiredPaymentState set to NOT_OK", application.getOid());
+            }
 
             if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
                 application.setState(State.PASSIVE);
