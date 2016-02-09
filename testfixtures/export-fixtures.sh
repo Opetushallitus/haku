@@ -6,9 +6,12 @@ export_application_system() {
     mongoexport $@ -d hakulomake -c applicationSystem \
                 --query "{_id: \"${ID}\"}" \
         | node process-appsystem.js \
-        | sed 's/\(.\){"_id"/\1\{"_id"/g' \
-        | sed 's/:\[{/:\[\{/g' \
-        | sed 's/}],/}\],/g'
+        | sed 's/\(.\){"_id"/\1\
+{"_id"/g' \
+        | sed 's/:\[{/:\[\
+{/g' \
+        | sed 's/}],/}\
+],/g'
 }
 
 export_theme_questions() {
