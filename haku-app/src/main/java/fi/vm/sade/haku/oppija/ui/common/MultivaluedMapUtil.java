@@ -16,10 +16,11 @@
 
 package fi.vm.sade.haku.oppija.ui.common;
 
+import com.google.common.collect.Sets;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 import javax.ws.rs.core.MultivaluedMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class MultivaluedMapUtil {
     private MultivaluedMapUtil() { // NOSONAR
@@ -31,5 +32,20 @@ public final class MultivaluedMapUtil {
             singleValueMap.put(entry.getKey(), entry.getValue().get(0));
         }
         return singleValueMap;
+    }
+
+    public static MultivaluedMap<String,String> removeKeys(MultivaluedMap<String,String> source, String... exclude) {
+        HashSet<String> excludeStrings = Sets.newHashSet(exclude);
+        MultivaluedMapImpl dest = new MultivaluedMapImpl();
+        for(String key : source.keySet()) {
+            if(!excludeStrings.contains(key)) {
+                dest.put(key, source.get(key));
+            }
+        }
+        return dest;
+    }
+
+    public static MultivaluedMap<String,String> filterOPHParameters(MultivaluedMap<String,String> post) {
+        return removeKeys(post, "CSRF", "clientSubSystemCode");
     }
 }

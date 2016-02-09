@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static com.google.common.base.Objects.firstNonNull;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -135,7 +136,8 @@ public class FormController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Response prefillForm(@Context HttpServletRequest request,
                                 @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+                                final MultivaluedMap<String, String> post) throws URISyntaxException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("prefillForm {}, {}", applicationSystemId, multiValues);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         uiService.storePrefilledAnswers(applicationSystemId, toSingleValueMap(multiValues), lang);
@@ -203,7 +205,8 @@ public class FormController {
     public Viewable updateRules(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
-                                final MultivaluedMap<String, String> multiValues) {
+                                final MultivaluedMap<String, String> post) {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId, elementId);
         ModelResponse modelResponse = uiService.updateRules(applicationSystemId, phaseId, elementId, toSingleValueMap(multiValues));
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
@@ -215,7 +218,8 @@ public class FormController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Viewable updateRulesMulti(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                final MultivaluedMap<String, String> multiValues) throws ExecutionException {
+                                final MultivaluedMap<String, String> post) throws ExecutionException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updateRulesMulti {}, {}, {}", applicationSystemId, phaseId);
         List<String> ruleIds = firstNonNull(multiValues.get("ruleIds[]"), ImmutableList.<String>of());
         ModelResponse modelResponse = uiService.updateRulesMulti(applicationSystemId, phaseId, ruleIds, toSingleValueMap(multiValues));
@@ -242,7 +246,8 @@ public class FormController {
     public Response savePhase(@Context HttpServletRequest request,
                               @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                              final MultivaluedMap<String, String> answers) throws URISyntaxException, ExecutionException {
+                              final MultivaluedMap<String, String> post) throws URISyntaxException, ExecutionException {
+        final MultivaluedMap<String, String> answers = filterOPHParameters(post);
         LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
@@ -302,7 +307,8 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
-                                final MultivaluedMap<String, String> answers) {
+                                final MultivaluedMap<String, String> post) {
+        final MultivaluedMap<String, String> answers = filterOPHParameters(post);
         return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId,toSingleValueMap(answers)));
     }
 
