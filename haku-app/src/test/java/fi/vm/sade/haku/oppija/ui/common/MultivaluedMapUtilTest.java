@@ -22,4 +22,13 @@ public class MultivaluedMapUtilTest {
         assertTrue(singleValueMap.containsKey(KEY));
         assertEquals(VALUE, singleValueMap.get(KEY));
     }
+
+    @Test
+    public void excludeValues() {
+        MultivaluedMapImpl multi = new MultivaluedMapImpl();
+        multi.add("A", "1");
+        multi.add("RF", "POW!");
+        multi.add("client", "haku-app");
+        MultivaluedMapUtil.removeKeys(multi, "RF", "client");
+    }
 }

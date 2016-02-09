@@ -55,6 +55,7 @@ import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
@@ -107,7 +108,8 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+    public Response newApplication(final MultivaluedMap<String, String> post) throws URISyntaxException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("create new application");
         Application application = officerUIService.createApplication(multiValues.getFirst("asId"));
         AUDIT.log(builder()
@@ -123,7 +125,8 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{elementId}/help")
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId, final MultivaluedMap<String, String> answers) {
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId, final MultivaluedMap<String, String> post) {
+        final MultivaluedMap<String, String> answers = filterOPHParameters(post);
         return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId, toSingleValueMap(answers)));
     }
 
@@ -155,7 +158,8 @@ public class OfficerController {
     @Path("/hakemus/multiple")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable openApplications(final MultivaluedMap<String, String> multiValues) throws IOException {
+    public Viewable openApplications(final MultivaluedMap<String, String> post) throws IOException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("Opening multiple applications");
         Map<String, String> values = toSingleValueMap(multiValues);
         String applicationList = values.get("applicationList");
@@ -188,9 +192,9 @@ public class OfficerController {
     public Response updatePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
-                                final MultivaluedMap<String, String> multiValues)
+                                final MultivaluedMap<String, String> post)
             throws URISyntaxException, IOException {
-
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
 
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
@@ -218,7 +222,8 @@ public class OfficerController {
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid,
                                @PathParam("elementId") final String elementId,
-                               final MultivaluedMap<String, String> multiValues) {
+                               final MultivaluedMap<String, String> post) {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updateView {}, {}", new Object[]{oid, multiValues});
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
         modelResponse.addAnswers(toSingleValueMap(multiValues));
@@ -237,8 +242,8 @@ public class OfficerController {
     public Viewable updateMultiRuleView(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid,
-                               final MultivaluedMap<String, String> multiValues) {
-
+                               final MultivaluedMap<String, String> post) {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updateMultiRuleView {}, {}", new Object[]{oid, multiValues});
         List<String> ruleIds = multiValues.get("ruleIds[]");
         ModelResponse modelResponse = officerUIService.getApplicationMultiElement(oid, phaseId, ruleIds, false, toSingleValueMap(multiValues));
@@ -255,7 +260,8 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
-                                       final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+                                       final MultivaluedMap<String, String> post) throws URISyntaxException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
         Map<String,String> vals = toSingleValueMap(multiValues);
         officerUIService.saveApplicationAdditionalInfo(oid, vals);
@@ -283,7 +289,8 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
-    public Response state(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+    public Response state(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> post) throws URISyntaxException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         String reason = concatMultivaluedQueryParam("note", multiValues);
         Application.State state = Application.State.valueOf(multiValues.getFirst("state"));
         officerUIService.changeState(oid, state, reason);
@@ -299,7 +306,8 @@ public class OfficerController {
     @Path("/hakemus/{oid}/note")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response addNote(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+    public Response addNote(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> post) throws URISyntaxException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         String note = concatMultivaluedQueryParam("note-text", multiValues);
         officerUIService.addNote(oid, note);
         AUDIT.log(builder()
@@ -315,7 +323,8 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response postProcess(@PathParam(OID_PATH_PARAM) final String oid,
-                                final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+                                final MultivaluedMap<String, String> post) throws URISyntaxException {
+        final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         boolean email = Boolean.valueOf(multiValues.getFirst("email"));
         officerUIService.postProcess(oid, email);
         return redirectToOidResponse(oid);
