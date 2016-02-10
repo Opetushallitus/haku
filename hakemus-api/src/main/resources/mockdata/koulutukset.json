@@ -4256,5 +4256,113 @@
     "pohjakoulutusLiitteet": null,
     "josYoEiMuitaLiitepyyntoja": false,
     "kotitalous": false
+  },
+  "1.2.246.562.20.37345403259": {
+    "id": "1.2.246.562.20.37345403259",
+    "name": "Sosiaali- ja terveysalan perustutkinto, pk",
+    "aoIdentifier": "873",
+    "educationDegree": "koulutusasteoph2002_32",
+    "sora": true,
+    "teachingLanguages": [
+      "FI"
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.67937704822",
+      "name": "Helsingin Diakoniaopisto",
+      "applicationSystemIds": [
+        "1.2.246.562.29.14662042044"
+      ]
+    },
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "athleteEducation": false,
+    "kysytaanHarkinnanvaraiset": true,
+    "kaksoistutkinto": true,
+    "vocational": true,
+    "educationCodeUri": "koulutus_371101",
+    "attachments": [],
+    "organizationGroups": []
+  },
+  "1.2.246.562.20.62802979328": {
+    "id": "1.2.246.562.20.62802979328",
+    "name": "Kotityö- ja puhdistuspalvelujen perustutkinto, pk",
+    "aoIdentifier": "475",
+    "educationDegree": "koulutusasteoph2002_32",
+    "sora": false,
+    "teachingLanguages": [
+      "FI"
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.67937704822",
+      "name": "Helsingin Diakoniaopisto",
+      "applicationSystemIds": [
+        "1.2.246.562.29.14662042044"
+      ]
+    },
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "athleteEducation": false,
+    "kysytaanHarkinnanvaraiset": true,
+    "kaksoistutkinto": false,
+    "vocational": true,
+    "educationCodeUri": "koulutus_381113",
+    "attachments": [],
+    "organizationGroups": []
+  },
+  "1.2.246.562.20.21468913773": {
+    "id": "1.2.246.562.20.21468913773",
+    "name": "Tanssialan perustutkinto, pk",
+    "aoIdentifier": "035",
+    "educationDegree": "koulutusasteoph2002_32",
+    "sora": false,
+    "teachingLanguages": [
+      "FI"
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.14707331246",
+      "name": "Lapin urheiluopisto",
+      "applicationSystemIds": [
+        "1.2.246.562.29.14662042044"
+      ]
+    },
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "athleteEducation": true,
+    "kysytaanHarkinnanvaraiset": false,
+    "kaksoistutkinto": false,
+    "vocational": true,
+    "educationCodeUri": "koulutus_321501",
+    "attachments": [],
+    "organizationGroups": []
+  },
+  "1.2.246.562.20.77217276458": {
+    "id": "1.2.246.562.20.77217276458",
+    "name": "Liikunnanohjauksen perustutkinto, pk",
+    "aoIdentifier": "115",
+    "educationDegree": "koulutusasteoph2002_32",
+    "sora": true,
+    "teachingLanguages": [
+      "FI"
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.14707331246",
+      "name": "Lapin urheiluopisto",
+      "applicationSystemIds": [
+        "1.2.246.562.29.14662042044"
+      ]
+    },
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "athleteEducation": true,
+    "kysytaanHarkinnanvaraiset": false,
+    "kaksoistutkinto": false,
+    "vocational": true,
+    "educationCodeUri": "koulutus_381203",
+    "attachments": [],
+    "organizationGroups": []
   }
 }
