@@ -16,10 +16,9 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <c:choose>
     <c:when test="${it.officerUi}">
-        <c:set var="osaaminen" value="${it.arvosanat}" scope="request" />
+        <c:set var="osaaminen" value="${it.answers}" scope="request" />
     </c:when>
     <c:otherwise>
         <c:set var="osaaminen" value="${answers}" scope="request" />
