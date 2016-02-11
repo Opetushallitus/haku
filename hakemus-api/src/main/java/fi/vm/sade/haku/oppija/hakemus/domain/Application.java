@@ -723,6 +723,7 @@ public class Application implements Serializable {
         clone.automatedProcessingFailCount = this.automatedProcessingFailCount;
         clone.automatedProcessingFailRetryTime = this.automatedProcessingFailRetryTime;
         clone.requiredPaymentState = this.requiredPaymentState;
+        clone.paymentDueDate = this.paymentDueDate;
         return clone;
     }
 
