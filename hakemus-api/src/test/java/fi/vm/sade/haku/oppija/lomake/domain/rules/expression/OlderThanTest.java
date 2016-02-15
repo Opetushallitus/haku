@@ -26,7 +26,7 @@ public class OlderThanTest {
 
     @Test
     public void testEvaluateYounger() throws Exception {
-        assertFalse(olderThan.evaluate(ImmutableMap.of(DATE_OF_BIRTH_KEY, "12.2.2000")));
+        assertFalse(olderThan.evaluate(ImmutableMap.of(DATE_OF_BIRTH_KEY, "12.2.2005")));
     }
 
     @Test
