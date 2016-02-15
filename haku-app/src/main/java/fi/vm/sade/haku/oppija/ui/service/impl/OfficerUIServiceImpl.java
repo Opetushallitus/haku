@@ -38,6 +38,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentDTO;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
+import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -779,9 +780,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities) {
-        LOGGER.debug("Got attachementsAndEligibilities " + StringUtils.join(attachementsAndEligibilities, ","));
+    public void processAttachmentsAndEligibilities(String oid, EligibilitiesDTO attachmentsAndEligibilities) {
+        LOGGER.debug("Got attachementsAndEligibilities " + StringUtils.join(attachmentsAndEligibilities.getEligibilities(), ","));
         final Application application = applicationService.getApplicationByOid(oid);
+
+        checkUpdateDate(application.getEligibilitiesAndAttachmentsUpdated(), attachmentsAndEligibilities.getUpdated());
+
         final Map<String, PreferenceEligibility> preferenceEligibilities = new HashMap<>();
         final Map<String, PreferenceChecked> preferenceCheckeds = new HashMap<>();
         final Map<String, ApplicationAttachmentRequest> attachmentRequests = new HashMap<>();
@@ -794,7 +798,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (ApplicationAttachmentRequest e : application.getAttachmentRequests()) {
             attachmentRequests.put(e.getId(), e);
         }
-        for (AttachmentsAndEligibilityDTO dto : attachementsAndEligibilities) {
+        for (AttachmentsAndEligibilityDTO dto : attachmentsAndEligibilities.getEligibilities()) {
             PreferenceEligibility preferenceEligibility = preferenceEligibilities.get(dto.getAoId());
             PreferenceChecked preferenceChecked = preferenceCheckeds.get(dto.getAoId());
             if (null == preferenceEligibility || null == preferenceChecked) {
@@ -814,7 +818,23 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 updateAttachmentRequestStatus(application, attachmentDTO, attachment);
             }
         }
+        application.setEligibilitiesAndAttachmentsUpdated(new Date());
         applicationService.update(new Application(oid), application);
+    }
+
+    private void checkUpdateDate(Date lastApplicationUpdateDate, Date updateDateInUsersVersion) {
+        if(null == lastApplicationUpdateDate) {
+            return;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(lastApplicationUpdateDate);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        if(null == updateDateInUsersVersion || calendar.getTime().getTime() > updateDateInUsersVersion.getTime()) {
+            LOGGER.warn("Last update date {} is after update date {} of the application version user is updating.", lastApplicationUpdateDate, updateDateInUsersVersion);
+            throw new IllegalStateException("Application has been updated since last reload.");
+        }
     }
 
     private static void checkDuplicateAttachmentDTO(AttachmentDTO attachmentDTO, List<AttachmentDTO> allAttachmentDTOs) {

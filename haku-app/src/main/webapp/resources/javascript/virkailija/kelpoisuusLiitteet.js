@@ -10,7 +10,7 @@ var config = {
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
     tietolahdeRekisteri: "REGISTER",
-    showlogs: false
+    showlogs: true
 };
 var kjal = {
     /**
@@ -521,20 +521,27 @@ var kjal = {
      * tallennetaan kelpoisuus ja liitteet
      * @param indx hakutoiveen index numero
      */
-    tallennaKelpoisuusJaLiitteet: function (applicationOid, indx) {
-        var i = indx - 1;
-        var submitData = [_.clone(hakutoiveet[i])];
-        delete submitData[0].indx;
-        for(var r in submitData[0].attachments){
-            delete submitData[0].attachments[r].name;
-            delete submitData[0].attachments[r].header;
-            delete submitData[0].attachments[r].description;
+    tallennaKelpoisuusJaLiitteet: function (applicationOid, eligibilitiesAndAttachmentsUpdated) {
+        var submitData = _.clone(hakutoiveet);
+        for (var s in submitData) {
+            delete submitData[s].indx;
+            for (var r in submitData[s].attachments) {
+                delete submitData[s].attachments[r].name;
+                delete submitData[s].attachments[r].header;
+                delete submitData[s].attachments[r].description;
+            }
         }
-        this.LOGS('Lähettävä data:', submitData);
+
+        var submitData2 = {
+            eligibilities: submitData,
+            updated: eligibilitiesAndAttachmentsUpdated || null
+        };
+
+        this.LOGS('Lähettävä data:', submitData2);
         $.ajax({
             type: 'POST',
             url: page_settings.contextPath + '/virkailija/hakemus/' +  applicationOid + '/processAttachmentsAndEligibility',
-            data: JSON.stringify(submitData),
+            data: JSON.stringify(submitData2),
             async: true,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -542,13 +549,21 @@ var kjal = {
             success: function () {
                 var navToY = kjal.documentYposition();
                 window.location.href = page_settings.contextPath + '/virkailija/hakemus/' + applicationOid + '/#liitteetkelpoisuusTab#'+navToY;
+                window.location.reload(true);
             },
-            error: function (error) {
-                kjal.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
-                $('#error-kelpoisuus-liitteet-' + indx).removeClass('hidden');
+            error: function (jqXHR, textStatus, errorThrown) {
+                kjal.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', jqXHR, textStatus, errorThrown);
+
+                if(jqXHR.status === 409) {
+                    //$('#lock-kelpoisuus-liitteet').removeClass('hidden');
+                    $('#overlay-fixed').show();
+                    $('#conflict-banner').show();
+                } else {
+                    $('#error-kelpoisuus-liitteet').removeClass('hidden');
+                }
+
             }
         });
-
     },
     /**
      * Asettaa kaikki tiedot tarkietettu tilan
@@ -633,8 +648,8 @@ var kjal = {
      */
     disableBtnTallennaKelpoisuusLiitteet: function (ind) {
         this.LOGS('disable ', 'btn ', 'tallene');
-        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).addClass('disabled');
-        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).attr('disabled', 'true');
+        $('#btn-tallenna-kelpoisuus-liitteet').addClass('disabled');
+        $('#btn-tallenna-kelpoisuus-liitteet').attr('disabled', 'true');
     },
     /**
      * asetettaa "tallenna" napin enabled tilaan
@@ -642,10 +657,13 @@ var kjal = {
      */
     enableBtnTallennaKelpoisuusLiitteet: function (ind) {
         this.LOGS('enable ', 'btn ', 'tallenna');
-        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).removeClass('disabled');
-        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).removeAttr('disabled');
+        $('#btn-tallenna-kelpoisuus-liitteet').removeClass('disabled');
+        $('#btn-tallenna-kelpoisuus-liitteet').removeAttr('disabled');
+    },
+    showConflictBanner: function() {
+        $('#overlay-fixed').show();
+        $('#conflict-banner').show();
     }
-
 };
 
 $(document).ready(function() {

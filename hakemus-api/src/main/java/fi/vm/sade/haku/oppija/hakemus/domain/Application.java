@@ -131,6 +131,7 @@ public class Application implements Serializable {
     private Integer modelVersion;
 
     //Higher-education only ...
+    private Date eligibilitiesAndAttachmentsUpdated;
     private List<PreferenceEligibility> preferenceEligibilities = new ArrayList<PreferenceEligibility>();
     private List<ApplicationAttachmentRequest> attachmentRequests = new ArrayList<ApplicationAttachmentRequest>();
     private List<PreferenceChecked> preferencesChecked = new ArrayList<PreferenceChecked>();
@@ -689,6 +690,14 @@ public class Application implements Serializable {
         this.requiredPaymentState = requiredPaymentState;
     }
 
+    public Date getEligibilitiesAndAttachmentsUpdated() {
+        return this.eligibilitiesAndAttachmentsUpdated;
+    }
+
+    public Application setEligibilitiesAndAttachmentsUpdated(Date eligibilitiesAndAttachmentsUpdated) {
+        this.eligibilitiesAndAttachmentsUpdated = eligibilitiesAndAttachmentsUpdated; return this;
+    }
+
     @Override
     public Application clone() {
         final Application clone = new Application(this.oid);
@@ -724,6 +733,7 @@ public class Application implements Serializable {
         clone.automatedProcessingFailRetryTime = this.automatedProcessingFailRetryTime;
         clone.requiredPaymentState = this.requiredPaymentState;
         clone.paymentDueDate = this.paymentDueDate;
+        clone.eligibilitiesAndAttachmentsUpdated = this.eligibilitiesAndAttachmentsUpdated;
         return clone;
     }
 

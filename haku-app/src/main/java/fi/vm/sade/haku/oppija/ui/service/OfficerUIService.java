@@ -5,7 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
+import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -62,7 +62,7 @@ public interface OfficerUIService {
 
     List<Map<String,String>> getHigherEdBaseEdOptions();
 
-    void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities);
+    void processAttachmentsAndEligibilities(String oid, EligibilitiesDTO attachmentsAndEligibilities);
 
     Map<String, String> getNamesForNoteUsers(List<String> personOids);
 }
