@@ -33,6 +33,7 @@ public class LisatiedotPhase {
 
     public static final String MIN_AGE_REQUIRED_TO_WORK_EXPERIENCE_AGE = "16";
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
+    public static final String OPPISOPIMUS_THEME_ID = "oppisopimus";
 
     private LisatiedotPhase() {
     }
@@ -165,7 +166,7 @@ public class LisatiedotPhase {
                 vocationalKeys.toArray(new String[vocationalKeys.size()]));
 
         Element hakeeAmmatilliseenSaanto = Rule(hakeeAmmatilliseen).build();
-        Element hakeeAmmatilliseenTeema = Theme("oppisopimus").previewable().formParams(formParameters).build();
+        Element hakeeAmmatilliseenTeema = Theme(OPPISOPIMUS_THEME_ID).previewable().formParams(formParameters).build();
         hakeeAmmatilliseenSaanto.addChild(hakeeAmmatilliseenTeema);
 
         hakeeAmmatilliseenTeema.addChild(Checkbox("kiinnostunutoppisopimuksesta").formParams(formParameters).build());
