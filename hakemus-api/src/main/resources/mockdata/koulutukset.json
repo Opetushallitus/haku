@@ -4364,5 +4364,102 @@
     "educationCodeUri": "koulutus_381203",
     "attachments": [],
     "organizationGroups": []
+  },
+  "1.2.246.562.20.26705556103": {
+    "id": "1.2.246.562.20.26705556103",
+    "name": "Lukio",
+    "aoIdentifier": "000",
+    "startingQuota": 108,
+    "firstTimerStartingQuota": null,
+    "startingQuotaDescription": null,
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": 1426597220518,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "Kaupintie 7",
+      "streetAddress2": null,
+      "postalCode": "62900",
+      "postOffice": "ALAJÄRVI"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_31",
+    "teachingLanguages": [
+      "FI"
+    ],
+    "teachingLanguageNames": [],
+    "soraDescription": null,
+    "prerequisite": {
+      "value": "PK",
+      "name": "Peruskoulu",
+      "shortName": "PK",
+      "description": "Peruskoulu",
+      "uri": "pohjakoulutusvaatimustoinenaste_pk"
+    },
+    "exams": null,
+    "childRefs": [],
+    "higherEdLOSRefs": [],
+    "provider": {
+      "id": "1.2.246.562.10.50460470417",
+      "name": "Alajärven lukio",
+      "applicationSystemIds": [
+        "1.2.246.562.29.14662042044"
+      ],
+      "postalAddress": {
+        "streetAddress": "Kaupintie 7",
+        "streetAddress2": null,
+        "postalCode": "62900",
+        "postOffice": "ALAJÄRVI"
+      },
+      "visitingAddress": {
+        "streetAddress": "Kaupintie 7",
+        "streetAddress2": null,
+        "postalCode": "62900",
+        "postOffice": "ALAJÄRVI"
+      },
+      "webPage": "https://peda.net/alajarvi/lukio",
+      "email": "lukio@alajarvi.fi",
+      "fax": "06  2412 2457",
+      "phone": "06  2412 2432",
+      "athleteEducation": false,
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1451628000000,
+    "applicationEndDate": 1458046820518,
+    "applicationPeriodName": null,
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimustoinenaste_pk",
+      "hakukelpoisuusvaatimusta_5",
+      "3",
+      "2",
+      "6",
+      "1",
+      "7",
+      "0"
+    ],
+    "attachments": null,
+    "emphasizedSubjects": null,
+    "additionalInfo": null,
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_301101",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KOULUTUS",
+    "educationTypeUri": null,
+    "hakuaikaId": "2796069",
+    "organizationGroups": [],
+    "paid": false,
+    "hakuMenettelyKuvaukset": null,
+    "peruutusEhdotKuvaukset": null,
+    "pohjakoulutusLiitteet": null,
+    "kysytaanHarkinnanvaraiset": false,
+    "kotitalous": false,
+    "josYoEiMuitaLiitepyyntoja": false
   }
 }
