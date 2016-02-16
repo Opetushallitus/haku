@@ -272,7 +272,7 @@ describe('Erityisoppilaitosten lomake', function () {
                                 ));
 
                                 describe('järjestyksen vaihdon jälkeen', function () {
-                                    it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
+                                    it.skip('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
                                         hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
                                         hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
                                         hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
