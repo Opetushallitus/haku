@@ -62,10 +62,11 @@ muutoksia hakuaikana Oma Opintopolku -palvelussa.
 
     #if ($athlete)
         <p>
-            Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta<br /><br />
+            Haet urheilijana ammatilliseen koulutukseen tai lukioon. Muistathan toimittaa urheilijan lisätietolomakkeen hakemaasi oppilaitokseen. Lisätietolomakkeen ja lisätietoja löydät osoitteesta:<br /><br />
 
-            <a href="https://opintopolku.fi/liitteet/Urheiluoppilaitosten_hakulomake_2015.pdf">
-                https://opintopolku.fi/liitteet/Urheiluoppilaitosten_hakulomake_2015.pdf
+            <a href="http://www.sport.fi/system/resources/W1siZiIsIjIwMTUvMTAvMjQvMTNfMzdfMTVfMzQ2X1VyaGVpbHVvcHBpbGFpdG9zdGVuX2hha3Vsb21ha2VfMjAxNi5wZGYiXV0/Urheiluoppilaitosten%20hakulomake%202016.pdf">
+                http\://www.sport.fi/urheiluoppilaitoshaku 
+
             </a>
         </p>
     #end
