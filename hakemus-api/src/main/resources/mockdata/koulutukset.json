@@ -4461,5 +4461,158 @@
     "kysytaanHarkinnanvaraiset": false,
     "kotitalous": false,
     "josYoEiMuitaLiitepyyntoja": false
+  },
+  "1.2.246.562.20.69015225225" : {
+    "id": "1.2.246.562.20.69015225225",
+    "name": "Lukion urheilulinja",
+    "aoIdentifier": "800",
+    "startingQuota": 130,
+    "firstTimerStartingQuota": null,
+    "startingQuotaDescription": null,
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 7.0,
+    "attachmentDeliveryDeadline": 1426597200000,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "PL 3808",
+      "streetAddress2": null,
+      "postalCode": "00099",
+      "postOffice": "HELSINGIN KAUPUNKI"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_31",
+    "teachingLanguages": [
+      "FI"
+    ],
+    "teachingLanguageNames": [],
+    "soraDescription": null,
+    "prerequisite": {
+      "value": "PK",
+      "name": "Peruskoulu",
+      "shortName": "PK",
+      "description": "Peruskoulu",
+      "uri": "pohjakoulutusvaatimustoinenaste_pk"
+    },
+    "exams": [
+      null
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [],
+    "provider": {
+      "id": "1.2.246.562.10.23254228275",
+      "name": "Mäkelänrinteen lukio",
+      "applicationSystemIds": [
+        "1.2.246.562.29.14662042044"
+      ],
+      "postalAddress": {
+        "streetAddress": "PL 3808",
+        "streetAddress2": null,
+        "postalCode": "00099",
+        "postOffice": "HELSINGIN KAUPUNKI"
+      },
+      "visitingAddress": {
+        "streetAddress": "Mäkelänkatu 47",
+        "streetAddress2": null,
+        "postalCode": "00550",
+        "postOffice": "HELSINKI"
+      },
+      "webPage": "http://www.mrl.edu.hel.fi",
+      "email": "mrl.toimisto@edu.hel.fi",
+      "fax": "09  3108 2354",
+      "phone": "09  3108 2343",
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Mäkelänrinteen lukio",
+        "phone": "310 82342",
+        "email": "toimisto@marsky.fi",
+        "www": "http://www.mrl.edu.hel.fi",
+        "visitingAddress": {
+          "streetAddress": "Mäkelänkatu 47",
+          "streetAddress2": null,
+          "postalCode": "00550",
+          "postOffice": "HELSINKI"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 3808",
+          "streetAddress2": null,
+          "postalCode": "00099",
+          "postOffice": "HELSINGIN KAUPUNKI"
+        }
+      },
+      "homeplace": "Helsinki"
+    },
+    "applicationOffice": {
+      "name": "Mäkelänrinteen lukio",
+      "phone": "310 82342",
+      "email": "toimisto@marsky.fi",
+      "www": "http://www.mrl.edu.hel.fi",
+      "visitingAddress": {
+        "streetAddress": "Mäkelänkatu 47",
+        "streetAddress2": null,
+        "postalCode": "00550",
+        "postOffice": "HELSINKI"
+      },
+      "postalAddress": {
+        "streetAddress": "PL 3808",
+        "streetAddress2": null,
+        "postalCode": "00099",
+        "postOffice": "HELSINGIN KAUPUNKI"
+      }
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1451628000000,
+    "applicationEndDate": 1458046820518,
+    "applicationPeriodName": null,
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimustoinenaste_pk",
+      "hakukelpoisuusvaatimusta_5",
+      "3",
+      "2",
+      "6",
+      "1",
+      "7",
+      "0"
+    ],
+    "attachments": [
+      {
+        "dueDate": 1458219623680,
+        "type": "Urheilijan lisätietolomake",
+        "descreption": null,
+        "address": {
+          "streetAddress": "PL 3808",
+          "streetAddress2": null,
+          "postalCode": "00099",
+          "postOffice": "HELSINGIN KAUPUNKI"
+        },
+        "emailAddr": null,
+        "usedInApplicationForm": true
+      }
+    ],
+    "emphasizedSubjects": [
+      {
+        "value": "1.00",
+        "subject": "Liikunta"
+      }
+    ],
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": true,
+    "vocational": false,
+    "educationCodeUri": "koulutus_301101",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KOULUTUS",
+    "educationTypeUri": null,
+    "hakuaikaId": "2796069",
+    "organizationGroups": [],
+    "paid": false,
+    "hakuMenettelyKuvaukset": null,
+    "peruutusEhdotKuvaukset": null,
+    "pohjakoulutusLiitteet": null,
+    "kysytaanHarkinnanvaraiset": false,
+    "kotitalous": false,
+    "josYoEiMuitaLiitepyyntoja": false
   }
 }
