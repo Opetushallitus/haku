@@ -56,8 +56,7 @@
     #if ($discretionary)
         <p>
             Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
-            Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
-            din ansökan och de bilagor samt motiveringar som du hänvisar till.
+            Du bör skicka bilagor till läroanstalten under ansökningstiden.
         </p>
     #end
 
