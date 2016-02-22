@@ -35,6 +35,35 @@
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
     
+    #if ($discretionary)
+        <p>
+            Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
+            Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
+            din ansökan och de bilagor samt motiveringar som du hänvisar till.
+        </p>
+    #end
+
+    #if ($athlete)
+        <p>
+            Du har sökt som idrottare. Kom ihåg att returnera tilläggsblanketten för idrottare direkt till läroanstalten. Tilläggsblanketten och tilläggsupgifter hittar du adressen<br /><br />
+
+            <a href="http://www.sport.fi/system/resources/W1siZiIsIjIwMTYvMDIvMTgvMTNfMTRfMzFfNjAxX0Fuc19rbmluZ3NibGFua2V0dF8yMDE2LnBkZiJdXQ/Ansökningsblankett_2016.pdf ">
+                http\://www.sport.fi/urheiluoppilaitoshaku (pdf-fil)
+            </a>
+        </p>
+    #end
+
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+        <p>
+            Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
+            på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
+            även krävs att du fyller i läroanstaltens egen tilläggsblankett.
+        </p>
+    #end
+    <p>
+    Du kan ge feedback på ansökningsblanketten genom att svara på detta <a href="https://www.webropolsurveys.com/S/71AE459F8A2D6858.par" target="_blank">frågeformulär</a>.
+    </p>
+
     
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
