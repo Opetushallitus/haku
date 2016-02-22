@@ -55,8 +55,7 @@ muutoksia hakuaikana Oma Opintopolku -palvelussa.
 
     #if ($discretionary)
         <p>
-            Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa liitteet hakuajan päättymiseen mennessä
-            oppilaitokseen.
+            Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa liitteet oppilaitokseen hakuajan päättymiseen mennessä.
         </p>
     #end
 
