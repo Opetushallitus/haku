@@ -38,8 +38,7 @@
     
     #if ($discretionary)
         <p>
-            Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä
-            oppilaitokseen seuraavat tiedot: tulostettu hakemus sekä perustelut ja todistukset, joihin vetoat.
+            Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa liitteet oppilaitokseen hakuajan päättymiseen mennessä.
         </p>
     #end
 
