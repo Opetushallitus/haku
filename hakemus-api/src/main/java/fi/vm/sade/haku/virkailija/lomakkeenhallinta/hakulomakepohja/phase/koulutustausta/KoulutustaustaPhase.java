@@ -60,7 +60,7 @@ public final class KoulutustaustaPhase {
     }
 
     public static Element create(final FormParameters formParameters) {
-        Element koulutustausta = Phase("koulutustausta").setEditAllowedByRoles(ROLE_RU, ROLE_CRUD).formParams(formParameters).build();
+        Element koulutustausta = Phase(PHASE_EDUCATION).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD).formParams(formParameters).build();
         ApplicationSystem as = formParameters.getApplicationSystem();
         if (as.getKohdejoukkoUri().equals(KOHDEJOUKKO_KORKEAKOULU)){
             if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
