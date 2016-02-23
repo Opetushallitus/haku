@@ -169,9 +169,7 @@ public class FormParameters {
     public List<String> getAllowedLanguages() {
         if (KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
                 && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
-                && HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
-                && new Integer(2014).equals(applicationSystem.getHakukausiVuosi())
-                && OppijaConstants.HAKUKAUSI_SYKSY.equals(applicationSystem.getHakukausiUri())){
+                && HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())){
             return asList("fi", "sv");
         }
         if (isAmmattillinenOpettajaKoulutus()) {
