@@ -20,7 +20,7 @@ public class EmailInLowercaseConcreteValidator implements Validator {
         final String email = validationInput.getValue();
         if (!Strings.nullToEmpty(lower(email)).equals(Strings.nullToEmpty(email))) {
             I18nText texts = i18nBundleService.getBundle(validationInput.getApplicationSystemId()).get("form.email.lowercase");
-            return new ValidationResult(OppijaConstants.ELEMENT_ID_EMAIL, texts);
+            return new ValidationResult(validationInput.getFieldName(), texts);
         }
         return new ValidationResult();
     }
