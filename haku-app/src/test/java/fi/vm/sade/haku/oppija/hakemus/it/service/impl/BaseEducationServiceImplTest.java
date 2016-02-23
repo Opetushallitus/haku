@@ -35,7 +35,7 @@ public class BaseEducationServiceImplTest extends IntegrationTestSupport {
     }
 
     @Test
-    public void usesSendingSchoolFromHakemusInKKHakuIfNewYoBaseEducation() {
+    public void usesSendingSchoolFromHakemus2ndGradeHakuIfNewYoBaseEducation() {
         Application application = getTestApplication("1.2.246.562.11.00004886042");
         assertEquals("Yhteishaku ammatilliseen ja lukioon, kevät 2016", mongoAppSystemService.getApplicationSystem(application.getApplicationSystemId()).getName().getText("fi"));
         BaseEducationService baseEducationService = new BaseEducationServiceImpl(
