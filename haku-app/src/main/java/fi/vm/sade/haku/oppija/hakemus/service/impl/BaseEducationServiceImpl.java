@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -36,6 +37,22 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         this.applicationSystemService = applicationSystemService;
     }
 
+    private static boolean hasSendingSchoolQuestion(Element elem, Application application) {
+        if(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL.equals(elem.getId())) {
+            return true;
+        }
+        for (Element child : elem.getChildren(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION))) {
+            if(hasSendingSchoolQuestion(child, application)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasSendingSchoolQuestionOnForm(ApplicationSystem as, Application application) {
+        return hasSendingSchoolQuestion(as.getForm().getChildById(OppijaConstants.PHASE_EDUCATION), application);
+    }
+
     @Override
     public Application addSendingSchool(Application application) {
         String personOid = application.getPersonOid();
@@ -43,10 +60,14 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             return application;
         }
 
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        if(hasSendingSchoolQuestionOnForm(as, application)) {
+            return application;
+        }
+
         List<OpiskelijaDTO> opiskelijatiedot = suoritusrekisteriService.getOpiskelijatiedot(personOid);
 
         if (!opiskelijatiedot.isEmpty()) {
-            ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
             Date hakukausiStart = resolveHakukausiStart(as);
             OpiskelijaDTO opiskelija = null;
             boolean found = false;
