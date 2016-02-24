@@ -99,6 +99,11 @@ public class HakumaksuService {
             boolean exemptingAoFound = false;
 
             for (String baseEducationRequirement : applicationOptionRequirement.baseEducationRequirements) {
+                // Ohita pohjakoulutusvaatimus jos sitä ei ole mäpätty
+                if (!kkBaseEducationRequirements.containsKey(baseEducationRequirement)) {
+                    continue;
+                }
+
                 ImmutableSet<Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(answers);
                 ImmutableSet<Eligibility> paymentEligibilities = ImmutableSet.copyOf(filter(allEligibilities, eligibilityRequiresPayment));
 
