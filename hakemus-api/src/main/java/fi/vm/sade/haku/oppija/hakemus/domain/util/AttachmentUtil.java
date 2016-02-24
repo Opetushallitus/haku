@@ -396,15 +396,7 @@ public class AttachmentUtil {
             final KoulutusinformaatioService koulutusinformaatioService, final String lang,
             final I18nBundle i18nBundle) {
 
-        Calendar deadlineCal = GregorianCalendar.getInstance();
-        deadlineCal.set(Calendar.YEAR, 2015);
-        deadlineCal.set(Calendar.MONTH, GregorianCalendar.FEBRUARY);
-        deadlineCal.set(Calendar.DAY_OF_MONTH, 3);
-        deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
-        deadlineCal.set(Calendar.MINUTE, 0);
-        deadlineCal.set(Calendar.SECOND, 0);
-        Date deadline = deadlineCal.getTime();
-
+        Date deadline = null;
         Map<String, List<ApplicationOptionDTO>> amkOpeAttachmentAOs = fetchAOs(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
         Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem.getAttachmentGroupAddresses(), amkOpeAttachmentAOs, deadline);
 
