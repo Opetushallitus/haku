@@ -53,10 +53,6 @@ public final class ApplicationUtil {
         return getAttachmentAOIds(application, OppijaConstants.PREFERENCE_DISCRETIONARY);
     }
 
-    public static List<String> getApplicationOptionAttachmentAOIds(Application application) {
-        return getAttachmentAOIds(application, "preference%d-Koulutus-id-attachments");
-    }
-
     public static Map<String, List<String>> getAmkOpeAttachments(final Application application) {
         Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
         List<String> aoIds = new ArrayList<String> () {{ add(getFirstAoId(application)); }};

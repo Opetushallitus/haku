@@ -192,8 +192,12 @@ public class AttachmentUtil {
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachments(
             List<ApplicationAttachmentRequest> attachments, Application application,
             KoulutusinformaatioService koulutusinformaatioService, String lang, I18nBundle i18nBundle) {
-        for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
+        for (String aoOid : ApplicationUtil.getPreferenceAoIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
+            if(ao.getAttachments() == null){
+                continue;
+            }
+
             String name = null;
             if (ao.getApplicationOffice() != null) {
                 name = ao.getApplicationOffice().getName();
