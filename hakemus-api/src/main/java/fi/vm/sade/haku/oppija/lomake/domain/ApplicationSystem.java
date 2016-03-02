@@ -158,7 +158,7 @@ public class ApplicationSystem implements Serializable {
         return State.PUBLISHED;
     }
 
-    private Date getLastApplicationPeriodEnd(List<ApplicationPeriod> applicationPeriods) {
+    public static Date getLastApplicationPeriodEnd(List<ApplicationPeriod> applicationPeriods) {
         SortedSet<Date> sort = new TreeSet<Date>();
         for(ApplicationPeriod applicationPeriod: applicationPeriods) {
             sort.add(applicationPeriod.getEnd());
