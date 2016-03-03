@@ -189,7 +189,7 @@ public class SendMailService {
                                      final LanguageCodeISO6391 emailLang) throws EmailException {
         OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
             this.url = langToLink.get(emailLang);
-            this.expires = getModificationLinkExpiration(application, as);
+            this.expires = getModificationLinkExpiration(as);
             this.email = emailAddress;
             this.subject = emailSubject;
             this.template = emailTemplate;
@@ -233,8 +233,8 @@ public class SendMailService {
         return locale;
     }
 
-    private long getModificationLinkExpiration(Application application, ApplicationSystem as) {
-        return application.getApplicationPeriodWhenSubmitted(as.getApplicationPeriods()).getEnd().getTime();
+    private long getModificationLinkExpiration(ApplicationSystem as) {
+        return ApplicationSystem.getLastApplicationPeriodEnd(as.getApplicationPeriods()).getTime();
     }
 
     private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem, Locale locale, ResourceBundle resourceBundle) {
@@ -255,7 +255,7 @@ public class SendMailService {
         ctx.put("discretionary", isDiscretionary(application));
         ctx.put("musiikkiTanssiLiikuntaEducationCode", isMusiikkiTanssiLiikuntaEducationCode(application));
         ctx.put("attachmentRequests", attachmentRequests(application, locale));
-        ctx.put("expires", dateFmt.format(new Date(getModificationLinkExpiration(application, applicationSystem))));
+        ctx.put("expires", dateFmt.format(new Date(getModificationLinkExpiration(applicationSystem))));
         ctx.put("lomakeTulostusLiite", resourceBundle.getString("lomake.tulostus.liite"));
         ctx.put("lomakeTulostusLiiteToimitusosoite", resourceBundle.getString("lomake.tulostus.liite.toimitusosoite"));
         ctx.put("lomakeTulostusLiiteDeadline", resourceBundle.getString("lomake.tulostus.liite.deadline"));

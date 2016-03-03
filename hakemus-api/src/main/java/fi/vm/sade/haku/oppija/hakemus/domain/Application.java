@@ -753,15 +753,6 @@ public class Application implements Serializable {
         return list;
     }
 
-    public ApplicationPeriod getApplicationPeriodWhenSubmitted(List<ApplicationPeriod> applicationPeriods) {
-        for (ApplicationPeriod ap : applicationPeriods) {
-            if (ap.getStart().before(this.received) && this.received.before(ap.getEnd())) {
-                return ap;
-            }
-        }
-        throw new RuntimeException(String.format("no application period found for application %s received %s", this.oid, this.received));
-    }
-
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, null, true);

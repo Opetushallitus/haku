@@ -18,6 +18,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
 import org.apache.commons.mail.EmailException;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,6 +49,7 @@ public class SendMailServiceTest {
     String hakuNimiFi = "haku 1";
     Date receivedDate = new Date(new Date().getTime() - 10000);
     Date modifiedDate = new Date();
+    Date lastApplicationPeriodEndDate = new DateTime("2045-01-01T12:00:00+01:00").toDate();
 
     @Test
     public void testSendReceivedEmail() throws EmailException {
@@ -56,6 +58,7 @@ public class SendMailServiceTest {
         Captured firstCaptured = restClient.getCaptured().iterator().next();
         OppijanTunnistusDTO capturedBody = (OppijanTunnistusDTO) firstCaptured.body;
 
+        assertEquals(lastApplicationPeriodEndDate.getTime(), capturedBody.expires);
         assertEquals(firstCaptured.url, oppijantunnistusUrl);
         assertEquals(firstCaptured.method, "POST");
         assertEquals(capturedBody.url, linkFi);
@@ -154,7 +157,8 @@ public class SendMailServiceTest {
                 "en", "application 1"
         )));
         when(mockedAs.getApplicationPeriods()).thenReturn(ImmutableList.of(
-                new ApplicationPeriod(new Date(0), new Date(Long.MAX_VALUE))
+                new ApplicationPeriod(new DateTime("2016-01-01T12:00:00+01:00").toDate(), lastApplicationPeriodEndDate),
+                new ApplicationPeriod(new DateTime("2015-01-01T12:00:00+01:00").toDate(), new DateTime("2015-11-11T12:00:00+01:00").toDate())
         ));
         when(mockedAs.isHigherEducation()).thenReturn(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukkoUri));
         when(applicationSystemService.getApplicationSystem(oid)).thenReturn(mockedAs);
