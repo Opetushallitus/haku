@@ -367,4 +367,31 @@ public class BaseEducations {
             }
         };
     }
+
+    public static class HarkinnanvarainenTaiErivapaus {
+        private static final String fieldPrefix = "pohjakoulutus_muu";
+        public final String vuosi;
+        public final String kuvaus;
+
+        private HarkinnanvarainenTaiErivapaus(String vuosi, String kuvaus) {
+            this.vuosi = vuosi;
+            this.kuvaus = kuvaus;
+        }
+
+        public static final Function<MergedAnswers, ImmutableSet<HarkinnanvarainenTaiErivapaus>> of = new Function<MergedAnswers, ImmutableSet<HarkinnanvarainenTaiErivapaus>>() {
+            @Override
+            public ImmutableSet<HarkinnanvarainenTaiErivapaus> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
+
+                if ("true".equals(valinta)) {
+                    String vuosi = answers.get(fieldPrefix + "_vuosi");
+                    String kuvaus = answers.get(fieldPrefix + "_kuvaus");
+                    variablesNotNull(vuosi, kuvaus);
+                    return ImmutableSet.of(new HarkinnanvarainenTaiErivapaus(vuosi, kuvaus));
+                } else {
+                    return ImmutableSet.of();
+                }
+            }
+        };
+    }
 }
