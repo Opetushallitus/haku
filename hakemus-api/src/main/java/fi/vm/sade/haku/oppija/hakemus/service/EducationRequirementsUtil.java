@@ -199,6 +199,22 @@ public class EducationRequirementsUtil {
         };
     }
 
+    private final static Function<Types.MergedAnswers, ImmutableSet<Eligibility>> harkinnanvaraisuusTaiMuuErivapaus = wrapSetWhere(
+        BaseEducations.HarkinnanvarainenTaiErivapaus.of,
+        new Predicate<BaseEducations.HarkinnanvarainenTaiErivapaus>() {
+            @Override
+            public boolean apply(BaseEducations.HarkinnanvarainenTaiErivapaus input) {
+                return true;
+            }
+        },
+        new Function<BaseEducations.HarkinnanvarainenTaiErivapaus, Eligibility>() {
+            @Override
+            public Eligibility apply(BaseEducations.HarkinnanvarainenTaiErivapaus erivapaus) {
+                return Eligibility.suomalainen(erivapaus.kuvaus);
+            }
+        });
+
+
     private final static Function<Types.MergedAnswers, ImmutableSet<Eligibility>> ignore = new Function<Types.MergedAnswers, ImmutableSet<Eligibility>>() {
         @Override
         public ImmutableSet<Eligibility> apply(Types.MergedAnswers answers) {
@@ -230,7 +246,7 @@ public class EducationRequirementsUtil {
     /* Determine which ApplicationSystem fields fullfills the given base education requirements */
     // Pohjakoulutuskoodit: https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/pohjakoulutusvaatimuskorkeakoulut/1
     public static final ImmutableMap<String, Function<Types.MergedAnswers, ImmutableSet<Eligibility>>> kkBaseEducationRequirements = ImmutableMap.<String, Function<Types.MergedAnswers, ImmutableSet<Eligibility>>>builder()
-            // Ylempi korkeakoulututkinto
+                    // Ylempi korkeakoulututkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_103", multipleChoiceKkEquals("4"))
                     // Ylempi ammattikorkeakoulututkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_119", multipleChoiceKkEquals("3"))
@@ -262,7 +278,7 @@ public class EducationRequirementsUtil {
                     // TODO: tällä ei ole _nimike-kenttää
             .put("pohjakoulutusvaatimuskorkeakoulut_110", europeanBaccalaureateTutkinto)
                     // Harkinnanvaraisuus tai erivapaus
-            .put("pohjakoulutusvaatimuskorkeakoulut_106", ignore)
+            .put("pohjakoulutusvaatimuskorkeakoulut_106", harkinnanvaraisuusTaiMuuErivapaus)
                     // International Baccalaureate -tutkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_112", internationalBaccalaureateTutkinto)
                     // Opisto- tai ammatillisen korkea-asteen tutkinto
