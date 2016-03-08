@@ -75,8 +75,8 @@ public class GradeGridOptionQuestion extends Element {
             Collections.sort(optionList, new Comparator<Option>() {
                 @Override
                 public int compare(Option o1, Option o2) {
-                    String o1Trans = o1.getI18nText().getTranslations().get(lang);
-                    String o2Trans = o2.getI18nText().getTranslations().get(lang);
+                    String o1Trans = o1.getI18nText().getText(lang);
+                    String o2Trans = o2.getI18nText().getText(lang);
                     return o1Trans.compareTo(o2Trans);
                 }
             });
