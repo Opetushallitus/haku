@@ -716,6 +716,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             Map<String, String> m = ImmutableMap.of("studentOid",person.getStudentOid());
             application.addHistory(new Change(new Date(),userSession.getUser().getUserName(), "student oid set", Arrays.asList(m)));
             application.addNote(createNote("Oppijanumero syötetty"));
+            AUDIT.log(builder()
+                    .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE)
+
+                    .hakuOid(application.getApplicationSystemId())
+                    .add("studentOid",person.getStudentOid())
+                    .hakemusOid(application.getOid()).build());
         }
         Application queryApplication = new Application(oid);
         applicationService.update(queryApplication, application);
