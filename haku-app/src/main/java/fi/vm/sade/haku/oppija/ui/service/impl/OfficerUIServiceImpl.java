@@ -701,6 +701,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Person person = authenticationService.getStudentOid(studentOid);
         if (person != null) {
             application.modifyPersonalData(person);
+            LOGGER.info("Application {} student oid set as {}", application.getOid(), person.getStudentOid());
+            Map<String, String> m = ImmutableMap.of("studentOid",person.getStudentOid());
+            application.addHistory(new Change(new Date(),userSession.getUser().getUserName(), "student oid set", Arrays.asList(m)));
             application.addNote(createNote("Oppijanumero syötetty"));
         }
         Application queryApplication = new Application(oid);
