@@ -99,8 +99,8 @@ public abstract class OptionQuestion extends Question {
                     Collections.sort(optionList, new Comparator<Option>() {
                         @Override
                         public int compare(Option o1, Option o2) {
-                            String o1Trans = o1.getI18nText().getTranslations().get(lang);
-                            String o2Trans = o2.getI18nText().getTranslations().get(lang);
+                            String o1Trans = o1.getI18nText().getText(lang);
+                            String o2Trans = o2.getI18nText().getText(lang);
                             if (keepFirst != null) {
                                 for (String value : keepFirst) {
                                     if (value.equals(o1.getValue())) {

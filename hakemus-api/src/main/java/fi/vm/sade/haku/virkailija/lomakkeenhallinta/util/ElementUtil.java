@@ -304,7 +304,7 @@ public final class ElementUtil {
         if (titled instanceof Titled) {
             I18nText i18nText = ((Titled)titled).getI18nText();
             if (i18nText != null) {
-                return i18nText.getTranslations().get(lang);
+                return i18nText.getText(lang);
             }
         }
 
@@ -312,43 +312,14 @@ public final class ElementUtil {
     }
 
     public static List<ApplicationSystem> sortByLang(List<ApplicationSystem> applicationSystems, final String lang) {
-        final String nameFi = "fi";
-        final String nameSv = "sv";
-        final String nameEn = "en";
-
         Collections.sort(applicationSystems, new Comparator<ApplicationSystem>() {
-
-            private String getName(Map<String, String> as) {
-                if(as.containsKey(nameFi)) {
-                    return as.get(nameFi);
-                } else if(as.containsKey(nameSv)) {
-                    return as.get(nameSv);
-                } else if(as.containsKey(nameEn)) {
-                    return as.get(nameEn);
-                } else {
-                    return "???";
-                }
-            }
 
             @Override
             public int compare(ApplicationSystem o1, ApplicationSystem o2) {
-
-                Map<String, String> as1 = o1.getName().getTranslations();
-                Map<String, String> as2 = o2.getName().getTranslations();
-                String name1 = as1.get(lang);
-                String name2 = as2.get(lang);
-
-                if (name1 == null) {
-                    name1 = getName(as1);
-                }
-
-                if(name2 == null) {
-                    name2 = getName(as2);
-                }
+                String name1 = o1.getName().getText(lang);
+                String name2 = o2.getName().getText(lang);
 
                 return name1.compareTo(name2);
-
-
             }
         });
         return applicationSystems;

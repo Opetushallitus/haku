@@ -60,7 +60,7 @@ public class XlsModel {
         this.lang = lang;
         this.hakukausiVuosi = applicationSystem.getHakukausiVuosi().toString();
         this.asId = applicationSystem.getId();
-        this.asName = applicationSystem.getName().getTranslations().get(lang);
+        this.asName = applicationSystem.getName().getText(lang);
         this.i18nBundle = i18nBundle;
         this.objectMapper = new ObjectMapper();
 
@@ -269,7 +269,7 @@ public class XlsModel {
         if (element instanceof Titled) {
             I18nText i18nText = ((Titled) element).getExcelColumnLabel();
             if (i18nText != null) {
-                return i18nText.getTranslations().get(lang);
+                return i18nText.getText(lang);
             }
         }
 

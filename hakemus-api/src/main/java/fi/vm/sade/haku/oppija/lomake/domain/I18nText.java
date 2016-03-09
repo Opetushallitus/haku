@@ -16,6 +16,8 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
+import org.apache.commons.lang.ArrayUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
@@ -40,10 +42,13 @@ public class I18nText implements Serializable {
     }
 
     public String getText(String language) {
-        String text = translations.get(language);
-        if (text != null) return text;
-        text = translations.get("fi");
-        if (text != null) return text;
+        String[] langPreferences = (String[]) ArrayUtils.addAll(new String[]{language}, LANGS);
+        for (String lang : langPreferences) {
+            if (!Strings.isNullOrEmpty(translations.get(lang)))
+                return translations.get(lang);
+        }
+        if(!translations.isEmpty())
+            return translations.values().iterator().next();
         return "";
     }
 
