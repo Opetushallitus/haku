@@ -20,64 +20,53 @@
   --%>
 
 <c:set var="styleBaseClass" value="form-row"/>
-<div id="${element.id}" class="${styleBaseClass}">
-    <c:choose>
-        <c:when test="${empty answers[element.children[0].id]}">
-            <div class="${styleBaseClass}-content" id="${element.id}-addRemoveLinks">
-                <a id="${element.id}-link" href="#"><haku:i18nText value="${element.text}"/></a>
-                <a id="${element.id}-undolink" style="display: none;" href="#"><fmt:message key="poista"/></a>
-            </div>
-            <c:if test="${not empty element.help}">
-                <div class="margin-top-1 ${element.id}-removable" id="help-${element.id}">
-                    <small><haku:i18nText value="${element.help}"/></small>
-                </div>
-            </c:if>
-            <div class="clear ${element.id}-removable"></div>
+<div id="${element.id}" class="${styleBaseClass} repeatingElement">
+    <div class="${styleBaseClass}-content addRemoveLinks" id="${element.id}-addRemoveLinks">
+        <a id="${element.id}-link" class="addEl" href="#"><haku:i18nText value="${element.text}"/></a>
+        <a id="${element.id}-undolink" class="removeEl" href="#"><fmt:message key="poista"/></a>
+    </div>
+    <c:if test="${not empty element.help}">
+        <div class="margin-top-1 ${element.id}-removable" id="help-${element.id}">
+            <small><haku:i18nText value="${element.help}"/></small>
+        </div>
+    </c:if>
+    <div class="clear ${element.id}-removable"></div>
 
-            <script type="text/javascript">
-                (function () {
-                    $("#${element.id}-link").click(function (event) {
-                        event.preventDefault();
-                        var childIds =
-                                [<c:forEach var="child" items="${element.children}" varStatus="status">
-                                    "${child.id}"${not status.last ? ', ' : ''}
-                                    </c:forEach>]
-                        var ruleChilds = $("#${element.id} .rule-childs");
-                        ruleData.getRuleChild(childIds, 0, ruleChilds);
-                        $("#${element.id}-link").hide();
-                        $("#${element.id}-undolink").show();
-                        $(".${element.id}-removable").remove();
-                        <c:forEach var="prevRule" items="${element.previousRules}" varStatus="status">
-                            $("#${prevRule}-addRemoveLinks").hide();
-                        </c:forEach>
-                    });
-                    $("#${element.id}-undolink").click(function (event) {
-                        event.preventDefault();
-                        var childIds =
-                                [<c:forEach var="child" items="${element.children}" varStatus="status">
-                                    "${child.id}"${not status.last ? ', ' : ''}
-                                    </c:forEach>]
-                        $("#${element.id} .rule-childs").empty();
-                        $("#${element.id}-link").show();
-                        $("#${element.id}-undolink").hide();
-                    });
-                    var ruleData = {
-                        getRuleChild: function (childIds, index, ruleChilds) {
-                            $.get(document.URL.split("?")[0] + '/' + childIds[index],
-                                    function (data) {
-                                        ruleChilds.append(data);
-                                        if (childIds.length - 1 > index) {
-                                            ruleData.getRuleChild(childIds, ++index, ruleChilds);
-                                        }
-                                    }
-                            );
-                        }
-                    };
-                })();
-            </script>
-        </c:when>
-    </c:choose>
-    <div class="rule-childs clear">
+    <script type="text/javascript">
+        $(function () {
+            var el = $("#${element.id}");
+
+            elementAdder.toggleAddRemoveButtons(el)
+
+            $("#${element.id}-link").click(function (event) {
+                event.preventDefault();
+                var childIds =
+                        [<c:forEach var="child" items="${element.children}" varStatus="status">
+                            "${child.id}"${not status.last ? ', ' : ''}
+                            </c:forEach>]
+                var elChildren = $("#${element.id} .elementChildren");
+                appendElChildren(childIds, 0, elChildren);
+                $(".${element.id}-removable").remove();
+            });
+
+            $("#${element.id}-undolink").click(function (event) {
+                event.preventDefault();
+                el.find(".elementChildren").empty();
+                elementAdder.toggleAddRemoveButtons(el)
+            });
+
+            function appendElChildren(childIds, index, children) {
+                $.get(document.URL.split("?")[0] + '/' + childIds[index], function (data) {
+                    children.append(data);
+                    elementAdder.toggleAddRemoveButtons(el)
+                    if (childIds.length - 1 > index) {
+                        appendElChildren(childIds, ++index, children);
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="elementChildren clear">
         <c:choose>
             <c:when test="${not empty answers[element.relatedElementId] and not empty answers[element.children[0].id]}">
                 <haku:viewChilds element="${element}"/>
