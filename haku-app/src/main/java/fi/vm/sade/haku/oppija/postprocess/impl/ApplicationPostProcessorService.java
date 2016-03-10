@@ -131,10 +131,12 @@ public class ApplicationPostProcessorService {
         ValidationInput validationInput = new ValidationInput(form, allAnswers,
                 application.getOid(), application.getApplicationSystemId(), ValidationInput.ValidationContext.background);
         ValidationResult formValidationResult = elementTreeValidator.validate(validationInput);
-        if (formValidationResult.hasErrors()) {
-            application.incomplete();
-        } else {
-            application.activate();
+        if(!application.isDraft()) {
+            if (formValidationResult.hasErrors()) {
+                application.incomplete();
+            } else {
+                application.activate();
+            }
         }
         return application;
     }
