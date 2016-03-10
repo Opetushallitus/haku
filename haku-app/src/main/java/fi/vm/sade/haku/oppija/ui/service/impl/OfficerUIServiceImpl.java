@@ -734,7 +734,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getApplicationValinta(final String oid) throws IOException {
-        Application application = this.applicationService.getApplicationWithValintadata(oid);
+        Application application = this.applicationService.getApplicationWithValintadata(oid, true);
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
