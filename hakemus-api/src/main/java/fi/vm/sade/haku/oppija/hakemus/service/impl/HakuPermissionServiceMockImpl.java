@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,8 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
         for (Element element : form.getChildren()) {
             String phaseId = element.getId();
             boolean locked = Boolean.valueOf(meta.get(phaseId + "_locked"));
-            phaseEditAllowed.put(element.getId(), !locked);
+            boolean allowed = !locked && (!OppijaConstants.PHASE_GRADES.equals(phaseId) || application.isNew() || application.isDraft());
+            phaseEditAllowed.put(element.getId(), allowed);
         }
         return phaseEditAllowed;
     }
