@@ -219,6 +219,11 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public boolean isDraft() {
+        return state != null && state.equals(State.DRAFT);
+    }
+
+    @JsonIgnore
     public boolean isPassive() {
         return state != null && state.equals(State.PASSIVE);
     }
