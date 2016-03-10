@@ -130,6 +130,9 @@
                 <c:if test="${application.state eq 'PASSIVE'}">
                     <fmt:message key="virkailija.hakemus.tila.peruttu" var="applicationState"/>
                 </c:if>
+                <c:if test="${application.state eq 'DRAFT'}">
+                    <fmt:message key="virkailija.hakemus.tila.luonnos" var="applicationState"/>
+                </c:if>
                 <c:if test="${application.state eq 'INCOMPLETE'}">
                     <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="applicationState"/>
                 </c:if>
