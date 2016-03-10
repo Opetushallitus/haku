@@ -196,10 +196,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
-        Application application = this.applicationService.getApplicationByOid(oid);
-        if(!application.isDraft()) {
-            application = this.applicationService.getApplicationWithValintadata(oid, false);
-        }
+        Application application = getApplicationWithValintadataIfNotDraft(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
@@ -255,6 +252,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
+    }
+
+    private Application getApplicationWithValintadataIfNotDraft(String oid) {
+        Application application = this.applicationService.getApplicationByOid(oid);
+        if(!application.isDraft()) {
+            application = this.applicationService.getApplicationWithValintadata(oid, false);
+        }
+        return application;
     }
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
@@ -721,7 +726,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
-        Application application = applicationService.getApplicationByOid(oid);
+        Application application = getApplicationWithValintadataIfNotDraft(oid);
         final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
         ModelResponse response = new ModelResponse(application,
