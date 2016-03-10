@@ -197,6 +197,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
         Application application = this.applicationService.getApplicationByOid(oid);
+        if(!application.isDraft()) {
+            application = this.applicationService.getApplicationWithValintadata(oid, false);
+        }
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
