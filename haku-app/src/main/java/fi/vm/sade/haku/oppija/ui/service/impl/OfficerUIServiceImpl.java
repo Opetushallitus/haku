@@ -432,10 +432,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-        if (formValidationResult.hasErrors()) {
-            application.incomplete();
-        } else {
-            application.activate();
+        if (!application.isDraft()) {
+            if (formValidationResult.hasErrors()) {
+                application.incomplete();
+            } else {
+                application.activate();
+            }
         }
         Element phase = form.getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
