@@ -3408,3 +3408,19 @@ table {
   margin: 0 0 0 -12.5%;
   display: none;
 }
+
+.addRemoveLinks, .addRemoveLinks a {
+  display: none;
+}
+
+.addRemoveLinks.showRemove, .addRemoveLinks.showAdd {
+  display: block;
+}
+
+.addRemoveLinks.showAdd .addEl {
+  display: inline;
+}
+
+.addRemoveLinks.showRemove .removeEl {
+  display: inline;
+}
