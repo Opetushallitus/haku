@@ -80,6 +80,9 @@
                     <c:if test="${it.virkailijaDeleteAllowed}">
                         <jsp:include page="confirmPassivation.jsp"/>
                     </c:if>
+                    <c:if test="${application.draft}">
+                        <jsp:include page="confirmActivation.jsp"/>
+                    </c:if>
                 </c:otherwise>
             </c:choose>
             <c:choose>
