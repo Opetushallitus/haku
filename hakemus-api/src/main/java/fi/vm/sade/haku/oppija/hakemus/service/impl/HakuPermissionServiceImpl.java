@@ -157,7 +157,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             Phase phase = (Phase) element;
             String phaseId = phase.getId();
             boolean phaseLocked = Boolean.valueOf(application.getMetaValue(phaseId + "_locked"));
-            Boolean editAllowed = !phaseLocked && phase.isEditAllowedByRoles(userRolesToApplication);
+            Boolean editAllowed = !phaseLocked
+                                  && phase.isEditAllowedByRoles(userRolesToApplication)
+                                  && (!OppijaConstants.PHASE_GRADES.equals(phaseId) || application.isNew() || application.isDraft());
             phasesToEdit.put(phaseId, editAllowed);
         }
         return phasesToEdit;

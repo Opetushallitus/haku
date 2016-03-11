@@ -22,12 +22,16 @@
     <c:choose>
         <c:when test="${!application.passive}">
             <c:if test="${it.virkailijaDeleteAllowed and preview}">
-                <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
+                <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small"><fmt:message
                         key="virkailija.hakemus.passivoi.hakemus"/></a>
+            </c:if>
+            <c:if test="${application.draft and preview}">
+                <a href="#" id="activateApplication" data-po-show="confirmActivation" class="button small"><fmt:message
+                        key="virkailija.hakemus.aktivoi.hakemus"/></a>
             </c:if>
         </c:when>
         <c:otherwise>
-            <a href="#" id="activateApplication" data-po-show="confirmActivation" class="button small "><fmt:message
+            <a href="#" id="activateApplication" data-po-show="confirmActivation" class="button small"><fmt:message
                     key="virkailija.hakemus.aktivoi.hakemus"/></a>
         </c:otherwise>
     </c:choose>
