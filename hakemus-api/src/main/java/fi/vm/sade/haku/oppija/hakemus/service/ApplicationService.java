@@ -116,5 +116,5 @@ public interface ApplicationService {
 
     Application removeOrphanedAnswers(Application application);
 
-    Application getApplicationWithValintadata(String oid, boolean alsoEducationAnswers);
+    Application getApplicationWithValintadata(Application application);
 }
