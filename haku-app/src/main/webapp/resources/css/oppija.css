@@ -3424,3 +3424,8 @@ table {
 .addRemoveLinks.showRemove .removeEl {
   display: inline;
 }
+
+#form-koulutustausta .repeatingElement {
+  border-top: 1px dotted gray;
+  padding-top: 0.5em;
+}
