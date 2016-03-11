@@ -257,7 +257,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private Application getApplicationWithValintadataIfNotDraft(String oid) {
         Application application = this.applicationService.getApplicationByOid(oid);
         if(!application.isDraft()) {
-            application = this.applicationService.getApplicationWithValintadata(oid, false);
+            application = this.applicationService.getApplicationWithValintadata(application);
         }
         return application;
     }
@@ -744,7 +744,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getApplicationValinta(final String oid) throws IOException {
-        Application application = this.applicationService.getApplicationWithValintadata(oid, true);
+        Application application = this.applicationService.getApplicationWithValintadata(this.applicationService.getApplicationByOid(oid));
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));

@@ -579,8 +579,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplicationWithValintadata(String oid, boolean alsoEducationAnswers) {
-        Application application = getApplicationByOid(oid);
+    public Application getApplicationWithValintadata(Application application) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
@@ -610,10 +609,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             newGradeAnswers.put(key, entry.getValue());
         }
-        if(alsoEducationAnswers) {
+        if(!educationAnswers.isEmpty()) {
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
+        if(!newGradeAnswers.isEmpty()) {
+            application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
+        }
         return application;
     }
 
