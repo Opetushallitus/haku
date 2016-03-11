@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
@@ -152,8 +153,6 @@ public class ApplicationPostProcessorService {
      * @return processed application
      */
     Application addPersonOid(Application application) {
-        final String personOid = defaultIfEmpty(application.getPersonOid(), "");
-        final String studentOid = defaultIfEmpty(application.getStudentOid(), "");
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
         LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000L);
@@ -177,19 +176,16 @@ public class ApplicationPostProcessorService {
 
         Person personAfter = authenticationService.addPerson(personBefore);
         Application modifiedApplication = application.modifyPersonalData(personAfter);
-        if(personOid.equals(modifiedApplication.getPersonOid())) {
-            Map<String, String> m = ImmutableMap.of("personOid",personOid + " -> " + modifiedApplication.getPersonOid());
-            application.addHistory(new Change(new Date(),"jälkikäsittely", "person oid modified", Arrays.asList(m)));
-            LOGGER.info("Application {} personOid changed from value {} -> {}", modifiedApplication.getOid(), personOid, modifiedApplication.getPersonOid());
+
+        if (!Objects.equals(application.getPersonOid(), modifiedApplication.getPersonOid())) {
+            modifiedApplication.logUserOidChanges("personOid", "jälkikäsittely", application.getPersonOid(), modifiedApplication.getPersonOid());
         }
-        if(studentOid.equals(modifiedApplication.getStudentOid())) {
-            Map<String, String> m = ImmutableMap.of("studentOid", studentOid + " -> " + modifiedApplication.getStudentOid());
-            application.addHistory(new Change(new Date(),"jälkikäsittely", "student oid modified", Arrays.asList(m)));
-            LOGGER.info("Application {} studentOid changed from value {} -> {}", modifiedApplication.getOid(), studentOid, modifiedApplication.getStudentOid());
+        if (!Objects.equals(application.getStudentOid(), modifiedApplication.getStudentOid())) {
+            modifiedApplication.logUserOidChanges("studentOid", "jälkikäsittely", application.getStudentOid(), modifiedApplication.getStudentOid());
         }
+
         return modifiedApplication;
     }
-
 
     Application checkStudentOid(Application application) {
         String personOid = application.getPersonOid();

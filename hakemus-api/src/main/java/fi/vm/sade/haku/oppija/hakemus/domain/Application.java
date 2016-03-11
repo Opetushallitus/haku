@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.*;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
@@ -652,6 +653,17 @@ public class Application implements Serializable {
         this.history.add(0, change);
         this.version = this.history.size();
         return this;
+    }
+
+    @JsonIgnore
+    public void logUserOidChanges(String oidType, String changedBy, String oidBefore, String oidAfter) {
+        addHistory(new Change(
+                new Date(), changedBy, oidType + " modified",
+                Collections.<Map<String, String>>singletonList(
+                    ImmutableMap.of(oidType, oidBefore + " -> " + oidAfter)
+                )
+        ));
+        log.info("Application {} {} changed from value {} -> {}", getOid(), oidType, oidBefore, oidAfter);
     }
 
     public Integer getVersion() {
