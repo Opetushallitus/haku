@@ -14,10 +14,9 @@ String zipFileName = ""
 // Create release zip (wars and configs)
 task(zipIt, type: Zip) {
     doFirst {
-        // Renames abc-x.y-SOMETHING.war to abc.war
-        fileTree(from: '.', include: '**/target/*.war').files.each { oneFile ->	
-            String replaced = oneFile.path.replaceFirst('-\\d+(\\.\\d+)*([^./]+|).war','.war')
-            oneFile.renameTo(file(replaced))
+        // Renames war to haku-app.war
+        fileTree(from: '.', include: '**/target/haku-app*.war').files.each { oneFile ->
+            oneFile.renameTo(file('haku-app.war'))
         }
     }
 
