@@ -118,7 +118,7 @@ public class OfficerUIServiceImplTest {
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
-        when(applicationService.getApplicationWithValintadata(OID, false)).thenReturn(application);
+        when(applicationService.getApplicationWithValintadata(application)).thenReturn(application);
         when(applicationService.removeOrphanedAnswers(any(Application.class))).then(returnsFirstArg());
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
