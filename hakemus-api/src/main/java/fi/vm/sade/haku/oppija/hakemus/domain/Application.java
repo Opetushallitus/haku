@@ -16,9 +16,9 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import com.google.common.base.*;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
@@ -657,6 +657,29 @@ public class Application implements Serializable {
         this.history.add(0, change);
         this.version = this.history.size();
         return this;
+    }
+
+    @JsonIgnore
+    public void logPersonOidIfChanged(String changedBy, String oidBefore) {
+        logUserOidIfChanged("personOid", changedBy, oidBefore, getPersonOid());
+    }
+
+    @JsonIgnore
+    public void logStudentOidIfChanged(String changedBy, String oidBefore) {
+        logUserOidIfChanged("studentOid", changedBy, oidBefore, getStudentOid());
+    }
+
+    @JsonIgnore
+    private void logUserOidIfChanged(String oidType, String changedBy, String oidBefore, String oidAfter) {
+        if (!Objects.equals(oidBefore, oidAfter)) {
+            addHistory(new Change(
+                    new Date(), changedBy, oidType + " modified",
+                    Collections.<Map<String, String>>singletonList(
+                            ImmutableMap.of(oidType, oidBefore + " -> " + oidAfter)
+                    )
+            ));
+            log.info("Application {} {} changed from value {} -> {}", getOid(), oidType, oidBefore, oidAfter);
+        }
     }
 
     public Integer getVersion() {

@@ -1,10 +1,8 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
-import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
-import fi.vm.sade.haku.oppija.hakemus.domain.Change;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
@@ -20,7 +18,6 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +25,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -36,7 +32,6 @@ import java.util.concurrent.ExecutionException;
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static org.apache.commons.lang.StringUtils.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -154,9 +149,9 @@ public class ApplicationPostProcessorService {
      * @return processed application
      */
     Application addPersonOid(Application application) {
-        final String personOid = defaultIfEmpty(application.getPersonOid(), "");
-        final String studentOid = defaultIfEmpty(application.getStudentOid(), "");
         Map<String, String> allAnswers = application.getVastauksetMerged();
+        final String originalPersonOid = application.getPersonOid();
+        final String originalStudentOid = application.getStudentOid();
 
         LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000L);
 
@@ -178,20 +173,13 @@ public class ApplicationPostProcessorService {
         Person personBefore = personBuilder.get();
 
         Person personAfter = authenticationService.addPerson(personBefore);
-        Application modifiedApplication = application.modifyPersonalData(personAfter);
-        if(personOid.equals(modifiedApplication.getPersonOid())) {
-            Map<String, String> m = ImmutableMap.of("personOid",personOid + " -> " + modifiedApplication.getPersonOid());
-            application.addHistory(new Change(new Date(),"jälkikäsittely", "person oid modified", Arrays.asList(m)));
-            LOGGER.info("Application {} personOid changed from value {} -> {}", modifiedApplication.getOid(), personOid, modifiedApplication.getPersonOid());
-        }
-        if(studentOid.equals(modifiedApplication.getStudentOid())) {
-            Map<String, String> m = ImmutableMap.of("studentOid", studentOid + " -> " + modifiedApplication.getStudentOid());
-            application.addHistory(new Change(new Date(),"jälkikäsittely", "student oid modified", Arrays.asList(m)));
-            LOGGER.info("Application {} studentOid changed from value {} -> {}", modifiedApplication.getOid(), studentOid, modifiedApplication.getStudentOid());
-        }
-        return modifiedApplication;
-    }
+        application.modifyPersonalData(personAfter);
 
+        application.logPersonOidIfChanged("jälkikäsittely", originalPersonOid);
+        application.logStudentOidIfChanged("jälkikäsittely", originalStudentOid);
+
+        return application;
+    }
 
     Application checkStudentOid(Application application) {
         String personOid = application.getPersonOid();

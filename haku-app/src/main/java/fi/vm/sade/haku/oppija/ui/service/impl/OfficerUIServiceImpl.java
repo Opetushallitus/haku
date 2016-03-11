@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
-import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -712,13 +711,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Person person = authenticationService.getStudentOid(studentOid);
         if (person != null) {
             application.modifyPersonalData(person);
-            LOGGER.info("Application {} student oid set as {}", application.getOid(), person.getStudentOid());
-            Map<String, String> m = ImmutableMap.of("studentOid",person.getStudentOid());
-            application.addHistory(new Change(new Date(),userSession.getUser().getUserName(), "student oid set", Arrays.asList(m)));
+            application.logStudentOidIfChanged(userSession.getUser().getUserName(), null);
             application.addNote(createNote("Oppijanumero syötetty"));
             AUDIT.log(builder()
                     .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE)
-
                     .hakuOid(application.getApplicationSystemId())
                     .add("studentOid",person.getStudentOid())
                     .hakemusOid(application.getOid()).build());
