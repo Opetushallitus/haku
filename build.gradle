@@ -13,13 +13,6 @@ String zipFileName = ""
 
 // Create release zip (wars and configs)
 task(zipIt, type: Zip) {
-    doFirst {
-        // Renames war to haku-app.war
-        fileTree(from: '.', include: '**/target/haku-app*.war').files.each { oneFile ->
-            oneFile.renameTo(file('haku-app.war'))
-        }
-    }
-
     zipFileName = serviceName + "_" + branchName + "_" + new Date().format("yyyyMMddHHmmss") + ".zip"
 
     destinationDir new File(buildDir, "distributions")
