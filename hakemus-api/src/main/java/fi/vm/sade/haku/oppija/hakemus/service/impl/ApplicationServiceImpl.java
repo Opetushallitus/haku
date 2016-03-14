@@ -605,6 +605,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
         if(!newGradeAnswers.isEmpty()) {
+            LOGGER.info("Got grades from valintakoostepalvelu: " + newGradeAnswers);
             HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
             for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
                 String key = entry.getKey();
