@@ -35,7 +35,7 @@
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
 
-    <p>Ge feedback om Studieinfo genom att svara på <a target="_blank" href=" https://www.webropolsurveys.com/S/E706E6F6AAB4CE99.par ">frågeformuläret</a>.</p>
+    <p>Ge feedback om Studieinfo genom att svara på <a href="https://www.webropolsurveys.com/S/E706E6F6AAB4CE99.par">frågeformuläret</a>.</p>
     
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
