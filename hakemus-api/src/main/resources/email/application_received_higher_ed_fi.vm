@@ -49,7 +49,7 @@
     <h4>Liitepyynnöt</h4>
     #parse("email/email_attachment_requests.vm")
 
-    <p>Anna palautetta Opintopolusta vastaamalla <a href="https://www.webropolsurveys.com/S/6C02CCDF4EB5AB86.par">kyselyyn</a>.</p>
+    <p>Anna palautetta Opintopolusta vastaamalla <a href="https://www.webropolsurveys.com/S/6C02CCDF4EB5AB86.par"target="_blank">kyselyyn</a>.</p>
     
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
