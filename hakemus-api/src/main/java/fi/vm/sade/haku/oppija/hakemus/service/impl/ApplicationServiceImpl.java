@@ -597,7 +597,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             String value = entry.getValue();
             if (educationElements.containsKey(key)) {
                 educationAnswers.put(key, value);
-            } else if (key.startsWith("PK_") || key.startsWith("LK_")) {
+            } else if (isArvosanaKey(key)) {
                 newGradeAnswers.put(key, value);
             }
         }
@@ -608,7 +608,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
             for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
                 String key = entry.getKey();
-                if (key.startsWith("PK_") || key.startsWith("LK_")) {
+                if (isArvosanaKey(key)) {
                     continue;
                 }
                 newGradeAnswers.put(key, entry.getValue());
@@ -616,6 +616,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
         }
         return application;
+    }
+
+    private boolean isArvosanaKey(String key) {
+        boolean hasRightPrefix = key.startsWith("PK_") || key.startsWith("LK_");
+        boolean isTilaKey = key.equals("PK_TILA") || key.equals("LK_TILA");
+        return hasRightPrefix && !isTilaKey;
     }
 
     private boolean resolveOpoAllowed(Application application) {
