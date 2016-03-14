@@ -601,18 +601,18 @@ public class ApplicationServiceImpl implements ApplicationService {
                 newGradeAnswers.put(key, value);
             }
         }
-        HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-        for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
-            String key = entry.getKey();
-            if (key.startsWith("PK_") || key.startsWith("LK_")) {
-                continue;
-            }
-            newGradeAnswers.put(key, entry.getValue());
-        }
         if(!educationAnswers.isEmpty()) {
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
         if(!newGradeAnswers.isEmpty()) {
+            HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+            for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
+                String key = entry.getKey();
+                if (key.startsWith("PK_") || key.startsWith("LK_")) {
+                    continue;
+                }
+                newGradeAnswers.put(key, entry.getValue());
+            }
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
         }
         return application;
