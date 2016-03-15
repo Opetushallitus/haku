@@ -124,7 +124,7 @@ public class OfficerUIServiceImplTest {
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
         Map<String, Boolean> phasesToEdit = new HashMap<String, Boolean>();
         phasesToEdit.put(ID, true);
-        when(hakuPermissionService.userHasEditRoleToPhases(any(Application.class), any(Form.class))).thenReturn(phasesToEdit);
+        when(hakuPermissionService.userHasEditRoleToPhases(any(ApplicationSystem.class), any(Application.class), any(Form.class))).thenReturn(phasesToEdit);
         User officerUser = new User("1.2.246.562.24.00000000001");
         when(userSession.getUser()).thenReturn(officerUser);
     }

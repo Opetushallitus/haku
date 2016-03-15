@@ -224,7 +224,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
-        modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(application, form));
+        modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(as, application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", postProcessAllowed);
         modelResponse.addObjectToModel("applicationSystem", as);
@@ -423,7 +423,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
 
         final Form form = formService.getForm(application.getApplicationSystemId());
-        checkUpdatePermission(application, form, applicationPhase.getPhaseId());
+        final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        checkUpdatePermission(as, application, form, applicationPhase.getPhaseId());
 
         Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
         newPhaseAnswers = applicationService.ensureApplicationOptionGroupData(newPhaseAnswers, application.getMetaValue(Application.META_FILING_LANGUAGE));
@@ -464,8 +465,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return response;
     }
 
-    private void checkUpdatePermission(Application application, Form form, String phaseId) {
-        Boolean permission = hakuPermissionService.userHasEditRoleToPhases(application, form).get(phaseId);
+    private void checkUpdatePermission(ApplicationSystem as, Application application, Form form, String phaseId) {
+        Boolean permission = hakuPermissionService.userHasEditRoleToPhases(as, application, form).get(phaseId);
         if (permission == null || !permission) {
             throw new ResourceNotFoundException("User can not update application " + application.getOid());
         }
