@@ -134,7 +134,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
-    public Map<String, Boolean> userHasEditRoleToPhases(Application application, Form form) {
+    public Map<String, Boolean> userHasEditRoleToPhases(ApplicationSystem as, Application application, Form form) {
         String userOid = SecurityContextHolder.getContext().getAuthentication().getName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             return Maps.newHashMap();
@@ -159,10 +159,17 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             boolean phaseLocked = Boolean.valueOf(application.getMetaValue(phaseId + "_locked"));
             Boolean editAllowed = !phaseLocked
                                   && phase.isEditAllowedByRoles(userRolesToApplication)
-                                  && (!OppijaConstants.PHASE_GRADES.equals(phaseId) || application.isNew() || application.isDraft());
+                                  && (!OppijaConstants.PHASE_GRADES.equals(phaseId) || isGradesEditingAllowed(as, application));
             phasesToEdit.put(phaseId, editAllowed);
         }
         return phasesToEdit;
+    }
+
+    protected static boolean isGradesEditingAllowed(ApplicationSystem as, Application application) {
+        if(OppijaConstants.TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(as.getKohdejoukkoUri())) {
+            return application.isNew() || application.isDraft();
+        }
+        return true;
     }
 
     @Override

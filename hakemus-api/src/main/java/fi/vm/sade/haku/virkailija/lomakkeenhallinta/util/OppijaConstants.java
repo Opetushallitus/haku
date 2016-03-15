@@ -15,6 +15,13 @@
  */
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
+import com.google.common.collect.Sets;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Holds information that is needed about the form or application structure.
  *
@@ -155,6 +162,12 @@ public final class OppijaConstants {
     public static final String KOHDEJOUKKO_KORKEAKOULU = "haunkohdejoukko_12";
     public static final String KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO = "haunkohdejoukko_11";
     public static final String KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA = "haunkohdejoukko_15";
+
+    public static final Set<String> TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT = Collections.unmodifiableSet(Sets.newHashSet(
+            KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO,
+            KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA,
+            KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN
+    ));
 
     public static final String KOHDEJOUKON_TARKENNE_SIIRTOHAKU = "haunkohdejoukontarkenne_1";
     public static final String KOHDEJOUKON_TARKENNE_AMK_OPE = "haunkohdejoukontarkenne_2";
