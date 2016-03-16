@@ -213,9 +213,6 @@
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
                    class="tab current"><span>Hakemus</span></a>
 
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="applicationValinta" id="applicationValintaTab"
-                   class="tab"><span>Hakemus valintapalvelussa</span></a>
-
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
 
@@ -230,11 +227,6 @@
                 <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
                          style="display: block">
                     <jsp:include page="hakemusTab.jsp"/>
-                </section>
-
-                <section id="applicationValinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="applicationValinta"
-                         style="display: none">
-                    <jsp:include page="hakemusValinnassaTab.jsp"/>
                 </section>
 
                 <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"

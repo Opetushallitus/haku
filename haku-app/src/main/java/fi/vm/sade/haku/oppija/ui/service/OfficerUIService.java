@@ -58,8 +58,6 @@ public interface OfficerUIService {
 
     ModelResponse getApplicationPrint(final String oid);
 
-    ModelResponse getApplicationValinta(final String oid) throws IOException;
-
     List<Map<String,String>> getHigherEdBaseEdOptions();
 
     void processAttachmentsAndEligibilities(String oid, EligibilitiesDTO attachmentsAndEligibilities);
