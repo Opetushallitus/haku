@@ -744,35 +744,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getApplicationValinta(final String oid) throws IOException {
-        Application application = this.applicationService.getApplicationWithValintadata(this.applicationService.getApplicationByOid(oid));
-        Form form = this.formService.getForm(application.getApplicationSystemId());
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-
-        Element element = form;
-        String asId = application.getApplicationSystemId();
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
-
-        ModelResponse modelResponse =
-                new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
-        modelResponse.addObjectToModel("applicationSystem", as);
-        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
-
-        String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-        if (sendingSchoolOid != null) {
-            Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
-            String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
-            modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
-            modelResponse.addObjectToModel("sendingClass", sendingClass);
-        }
-
-        modelResponse.addObjectToModel("officerUi", true);
-        modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
-        return modelResponse;
-    }
-    
-    @Override
     public Map<String, String> getNamesForNoteUsers(List<String> oids) {
         List<Person> persons = authenticationService.getHenkiloList(oids);
         Map<String, String> result = new HashMap<String, String>();
