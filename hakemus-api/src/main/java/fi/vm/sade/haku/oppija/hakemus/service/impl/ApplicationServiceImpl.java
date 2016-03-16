@@ -590,6 +590,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         HashMap<String, String> educationAnswers = new HashMap<>();
+        HashMap<String, String> preferenceAnswers = new HashMap<>();
         HashMap<String, String> newGradeAnswers = new HashMap<>();
         Map<String, String> valintaData = valintaService.fetchValintaData(application);
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
@@ -597,6 +598,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             String value = entry.getValue();
             if (educationElements.containsKey(key)) {
                 educationAnswers.put(key, value);
+            } else if (isPreferenceKey(key)) {
+                preferenceAnswers.put(key, value);
             } else if (isArvosanaKey(key)) {
                 newGradeAnswers.put(key, value);
             }
@@ -604,18 +607,28 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(!educationAnswers.isEmpty()) {
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
-        if(!newGradeAnswers.isEmpty()) {
-            HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-            for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
-                String key = entry.getKey();
-                if (newGradeAnswers.containsKey(key)) {
-                    continue;
-                }
-                newGradeAnswers.put(key, entry.getValue());
-            }
-            application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
-        }
+        addNewAnswersForPhase(application, OppijaConstants.PHASE_APPLICATION_OPTIONS, preferenceAnswers);
+        addNewAnswersForPhase(application, OppijaConstants.PHASE_GRADES, newGradeAnswers);
         return application;
+    }
+
+    private void addNewAnswersForPhase(Application application, String phaseId, HashMap<String, String> newAnswers) {
+        if(newAnswers.isEmpty()) {
+            return;
+        }
+        Map<String, String> oldAnswers = application.getPhaseAnswers(phaseId);
+        for (Map.Entry<String, String> entry : oldAnswers.entrySet()) {
+            String key = entry.getKey();
+            if (newAnswers.containsKey(key)) {
+                continue;
+            }
+            newAnswers.put(key, entry.getValue());
+        }
+        application.setVaiheenVastauksetAndSetPhaseId(phaseId, newAnswers);
+    }
+
+    private boolean isPreferenceKey(String key) {
+        return key.startsWith(OppijaConstants.PREFERENCE_PREFIX);
     }
 
     private static boolean isArvosanaKey(String key) {
