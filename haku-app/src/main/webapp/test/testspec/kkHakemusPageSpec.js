@@ -46,7 +46,7 @@ describe('KK-hakemus', function () {
         describe("kahden ammatillisen pohjakoulutuksen lisäys", function() {
             before(seqDone(
                 click(
-                    virkailija.editKoulutusTaustaButton(hakuOid),
+                    virkailija.editVaiheButton(hakuOid, "koulutustausta"),
                     virkailija.addAmmatillinenCheckbox),
                 input(
                     virkailija.ammatillinenSuoritusVuosi, "2000",
@@ -67,8 +67,8 @@ describe('KK-hakemus', function () {
                     virkailija.avoinKokonaisuus(2), "Avoin kokonaisuus 2",
                     virkailija.avoinLaajuus(2), "Avoin laajuus 2",
                     virkailija.avoinKorkeakoulu(2), "Avoin Korkeakoulu 2"),
-                click(virkailija.saveKoulutusTaustaButton),
-                visible(virkailija.editKoulutusTaustaButton(hakuOid))
+                click(virkailija.saveVaiheButton("koulutustausta")),
+                visible(virkailija.editVaiheButton(hakuOid, "koulutustausta"))
             ));
 
             describe("lisäämisen jälkeen", function() {
@@ -86,13 +86,13 @@ describe('KK-hakemus', function () {
 
                 describe("lisättäessä neljä toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
                     before(seqDone(
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         tyhjennaHakutoiveet(5),
                         jazz5v(1),
                         raasepori(2),
                         jazz2v(3),
                         pietarsaari(4),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -132,11 +132,11 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         tyhjennaHakutoiveet(5),
                         afrikka(1),
                         sosionomiJarvenpaa(2),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -183,11 +183,11 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         afrikka(1),
                         aasia(2),
                         oulu(3),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -218,11 +218,11 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         tyhjennaHakutoiveet(5),
                         terveydenhoitajaHelsinki(1),
                         sosionomiJarvenpaa(2),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
