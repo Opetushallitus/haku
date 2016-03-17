@@ -173,7 +173,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${applicationState}'/>
+                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${applicationState}'
+                                   cellId="infocell_hakemuksen_tila"/>
 
                     <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"
                                    cellId="infocell_henkilonumero"/>
