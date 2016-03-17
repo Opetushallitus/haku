@@ -94,7 +94,7 @@ describe('Erityisoppilaitosten lomake', function () {
                 "preference2_sora_oikeudenMenetys": "true"
 
             }),
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             click(lomake.pohjakoulutus("1")),
             input(
@@ -134,7 +134,7 @@ describe('Erityisoppilaitosten lomake', function () {
 
         describe('henkilötietojen täyttö', function () {
             before(seqDone(
-                partials.henkilotiedotTestikaes
+                partials.henkilotiedotTestikaes()
             ));
             describe('täytön jälkeen', function () {
                 it('ei ongelmia', function () {
