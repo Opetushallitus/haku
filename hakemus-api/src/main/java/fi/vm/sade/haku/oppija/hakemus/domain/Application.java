@@ -661,18 +661,18 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public void logPersonOidIfChanged(String changedBy, String oidBefore) {
-        logUserOidIfChanged("personOid", changedBy, oidBefore, getPersonOid());
+        logUserOidIfChanged("Henkilönumero", changedBy, oidBefore, getPersonOid());
     }
 
     @JsonIgnore
     public void logStudentOidIfChanged(String changedBy, String oidBefore) {
-        logUserOidIfChanged("studentOid", changedBy, oidBefore, getStudentOid());
+        logUserOidIfChanged("Oppijanumero", changedBy, oidBefore, getStudentOid());
     }
 
     @JsonIgnore
     private void logUserOidIfChanged(String oidType, String changedBy, String oidBefore, String oidAfter) {
         if (!Objects.equals(oidBefore, oidAfter)) {
-            addNote(new ApplicationNote(String.format("%s changed from %s -> %s", oidType, oidBefore, oidAfter),
+            addNote(new ApplicationNote(String.format("%s muuttui %s -> %s", oidType, oidBefore, oidAfter),
                     new Date(), changedBy));
             addHistory(new Change(
                     new Date(), changedBy, oidType + " modified",
