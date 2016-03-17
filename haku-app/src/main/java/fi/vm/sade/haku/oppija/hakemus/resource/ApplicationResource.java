@@ -276,7 +276,7 @@ public class ApplicationResource {
                                                           @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
                                                           @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
                                                           @ApiParam(value="Hakuvuosi") @QueryParam("asYear") String asYear,
-                                                          @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") String aoOid,
+                                                          @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") List<String> aoOid,
                                                           @ApiParam(value="Näytetäänkö vain harkinnanvaraisesti hakeneet") @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
                                                           @ApiParam(value="Haetaanko vain sellaiset hakemukset, joissa hakuehtona oleva hakukohde on ensisijaisena toiveena") @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
                                                           @ApiParam(value="Lähtökoulun oid") @QueryParam("sendingSchoolOid") String sendingSchoolOid,
@@ -307,7 +307,7 @@ public class ApplicationResource {
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
-                .addAoOid(aoOid)
+                .addAoOid(aoOid.toArray(new String[aoOid.size()]))
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
