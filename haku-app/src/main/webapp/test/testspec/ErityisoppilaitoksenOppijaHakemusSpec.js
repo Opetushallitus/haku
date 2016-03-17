@@ -42,13 +42,13 @@ describe('Erityisoppilaitosten lomake', function () {
         describe("yksilöllistetyn pohjakoulutuksen lisäys", function() {
             before(seqDone(
                 click(
-                    virkailija.editKoulutusTaustaButton(hakuOid),
+                    virkailija.editVaiheButton(hakuOid, "koulutustausta"),
                     virkailija.addYksilollistettyCheckbox),
                 input(
                     lomake.pkPaattotodistusVuosi, ""+new Date().getFullYear(),
                     lomake.pkKieli, "FI"
                 ),
-                click(virkailija.saveKoulutusTaustaButton),
+                click(virkailija.saveVaiheButton("koulutustausta")),
                 visible(virkailija.notes)
             ));
 
@@ -62,9 +62,9 @@ describe('Erityisoppilaitosten lomake', function () {
             describe("hakutoiveiden lisäys", function() {
                 describe("lisättäessä kaksi hakutoivetta, joilla eri pohjatietovaatimukset", function() {
                     before(seqDone(
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         valitseFaktiaJaKiipula,
-                        click(virkailija.saveHakutoiveetButton)
+                        click(virkailija.saveVaiheButton("hakutoiveet"))
                     ));
                     describe("lisäämisen jälkeen", function() {
                         before(seqDone(

@@ -22,7 +22,7 @@ describe("KK-hakemus hakumaksulla", function() {
 
         describe("ulkomaisen ei-eta-maassa suoritetun kk-kelpoisuuden antavan koulutuksen lisääminen", function() {
             before(seqDone(
-                click(virkailija.editKoulutusTaustaButton(hakuOid)),
+                click(virkailija.editVaiheButton(hakuOid, "koulutustausta")),
                 wait.forMilliseconds(1000),
                 click(virkailija.addUlkomainenKkKelpoisuus),
                 input(
@@ -32,8 +32,8 @@ describe("KK-hakemus hakumaksulla", function() {
                     virkailija.ulkomainenKkKelpoisuusMaa, "XXX",
                     virkailija.ulkomainenKkKelpoisuusMuuMaa, "foo-maa"),
                 click(virkailija.kkTutkintoSuoritettu(false)),
-                click(virkailija.saveKoulutusTaustaButton),
-                visible(virkailija.editKoulutusTaustaButton(hakuOid))
+                click(virkailija.saveVaiheButton("koulutustausta")),
+                visible(virkailija.editVaiheButton(hakuOid, "koulutustausta"))
             ));
 
             describe("lisäämisen jälkeen", function() {
@@ -48,10 +48,10 @@ describe("KK-hakemus hakumaksulla", function() {
         describe("hakutoiveiden lisäys", function() {
             describe("lisättäessä hakumaksun vaativa hakutoive", function() {
                 before(seqDone(
-                    click(virkailija.editHakutoiveetButton(hakuOid)),
+                    click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                     tyhjennaHakutoiveet(5),
                     aaltoTekniikanKandiJaDi(1),
-                    click(virkailija.saveHakutoiveetButton),
+                    click(virkailija.saveVaiheButton("hakutoiveet")),
                     visible(virkailija.notes)
                 ));
 
@@ -66,8 +66,8 @@ describe("KK-hakemus hakumaksulla", function() {
 
         describe("palattaessa pohjakoulutusten muokkaukseen", function() {
             before(seqDone(
-                click(virkailija.editKoulutusTaustaButton(hakuOid)),
-                visible(virkailija.saveKoulutusTaustaButton)
+                click(virkailija.editVaiheButton(hakuOid, "koulutustausta")),
+                visible(virkailija.saveVaiheButton("koulutustausta"))
             ));
 
             it("maksunotifikaatio näkyy", function() {
