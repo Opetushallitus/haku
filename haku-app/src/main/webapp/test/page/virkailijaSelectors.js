@@ -1,6 +1,10 @@
 virkailija = initSelectors({
+    activateApplication: "a#activateApplication",
+    popupHeading: ".popup-dialog-header h3:visible",
+    confirmActivationButton: "button#confirm-activation",
     selectHaku: "#asSelect:first",
     hakemusOid: "#_infocell_oid",
+    hakemusStatus: "#_infocell_hakemuksen_tila",
     addAmmatillinenCheckbox: "input#pohjakoulutus_am",
     addUlkomainenKkKelpoisuus: "input#pohjakoulutus_ulk",
     addYksilollistettyCheckbox: "input#POHJAKOULUTUS_6",

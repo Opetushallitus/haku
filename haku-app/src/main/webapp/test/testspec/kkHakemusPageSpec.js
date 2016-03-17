@@ -39,7 +39,8 @@ describe('KK-hakemus', function () {
         ));
 
         describe("syötä hakemus alkutilanne", function() {
-            it('avautuu', function () {
+            it('avautuu luonnos tilassa', function () {
+                expect(virkailija.hakemusStatus().text()).to.equal('Luonnos');
             });
         });
 
@@ -245,6 +246,74 @@ describe('KK-hakemus', function () {
                             expect(virkailija.previewLiitteet().find("td:eq(1):contains(HELSINKI)").length).to.equal(1);
                         });
                     });
+
+                    describe("täytettäessä henkilötiedot", function() {
+                        before(seqDone(
+                            openPage(hakemusPath, function() {
+                                return visible(virkailija.notes)();
+                            }),
+                            click(virkailija.editVaiheButton(hakuOid, "henkilotiedot")),
+                            partials.henkilotiedotTestikaes(),
+                            input(lomake.koulusivistyskieli, "FI"),
+                            click(virkailija.saveVaiheButton("henkilotiedot")),
+                            visible(virkailija.notes)
+                        ));
+                        describe("lisäämisen jälkeen", function() {
+                            it("henkilötiedot näkyvät", function () {
+                                expect(answerForQuestion('Sukunimi')).to.equal("Testikäs");
+                            });
+                            it("herjataan puuttuvista lisätiedoista", function () {
+                                expect(lomake.warning().filter(":visible").size()).to.equal(2)
+                            });
+                        });
+
+                        describe("täytettäessä lisätiedot", function() {
+                            before(seqDone(
+                                openPage(hakemusPath, function() {
+                                    return visible(virkailija.notes)();
+                                }),
+                                click(virkailija.editVaiheButton(hakuOid, "lisatiedot")),
+                                click(lomake.lupatiedotSahkoinenViestinta(true)),
+                                click(lomake.asiointikieli('suomi')),
+                                click(virkailija.saveVaiheButton("lisatiedot")),
+                                visible(virkailija.notes)
+                            ));
+                            describe("lisäämisen jälkeen", function() {
+                                it("lisätiedot näkyvät", function () {
+                                    expect(answerForQuestion('asiointikieli')).to.equal("Suomi");
+                                    expect(lomake.warning().filter(":visible").text()).to.equal("")
+                                });
+                                it("ei näy enään yhtään validointi virhettä", function () {
+                                    expect(lomake.warning().filter(":visible").size()).to.equal(0)
+                                });
+                            });
+
+                            describe("aktivoitaessa hakemus", function() {
+                                before(seqDone(
+                                    click(virkailija.activateApplication)
+                                ));
+
+                                describe("napin painamisen jälkeen", function() {
+                                    it("näkyy popup", function () {
+                                        expect(virkailija.popupHeading().text()).to.equal('Aktivoidaanko hakemus?');
+                                    });
+                                });
+
+                                describe("aktivoinnin jälkeen", function() {
+                                    before(seqDone(
+                                        click(virkailija.confirmActivationButton),
+                                        waitJqueryIs(virkailija.hakemusStatus, ":contains('Aktiivinen')"),
+                                        visible(virkailija.notes)
+                                    ));
+                                    it("vaihtuu hakemus aktiivinen tilaan", function () {
+                                    });
+                                    it("on yhä osamamisvaiheen editointi mahdollista", function () {
+                                        expect(virkailija.editVaiheButton(hakuOid, 'osaaminen')().filter(":visible").length).to.equal(1);
+                                    });
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -258,7 +327,7 @@ describe('KK-hakemus', function () {
             })));
 
         it('tukee useampaa ammatillista peruskoulutusta', seqDone(
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             input(lomake.koulusivistyskieli, "FI"),
             click(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
@@ -291,7 +360,7 @@ describe('KK-hakemus', function () {
         ));
 
         it('koodistettu ulkomaisen pohjakoulutuksen suoritusmaa', seqDone(
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             input(lomake.koulusivistyskieli, "FI"),
             click(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),

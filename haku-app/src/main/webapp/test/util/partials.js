@@ -91,26 +91,30 @@ function valitseKoulutus(prioriteetti, koulunNimi, koulutuksenNimi) {
 }
 
 partials = {
-    henkilotiedotTestikaes: seq(
-        headingVisible("Henkilötiedot"),
-        input(
-            lomake.sukunimi, "Testikäs",
-            lomake.etunimet, "Asia Kas",
-            lomake.kutsumanimi, "Asia",
-            lomake.hetu, "171175-830Y"),
-        wait.until(function() {
-            return S("input#sukupuoli").length > 0;
-        }),
-        click(lomake.kaksoiskansalaisuus(false)),
-        function() {
-            expect(lomake.sukupuoli().val()).to.equal('2');
-        },
-        input(
-            lomake.Sähköposti, "foo@example.com",
-            lomake.asuinmaa, 'FIN',
-            lomake.lahiosoite, "Testikatu 4",
-            lomake.postinumero, "00100",
-            lomake.kotikunta, "janakkala")),
+    henkilotiedotTestikaes: function(hetu, email) {
+        var hetuToUSe = hetu ? hetu : "171175-830Y";
+        var emailToUSe = email ? email : "foo@example.com";
+        return seq(
+            headingVisible("Henkilötiedot"),
+            input(
+                lomake.sukunimi, "Testikäs",
+                lomake.etunimet, "Asia Kas",
+                lomake.kutsumanimi, "Asia",
+                lomake.hetu, hetuToUSe),
+            wait.until(function() {
+                return S("input#sukupuoli").length > 0;
+            }),
+            click(lomake.kaksoiskansalaisuus(false)),
+            function() {
+                expect(lomake.sukupuoli().val()).to.equal('2');
+            },
+            input(
+                lomake.Sähköposti, emailToUSe,
+                lomake.asuinmaa, 'FIN',
+                lomake.lahiosoite, "Testikatu 4",
+                lomake.postinumero, "00100",
+                lomake.kotikunta, "janakkala"))
+    },
     valitseKoulutusVetovalikosta: function(prioriteetti, koulunNimi, koulutuksenNimi) {
         return seq(
             select(lomake.opetuspisteDropdown(prioriteetti), koulunNimi),

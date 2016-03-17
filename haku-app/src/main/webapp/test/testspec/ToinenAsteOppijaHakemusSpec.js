@@ -16,7 +16,7 @@ describe('2. asteen lomake', function () {
     describe("Täytä lomake", function() {
         before(seqDone(
             start,
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
             click(lomake.pohjakoulutus("1")),
@@ -101,7 +101,7 @@ describe('2. asteen lomake', function () {
     describe("Koulutustausta eri PK päättötodistusvuosilla", function() {
         before(seqDone(
             start2,
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
             click(lomake.pohjakoulutus("1"))

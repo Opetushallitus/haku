@@ -186,6 +186,9 @@ lomake = initSelectors({
 
     // Lisätiedot
     fromOsaaminen: "button[class=right][value=lisatiedot][name=phaseId]:first",
+    lupatiedotSahkoinenViestinta: function(value) {
+        return "input#lupatiedot-sahkoinen-viestinta_"+value;
+    },
     asiointikieli: function(lang) {
         return "input#asiointikieli_"+lang;
     },
