@@ -13,7 +13,7 @@ describe('2. asteen lomake', function () {
         })
     )
 
-    describe("Täytä lomake", function() {
+    describe("täyttö hakijana", function() {
         before(seqDone(
             start,
             partials.henkilotiedotTestikaes(),

@@ -319,7 +319,7 @@ describe('KK-hakemus', function () {
         });
     });
 
-    describe('täyttö', function() {
+    describe('täyttö hakijana', function() {
         beforeEach(seqDone(
             logout,
             openPage("/haku-app/lomake/1.2.246.562.29.95390561488", function() {
