@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
@@ -67,6 +68,7 @@ public class SyntheticApplicationIT {
     final String hakuOid = "1.2.3";
     String hakukohde1 = "1";
     String hakukohde2 = "2";
+    List<String> hakukohde1list = Lists.newArrayList(hakukohde1);
     final String email1 = "etu.suku1@example.com";
     final String email2 = "etu.suku2@example.com";
 
@@ -127,7 +129,7 @@ public class SyntheticApplicationIT {
     public void testCreateRoundTrip() {
         Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
-        final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
+        final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1list, null, null, null, null, null, 0, 10000);
         assertEquals(1, applications.size());
     }
 
