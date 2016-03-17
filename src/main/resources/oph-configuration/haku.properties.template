@@ -66,7 +66,7 @@ accessRightHistory.webservice.url.backend=https\://${host.virkailija}/authentica
 aoid=1.2.246.562.14.71344129359
 application.oid.prefix=1.2.246.562.11
 asid=1.2.246.562.5.50476818906
-cas.callback.haku=http://${server.name}:8306/haku-app
+cas.callback.haku=http://{{ cluster_haku_host | default("${server.name}") }}:{{ cluster_haku_port | default("8306") }}/haku-app
 cas.group-role-attribute=cn
 cas.group-search-base=ou\=groups
 cas.group-search-filter=(uniqueMember\={0})
