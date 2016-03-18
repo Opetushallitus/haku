@@ -297,6 +297,9 @@ public class ApplicationResource {
                 return new ArrayList<Map<String, Object>>(0);
         }
 
+
+        String[] aoOids = aoOid != null ? aoOid.toArray(new String[aoOid.size()]) : new String[0];
+
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
@@ -307,7 +310,7 @@ public class ApplicationResource {
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
-                .addAoOid(aoOid.toArray(new String[aoOid.size()]))
+                .addAoOid(aoOids)
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
