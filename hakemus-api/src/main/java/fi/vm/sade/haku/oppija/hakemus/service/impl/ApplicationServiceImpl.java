@@ -520,9 +520,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                     note += " Kuvaus: ";
 
                     if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getName() != null) {
-                        note = orig.getApplicationAttachment().getName().getText("fi");
+                        note += orig.getApplicationAttachment().getName().getText("fi");
                     } else if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getHeader() != null) {
-                        note = orig.getApplicationAttachment().getHeader().getText("fi");
+                        note += orig.getApplicationAttachment().getHeader().getText("fi");
                     }
                     application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
 
