@@ -1,7 +1,8 @@
 describe('2. asteen lomake', function () {
+    var hakuOid = "1.2.246.562.5.50476818906"
     var start = seq(
         logout,
-        openPage("/haku-app/lomake/1.2.246.562.5.50476818906", function() {
+        openPage("/haku-app/lomake/" + hakuOid, function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         })
     )
@@ -13,10 +14,52 @@ describe('2. asteen lomake', function () {
         })
     )
 
-    describe("Täytä lomake", function() {
+    describe("virkailijan näkymä", function() {
+      before(seqDone(
+          login('officer', 'officer'),
+          click(virkailija.createApplicationButton),
+          input(virkailija.selectHaku, hakuOid),
+          click(virkailija.submitConfirm),
+          exists(virkailija.hakemusOid),
+          function() {
+            hakemusId = virkailija.hakemusOid().text();
+          }
+      ));
+
+      describe("syötä hakemus alkutilanne", function() {
+        it('avautuu luonnos tilassa', function () {
+          expect(virkailija.hakemusStatus().text()).to.equal('Luonnos');
+        });
+      });
+      describe("aktivoitaessa hakemus", function() {
+        before(seqDone(
+            click(virkailija.activateApplication)
+        ));
+
+        describe("napin painamisen jälkeen", function() {
+          it("näkyy popup", function () {
+            expect(virkailija.popupHeading().text()).to.equal('Aktivoidaanko hakemus?');
+          });
+        });
+
+        describe("aktivoinnin jälkeen", function() {
+          before(seqDone(
+              click(virkailija.confirmActivationButton),
+              waitJqueryIs(virkailija.hakemusStatus, ":contains('Aktiivinen')"),
+              visible(virkailija.notes)
+          ));
+          it("vaihtuu hakemus aktiivinen tilaan", function () {
+          });
+          it("on yhä arvosanojen editointiei ole enää mahdollista", function () {
+            expect(virkailija.editVaiheButton(hakuOid, 'osaaminen')().filter(":visible").length).to.equal(0);
+          });
+        });
+      });
+    });
+    describe("täyttö hakijana", function() {
         before(seqDone(
             start,
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
             click(lomake.pohjakoulutus("1")),
@@ -101,7 +144,7 @@ describe('2. asteen lomake', function () {
     describe("Koulutustausta eri PK päättötodistusvuosilla", function() {
         before(seqDone(
             start2,
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
             click(lomake.pohjakoulutus("1"))

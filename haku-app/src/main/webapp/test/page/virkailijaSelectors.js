@@ -1,9 +1,10 @@
 virkailija = initSelectors({
+    activateApplication: "a#activateApplication",
+    popupHeading: ".popup-dialog-header h3:visible",
+    confirmActivationButton: "button#confirm-activation",
     selectHaku: "#asSelect:first",
     hakemusOid: "#_infocell_oid",
-    editKoulutusTaustaButton: function(hakuOid) {
-        return "a[href*='" + hakuOid + "/koulutustausta']:first button"
-    },
+    hakemusStatus: "#_infocell_hakemuksen_tila",
     addAmmatillinenCheckbox: "input#pohjakoulutus_am",
     addUlkomainenKkKelpoisuus: "input#pohjakoulutus_ulk",
     addYksilollistettyCheckbox: "input#POHJAKOULUTUS_6",
@@ -55,11 +56,12 @@ virkailija = initSelectors({
         return "input#pohjakoulutus_avoin_korkeakoulu" + (index ? index : '');
     },
     addSecondAvoinLink: "a#addAvoinTutkintoRule2-link",
-    saveKoulutusTaustaButton: "button.save[value=koulutustausta]:first",
-    editHakutoiveetButton: function(hakuOid) {
-        return "a[href*='" + hakuOid + "/hakutoiveet']:first button"
+    editVaiheButton: function(hakuOid, vaihe) {
+        return "a[href*='" + hakuOid + "/" + vaihe + "']:first button";
     },
-    saveHakutoiveetButton: "button.save[value=hakutoiveet]:first",
+    saveVaiheButton: function(vaihe) {
+        return "button.save[value=" + vaihe + "]:first";
+    },
     previewLiitteet: "#applicationAttachments tr:gt(0)",
     notes: "#notes"
 });

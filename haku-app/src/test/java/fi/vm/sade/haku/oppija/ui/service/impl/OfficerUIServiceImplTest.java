@@ -12,6 +12,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.*;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
@@ -43,7 +44,6 @@ import static org.mockito.Mockito.*;
 public class OfficerUIServiceImplTest {
 
     private static final String OID = "1.2.3.4.5";
-    public static final String ID = "id";
 
     private OfficerUIServiceImpl officerUIService;
     private ApplicationService applicationService;
@@ -60,8 +60,9 @@ public class OfficerUIServiceImplTest {
     private Session userSession;
 
     private Application application;
+    private Application applicationValinnoissa;
     private ApplicationSystem as;
-    private Element phase = new PhaseBuilder(ID).setEditAllowedByRoles("TESTING")
+    private Element phase = new PhaseBuilder(OppijaConstants.PHASE_EDUCATION).setEditAllowedByRoles("TESTING")
             .i18nText(ElementUtil.createI18NAsIs("title")).build();
 
     private Form form;
@@ -71,15 +72,22 @@ public class OfficerUIServiceImplTest {
     @Before
     public void setUp() throws Exception {
         application = new Application();
+        applicationValinnoissa = new Application();
         application.setApplicationSystemId("asid");
+        applicationValinnoissa.setApplicationSystemId("asid");
         application.setOid(OID);
-        application.setPhaseId(ID);
+        applicationValinnoissa.setOid(OID);
+        application.setPhaseId(OppijaConstants.PHASE_EDUCATION);
+        HashMap<String, String> valintaData = new HashMap<>();
+        valintaData.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSKOULU);
+        applicationValinnoissa.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, valintaData);
         as = new ApplicationSystemBuilder()
                 .setId("asid")
                 .setName(ElementUtil.createI18NAsIs("asname"))
                 .setKohdejoukkoUri(OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .get();
-        form = new Form("form", ElementUtil.createI18NAsIs(ID));
+        form = new Form("form", ElementUtil.createI18NAsIs(OppijaConstants.PHASE_EDUCATION));
+        form.addChild(new TextQuestion(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, ElementUtil.createI18NAsIs("pohjakoulutus")));
         applicationService = mock(ApplicationService.class);
         applicationSystemService = mock(ApplicationSystemService.class);
         formService = mock(FormService.class);
@@ -118,26 +126,28 @@ public class OfficerUIServiceImplTest {
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
+        when(applicationService.getApplicationWithValintadata(application)).thenReturn(applicationValinnoissa);
         when(applicationService.removeOrphanedAnswers(any(Application.class))).then(returnsFirstArg());
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
         Map<String, Boolean> phasesToEdit = new HashMap<String, Boolean>();
-        phasesToEdit.put(ID, true);
-        when(hakuPermissionService.userHasEditRoleToPhases(any(Application.class), any(Form.class))).thenReturn(phasesToEdit);
+        phasesToEdit.put(OppijaConstants.PHASE_EDUCATION, true);
+        when(hakuPermissionService.userHasEditRoleToPhases(any(ApplicationSystem.class), any(Application.class), any(Form.class))).thenReturn(phasesToEdit);
         User officerUser = new User("1.2.246.562.24.00000000001");
         when(userSession.getUser()).thenReturn(officerUser);
     }
 
     @Test
     public void testGetValidatedApplication() throws Exception {
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(OID, ID);
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(OID, OppijaConstants.PHASE_EDUCATION);
         assertTrue(modelResponse.getModel().size() > 0);
+        assertEquals(OppijaConstants.PERUSKOULU, ((Map<String, String>) modelResponse.getModel().get(ModelResponse.ANSWERS)).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
     }
 
     @Test
     public void testUpdateApplication() throws Exception {
         ModelResponse modelResponse = officerUIService.updateApplication(
-                OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
+                OID, new ApplicationPhase(application.getApplicationSystemId(), OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
         assertTrue(12 == modelResponse.getModel().size());
     }
 

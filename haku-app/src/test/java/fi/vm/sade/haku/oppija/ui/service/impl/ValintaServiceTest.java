@@ -91,6 +91,7 @@ public class ValintaServiceTest {
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoMap);
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, eduMap);
         when(applicationService.getApplicationByOid(eq("oid"))).thenReturn(application);
+        when(applicationService.getApplicationWithValintadata(application)).thenReturn(application);
 
         FormService formService = mock(FormService.class);
         when(formService.getForm(any(String.class))).thenReturn(new Form(null, null));

@@ -579,8 +579,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplicationWithValintadata(String oid) {
-        Application application = getApplicationByOid(oid);
+    public Application getApplicationWithValintadata(Application application) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
@@ -591,6 +590,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         HashMap<String, String> educationAnswers = new HashMap<>();
+        HashMap<String, String> preferenceAnswers = new HashMap<>();
         HashMap<String, String> newGradeAnswers = new HashMap<>();
         Map<String, String> valintaData = valintaService.fetchValintaData(application);
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
@@ -598,21 +598,41 @@ public class ApplicationServiceImpl implements ApplicationService {
             String value = entry.getValue();
             if (educationElements.containsKey(key)) {
                 educationAnswers.put(key, value);
-            } else if (key.startsWith("PK_") || key.startsWith("LK_")) {
+            } else if (isPreferenceKey(key)) {
+                preferenceAnswers.put(key, value);
+            } else if (isArvosanaKey(key)) {
                 newGradeAnswers.put(key, value);
             }
         }
-        HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-        for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
+        if(!educationAnswers.isEmpty()) {
+            application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+        }
+        addNewAnswersForPhase(application, OppijaConstants.PHASE_APPLICATION_OPTIONS, preferenceAnswers);
+        addNewAnswersForPhase(application, OppijaConstants.PHASE_GRADES, newGradeAnswers);
+        return application;
+    }
+
+    private void addNewAnswersForPhase(Application application, String phaseId, HashMap<String, String> newAnswers) {
+        if(newAnswers.isEmpty()) {
+            return;
+        }
+        Map<String, String> oldAnswers = application.getPhaseAnswers(phaseId);
+        for (Map.Entry<String, String> entry : oldAnswers.entrySet()) {
             String key = entry.getKey();
-            if (key.startsWith("PK_") || key.startsWith("LK_")) {
+            if (newAnswers.containsKey(key)) {
                 continue;
             }
-            newGradeAnswers.put(key, entry.getValue());
+            newAnswers.put(key, entry.getValue());
         }
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
-        return application;
+        application.setVaiheenVastauksetAndSetPhaseId(phaseId, newAnswers);
+    }
+
+    private boolean isPreferenceKey(String key) {
+        return key.startsWith(OppijaConstants.PREFERENCE_PREFIX);
+    }
+
+    private static boolean isArvosanaKey(String key) {
+        return key.startsWith("PK_") || key.startsWith("LK_");
     }
 
     private boolean resolveOpoAllowed(Application application) {

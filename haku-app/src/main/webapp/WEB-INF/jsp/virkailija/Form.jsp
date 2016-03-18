@@ -80,6 +80,9 @@
                     <c:if test="${it.virkailijaDeleteAllowed}">
                         <jsp:include page="confirmPassivation.jsp"/>
                     </c:if>
+                    <c:if test="${application.draft}">
+                        <jsp:include page="confirmActivation.jsp"/>
+                    </c:if>
                 </c:otherwise>
             </c:choose>
             <c:choose>
@@ -170,7 +173,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${applicationState}'/>
+                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${applicationState}'
+                                   cellId="infocell_hakemuksen_tila"/>
 
                     <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"
                                    cellId="infocell_henkilonumero"/>
@@ -210,9 +214,6 @@
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
                    class="tab current"><span>Hakemus</span></a>
 
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="applicationValinta" id="applicationValintaTab"
-                   class="tab"><span>Hakemus valintapalvelussa</span></a>
-
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
 
@@ -227,11 +228,6 @@
                 <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
                          style="display: block">
                     <jsp:include page="hakemusTab.jsp"/>
-                </section>
-
-                <section id="applicationValinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="applicationValinta"
-                         style="display: none">
-                    <jsp:include page="hakemusValinnassaTab.jsp"/>
                 </section>
 
                 <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"

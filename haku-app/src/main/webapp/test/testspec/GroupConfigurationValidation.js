@@ -4,7 +4,7 @@ describe('GroupConfiguration', function () {
         openPage("/haku-app/lomake/1.2.246.562.29.173465377510/henkilotiedot", function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         }),
-        partials.henkilotiedotTestikaes,
+        partials.henkilotiedotTestikaes("170396-978P", "groupconfiguration@examle.com"),
         input(lomake.koulusivistyskieli, "FI"),
         click(
             lomake.fromHenkilotiedot,

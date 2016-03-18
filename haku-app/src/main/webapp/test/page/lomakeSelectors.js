@@ -28,7 +28,7 @@ lomake = initSelectors({
         return "input#peruskoulutodistus_saatu_puolivuotta_haun_lopusta_" + bool;
     },
     pkKieli : "select#perusopetuksen_kieli",
-    fromHenkilotiedot: "button[class=right][value=koulutustausta][name=phaseId]:first",
+    fromHenkilotiedot: "button[class=right][value=koulutustausta][name=phaseId]:last",
     suorittanutTutkinnonRule: '#suorittanutTutkinnonRule',
     warning: '.notification.warning',
     lukioPaattotodistusVuosi: 'input#lukioPaattotodistusVuosi',
@@ -149,7 +149,7 @@ lomake = initSelectors({
     koulutus: function(n) {
         return "select#preference" + n + "-Koulutus";
     },
-    fromKoulutustausta: "button[class=right][value=hakutoiveet][name=phaseId]:first",
+    fromKoulutustausta: "button[class=right][value=hakutoiveet][name=phaseId]:last",
     harkinnanvaraisuus: function(n, harkinnanvaraisuus) {
         return "input#preference" + n + "-discretionary_" + harkinnanvaraisuus;
     },
@@ -173,7 +173,7 @@ lomake = initSelectors({
     },
 
     // Osaaminen
-    fromHakutoiveet: "button[class=right][value=osaaminen][name=phaseId]:first",
+    fromHakutoiveet: "button[class=right][value=osaaminen][name=phaseId]:last",
     keskiarvoTutkinto: function(suffix) {
         return "textarea[name=keskiarvo-tutkinto" + (suffix == 1 ? "" : suffix) + "]";
     },
@@ -185,7 +185,10 @@ lomake = initSelectors({
     },
 
     // Lisätiedot
-    fromOsaaminen: "button[class=right][value=lisatiedot][name=phaseId]:first",
+    fromOsaaminen: "button[class=right][value=lisatiedot][name=phaseId]:last",
+    lupatiedotSahkoinenViestinta: function(value) {
+        return "input#lupatiedot-sahkoinen-viestinta_"+value;
+    },
     asiointikieli: function(lang) {
         return "input#asiointikieli_"+lang;
     },
@@ -198,5 +201,5 @@ lomake = initSelectors({
     miksi_ammatilliseen: 'textarea#miksi_ammatilliseen',
 
     // Esikatselu
-    fromLisatieto: "button[class=right][value=esikatselu][name=phaseId]:first"
+    fromLisatieto: "button[class=right][value=esikatselu][name=phaseId]:last"
 });

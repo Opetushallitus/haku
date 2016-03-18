@@ -39,14 +39,15 @@ describe('KK-hakemus', function () {
         ));
 
         describe("syötä hakemus alkutilanne", function() {
-            it('avautuu', function () {
+            it('avautuu luonnos tilassa', function () {
+                expect(virkailija.hakemusStatus().text()).to.equal('Luonnos');
             });
         });
 
         describe("kahden ammatillisen pohjakoulutuksen lisäys", function() {
             before(seqDone(
                 click(
-                    virkailija.editKoulutusTaustaButton(hakuOid),
+                    virkailija.editVaiheButton(hakuOid, "koulutustausta"),
                     virkailija.addAmmatillinenCheckbox),
                 input(
                     virkailija.ammatillinenSuoritusVuosi, "2000",
@@ -67,8 +68,8 @@ describe('KK-hakemus', function () {
                     virkailija.avoinKokonaisuus(2), "Avoin kokonaisuus 2",
                     virkailija.avoinLaajuus(2), "Avoin laajuus 2",
                     virkailija.avoinKorkeakoulu(2), "Avoin Korkeakoulu 2"),
-                click(virkailija.saveKoulutusTaustaButton),
-                visible(virkailija.editKoulutusTaustaButton(hakuOid))
+                click(virkailija.saveVaiheButton("koulutustausta")),
+                visible(virkailija.editVaiheButton(hakuOid, "koulutustausta"))
             ));
 
             describe("lisäämisen jälkeen", function() {
@@ -86,13 +87,13 @@ describe('KK-hakemus', function () {
 
                 describe("lisättäessä neljä toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
                     before(seqDone(
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         tyhjennaHakutoiveet(5),
                         jazz5v(1),
                         raasepori(2),
                         jazz2v(3),
                         pietarsaari(4),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -132,11 +133,11 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         tyhjennaHakutoiveet(5),
                         afrikka(1),
                         sosionomiJarvenpaa(2),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -183,11 +184,11 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         afrikka(1),
                         aasia(2),
                         oulu(3),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -218,11 +219,11 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
                         tyhjennaHakutoiveet(5),
                         terveydenhoitajaHelsinki(1),
                         sosionomiJarvenpaa(2),
-                        click(virkailija.saveHakutoiveetButton),
+                        click(virkailija.saveVaiheButton("hakutoiveet")),
                         visible(virkailija.notes)
                     ));
 
@@ -245,12 +246,80 @@ describe('KK-hakemus', function () {
                             expect(virkailija.previewLiitteet().find("td:eq(1):contains(HELSINKI)").length).to.equal(1);
                         });
                     });
+
+                    describe("täytettäessä henkilötiedot", function() {
+                        before(seqDone(
+                            openPage(hakemusPath, function() {
+                                return visible(virkailija.notes)();
+                            }),
+                            click(virkailija.editVaiheButton(hakuOid, "henkilotiedot")),
+                            partials.henkilotiedotTestikaes(),
+                            input(lomake.koulusivistyskieli, "FI"),
+                            click(virkailija.saveVaiheButton("henkilotiedot")),
+                            visible(virkailija.notes)
+                        ));
+                        describe("lisäämisen jälkeen", function() {
+                            it("henkilötiedot näkyvät", function () {
+                                expect(answerForQuestion('Sukunimi')).to.equal("Testikäs");
+                            });
+                            it("herjataan puuttuvista lisätiedoista", function () {
+                                expect(lomake.warning().filter(":visible").size()).to.equal(2)
+                            });
+                        });
+
+                        describe("täytettäessä lisätiedot", function() {
+                            before(seqDone(
+                                openPage(hakemusPath, function() {
+                                    return visible(virkailija.notes)();
+                                }),
+                                click(virkailija.editVaiheButton(hakuOid, "lisatiedot")),
+                                click(lomake.lupatiedotSahkoinenViestinta(true)),
+                                click(lomake.asiointikieli('suomi')),
+                                click(virkailija.saveVaiheButton("lisatiedot")),
+                                visible(virkailija.notes)
+                            ));
+                            describe("lisäämisen jälkeen", function() {
+                                it("lisätiedot näkyvät", function () {
+                                    expect(answerForQuestion('asiointikieli')).to.equal("Suomi");
+                                    expect(lomake.warning().filter(":visible").text()).to.equal("")
+                                });
+                                it("ei näy enään yhtään validointi virhettä", function () {
+                                    expect(lomake.warning().filter(":visible").size()).to.equal(0)
+                                });
+                            });
+
+                            describe("aktivoitaessa hakemus", function() {
+                                before(seqDone(
+                                    click(virkailija.activateApplication)
+                                ));
+
+                                describe("napin painamisen jälkeen", function() {
+                                    it("näkyy popup", function () {
+                                        expect(virkailija.popupHeading().text()).to.equal('Aktivoidaanko hakemus?');
+                                    });
+                                });
+
+                                describe("aktivoinnin jälkeen", function() {
+                                    before(seqDone(
+                                        click(virkailija.confirmActivationButton),
+                                        waitJqueryIs(virkailija.hakemusStatus, ":contains('Aktiivinen')"),
+                                        visible(virkailija.notes)
+                                    ));
+                                    it("vaihtuu hakemus aktiivinen tilaan", function () {
+                                    });
+                                    it("on yhä osamamisvaiheen editointi mahdollista", function () {
+                                        expect(virkailija.editVaiheButton(hakuOid, 'osaaminen')().filter(":visible").length).to.equal(1);
+                                    });
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
     });
 
-    describe('täyttö', function() {
+    describe('täyttö hakijana', function() {
         beforeEach(seqDone(
             logout,
             openPage("/haku-app/lomake/1.2.246.562.29.95390561488", function() {
@@ -258,7 +327,7 @@ describe('KK-hakemus', function () {
             })));
 
         it('tukee useampaa ammatillista peruskoulutusta', seqDone(
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             input(lomake.koulusivistyskieli, "FI"),
             click(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
@@ -291,7 +360,7 @@ describe('KK-hakemus', function () {
         ));
 
         it('koodistettu ulkomaisen pohjakoulutuksen suoritusmaa', seqDone(
-            partials.henkilotiedotTestikaes,
+            partials.henkilotiedotTestikaes(),
             input(lomake.koulusivistyskieli, "FI"),
             click(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),

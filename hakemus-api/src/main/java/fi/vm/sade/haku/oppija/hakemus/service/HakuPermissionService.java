@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public interface HakuPermissionService {
 
     boolean userCanReadApplication(Application application);
 
-    Map<String, Boolean> userHasEditRoleToPhases(Application application, Form form);
+    Map<String, Boolean> userHasEditRoleToPhases(ApplicationSystem as, Application application, Form form);
 
     boolean userCanDeleteApplication(Application application);
 

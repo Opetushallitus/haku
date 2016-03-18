@@ -196,7 +196,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
-        Application application = this.applicationService.getApplicationByOid(oid);
+        Application application = getApplicationWithValintadataIfNotDraft(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
@@ -224,7 +224,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
-        modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(application, form));
+        modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(as, application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", postProcessAllowed);
         modelResponse.addObjectToModel("applicationSystem", as);
@@ -252,6 +252,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
+    }
+
+    private Application getApplicationWithValintadataIfNotDraft(String oid) {
+        Application application = this.applicationService.getApplicationByOid(oid);
+        if(!application.isDraft()) {
+            application = this.applicationService.getApplicationWithValintadata(application);
+        }
+        return application;
     }
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
@@ -415,7 +423,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
 
         final Form form = formService.getForm(application.getApplicationSystemId());
-        checkUpdatePermission(application, form, applicationPhase.getPhaseId());
+        final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        checkUpdatePermission(as, application, form, applicationPhase.getPhaseId());
 
         Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
         newPhaseAnswers = applicationService.ensureApplicationOptionGroupData(newPhaseAnswers, application.getMetaValue(Application.META_FILING_LANGUAGE));
@@ -429,10 +438,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-        if (formValidationResult.hasErrors()) {
-            application.incomplete();
-        } else {
-            application.activate();
+        if (!application.isDraft()) {
+            if (formValidationResult.hasErrors()) {
+                application.incomplete();
+            } else {
+                application.activate();
+            }
         }
         Element phase = form.getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
@@ -454,8 +465,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return response;
     }
 
-    private void checkUpdatePermission(Application application, Form form, String phaseId) {
-        Boolean permission = hakuPermissionService.userHasEditRoleToPhases(application, form).get(phaseId);
+    private void checkUpdatePermission(ApplicationSystem as, Application application, Form form, String phaseId) {
+        Boolean permission = hakuPermissionService.userHasEditRoleToPhases(as, application, form).get(phaseId);
         if (permission == null || !permission) {
             throw new ResourceNotFoundException("User can not update application " + application.getOid());
         }
@@ -716,7 +727,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
-        Application application = applicationService.getApplicationByOid(oid);
+        Application application = getApplicationWithValintadataIfNotDraft(oid);
         final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
         ModelResponse response = new ModelResponse(application,
@@ -732,35 +743,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return response;
     }
 
-    @Override
-    public ModelResponse getApplicationValinta(final String oid) throws IOException {
-        Application application = this.applicationService.getApplicationWithValintadata(oid);
-        Form form = this.formService.getForm(application.getApplicationSystemId());
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-
-        Element element = form;
-        String asId = application.getApplicationSystemId();
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
-
-        ModelResponse modelResponse =
-                new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
-        modelResponse.addObjectToModel("applicationSystem", as);
-        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
-
-        String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-        if (sendingSchoolOid != null) {
-            Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
-            String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
-            modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
-            modelResponse.addObjectToModel("sendingClass", sendingClass);
-        }
-
-        modelResponse.addObjectToModel("officerUi", true);
-        modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
-        return modelResponse;
-    }
-    
     @Override
     public Map<String, String> getNamesForNoteUsers(List<String> oids) {
         List<Person> persons = authenticationService.getHenkiloList(oids);

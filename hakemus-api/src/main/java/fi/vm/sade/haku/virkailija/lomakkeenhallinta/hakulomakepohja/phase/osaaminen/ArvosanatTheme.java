@@ -16,8 +16,6 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 
 public final class ArvosanatTheme {
 
-    public static final String POHJAKOULUTUS_ID = "POHJAKOULUTUS";
-
     private ArvosanatTheme() {
     }
 
@@ -28,7 +26,7 @@ public final class ArvosanatTheme {
             return arvosanatTheme;
         }
 
-        Element relatedQuestionPK = createVarEqualsToValueRule(POHJAKOULUTUS_ID,
+        Element relatedQuestionPK = createVarEqualsToValueRule(ELEMENT_ID_BASE_EDUCATION,
                 PERUSKOULU,
                 OSITTAIN_YKSILOLLISTETTY,
                 ALUEITTAIN_YKSILOLLISTETTY,
@@ -55,7 +53,7 @@ public final class ArvosanatTheme {
         arvosanatTheme.addChild(relatedQuestionPK);
 
         if (formParameters.kysytaankoYlioppilastutkinto()) {
-            Element pohjakoulutusOnYlioppilas = createVarEqualsToValueRule(POHJAKOULUTUS_ID, YLIOPPILAS);
+            Element pohjakoulutusOnYlioppilas = createVarEqualsToValueRule(ELEMENT_ID_BASE_EDUCATION, YLIOPPILAS);
 
             Element arvosanataulukkoYoSv = Rule(
                     new Equals(
@@ -98,7 +96,7 @@ public final class ArvosanatTheme {
                 PERUSOPETUS_PAATTOTODISTUSVUOSI,
                 KYMPPI_PAATTOTODISTUSVUOSI);
         Expr kysyArvosanatPk = new And(
-                ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID,
+                ExprUtil.atLeastOneValueEqualsToVariable(ELEMENT_ID_BASE_EDUCATION,
                         PERUSKOULU,
                         OSITTAIN_YKSILOLLISTETTY,
                         ALUEITTAIN_YKSILOLLISTETTY,
@@ -141,10 +139,10 @@ public final class ArvosanatTheme {
             // Ylioppilaat
             RelatedQuestionRuleBuilder naytetaankoLukionArvosanataulukko;
             if (formParameters.isLisahaku()) {
-                naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(YLIOPPILAS)));
+                naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(ELEMENT_ID_BASE_EDUCATION), new Value(YLIOPPILAS)));
             } else {
                 naytetaankoLukionArvosanataulukko = Rule(new And(
-                        new Equals(new Variable(POHJAKOULUTUS_ID), new Value(YLIOPPILAS)),
+                        new Equals(new Variable(ELEMENT_ID_BASE_EDUCATION), new Value(YLIOPPILAS)),
                         new Or(
                                 new Not(
                                         new Equals(
@@ -196,7 +194,7 @@ public final class ArvosanatTheme {
     }
 
     private static Element pohjakoulutusOnKeskeytynytTaiUlkomainenRule() {
-        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID, KESKEYTYNYT, ULKOMAINEN_TUTKINTO)).build();
+        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(ELEMENT_ID_BASE_EDUCATION, KESKEYTYNYT, ULKOMAINEN_TUTKINTO)).build();
     }
 
     private static Element textEiArvosanataulukkoa(FormParameters formParameters) {
