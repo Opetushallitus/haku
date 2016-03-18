@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -661,19 +662,21 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public void logPersonOidIfChanged(String changedBy, String oidBefore) {
-        logUserOidIfChanged("Henkilönumero", changedBy, oidBefore, getPersonOid());
+        logUserOidIfChanged("personOid", "Henkilönumero", changedBy, oidBefore, getPersonOid());
     }
 
     @JsonIgnore
     public void logStudentOidIfChanged(String changedBy, String oidBefore) {
-        logUserOidIfChanged("Oppijanumero", changedBy, oidBefore, getStudentOid());
+        logUserOidIfChanged("studentOid", "Oppijanumero", changedBy, oidBefore, getStudentOid());
     }
 
     @JsonIgnore
-    private void logUserOidIfChanged(String oidType, String changedBy, String oidBefore, String oidAfter) {
+    private void logUserOidIfChanged(String oidType, String oidText, String changedBy, String oidBefore, String oidAfter) {
         if (!Objects.equals(oidBefore, oidAfter)) {
-            addNote(new ApplicationNote(String.format("%s muuttui %s -> %s", oidType, oidBefore, oidAfter),
-                    new Date(), changedBy));
+            if(!StringUtils.isEmpty(oidBefore)) {
+                addNote(new ApplicationNote(String.format("%s muuttui %s -> %s", oidText, oidBefore, oidAfter),
+                        new Date(), changedBy));
+            }
             addHistory(new Change(
                     new Date(), changedBy, oidType + " modified",
                     Collections.<Map<String, String>>singletonList(
