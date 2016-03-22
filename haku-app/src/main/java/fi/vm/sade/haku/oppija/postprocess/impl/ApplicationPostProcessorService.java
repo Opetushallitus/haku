@@ -150,6 +150,8 @@ public class ApplicationPostProcessorService {
      */
     Application addPersonOid(Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
+        final String originalPersonOid = application.getPersonOid();
+        final String originalStudentOid = application.getStudentOid();
 
         LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000L);
 
@@ -171,9 +173,13 @@ public class ApplicationPostProcessorService {
         Person personBefore = personBuilder.get();
 
         Person personAfter = authenticationService.addPerson(personBefore);
-        return application.modifyPersonalData(personAfter);
-    }
+        application.modifyPersonalData(personAfter);
 
+        application.logPersonOidIfChanged("jälkikäsittely", originalPersonOid);
+        application.logStudentOidIfChanged("jälkikäsittely", originalStudentOid);
+
+        return application;
+    }
 
     Application checkStudentOid(Application application) {
         String personOid = application.getPersonOid();

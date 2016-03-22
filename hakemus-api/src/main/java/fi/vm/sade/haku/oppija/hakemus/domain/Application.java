@@ -16,14 +16,15 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import com.google.common.base.*;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -657,6 +658,33 @@ public class Application implements Serializable {
         this.history.add(0, change);
         this.version = this.history.size();
         return this;
+    }
+
+    @JsonIgnore
+    public void logPersonOidIfChanged(String changedBy, String oidBefore) {
+        logUserOidIfChanged("personOid", "Henkilönumero", changedBy, oidBefore, getPersonOid());
+    }
+
+    @JsonIgnore
+    public void logStudentOidIfChanged(String changedBy, String oidBefore) {
+        logUserOidIfChanged("studentOid", "Oppijanumero", changedBy, oidBefore, getStudentOid());
+    }
+
+    @JsonIgnore
+    private void logUserOidIfChanged(String oidType, String oidText, String changedBy, String oidBefore, String oidAfter) {
+        if (!Objects.equals(oidBefore, oidAfter)) {
+            if(!StringUtils.isEmpty(oidBefore)) {
+                addNote(new ApplicationNote(String.format("%s muuttui %s -> %s", oidText, oidBefore, oidAfter),
+                        new Date(), changedBy));
+            }
+            addHistory(new Change(
+                    new Date(), changedBy, oidType + " modified",
+                    Collections.<Map<String, String>>singletonList(
+                            ImmutableMap.of(oidType, oidBefore + " -> " + oidAfter)
+                    )
+            ));
+            log.info("Application {} {} changed from value {} -> {}", getOid(), oidType, oidBefore, oidAfter);
+        }
     }
 
     public Integer getVersion() {
