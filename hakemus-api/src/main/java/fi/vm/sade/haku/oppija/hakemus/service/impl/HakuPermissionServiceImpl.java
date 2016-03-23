@@ -159,7 +159,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             boolean phaseLocked = Boolean.valueOf(application.getMetaValue(phaseId + "_locked"));
             Boolean editAllowed = !phaseLocked
                                   && phase.isEditAllowedByRoles(userRolesToApplication)
-                                  && (!OppijaConstants.PHASE_GRADES.equals(phaseId) || isGradesEditingAllowed(as, application));
+                                  && (!OppijaConstants.PHASE_GRADES.equals(phaseId) || (OppijaConstants.PHASE_GRADES.equals(phaseId) && userIsOPHUser()) || isGradesEditingAllowed(as, application));
             phasesToEdit.put(phaseId, editAllowed);
         }
         return phasesToEdit;
@@ -170,6 +170,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return application.isNew() || application.isDraft();
         }
         return true;
+    }
+
+    private boolean userIsOPHUser() {
+        if(checkAccess(getRootOrgOid(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
