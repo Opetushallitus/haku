@@ -196,6 +196,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
         Application application = getApplicationWithValintadataIfNotDraft(oid);
+        Map<String, I18nText> virkailijaErrors = new HashMap<>();
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
@@ -246,9 +247,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
-            Map<String, I18nText> errors = modelResponse.getErrorMessages();
-            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", OppijaConstants.MESSAGES_BUNDLE_NAME));
-            modelResponse.setErrorMessages(errors);
+            virkailijaErrors.put("virkailija.hakemus.omanmuokkauskielletty", ElementUtil.createI18NText("virkailija.hakemus.omanmuokkauskielletty", OppijaConstants.MESSAGES_BUNDLE_NAME));
+        }
+        if(!virkailijaErrors.isEmpty()) {
+            modelResponse.setErrorMessages(virkailijaErrors);
         }
         return modelResponse;
     }
