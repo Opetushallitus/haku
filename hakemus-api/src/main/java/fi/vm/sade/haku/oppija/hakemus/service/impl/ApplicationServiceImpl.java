@@ -59,6 +59,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohja
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
@@ -579,7 +580,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplicationWithValintadata(Application application) {
+    public Application getApplicationWithValintadata(Application application) throws ValintaServiceCallFailedException {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);

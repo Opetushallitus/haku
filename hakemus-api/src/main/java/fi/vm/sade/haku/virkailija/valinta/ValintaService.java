@@ -12,5 +12,5 @@ public interface ValintaService {
 
     HakijaDTO getHakija(String asOid, String application);
 
-    Map<String, String> fetchValintaData(Application application);
+    Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException;
 }

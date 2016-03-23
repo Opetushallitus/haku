@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.valinta.MapJsonAdapter;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 import org.slf4j.Logger;
@@ -66,19 +67,9 @@ public class ValintaServiceImpl implements ValintaService {
                     return new Date(json.getAsJsonPrimitive().getAsLong());
                 }
             });
-//            FieldNamingStrategy fieldNamingStrategy = new FieldNamingStrategy() {
-//                @Override
-//                public String translateName(Field f) {
-//                    if (f.getName().equals("valintatapajonooid")) {
-//                        return "oid";
-//                    }
-//                    return f.getName();
-//                }
-//            };
-//            builder.setFieldNamingStrategy(fieldNamingStrategy);
             Gson gson = builder.create();
             return gson.fromJson(client.getAsString(url), HakemusDTO.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
             return new HakemusDTO();
         }
@@ -91,16 +82,14 @@ public class ValintaServiceImpl implements ValintaService {
 
         try {
             return new Gson().fromJson(client.getAsString(url), HakijaDTO.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
-        } catch (NullPointerException npe) {
-            log.warn("GET {} failed: ", url, npe);
         }
         return new HakijaDTO();
     }
 
     @Override
-    public Map<String, String> fetchValintaData(Application application) {
+    public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();
         String applicationOid = application.getOid();
@@ -111,14 +100,9 @@ public class ValintaServiceImpl implements ValintaService {
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
             valintadata = gson.fromJson(client.getAsString(url), valintadata.getClass());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
-            throw new ResourceNotFoundException("get failed: ", e);
-        } catch (NullPointerException npe) {
-            log.warn("GET {} failed: ", url, npe);
-            throw new ResourceNotFoundException("get failed", npe);
-        } catch (IllegalArgumentException e) {
-            throw new ResourceNotFoundException("map cannot be converted", e);
+            throw new ValintaServiceCallFailedException(e);
         }
         return valintadata;
 
