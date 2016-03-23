@@ -22,6 +22,8 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:forEach var="message" items="${messages}">
+    <c:set var="jumpTo" value="" />
+    <c:set var="title" value="" />
     <c:forEach var="element" items="${f:allChildren(form)}">
         <c:if test="${element.id eq message.key}">
             <c:set var="jumpTo" value="${element.id}" />
