@@ -47,6 +47,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
@@ -195,8 +196,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
-        Application application = getApplicationWithValintadataIfNotDraft(oid);
         Map<String, I18nText> virkailijaErrors = new HashMap<>();
+        Application application = getApplicationWithValintadataIfNotDraft(oid, virkailijaErrors);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
@@ -255,10 +256,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return modelResponse;
     }
 
-    private Application getApplicationWithValintadataIfNotDraft(String oid) {
+    private Application getApplicationWithValintadataIfNotDraft(String oid, Map<String, I18nText> errors) {
         Application application = this.applicationService.getApplicationByOid(oid);
         if(!application.isDraft()) {
-            application = this.applicationService.getApplicationWithValintadata(application);
+            try {
+                application = this.applicationService.getApplicationWithValintadata(application);
+            }
+            catch (ValintaServiceCallFailedException e) {
+                errors.put("virkailija.hakemus.valintaservicefail", ElementUtil.createI18NText("virkailija.hakemus.valintaservicefail", OppijaConstants.MESSAGES_BUNDLE_NAME));
+            }
         }
         return application;
     }
@@ -734,7 +740,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
-        Application application = getApplicationWithValintadataIfNotDraft(oid);
+        Application application = getApplicationWithValintadataIfNotDraft(oid, new HashMap<String, I18nText>());
         final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
         ModelResponse response = new ModelResponse(application,

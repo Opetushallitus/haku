@@ -52,7 +52,7 @@ public class ValintaServiceTest {
     }
 
     @Test
-    public void testOfficerUi() throws IOException {
+    public void testOfficerUi() throws Exception {
         CachingRestClient sijoitteluClient = mock(CachingRestClient.class);
         CachingRestClient valintaClient = mock(CachingRestClient.class);
         when(sijoitteluClient.getAsString(startsWith("/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));

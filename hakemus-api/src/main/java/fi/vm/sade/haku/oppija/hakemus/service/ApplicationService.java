@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 
 import java.io.IOException;
 import java.util.List;
@@ -116,5 +117,5 @@ public interface ApplicationService {
 
     Application removeOrphanedAnswers(Application application);
 
-    Application getApplicationWithValintadata(Application application);
+    Application getApplicationWithValintadata(Application application) throws ValintaServiceCallFailedException;
 }

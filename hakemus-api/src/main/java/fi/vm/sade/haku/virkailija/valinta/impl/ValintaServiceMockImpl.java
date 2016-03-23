@@ -2,7 +2,9 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.gson.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 import org.springframework.context.annotation.Profile;
@@ -845,8 +847,8 @@ public class ValintaServiceMockImpl implements ValintaService {
     }
 
     @Override
-    public Map<String, String> fetchValintaData(Application application) {
-        return new HashMap<String, String>();
+    public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException{
+        throw new ValintaServiceCallFailedException(new IllegalStateException("test valintaservice down"));
     }
 
 
