@@ -72,12 +72,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
-        cachingRestClient = new CachingRestClient();
+        cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
         cachingRestClient.setWebCasUrl(casUrl);
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);
         cachingRestClient.setPassword(clientAppPass);
-        cachingRestClient.setCallerId("callerid.haku.haku-app.backend");
         this.targetService = targetService;
         this.userOidPrefix = userOidPrefix;
         this.langCookieName = langCookieName;

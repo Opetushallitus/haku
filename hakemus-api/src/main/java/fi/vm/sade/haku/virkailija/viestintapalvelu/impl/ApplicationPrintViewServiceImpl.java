@@ -41,7 +41,7 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
 
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            cachingRestClient = new CachingRestClient();
+            cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
             cachingRestClient.setWebCasUrl(casUrl);
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);
