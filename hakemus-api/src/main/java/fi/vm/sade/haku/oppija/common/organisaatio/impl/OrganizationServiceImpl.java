@@ -227,6 +227,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private <T> T get(String url, Class<T> resultType) throws IOException {
         HttpGet get = new HttpGet(targetService + url);
+        get.setHeader("clientSubSystemCode", "haku.hakemus-api");
         try {
             HttpResponse response = this.httpClient.execute(get);
             StatusLine status = response.getStatusLine();
