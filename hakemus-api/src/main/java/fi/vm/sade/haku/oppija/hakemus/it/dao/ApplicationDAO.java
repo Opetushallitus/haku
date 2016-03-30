@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -105,5 +106,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     int removeApplicationsReceivedBeforeDate(Date after);
 
+    List<Map<String, Object>> findApplicationsByPersonOid(Set<String> personOids);
 
 }

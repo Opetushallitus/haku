@@ -11,8 +11,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.servlet.jsp.jstl.core.Config;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -125,6 +127,18 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 50
         );
         assertEquals(3, result.getTotalCount());
+    }
+
+    @Test
+    public void testFindApplicationsByPersonOids() {
+        final String PERSON1_OID = "1.2.246.562.24.14229104472";
+        final String PERSON2_OID = "1.2.246.562.24.40135708059";
+
+        Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID));
+
+        assertEquals(21, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
     }
 
 }

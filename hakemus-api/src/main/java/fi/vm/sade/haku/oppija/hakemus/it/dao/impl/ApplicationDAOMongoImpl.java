@@ -46,16 +46,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.mongodb.QueryOperators.IN;
+import static com.mongodb.QueryOperators.ORDER_BY;
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_PERSONAL;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -157,6 +157,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
                 dbObjectToSearchResultItem, true);
         return new ApplicationSearchResultDTO(results.searchHits, results.searchResultsList);
+    }
+
+    @Override
+    public List<Map<String, Object>> findApplicationsByPersonOid(Set<String> personOids) {
+        DBObject query = QueryBuilder.start(ELEMENT_ID_PERSON_OID).in(personOids).get();
+        DBObject keys = generateKeysDBObject("answers." + PHASE_PERSONAL, "oid", ELEMENT_ID_PERSON_OID, FIELD_RECEIVED, FIELD_APPLICATION_STATE);
+        keys.put("_id", 0);
+        DBObject sortBy = new BasicDBObject(FIELD_RECEIVED, -1);
+        SearchResults<Map<String, Object>> result = searchListing(query, keys, sortBy, 0, 0, dbObjectToMapFunction, false);
+        return result.searchResultsList;
     }
 
     @Override
