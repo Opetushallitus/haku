@@ -13,6 +13,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,8 @@ import java.util.Set;
 @Path("/permission")
 @Api(value = "/permission", description = "Oikeuksien tarkistuksen REST-rajapinta")
 public class PermissionResource implements PermissionCheckInterface {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PermissionResource.class);
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     public static final String NULL_REQUEST = "Null request.";
@@ -105,8 +109,14 @@ public class PermissionResource implements PermissionCheckInterface {
     }
 
     private boolean permissionAllowedBecauseKKVirkailija(Set<String> roles, Application hakemus) {
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(hakemus.getApplicationSystemId());
-
+        ApplicationSystem as;
+        try {
+            as = applicationSystemService.getApplicationSystem(hakemus.getApplicationSystemId());
+        }
+        catch (Exception e) {
+            LOGGER.warn("Could not check permissionAllowedBecauseKKVirkailija, returning false: " + e.toString());
+            return false;
+        }
         return roles.contains("ROLE_" + Role.ROLE_HETUTTOMIENKASITTELY.casName)
                 && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(as.getHakutapa())
                 && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri());
