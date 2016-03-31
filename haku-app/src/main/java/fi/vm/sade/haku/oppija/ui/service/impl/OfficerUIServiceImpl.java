@@ -372,7 +372,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ao.setYhteispisteet(reallyShowScores ? PISTE_FMT.format(pisteet) : "");
         ao.setJonoId(jono.getValintatapajonoOid());
         ao.setSijoittelunTulos(jono.getTila());
-        ao.setVastaanottoTieto(jono.getVastaanottotieto());
+        ao.setVastaanottoTieto(hakutoive.getVastaanottotieto());
 
         return ao;
     }
