@@ -1,16 +1,15 @@
 package fi.vm.sade.haku.oppija.hakemus.it;
 
-import static org.junit.Assert.assertEquals;
-
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.core.Response;
-
+import com.google.common.collect.ImmutableList;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -21,14 +20,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.common.collect.ImmutableList;
+import javax.ws.rs.core.Response;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
-import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
@@ -128,6 +126,15 @@ public class SyntheticApplicationIT {
         Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
         final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
+        assertEquals(1, applications.size());
+    }
+
+    @Test
+    public void testCreateRoundTripPost() {
+        Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
+        verifyPutResponse(resp1);
+        ApplicationSearchDTO asdto = new ApplicationSearchDTO(Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"));
+        final List<Map<String, Object>> applications = applicationResource.findFullApplicationsPost(asdto);
         assertEquals(1, applications.size());
     }
 
