@@ -135,7 +135,7 @@ public class SyntheticApplicationIT {
         verifyPutResponse(resp1);
         ApplicationSearchDTO asdto = new ApplicationSearchDTO(Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"));
         final List<Map<String, Object>> applications = applicationResource.findFullApplicationsPost(asdto);
-        assertEquals(1, applications.size());
+        assertEquals(2, applications.size());
     }
 
     @Test
