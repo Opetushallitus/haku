@@ -58,8 +58,8 @@ import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
+import static fi.vm.sade.haku.oppija.AuthorizationRoles.ALLOWED_FOR_ADMIN;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ROOT_ORGANIZATION_OID;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
@@ -250,7 +250,7 @@ public class ApplicationResource {
     @POST
     @Path("/byPersonOid")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD_" + ROOT_ORGANIZATION_OID + "')")
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Hakemusten haku henkilönumeroiden perusteella", response = Application.class, responseContainer = "Map")
     public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids) {
         return applicationService.findApplicationsByPersonOid(personOids);
