@@ -70,6 +70,9 @@ final class ApplicationDAOMongoIndexHelper {
         }
         if (hasApplicationState())
             return INDEX_STATE_FN;
+        if (hasReceivedOrUpdated()) {
+            return INDEX_RECEIVED_UPDATED;
+        }
         return null;
     }
 
@@ -89,6 +92,10 @@ final class ApplicationDAOMongoIndexHelper {
 
     private boolean hasAllOrgs() {
         return checkKey(META_ALL_ORGANIZATIONS);
+    }
+
+    private boolean hasReceivedOrUpdated() {
+        return checkKey(FIELD_RECEIVED) || checkKey(FIELD_UPDATED);
     }
 
     // utilities
