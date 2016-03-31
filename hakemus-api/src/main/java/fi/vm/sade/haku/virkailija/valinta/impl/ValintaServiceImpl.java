@@ -110,7 +110,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientKooste() {
         if (cachingRestClientKooste == null) {
-            cachingRestClientKooste = new CachingRestClient(4000);
+            cachingRestClientKooste = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientKooste.setWebCasUrl(casUrl);
             cachingRestClientKooste.setCasService(targetServiceKooste);
             cachingRestClientKooste.setUsername(clientAppUserKooste);
@@ -127,7 +127,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientValinta() {
         if (cachingRestClientValinta == null) {
-            cachingRestClientValinta = new CachingRestClient(4000);
+            cachingRestClientValinta = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientValinta.setWebCasUrl(casUrl);
             cachingRestClientValinta.setCasService(targetServiceValinta);
             cachingRestClientValinta.setUsername(clientAppUserValinta);
@@ -144,7 +144,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientSijoittelu() {
         if (cachingRestClientSijoittelu == null) {
-            cachingRestClientSijoittelu = new CachingRestClient(4000);
+            cachingRestClientSijoittelu = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientSijoittelu.setWebCasUrl(casUrl);
             cachingRestClientSijoittelu.setCasService(targetServiceSijoittelu);
             cachingRestClientSijoittelu.setUsername(clientAppUserSijoittelu);
