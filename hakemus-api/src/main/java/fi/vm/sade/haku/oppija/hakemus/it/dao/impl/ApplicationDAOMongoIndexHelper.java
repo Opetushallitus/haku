@@ -36,43 +36,54 @@ final class ApplicationDAOMongoIndexHelper {
     private String initIndexCanditate() {
         if (hasAo()) {
             if (hasApplicationState()) {
-                if (hasApplicationSystemId())
+                if (hasApplicationSystemId()) {
                     return INDEX_STATE_ASID_AO_OID;
-                else
+                } else {
                     return INDEX_STATE_AO_OID;
+                }
             } else {
-                if (hasApplicationSystemId())
+                if (hasApplicationSystemId()) {
                     return INDEX_ASID_AO_OID;
-                else
+                } else {
                     return INDEX_AO_OID;
+                }
             }
         }
 
         if (hasAllOrgs()) {
             if (hasApplicationState()) {
-                if (hasApplicationSystemId())
+                if (hasApplicationSystemId()) {
                     return INDEX_STATE_ASID_ORG_OID;
-                else
+                } else {
                     return INDEX_STATE_ORG_OID;
-
+                }
             } else {
-                if (hasApplicationSystemId())
+                if (hasApplicationSystemId()) {
                     return INDEX_ASID_ORG_OID;
-                else
+                } else if (hasReceivedOrUpdated()) {
+                    return INDEX_RECEIVED_UPDATED;
+                } else {
                     return INDEX_ORG_OID;
+                }
             }
         }
+
         if (hasApplicationSystemId()) {
-            if (hasApplicationState())
+            if (hasApplicationState()) {
                 return INDEX_STATE_ASID_FN;
-            else
+            } else {
                 return INDEX_APPLICATION_SYSTEM_ID;
+            }
         }
-        if (hasApplicationState())
+
+        if (hasApplicationState()) {
             return INDEX_STATE_FN;
+        }
+
         if (hasReceivedOrUpdated()) {
             return INDEX_RECEIVED_UPDATED;
         }
+        
         return null;
     }
 
