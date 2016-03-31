@@ -258,6 +258,34 @@ public class ApplicationResource {
         return getApplications(oids);
     }
 
+    @POST
+    @Path("/listfull")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+    @ApiOperation(
+            value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
+    public List<Map<String, Object>> findFullApplicationsPost(final ApplicationSearchDTO applicationSearchDTO) {
+
+        LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
+        List<String> state = applicationSearchDTO.states;
+        List<String> asIds = applicationSearchDTO.asIds;
+        List<String> aoOid = applicationSearchDTO.aoOids;
+
+        ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setSearchTerms("")
+                .setStates(state)
+                .setAsIds(asIds)
+                .addAoOid(aoOid.toArray(new String[0]))
+                .setOrderBy("oid")
+                .setOrderDir(1)
+                .build();
+
+        List<Map<String, Object>> apps = applicationService.findFullApplications(queryParams);
+        LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
+        return apps;
+    }
+
     @GET
     @Path("/listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
