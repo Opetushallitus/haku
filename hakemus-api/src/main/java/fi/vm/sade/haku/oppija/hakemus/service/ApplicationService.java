@@ -26,8 +26,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ApplicationService {
 
@@ -108,6 +110,8 @@ public interface ApplicationService {
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
+
+    Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids);
 
     Application updateAuthorizationMeta(Application application) throws IOException;
 

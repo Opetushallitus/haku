@@ -16,6 +16,9 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimaps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -37,7 +40,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -76,10 +78,13 @@ import java.util.*;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
+import static fi.vm.sade.haku.oppija.lomake.domain.ModelResponse.ANSWERS;
+import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS;
+import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS_HASH;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -282,6 +287,37 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters) {
         return applicationDAO.findAllQueried(applicationQueryParameters,
                 buildFilterParams(applicationQueryParameters));
+    }
+
+    @Override
+    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids) {
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids);
+
+        Iterable<Map<String, Object>> nonSensitiveApplications = removeSensitiveInfo(applications);
+
+        Map<String, Collection<Map<String, Object>>> applicationsByPersonOid = Multimaps.index(nonSensitiveApplications, new Function<Map<String, Object>, String>() {
+            @Override
+            public String apply(Map<String, Object> application) {
+                return (String) application.get(ELEMENT_ID_PERSON_OID);
+            }
+        }).asMap();
+
+        return applicationsByPersonOid;
+    }
+
+    private Iterable<Map<String, Object>> removeSensitiveInfo(Iterable<Map<String, Object>> sensitiveApplications) {
+        return Iterables.transform(sensitiveApplications, new Function<Map<String,Object>, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> apply(Map<String, Object> application) {
+                Map<String, Map<String, String>> answers = (Map<String, Map<String,String>>) application.get(ANSWERS);
+                Map<String, String> contactDetails = answers.get(PHASE_PERSONAL);
+
+                contactDetails.remove(HENKILOTUNNUS);
+                contactDetails.remove(HENKILOTUNNUS_HASH);
+
+                return application;
+            }
+        });
     }
 
     @Override
