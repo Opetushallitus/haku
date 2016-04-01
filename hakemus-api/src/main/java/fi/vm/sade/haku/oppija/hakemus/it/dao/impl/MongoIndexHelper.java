@@ -35,7 +35,7 @@ public class MongoIndexHelper {
         for (final Map.Entry<String, Object> entry : fromQuery.entrySet()) {
             final String key = entry.getKey();
 
-            if (null == key || OR.equals(key) || NOR.equals(key)) {
+            if (null == key || NOR.equals(key)) {
                 // skip
                 continue;
             }
@@ -52,6 +52,21 @@ public class MongoIndexHelper {
                         findAndAddIndexFields(valMap, toFieldSet);
                     }
                     else {
+                        logPanic("Cannot handle subquery.", key, subQuery);
+                        continue;
+                    }
+                }
+            } else if (OR.equals(key)) {
+                final Object value = entry.getValue();
+                if (!List.class.isInstance(value)) {
+                    logPanic("Was expecting a list", key, value);
+                    continue;
+                }
+                for (final Object subQuery : (List) value) {
+                    final Map valMap = getMap(subQuery);
+                    if (null != valMap) {
+                        findAndAddIndexFields(valMap, toFieldSet);
+                    } else {
                         logPanic("Cannot handle subquery.", key, subQuery);
                         continue;
                     }

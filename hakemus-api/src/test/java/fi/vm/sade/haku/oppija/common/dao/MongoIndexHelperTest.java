@@ -7,6 +7,7 @@ import com.mongodb.QueryBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.MongoIndexHelper;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -36,7 +37,7 @@ public class MongoIndexHelperTest {
     }
 
     @Test
-    public void skipOrIncludeAnd() {
+    public void includeAndOr() {
         final String orKey = "the.or.key";
         final String orAndKey1 = "the.or.and.key1";
         final String orAndKey2 = "the.or.and.key2";
@@ -55,6 +56,9 @@ public class MongoIndexHelperTest {
                 ).get();
         final Set<String> indexFields = MongoIndexHelper.findIndexFields(query);
         assertTrue(indexFields.remove(andKey));
+        assertTrue(indexFields.remove(orKey));
+        assertTrue(indexFields.remove(orAndKey1));
+        assertTrue(indexFields.remove(orAndKey2));
         assertEquals("Should not contain more fields", 0, indexFields.size());
     }
 
@@ -117,6 +121,28 @@ public class MongoIndexHelperTest {
         assertTrue(indexFields.remove(matchPath + "." + elemKey1));
         assertTrue(indexFields.remove(matchPath + "." + elemKey2));
         assertEquals("Should not contain more fields", 0, indexFields.size());
+    }
+
+    @Test
+    public void testAndOr() {
+        final String received = "received";
+        final String updated = "updated";
+        final String aoMetaFoo = "authorizationMeta.allAoOrganizations";
+
+        final DBObject query = QueryBuilder.start()
+                .and(
+                        QueryBuilder.start().or(
+                                QueryBuilder.start(received).greaterThan(1).get(),
+                                QueryBuilder.start(updated).greaterThan(1).get()
+                        ).get(),
+                        QueryBuilder.start(aoMetaFoo).in(Collections.singletonList("1.2.3")).get()
+                ).get();
+
+        final Set<String> indexFields = MongoIndexHelper.findIndexFields(query);
+
+        assertTrue(indexFields.contains(received));
+        assertTrue(indexFields.contains(updated));
+        assertTrue(indexFields.contains(aoMetaFoo));
     }
 
 }
