@@ -60,8 +60,8 @@ final class ApplicationDAOMongoIndexHelper {
             } else {
                 if (hasApplicationSystemId()) {
                     return INDEX_ASID_ORG_OID;
-                } else if (hasReceivedOrUpdated()) {
-                    return INDEX_RECEIVED_UPDATED;
+                } else if (hasUpdated()) {
+                    return INDEX_UPDATED;
                 } else {
                     return INDEX_ORG_OID;
                 }
@@ -80,8 +80,8 @@ final class ApplicationDAOMongoIndexHelper {
             return INDEX_STATE_FN;
         }
 
-        if (hasReceivedOrUpdated()) {
-            return INDEX_RECEIVED_UPDATED;
+        if (hasUpdated()) {
+            return INDEX_UPDATED;
         }
         
         return null;
@@ -105,8 +105,8 @@ final class ApplicationDAOMongoIndexHelper {
         return checkKey(META_ALL_ORGANIZATIONS);
     }
 
-    private boolean hasReceivedOrUpdated() {
-        return checkKey(FIELD_RECEIVED) || checkKey(FIELD_UPDATED);
+    private boolean hasUpdated() {
+        return checkKey(FIELD_UPDATED);
     }
 
     // utilities
