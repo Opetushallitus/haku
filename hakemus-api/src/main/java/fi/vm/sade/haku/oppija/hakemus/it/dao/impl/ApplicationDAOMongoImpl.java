@@ -49,7 +49,6 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 import static com.mongodb.QueryOperators.IN;
-import static com.mongodb.QueryOperators.ORDER_BY;
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
@@ -481,7 +480,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_STATE_ORG_OID, FIELD_APPLICATION_STATE, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ASID_ORG_OID, FIELD_APPLICATION_SYSTEM_ID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ORG_OID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
-        ensureIndex(INDEX_UPDATED, FIELD_UPDATED);
+        ensureIndex(INDEX_RECEIVED_UPDATED, FIELD_RECEIVED, FIELD_UPDATED);
         ensureSparseIndex(INDEX_PAYMENT_DUE_DATE, PAYMENT_DUE_DATE);
 
         // System queries

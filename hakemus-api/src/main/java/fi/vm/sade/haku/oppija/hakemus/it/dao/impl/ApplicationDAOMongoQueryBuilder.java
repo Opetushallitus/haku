@@ -258,7 +258,10 @@ final class ApplicationDAOMongoQueryBuilder {
         final Date updatedAfter = applicationQueryParameters.getUpdatedAfter();
         if (updatedAfter != null) {
             filters.add(
-                    QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
+                    QueryBuilder.start().or(
+                            QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
+                            QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
+                    ).get()
             );
         }
 
