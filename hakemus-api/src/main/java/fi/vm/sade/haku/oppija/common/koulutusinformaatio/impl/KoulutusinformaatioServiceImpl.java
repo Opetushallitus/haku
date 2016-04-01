@@ -25,13 +25,11 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationOptionServiceImpl.class);
 	private final WebResource webResource;
 	private final Client clientWithJacksonSerializer;
-	private final ApplicationOptionDTOToApplicationOptionFunction converterFunction;
 
 	@Autowired
 	public KoulutusinformaatioServiceImpl(@Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioAOResourceUrl) {
 		clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
 		webResource = clientWithJacksonSerializer.resource(koulutusinformaatioAOResourceUrl);
-		converterFunction = new ApplicationOptionDTOToApplicationOptionFunction();
 	}
 
 	@Override

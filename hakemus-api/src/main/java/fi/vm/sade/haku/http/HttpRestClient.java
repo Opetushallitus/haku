@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
 
 @Component("restClient")
@@ -27,6 +29,8 @@ public class HttpRestClient implements RestClient {
             request.setParser(new JsonObjectParser(JSON_FACTORY));
         }
     });
+
+    private static String clientSubSystemCode = "haku.hakemus-api";
 
     @Override
     public <T> ListenableFuture<Response<T>> get(final String url, final Class<T> responseClass) throws IOException {
@@ -47,6 +51,7 @@ public class HttpRestClient implements RestClient {
         });
     }
 
+    public static List ImmutableHttpMethods = Arrays.asList(HttpMethods.GET, HttpMethods.HEAD, HttpMethods.OPTIONS);
     private static class RestRequest implements Callable<HttpResponse> {
         private final HttpRequest request;
 
@@ -56,6 +61,18 @@ public class HttpRestClient implements RestClient {
 
         @Override
         public HttpResponse call() throws Exception {
+            request.getHeaders().set("clientSubSystemCode", clientSubSystemCode);
+            if(!ImmutableHttpMethods.contains(request.getRequestMethod())) {
+                request.getHeaders().set("CSRF", "HttpRestClient");
+                String cookie = request.getHeaders().getCookie();
+                String csrf = "CSRF=HttpRestClient";
+                if(cookie == null) {
+                    cookie = csrf;
+                } else {
+                    cookie = cookie + "; " + csrf;
+                }
+                request.getHeaders().setCookie(cookie);
+            }
             try {
                 return request.execute();
             } catch (IOException e) {
@@ -112,5 +129,4 @@ public class HttpRestClient implements RestClient {
             return new Response<>(response, response.parseAs(responseClass));
         }
     }
-
 }
