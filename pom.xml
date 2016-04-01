@@ -40,7 +40,8 @@
         <springProfileName>default</springProfileName>
 
         <authentication-api.version>2016-04-SNAPSHOT</authentication-api.version>
-        <generic-common.version>9.2-SNAPSHOT</generic-common.version>
+        <generic-common.version>9.3-SNAPSHOT</generic-common.version>
+        <java-cas-spring-security.version>0.1.0-SNAPSHOT</java-cas-spring-security.version>
 	    <koodisto-api.version>2016-04-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>2015-45-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
