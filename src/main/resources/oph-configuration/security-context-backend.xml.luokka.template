@@ -113,10 +113,13 @@
 
     <beans:bean id="casFilter" class="fi.vm.sade.security.CustomCasAuthenticationFilter">
         <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
         <beans:property name="serviceProperties" ref="casServiceProperties"/>
         <beans:property name="proxyGrantingTicketStorage" ref="pgtStorage"/>
         <beans:property name="proxyReceptorUrl" value="/j_spring_cas_security_proxyreceptor"/>
     </beans:bean>
+
+    <beans:bean id="authenticationSuccessHandler" class="fi.vm.sade.security.SavedGetRequestAwareAuthenticationSuccessHandler"/>
 
     <!-- This filter handles a Single Logout Request from the CAS Server -->
     <beans:bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"/>
