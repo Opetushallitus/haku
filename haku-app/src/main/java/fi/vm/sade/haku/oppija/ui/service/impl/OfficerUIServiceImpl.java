@@ -240,10 +240,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
             modelResponse.addObjectToModel("sendingClass", sendingClass);
         }
-
-        // TODO: Arvosanat valinnoista
-        // TODO: Suoritukset valinnoista
-
         modelResponse.addObjectToModel("officerUi", true);
         modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         String userOid = userSession.getUser().getUserName();
