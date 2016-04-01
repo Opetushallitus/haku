@@ -199,7 +199,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         if (ensureIndex) {
             final String hint = addIndexHint(query);
-            if (null == hint)
+            if (null != hint)
                 dbCursor.hint(hint);
         }
 
