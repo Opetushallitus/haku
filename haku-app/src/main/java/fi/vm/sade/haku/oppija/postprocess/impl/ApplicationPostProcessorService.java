@@ -79,7 +79,7 @@ public class ApplicationPostProcessorService {
     }
 
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException {
-        application = addPersonOid(application);
+        application = addPersonOid(application, "jälkikäsittely");
         application = baseEducationService.addSendingSchool(application);
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
@@ -148,7 +148,7 @@ public class ApplicationPostProcessorService {
      * @param application to process
      * @return processed application
      */
-    Application addPersonOid(Application application) {
+    Application addPersonOid(Application application, String changedBy) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
         final String originalPersonOid = application.getPersonOid();
         final String originalStudentOid = application.getStudentOid();
@@ -175,38 +175,23 @@ public class ApplicationPostProcessorService {
         Person personAfter = authenticationService.addPerson(personBefore);
         application.modifyPersonalData(personAfter);
 
-        application.logPersonOidIfChanged("jälkikäsittely", originalPersonOid);
-        application.logStudentOidIfChanged("jälkikäsittely", originalStudentOid);
+        application.logPersonOidIfChanged(changedBy, originalPersonOid);
+        application.logStudentOidIfChanged(changedBy, originalStudentOid);
 
         return application;
     }
 
     Application checkStudentOid(Application application) {
-        String personOid = application.getPersonOid();
-
-        if (isEmpty(personOid)) {
-            application = addPersonOid(application);
-            personOid = application.getPersonOid();
-        }
-
-        final String studentOid = application.getStudentOid();
-
-        if (isNotEmpty(studentOid)){
-            application.flagStudentIdentificationDone();
-        } else if (isNotEmpty(personOid)) {
-
-            Long lastFailedRetryTime = application.getAutomatedProcessingFailRetryTime();
-            Integer failCount = application.getAutomatedProcessingFailCount();
-            Person person = null;
-            if(lastFailedRetryTime == null || failCount == null || failCount < this.retryFailQuickCount || lastFailedRetryTime < (System.currentTimeMillis() - retryFailedAgainTime)) {
-                person = authenticationService.checkStudentOid(application.getPersonOid());
-                if (person != null && isNotEmpty(person.getStudentOid())) {
-                    application.modifyPersonalData(person);
-                    application.flagStudentIdentificationDone();
-                } else {
-                    application.setAutomatedProcessingFailCount(application.getAutomatedProcessingFailCount() == null ? 1 : application.getAutomatedProcessingFailCount() + 1);
-                    application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis());
-                }
+        Long lastFailedRetryTime = application.getAutomatedProcessingFailRetryTime();
+        Integer failCount = application.getAutomatedProcessingFailCount();
+        if(lastFailedRetryTime == null || failCount == null || failCount < this.retryFailQuickCount || lastFailedRetryTime < (System.currentTimeMillis() - retryFailedAgainTime)) {
+            application = addPersonOid(application, "yksilöinti");
+            if (isEmpty(application.getStudentOid())) {
+                application.setAutomatedProcessingFailCount(application.getAutomatedProcessingFailCount() == null ? 1 : application.getAutomatedProcessingFailCount() + 1);
+                application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis());
+            }
+            else {
+                application.flagStudentIdentificationDone();
             }
         }
         return application;
