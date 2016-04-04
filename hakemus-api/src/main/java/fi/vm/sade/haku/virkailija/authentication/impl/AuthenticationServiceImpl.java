@@ -209,22 +209,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return gson.fromJson(responseString, Person.class);
     }
 
-    @Override
-    public Person checkStudentOid(String personOid) {
-
-        String url = "/resources/s2s/" + personOid;
-        try {
-            String responseString = cachingRestClient.getAsString(url);
-            log.debug("Person found: {}", responseString);
-            return gson.fromJson(responseString, Person.class);
-        } catch (CachingRestClient.HttpException hte) {
-            // Nothing to do
-        } catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
-        }
-        return null;
-    }
-
     private Person createPerson(Person person) {
         String personJson = gson.toJson(person, Person.class);
         String url = "/resources/henkilo";

@@ -30,8 +30,6 @@ public interface AuthenticationService {
 
     Person getStudentOid(String personOid);
 
-    Person checkStudentOid(String personOid);
-
     String getLangCookieName();
     
     List<Person> getHenkiloList(List<String> personOids);

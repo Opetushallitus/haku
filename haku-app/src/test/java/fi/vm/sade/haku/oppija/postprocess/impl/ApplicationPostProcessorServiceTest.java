@@ -16,6 +16,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class ApplicationPostProcessorServiceTest {
         Application application = new Application();
 
         application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
-        application = applicationPostProcessorService.addPersonOid(application);
+        application = applicationPostProcessorService.addPersonOid(application, "test");
         assertNotNull("PersonOid should not be null", application.getPersonOid());
 
         verify(authenticationService, times(1)).addPerson((Person) anyObject());
@@ -107,7 +108,7 @@ public class ApplicationPostProcessorServiceTest {
         answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
         application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
-        application = applicationPostProcessorService.addPersonOid(application);
+        application = applicationPostProcessorService.addPersonOid(application, "test");
         assertNotNull("PersonOid should not be null", application.getPersonOid());
 
         verify(authenticationService, times(1)).addPerson((Person) anyObject());
@@ -120,6 +121,7 @@ public class ApplicationPostProcessorServiceTest {
         application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.flagStudentIdentificationRequired();
 
+        when(authenticationService.addPerson(any(Person.class))).thenReturn(PersonBuilder.start().setPersonOid("1.2.3").setStudentOid("1.2.3").get());
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
 
         assertNotNull(modified.getPersonOid());
@@ -127,7 +129,6 @@ public class ApplicationPostProcessorServiceTest {
         assertNull(modified.getStudentIdentificationDone());
 
         verify(authenticationService, times(1)).addPerson((Person) anyObject());
-        verify(authenticationService, times(1)).checkStudentOid(anyString());
         verifyNoMoreInteractions(authenticationService);
     }
 
@@ -138,13 +139,14 @@ public class ApplicationPostProcessorServiceTest {
         application.setPersonOid("1.2.3");
         application.flagStudentIdentificationRequired();
 
+        when(authenticationService.addPerson(any(Person.class))).thenReturn(PersonBuilder.start().setPersonOid("1.2.3").setStudentOid("1.2.3").get());
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
 
         assertEquals(application.getPersonOid(), modified.getPersonOid());
         assertNotNull(modified.getPersonOid());
         assertNull(modified.getStudentIdentificationDone());
 
-        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        verify(authenticationService, times(1)).addPerson((Person) anyObject());
         verifyNoMoreInteractions(authenticationService);
     }
 
@@ -155,18 +157,17 @@ public class ApplicationPostProcessorServiceTest {
         application.setPersonOid("1.2.3");
         application.flagStudentIdentificationRequired();
 
-        when(authenticationService.checkStudentOid(anyString())).thenReturn(PersonBuilder.start().setPersonOid("1.2.3").get());
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
 
         assertNotEquals(application.getAutomatedProcessingFailCount(), modified.getAutomatedProcessingFailCount());
         assertNotNull(modified.getStudentIdentificationDone());
 
-        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        verify(authenticationService, times(1)).addPerson(any(Person.class));
         verifyNoMoreInteractions(authenticationService);
     }
 
     @Test
-    public void testCheckStudentOidAlreadySet(){
+    public void testCheckStudentOidAlreadySetButAuthenticationServiceRetunsDifferentPersonOid(){
         final Application application = new Application();
         application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.setPersonOid("1.2.3");
@@ -175,11 +176,12 @@ public class ApplicationPostProcessorServiceTest {
 
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
 
-        assertEquals(application.getPersonOid(), modified.getPersonOid());
+        assertNotEquals(application.getPersonOid(), modified.getPersonOid());
         assertEquals(application.getStudentOid(), modified.getStudentOid());
         assertNull(modified.getStudentIdentificationDone());
 
-        verifyZeroInteractions(authenticationService);
+        verify(authenticationService, times(1)).addPerson(any(Person.class));
+        verifyNoMoreInteractions(authenticationService);
     }
 
 
@@ -190,7 +192,7 @@ public class ApplicationPostProcessorServiceTest {
         application.setPersonOid("1.2.3");
         application.flagStudentIdentificationRequired();
 
-        when(authenticationService.checkStudentOid(anyString())).thenReturn(null);
+        when(authenticationService.getHenkilo(anyString())).thenReturn(null);
         Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
         assertEquals(new Integer(1), modified.getAutomatedProcessingFailCount());
 
@@ -209,14 +211,13 @@ public class ApplicationPostProcessorServiceTest {
         application.setAutomatedProcessingFailCount(20);
         application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis());
 
-        when(authenticationService.checkStudentOid(anyString())).thenReturn(null);
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
         verifyZeroInteractions(authenticationService);
         assertEquals(new Integer(20), modified.getAutomatedProcessingFailCount());
 
         application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis()-20000);
         final Application modified2 = applicationPostProcessorService.checkStudentOid(application.clone());
-        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        verify(authenticationService, times(1)).addPerson(any(Person.class));
         assertEquals(new Integer(21), modified2.getAutomatedProcessingFailCount());
     }
 
