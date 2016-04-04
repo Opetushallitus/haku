@@ -49,11 +49,6 @@
         </dependency>
 
         <dependency>
-            <groupId>fi.vm.sade.koodisto</groupId>
-            <artifactId>koodisto-api</artifactId>
-            <version>${koodisto-api.version}</version>
-        </dependency>
-        <dependency>
             <groupId>fi.vm.sade.koulutusinformaatio</groupId>
             <artifactId>koulutusinformaatio-api</artifactId>
             <version>${koulutusinformaatio-api.version}</version>
