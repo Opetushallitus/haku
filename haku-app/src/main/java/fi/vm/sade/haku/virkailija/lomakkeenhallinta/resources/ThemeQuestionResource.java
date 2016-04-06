@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
-import com.mongodb.WriteResult;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -26,11 +25,11 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestionCompact;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,26 +37,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
+import static javax.ws.rs.core.Response.*;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 @Controller
 @Path("/application-system-form-editor/theme-question")
@@ -126,7 +116,7 @@ public class ThemeQuestionResource {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
         if (themeQuestionHasActiveOrLockedChildren(themeQuestionId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "question.has.followup.questions.deletion.not.allowed", null);
+            throw new JSONException(Status.BAD_REQUEST, "question.has.followup.questions.deletion.not.allowed", null);
         }
         themeQuestionDAO.delete(themeQuestionId);
 
@@ -161,7 +151,7 @@ public class ThemeQuestionResource {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
 
         if (!themeQuestionId.equals(themeQuestion.getId().toString())){
-            throw new JSONException(Response.Status.BAD_REQUEST, "theme question id mismatch", null);
+            throw new JSONException(Status.BAD_REQUEST, "theme question id mismatch", null);
         }
         if (themeQuestion.getTargetIsGroup()) {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
@@ -190,7 +180,7 @@ public class ThemeQuestionResource {
     private ThemeQuestion fetchThemeQuestion(String themeQuestionId){
         ThemeQuestion dbThemeQuestion = themeQuestionDAO.findById(themeQuestionId);
         if (null == dbThemeQuestion){
-            throw new JSONException(Response.Status.NOT_FOUND, "No such theme question found", null);
+            throw new JSONException(Status.NOT_FOUND, "No such theme question found", null);
         }
         return dbThemeQuestion;
     }
@@ -207,21 +197,21 @@ public class ThemeQuestionResource {
 
         LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
-            throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
+            throw new JSONException(Status.BAD_REQUEST, "Missing pathparameters", null);
         String tqAsId = themeQuestion.getApplicationSystemId();
         if (! applicationSystemId.equals(tqAsId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on applicationSystemId from path and model", null);
+            throw new JSONException(Status.BAD_REQUEST, "Data error: Mismatch on applicationSystemId from path and model", null);
         }
         String tqLoId = themeQuestion.getLearningOpportunityId();
         if (null == tqLoId){
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Missing learningOpportunityId", null);
+            throw new JSONException(Status.BAD_REQUEST, "Data error: Missing learningOpportunityId", null);
         }
         if (!learningOpportunityId.equals(tqLoId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on learningOpportunityId from path and model", null);
+            throw new JSONException(Status.BAD_REQUEST, "Data error: Mismatch on learningOpportunityId from path and model", null);
         }
         String tqThemeId = themeQuestion.getTheme();
         if (! themeId.equals(tqThemeId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
+            throw new JSONException(Status.BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
         }
         //Check if parent exists
         String parentId = null;
@@ -230,10 +220,10 @@ public class ThemeQuestionResource {
             if (!parentId.isEmpty()) {
                 ThemeQuestion parent = themeQuestionDAO.findById(parentId);
                 if (null == parent) {
-                    throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Parent does not exist", null);
+                    throw new JSONException(Status.BAD_REQUEST, "Data error: Parent does not exist", null);
                 }
                 if (parent.getState().equals(ThemeQuestion.State.DELETED)) {
-                    throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Parent is deleted", null);
+                    throw new JSONException(Status.BAD_REQUEST, "Data error: Parent is deleted", null);
                 }
             }
         }
@@ -274,15 +264,15 @@ public class ThemeQuestionResource {
       @PathParam("themeId") String themeId, Map<String,Map<String,String>> reorderedQuestions) {
         LOGGER.debug("Posted " + reorderedQuestions);
         if (null == learningOpportunityId || null == themeId)
-            throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
+            throw new JSONException(Status.BAD_REQUEST, "Missing pathparameters", null);
         Set<String> themeQuestionIds = reorderedQuestions.keySet();
 
         if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
-            throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+            throw new JSONException(Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
 
         if (!themeQuestionHierarchyForReorderingValid(themeQuestionIds)) {
             LOGGER.debug("Exception due to invalid parentId values");
-            throw new JSONException(Response.Status.BAD_REQUEST, "ParentId values of given questions invalid", null);
+            throw new JSONException(Status.BAD_REQUEST, "ParentId values of given questions invalid", null);
         }
         List<Map<String, String>> values = new ArrayList(reorderedQuestions.values());
         boolean changes = false;
@@ -293,22 +283,22 @@ public class ThemeQuestionResource {
                 Integer oldOrdinal = Integer.valueOf(value.get(PARAM_OLD_ORDINAL));
                 if (null == newOrdinal) {
                     LOGGER.debug("Exception due to new ordinal null value");
-                    throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
+                    throw new JSONException(Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
                 }
                 if (!newOrdinal.equals(oldOrdinal))
                     changes = true;
                 if (newOrdinal < 1 || reorderedQuestions.size() < newOrdinal) {
                     LOGGER.debug("Exception due to new ordinal value. New ordinal: {}, questionCount : {}", newOrdinal, reorderedQuestions.size());
-                    throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
+                    throw new JSONException(Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
                 }
                 long currentOrdinalCheckSum = 1 << newOrdinal;
                 if ((currentOrdinalCheckSum & ordinalCheckSum) > 0) {
                     LOGGER.debug("Exception due to ordinalCheckSums. Current: {}, total: {}", currentOrdinalCheckSum, ordinalCheckSum);
-                    throw new JSONException(Response.Status.BAD_REQUEST, "Duplicate ordinals", null);
+                    throw new JSONException(Status.BAD_REQUEST, "Duplicate ordinals", null);
                 }
                 ordinalCheckSum += currentOrdinalCheckSum;
             } catch (NumberFormatException exception){
-                throw new JSONException(Response.Status.BAD_REQUEST, "Ordinal values must be integers", null);
+                throw new JSONException(Status.BAD_REQUEST, "Ordinal values must be integers", null);
             }
         }
         if (!changes){
@@ -344,12 +334,12 @@ public class ThemeQuestionResource {
             }
             for (String id : themeQuestionIds) {
                 parentId = themeQuestionDAO.findById(id).getParentId();
-                if (StringUtils.isNotBlank(firstItemParentId)) { //Must be a child of same parent
-                    if (null == parentId || StringUtils.isBlank(parentId.toString()) || !parentId.toString().equals(firstItemParentId)) {
+                if (isNotBlank(firstItemParentId)) { //Must be a child of same parent
+                    if (null == parentId || isBlank(parentId.toString()) || !parentId.toString().equals(firstItemParentId)) {
                         return false;
                     }
                 } else { //Must not be a child
-                    if (null != parentId && StringUtils.isNotBlank(parentId.toString())) {
+                    if (null != parentId && isNotBlank(parentId.toString())) {
                         return false;
                     }
                 }
@@ -383,10 +373,10 @@ public class ThemeQuestionResource {
         try {
             applicationOption = hakukohdeService.findByOid(applicationOptionId);
             if (null == applicationOption)
-                throw new JSONException(Response.Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
+                throw new JSONException(Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
         } catch (RuntimeException exception){
             LOGGER.error("Application Option Search failed", exception);
-            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
+            throw new JSONException(Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
         }
         LOGGER.debug("Filling in organizations for theme question");
         Iterator<String> providerOids = applicationOption.getTarjoajaOids().iterator();
