@@ -1,0 +1,45 @@
+{
+  "_id" : "5576dcade4b028b630a4faec",
+  "type" : "CheckBox",
+  "applicationSystemId" : "1.2.246.562.29.10714450698",
+  "theme" : "hakutoiveet_teema",
+  "learningOpportunityId" : "1.2.246.562.20.48557383691",
+  "targetIsGroup" : false,
+  "ordinal" : 1,
+  "validators" : {
+    "min" : "1",
+    "max" : "1"
+  },
+  "state" : "ACTIVE",
+  "creatorPersonOid" : "1.2.246.562.24.27937569752",
+  "ownerOrganizationOids" : [
+    "1.2.246.562.10.60198812368",
+    "1.2.246.562.10.00000000001",
+    "1.2.246.562.10.67476956288"
+  ],
+  "messageText" : {
+    "translations" : {
+      "fi" : "Ennakkotehtävä"
+    }
+  },
+  "helpText" : {
+    "translations" : {
+      "fi" : "Olen huomannut, että hakemuksen lähettämisen jälkeen minun tulee toimittaa ennakkotehtävä Metropolia Ammattikorkeakoulun hakijapalveluihin 22.9.2015 klo. 15.00 mennessä. Tarkemmat ohjeet löytyvät osoitteesta www.metropolia.fi/haku"
+    }
+  },
+  "verboseHelpText" : {
+    "translations" : {}
+  },
+  "requiredFieldValidator" : true,
+  "onCompletedPage" : false,
+  "options" : [
+    {
+      "id" : "option_0",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Kyllä"
+        }
+      }
+    }
+  ]
+}
