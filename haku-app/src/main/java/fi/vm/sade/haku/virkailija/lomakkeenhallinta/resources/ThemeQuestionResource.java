@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -407,6 +408,43 @@ public class ThemeQuestionResource {
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;
+    }
+
+    @GET
+    @Path("allAsMap/{applicationSystemId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public Response getAllThemeQuestionsAsMap(@PathParam("applicationSystemId") String applicationSystemId,
+                                              @QueryParam("lang") String lang) {
+
+        Set<String> validationErrors = getThemeQuestionsAsMapValidationErrors(applicationSystemId, lang);
+
+        if (!validationErrors.isEmpty()) {
+            return status(Status.BAD_REQUEST)
+                    .entity(ImmutableMap.of("errors", validationErrors))
+                    .build();
+        }
+
+        Map<ObjectId, ThemeQuestionCompact> questionMap = new HashMap<>();
+
+        ThemeQuestionQueryParameters queryParams = new ThemeQuestionQueryParameters();
+        queryParams.setApplicationSystemId(applicationSystemId);
+
+        for (ThemeQuestion question : themeQuestionDAO.query(queryParams)) {
+            questionMap.put(question.getId(), ThemeQuestionCompact.convert(question, lang));
+        }
+
+        return ok(questionMap).build();
+    }
+
+    private static Set<String> getThemeQuestionsAsMapValidationErrors(String applicationSystemId, String lang) {
+        Set<String> errors = new HashSet<>();
+        if (isBlank(applicationSystemId)) {
+            errors.add("applicationSystemId is required");
+        }
+        if (isBlank(lang)) {
+            errors.add("lang is required");
+        }
+        return errors;
     }
 
     private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId){

@@ -1,0 +1,53 @@
+{
+  "_id" : "5576d69de4b0b711f6a2eb7e",
+  "type" : "RadioButton",
+  "applicationSystemId" : "1.2.246.562.29.10714450698",
+  "theme" : "hakutoiveet_teema",
+  "learningOpportunityId" : "1.2.246.562.20.94819169833",
+  "targetIsGroup" : false,
+  "ordinal" : 1,
+  "state" : "ACTIVE",
+  "creatorPersonOid" : "1.2.246.562.24.27937569752",
+  "ownerOrganizationOids" : [
+    "1.2.246.562.10.60198812368",
+    "1.2.246.562.10.00000000001",
+    "1.2.246.562.10.67476956288"
+  ],
+  "messageText" : {
+    "translations" : {
+      "fi" : "Tähän koulutukseen hakevilla tulee olla vähintään tason B1 suomen kielen taidot",
+      "en" : "Applicants to this programme must have at least level B1 Finnish language skills"
+    }
+  },
+  "helpText" : {
+    "translations" : {
+      "fi" : "Tähän koulutukseen hakevilla tulee olla vähintään tason B1 suomen kielen taidot. Katso Europass itsearviointilokerikon linkki: https://europass.cedefop.europa.eu/fi/resources/european-language-levels-cefr. Vain ne hakukelpoiset hakijat, jotka ovat hakemuksellaan ilmoittaneet, että heillä on vaadittu suomen kielen taitotaso tullaan kutsumaan valintakokeeseen. Todistusta ei tarvitse lähettää, koska suomen kielen taito tullaan testaamaan valintakokeen yhteydessä.",
+      "en" : "Applicants to this programme must have at least level B1 Finnish language skills. Please see the link to the Common European Framework of reference for languages for the level descriptions: http://europass.cedefop.europa.eu/en/resources/european-language-levels-cefr. Only those who have informed in their applications that they have the required Finnish language skills will be invited to the entrance examination. It is not necessary to send any documentary evidence of the Finnish language skills but the Finnish language skills will be tested in the entrance examination."
+    }
+  },
+  "verboseHelpText" : {
+    "translations" : {}
+  },
+  "requiredFieldValidator" : false,
+  "onCompletedPage" : false,
+  "options" : [
+    {
+      "id" : "option_0",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Kyllä, minulla on vähintään tason B1 suomen kielen taidot",
+          "en" : "Yes, I have the required Finnish language skills (at least level B1)"
+        }
+      }
+    },
+    {
+      "id" : "option_1",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Ei, minulla ei ole vaadittua suomen kielen taitoa",
+          "en" : "No, I do not have the required Finnish language skills (at least level B1)"
+        }
+      }
+    }
+  ]
+}

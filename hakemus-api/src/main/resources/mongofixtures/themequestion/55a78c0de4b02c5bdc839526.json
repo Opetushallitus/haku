@@ -1,0 +1,33 @@
+{
+  "_id" : "55a78c0de4b02c5bdc839526",
+  "type" : "TextQuestion",
+  "applicationSystemId" : "1.2.246.562.29.10714450698",
+  "theme" : "hakutoiveet_teema",
+  "learningOpportunityId" : "1.2.246.562.20.28857182928",
+  "targetIsGroup" : false,
+  "ordinal" : 1,
+  "state" : "ACTIVE",
+  "creatorPersonOid" : "1.2.246.562.24.19970371779",
+  "ownerOrganizationOids" : [
+    "1.2.246.562.10.64291752455",
+    "1.2.246.562.10.00000000001",
+    "1.2.246.562.10.45852282313",
+    "1.2.246.562.10.41209513476"
+  ],
+  "messageText" : {
+    "translations" : {
+      "fi" : "Pohjakoulutus"
+    }
+  },
+  "helpText" : {
+    "translations" : {
+      "fi" : "Merkitse tähän pohjakoulutus (yksi), jota käytät hakiessasi TAMKin sosionomi (AMK) -tutkintoon. Ilmoittamasi koulutuksen tulee löytyä hakemuksen alussa ilmoittamistasi koulutuksista. <br />\nVoit hakea TAMKin sosionomi (AMK) -koulutukseen vain, jos sinulla on jokin seuraavista koulutuksista: <br />\n- sosiaali- ja terveysalan perustutkinto tai vastaava aikaisempi kouluasteen tutkinto, <br />\n- lapsi- ja perhetyön perustutkinto tai vastaava aikaisempi kouluasteen tutkinto, <br />\n- nuoriso- ja vapaa-ajanohjauksen perustutkinto  tai vastaava aikaisempi kouluasteen tutkinto, <br />\n- sosiaali-, terveys- tai kasvatusalan opistoasteen tutkinto (poistunut Suomen koulutusjärjestelmästä 1990-luvulla), <br />\n- sosionomi (AMK) -tutkinto, johon ei ole sisältynyt 60 op varhaiskasvatuksen pedagogisia opintoja tai <br />\n- artenomi (AMK) -tutkinto."
+    }
+  },
+  "verboseHelpText" : {
+    "translations" : {}
+  },
+  "requiredFieldValidator" : true,
+  "onCompletedPage" : false,
+  "size" : 50
+}
