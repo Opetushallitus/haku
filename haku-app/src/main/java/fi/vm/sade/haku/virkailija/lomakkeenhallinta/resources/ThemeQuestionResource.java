@@ -415,6 +415,7 @@ public class ThemeQuestionResource {
 
     @GET
     @Path("allAsMap/{applicationSystemId}")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public Response getAllThemeQuestionsAsMap(@PathParam("applicationSystemId") String applicationSystemId,
                                               @QueryParam("lang") String lang) {
