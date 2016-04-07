@@ -37,12 +37,13 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     public static final int RANGE_SIZE = 1000000000;
     private static final String OID_PREFIX = "1.2.246.562.24.";
 
+    @Override
     public Person addPerson(Person person) {
+        if(person == null) {
+            return null;
+        }
         PersonBuilder builder = PersonBuilder.start(person)
                 .setPersonOid(OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE)));
-//        PersonBuilder builder = PersonBuilder.start(person)
-//                .setPersonOid("1.2.246.562.24.52904508892");
-
         return builder.get();
     }
 
@@ -89,11 +90,6 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     @Override
     public Person getStudentOid(String personOid) {
-        return PersonBuilder.start().setStudentOid(personOid).get();
-    }
-
-    @Override
-    public Person checkStudentOid(String personOid) {
         return PersonBuilder.start().setStudentOid(personOid).get();
     }
 
