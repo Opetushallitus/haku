@@ -143,7 +143,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             }
         } catch (Exception e) {
             LOGGER.error("post process (identification) failed for application: " + updateQuery.getOid(), e);
-            setProcessingStateToFailed(application, e.getMessage());
+            setProcessingStateToFailed(updateQuery, e.getMessage());
         }
     }
 
