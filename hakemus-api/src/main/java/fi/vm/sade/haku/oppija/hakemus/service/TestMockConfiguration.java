@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 
 import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
@@ -18,35 +19,11 @@ import static fi.vm.sade.haku.testfixtures.HakumaksuMockData.testMappings;
 @Profile({"it", "dev"})
 public class TestMockConfiguration {
 
-    @Value("${cas.service.koodisto-service}")
-    String koodistoServiceUrl;
-
-    @Value("${koulutusinformaatio.ao.resource.url}")
-    String koulutusinformaatioUrl;
-
-    @Value("${oppijantunnistus.create.url}")
-    String oppijanTunnistusUrl;
-
-    @Value("${hakuperusteet.url.fi}")
-    String hakuperusteetUrlFi;
-
-    @Value("${hakuperusteet.url.sv}")
-    String hakuperusteetUrlSv;
-
-    @Value("${hakuperusteet.url.en}")
-    String hakuperusteetUrlEn;
-
-    @Value("${email.application.modify.link.fi}")
-    String emailApplicationModifyLinkFi;
-
-    @Value("${email.application.modify.link.sv}")
-    String emailApplicationModifyLinkSv;
-
-    @Value("${email.application.modify.link.en}")
-    String emailApplicationModifyLinkEn;
-
     @Autowired
     ApplicationSystemService applicationSystemService;
+
+    @Autowired
+    UrlConfiguration urlConfiguration;
 
     MockedRestClient restClient = new MockedRestClient(testMappings());
 
@@ -55,19 +32,14 @@ public class TestMockConfiguration {
     @Bean(name = "hakumaksuService")
     public HakumaksuService hakumaksuService() {
         return new HakumaksuService(
-                koodistoServiceUrl,
-                koulutusinformaatioUrl,
-                oppijanTunnistusUrl,
-                hakuperusteetUrlFi,
-                hakuperusteetUrlSv,
-                hakuperusteetUrlEn,
+                urlConfiguration,
                 restClient
         );
     }
 
     @Bean(name = "sendMailService")
     public SendMailService sendMailService() {
-        return new SendMailService(applicationSystemService, restClient, emailService, emailApplicationModifyLinkFi, emailApplicationModifyLinkSv, emailApplicationModifyLinkEn);
+        return new SendMailService(applicationSystemService, restClient, emailService, urlConfiguration);
     }
 
 }

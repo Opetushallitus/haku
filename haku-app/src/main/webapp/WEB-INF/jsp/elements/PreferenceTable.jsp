@@ -169,13 +169,7 @@
                 </c:choose>
             </c:otherwise>
         </c:choose>
-        preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
-        <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-        koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
-        </c:if>
-        <c:if test="${not fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') and not fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
-        koulutusinformaatioBaseUrl: location.protocol + '//<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
-        </c:if>
+        preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>'
     }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/javascript/preferencerow.js"></script>

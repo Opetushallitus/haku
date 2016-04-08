@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.http.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -42,24 +43,24 @@ import static org.junit.Assert.*;
 
 public class HakumaksuTest {
 
-    static final MockedRestClient mockRestClient = new MockedRestClient(testMappings());
-    static final String oppijanTunnistusUrl = "http://localhost/oppijan-tunnistus";
-    static final String hakuperusteetUrlFi = "http://localhost/hakuperusteet-fi";
-    static final String hakuperusteetUrlSv = "http://localhost/hakuperusteet-sv";
-    static final String hakuperusteetUrlEn = "http://localhost/hakuperusteet-en";
-    private static final long PAYMENT_DUE_DATE_MILLIS = 1453893850027L;
+    private MockedRestClient mockRestClient = new MockedRestClient(testMappings());
+    private String oppijanTunnistusUrl = "https://localhost:9090/oppijan-tunnistus/api/v1/token";
+    private String hakuperusteetUrlSv = "https://localhost-sv";
+    private long PAYMENT_DUE_DATE_MILLIS = 1453893850027L;
     ImmutableList<ApplicationPeriod> applicationPeriods = ImmutableList.of(
             new ApplicationPeriod(new Date(0), new Date(new Date().getTime() + 20000))
     );
 
-    final protected HakumaksuService service = new HakumaksuService(
-            "http://localhost:9090/haku-app/koodisto",
-            "http://localhost:9090/haku-app/education",
-            oppijanTunnistusUrl,
-            hakuperusteetUrlFi,
-            hakuperusteetUrlSv,
-            hakuperusteetUrlEn,
-            mockRestClient);
+    private final UrlConfiguration urls = new UrlConfiguration();
+
+    protected HakumaksuService service;
+
+    public HakumaksuTest() {
+        urls.addDefault("host.virkailija","localhost:9090")
+                .addDefault("host.haku","localhost-fi")
+                .addDefault("host.haku.sv","localhost-sv");
+        service = new HakumaksuService(urls, mockRestClient);
+    }
 
     @Before
     public void before() {
@@ -132,18 +133,18 @@ public class HakumaksuTest {
                         ImmutableSet.of(Eligibility.ulkomainen("maisteri", Types.IsoCountryCode.of("ABW"))))));
     }
 
-    private static final ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
+    private ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
             "pohjakoulutus_ulk", "true",
             "pohjakoulutus_ulk_nimike", "Ulkomaalainen korkeakoulutus",
             "pohjakoulutus_ulk_suoritusmaa", "abw");
-    private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.getArvo();
+    private String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.getArvo();
 
-    private static final PaymentEmail testEmail = new PaymentEmail(SafeString.of("email title"),
+    private PaymentEmail testEmail = new PaymentEmail(SafeString.of("email title"),
             SafeString.of("empty tempalote"), OppijanTunnistusDTO.LanguageCodeISO6391.sv, new Date(0));
 
     // The real utility is in haku-app but unfortunately this code is not
     // easily movable there, need to duplicate for test
-    private static final Function<Application, PaymentEmail> returnTestEmail = new Function<Application, PaymentEmail>() {
+    private Function<Application, PaymentEmail> returnTestEmail = new Function<Application, PaymentEmail>() {
         @Nullable
         @Override
         public PaymentEmail apply(@Nullable Application input) {
@@ -188,7 +189,7 @@ public class HakumaksuTest {
 
         OppijanTunnistusDTO body = (OppijanTunnistusDTO) match.body;
         assertEquals(expectedEmail, body.email);
-        assertEquals(hakuperusteetUrlSv + "/app/" + expectedHakemusOid + "#/token/", body.url);
+        assertEquals(hakuperusteetUrlSv + "/hakuperusteet/app/" + expectedHakemusOid + "#/token/", body.url);
         assertEquals(OppijanTunnistusDTO.LanguageCodeISO6391.sv, body.lang);
         assertEquals(expectedHakemusOid, body.metadata.hakemusOid);
         assertEquals(expectedPersonOid, body.metadata.personOid);

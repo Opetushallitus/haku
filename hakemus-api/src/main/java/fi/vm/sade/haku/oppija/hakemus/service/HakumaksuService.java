@@ -7,6 +7,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -14,6 +15,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.properties.OphProperties;
+import fi.vm.sade.properties.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,28 +44,15 @@ public class HakumaksuService {
     public static final String SYSTEM_USER = "järjestelmä";
 
     private final HakumaksuUtil util;
-    private final SafeString oppijanTunnistusUrl;
 
-    private final ImmutableMap<LanguageCodeISO6391, SafeString> languageCodeToServiceUrlMap;
+    private final UrlConfiguration urlConfiguration;
 
     public HakumaksuService(
-            final String koodistoServiceUrl,
-            final String koulutusinformaatioUrl,
-            final String oppijanTunnistusUrl,
-            final String hakuperusteetUrlFi,
-            final String hakuperusteetUrlSv,
-            final String hakuperusteetUrlEn,
+            final UrlConfiguration urlConfiguration,
             final RestClient restClient
     ) {
-        this.oppijanTunnistusUrl = SafeString.of(oppijanTunnistusUrl);
-
-        this.languageCodeToServiceUrlMap = ImmutableMap.of(
-                fi, SafeString.of(hakuperusteetUrlFi),
-                sv, SafeString.of(hakuperusteetUrlSv),
-                en, SafeString.of(hakuperusteetUrlEn)
-        );
-
-        util = new HakumaksuUtil(restClient, SafeString.of(koulutusinformaatioUrl), SafeString.of(koodistoServiceUrl));
+        this.urlConfiguration = urlConfiguration;
+        util = new HakumaksuUtil(restClient, urlConfiguration);
     }
 
     private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {
@@ -319,17 +309,13 @@ public class HakumaksuService {
                                        PersonOid personOid) throws ExecutionException, InterruptedException {
         if (!util.sendPaymentRequest(
                 paymentEmail,
-                oppijanTunnistusUrl,
-                getServiceUrl(applicationOid, paymentEmail.language),
+                urlConfiguration.url("oppijan-tunnistus.create"),
+                urlConfiguration.url("hakuperusteet.tokenUrl." + paymentEmail.language.toString(), applicationOid),
                 applicationOid,
                 personOid,
                 emailAddress).get()) {
             throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
                     applicationOid + ", personOid " + personOid + ", emailAddress " + emailAddress);
         }
-    }
-
-    private SafeString getServiceUrl(ApplicationOid applicationOid, LanguageCodeISO6391 languageCode) {
-        return SafeString.of(languageCodeToServiceUrlMap.get(languageCode) + "/app/" + applicationOid + "#/token/");
     }
 }

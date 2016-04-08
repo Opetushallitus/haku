@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.it;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.http.HttpRestClient;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
@@ -20,13 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class HakumaksuServiceIT {
-    private static final HakumaksuService hakumaksuService = new HakumaksuService(
-            "https://testi.virkailija.opintopolku.fi/koodisto-service",
-            "https://testi.opintopolku.fi/ao",
-            "https://testi.virkailija.opintopolku.fi/oppijan-tunnistus",
-            "https://testi.opintopolku.fi/hakuperusteet",
-            "https://testi.studieinfo.fi/hakuperusteet",
-            "https://testi.studyinfo.fi/hakuperusteet",
+    private static final HakumaksuService hakumaksuService = new HakumaksuService(new UrlConfiguration(),
             new HttpRestClient());
 
     private static final String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";

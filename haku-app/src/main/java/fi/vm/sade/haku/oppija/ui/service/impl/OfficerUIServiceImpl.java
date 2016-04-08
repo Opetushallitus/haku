@@ -8,6 +8,7 @@ import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
@@ -84,9 +85,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final FormService formService;
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
-    private final String koulutusinformaatioBaseUrl;
-    private final String tarjontaUrl;
     private final LoggerAspect loggerAspect;
+    private final UrlConfiguration urlConfiguration;
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
@@ -107,8 +107,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
-                                @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
-                                @Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaUrl,
+                                UrlConfiguration urlConfiguration,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
@@ -122,8 +121,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.koodistoService = koodistoService;
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
-        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
-        this.tarjontaUrl = tarjontaUrl;
+        this.urlConfiguration = urlConfiguration;
         this.elementTreeValidator = elementTreeValidator;
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
@@ -148,7 +146,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Element element = form.getChildById(elementId);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-        ModelResponse modelResponse = new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        ModelResponse modelResponse = new ModelResponse(application, form, element, validationResult);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
         return modelResponse;
     }
@@ -187,7 +185,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-        ModelResponse modelResponse = new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
+        ModelResponse modelResponse = new ModelResponse(application, form, elements, validationResult);
         modelResponse.addAnswers(answers);
 
         return modelResponse;
@@ -223,7 +221,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
 
         ModelResponse modelResponse =
-                new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+                new ModelResponse(application, form, element, validationResult);
         modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
         modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(as, application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
@@ -469,7 +467,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationService.updateAuthorizationMeta(application);
         this.applicationService.update(queryApplication, application, true);
         application.setPhaseId(applicationPhase.getPhaseId());
-        ModelResponse response = new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
+        ModelResponse response = new ModelResponse(application, form, phase, phaseValidationResult);
         response.addObjectToModel("ongoing", false);
         return response;
     }
@@ -530,7 +528,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         modelResponse.addObjectToModel("defaultYear", defaultYear);
         modelResponse.addObjectToModel("defaultSemester", semester);
-        modelResponse.addObjectToModel("tarjontaUrl", tarjontaUrl);
         return modelResponse;
     }
 
@@ -747,8 +744,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         ModelResponse response = new ModelResponse(application,
                 applicationSystem,
-                AttachmentUtil.resolveAttachments(application),
-                koulutusinformaatioBaseUrl);
+                AttachmentUtil.resolveAttachments(application));
         response.addObjectToModel("alatunnisterivit", new ArrayList<I18nText>(4) {{
             add(i18nBundleService.getBundle(applicationSystem).get("lomake.tulostus.alatunniste.rivi1"));
             add(i18nBundleService.getBundle(applicationSystem).get("lomake.tulostus.alatunniste.rivi2"));

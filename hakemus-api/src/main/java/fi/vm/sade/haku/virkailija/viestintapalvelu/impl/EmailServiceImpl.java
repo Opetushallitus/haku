@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 import com.google.gson.Gson;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
@@ -29,8 +30,6 @@ public class EmailServiceImpl implements EmailService {
 	private Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
     @Value("${ryhmasahkoposti.rest.url}")
     private String ryhmasahkopostiRestUrl;
-    @Value("${web.url.cas}")
-    private String casUrl;
     @Value("${cas.service.ryhmasahkoposti}")
     private String targetService;
     @Value("${haku.app.username.to.viestintapalvelu}")
@@ -41,12 +40,14 @@ public class EmailServiceImpl implements EmailService {
     private EmailDataBuilder emailDataBuilder;
     private CachingRestClient cachingRestClient;
 	private ObjectMapper objectMapper = new ObjectMapper();
+	private UrlConfiguration urlConfiguration;
 
-    @Autowired
-    public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder) {
+	@Autowired
+    public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, UrlConfiguration urlConfiguration) {
     	this.pdfService = pdfService;
     	this.emailDataBuilder = emailDataBuilder;
-    }
+		this.urlConfiguration = urlConfiguration;
+	}
 
 	@Override
 	public String sendApplicationByEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
@@ -59,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
 	private synchronized CachingRestClient getCachingRestClient() {
 	    if (cachingRestClient == null) {
 	        cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
-	        cachingRestClient.setWebCasUrl(casUrl);
+	        cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
 	        cachingRestClient.setCasService(targetService);
 	        cachingRestClient.setUsername(clientAppUser);
 	        cachingRestClient.setPassword(clientAppPass);

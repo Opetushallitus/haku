@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,7 +39,8 @@ public class SuoritusrekisteriServiceImplTest {
 
     @Before
     public void setUp() {
-        suoritusrekisteriService =  new SuoritusrekisteriServiceImpl();
+        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        suoritusrekisteriService =  new SuoritusrekisteriServiceImpl(urlConfiguration);
         cachingRestClient = mock(CachingRestClient.class);
 
         yesterday = new Date(System.currentTimeMillis() - ONE_DAY);

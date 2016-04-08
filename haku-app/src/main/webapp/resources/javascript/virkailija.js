@@ -906,12 +906,11 @@ $(document).ready(function () {
             minLength: 3,
             delay: 500,
             source: function (req, res) {
-                var qParams = {
+                var url = window.url("tarjonta-service.v1.hakukohde.search", {
                     hakuOid : asid,
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
-                }
-                var url = page_settings.tarjontaUrl + '/search?' + serializeParams(qParams);
+                });
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         var tulokset = provider.tulokset;

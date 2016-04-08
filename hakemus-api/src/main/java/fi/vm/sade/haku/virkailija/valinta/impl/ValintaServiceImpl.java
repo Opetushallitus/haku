@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.virkailija.valinta.MapJsonAdapter;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
@@ -31,7 +32,6 @@ public class ValintaServiceImpl implements ValintaService {
 
     private static final Logger log = LoggerFactory.getLogger(ValintaServiceImpl.class);
 
-    @Value("${web.url.cas}")
     private String casUrl;
 
     @Value("${cas.service.valintalaskenta-service}")
@@ -54,6 +54,10 @@ public class ValintaServiceImpl implements ValintaService {
     private static CachingRestClient cachingRestClientValinta;
     private static CachingRestClient cachingRestClientKooste;
     private static CachingRestClient cachingRestClientValintaTulosService;
+
+    public ValintaServiceImpl(UrlConfiguration urlConfiguration) {
+        casUrl = urlConfiguration.url("cas.url");
+    }
 
     @Override
     public HakemusDTO getHakemus(String asOid, String applicationOid) {

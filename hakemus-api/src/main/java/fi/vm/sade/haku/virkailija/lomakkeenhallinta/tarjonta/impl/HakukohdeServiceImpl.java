@@ -20,6 +20,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.slf4j.Logger;
@@ -39,18 +40,18 @@ public class HakukohdeServiceImpl implements HakukohdeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HakukohdeServiceImpl.class);
     public static final String MEDIA_TYPE = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    private final WebResource hakukohdeV1Resource;
     private final String SEARCH_PATH = "search";
     private final String PARAM_GROUP_OID = "organisaatioRyhmaOid";
     private final String PARAM_APPLICATION_SYSTEM_OID= "hakuOid";
 
     private static final Map<String, SoftReference<HakukohdeV1RDTO>> cache = new HashMap<String, SoftReference<HakukohdeV1RDTO>>();
+    private final UrlConfiguration urlConfiguration;
+    private final Client clientWithJacksonSerializer;
 
     @Autowired
-    public HakukohdeServiceImpl(@Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaV1HakukohdeResourceUrl) {
-        Client clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
-        hakukohdeV1Resource = clientWithJacksonSerializer.resource(tarjontaV1HakukohdeResourceUrl);
-        LOGGER.debug("Tarjonnan v1 hakukohde uri: {} ", hakukohdeV1Resource.getURI().toString());
+    public HakukohdeServiceImpl(UrlConfiguration urlConfiguration) {
+        this.urlConfiguration = urlConfiguration;
+        clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
     }
 
     @Override
@@ -87,8 +88,9 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     }
 
     private HakukohdeV1RDTO fetchByOid(String oid){
-        WebResource asWebResource = hakukohdeV1Resource.path(oid);
-        ResultV1RDTO<HakukohdeV1RDTO> result = asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
+        ResultV1RDTO<HakukohdeV1RDTO> result = clientWithJacksonSerializer.
+                resource(urlConfiguration.url("tarjonta-service.v1.hakukohde.resource.url", oid)).
+                accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
         });
         if (!ResultV1RDTO.ResultStatus.OK.equals(result.getStatus()))
             LOGGER.error("Failed to get hakukohde with oid: {}. The query ended with status : {}", oid, result.getStatus());
@@ -96,7 +98,10 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     }
 
     private ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> fetchByGroupAndApplicationSystem(String groupOid, String applicationSystemId){
-        WebResource asWebResource = hakukohdeV1Resource.path(SEARCH_PATH).queryParam(PARAM_GROUP_OID, groupOid).queryParam(PARAM_APPLICATION_SYSTEM_OID, applicationSystemId);
+        WebResource asWebResource = clientWithJacksonSerializer
+                .resource(urlConfiguration.url("tarjonta-service.v1.hakukohde.resource.url", SEARCH_PATH))
+                .queryParam(PARAM_GROUP_OID, groupOid)
+                .queryParam(PARAM_APPLICATION_SYSTEM_OID, applicationSystemId);
         LOGGER.debug("With option group {} and applicationSystem {}: Using resource {}", groupOid, applicationSystemId, asWebResource);
         return asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
         });

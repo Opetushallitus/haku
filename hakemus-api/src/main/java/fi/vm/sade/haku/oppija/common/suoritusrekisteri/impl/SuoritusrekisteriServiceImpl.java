@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -46,9 +47,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         validKomos.add(YO_TUTKINTO_KOMO);
     }
 
-    @Value("${web.url.cas}")
-    private String casUrl;
-
     @Value("${cas.service.suoritusrekisteri}")
     private String targetService;
     @Value("${haku.app.username.to.suoritusrekisteri}")
@@ -61,6 +59,11 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
     private Gson opiskelijaGson = new GsonBuilder().setDateFormat(ISO_DATE_FMT_STR).create();
     private Gson arvosanaGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
+    private UrlConfiguration urlConfiguration;
+
+    public SuoritusrekisteriServiceImpl(UrlConfiguration urlConfiguration) {
+        this.urlConfiguration = urlConfiguration;
+    }
 
     @Override
     public List<OpiskelijaDTO> getOpiskelijatiedot(String personOid) {
@@ -209,7 +212,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
             cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
-            cachingRestClient.setWebCasUrl(casUrl);
+            cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);
             cachingRestClient.setPassword(clientAppPass);

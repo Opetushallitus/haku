@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
@@ -37,6 +38,12 @@ import static org.mockito.Mockito.when;
 
 public class ValintaServiceTest {
 
+    private UrlConfiguration urlConfiguration = new UrlConfiguration();
+
+    public ValintaServiceTest() {
+        urlConfiguration.addDefault("host.cas","localhost");
+    }
+
     @Test
     public void testHappy() throws IOException {
         CachingRestClient sijoitteluClient = mock(CachingRestClient.class);
@@ -44,7 +51,7 @@ public class ValintaServiceTest {
         when(sijoitteluClient.getAsString(startsWith("/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
         when(valintaClient.getAsString(startsWith("/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
-        ValintaServiceImpl valintaService = new ValintaServiceImpl();
+        ValintaServiceImpl valintaService = new ValintaServiceImpl(urlConfiguration);
         valintaService.setCachingRestClientValinta(valintaClient);
         HakemusDTO hakemus = valintaService.getHakemus("", "");
         assertNotNull(hakemus);
@@ -57,7 +64,7 @@ public class ValintaServiceTest {
         when(sijoitteluClient.getAsString(startsWith("/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
         when(valintaClient.getAsString(startsWith("/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
-        ValintaServiceImpl valintaService = new ValintaServiceImpl();
+        ValintaServiceImpl valintaService = new ValintaServiceImpl(urlConfiguration);
         valintaService.setCachingRestClientValinta(valintaClient);
 
         ApplicationService applicationService = mock(ApplicationService.class);
@@ -111,7 +118,7 @@ public class ValintaServiceTest {
         when(session.getUser()).thenReturn(user);
 
         OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
-                hakupermissionService, null, null, null, elementTreeValidator, applicationSystemService,
+                hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
                 null, null, valintaService, session, null, mock(HakumaksuService.class), null);
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu");
 

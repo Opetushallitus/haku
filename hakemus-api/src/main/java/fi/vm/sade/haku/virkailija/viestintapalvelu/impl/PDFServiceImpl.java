@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.DocumentSourceDTO;
@@ -25,8 +26,6 @@ import java.util.List;
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class PDFServiceImpl implements PDFService {
-    @Value("${web.url.cas}")
-    private String casUrl;
     @Value("${cas.service.viestintapalvelu}")
     private String targetService;
     @Value("${haku.app.username.to.viestintapalvelu}")
@@ -35,10 +34,12 @@ public class PDFServiceImpl implements PDFService {
     private String clientAppPass;
     private ApplicationPrintViewService applicationPrintViewService;
     private CachingRestClient cachingRestClient;
+    private UrlConfiguration urlConfiguration;
 
     @Autowired
-    public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService) {
+    public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, UrlConfiguration urlConfiguration) {
     	this.applicationPrintViewService = applicationPrintViewService;
+        this.urlConfiguration = urlConfiguration;
     }
     
 	@Override
@@ -74,7 +75,7 @@ public class PDFServiceImpl implements PDFService {
 	private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
             cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
-            cachingRestClient.setWebCasUrl(casUrl);
+            cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);
             cachingRestClient.setPassword(clientAppPass);

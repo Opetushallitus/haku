@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionDTOToApplicationOptionFunction;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,13 +24,13 @@ import javax.ws.rs.core.UriBuilder;
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationOptionServiceImpl.class);
-	private final WebResource webResource;
 	private final Client clientWithJacksonSerializer;
+	private final UrlConfiguration urlConfiguration;
 
 	@Autowired
-	public KoulutusinformaatioServiceImpl(@Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioAOResourceUrl) {
+	public KoulutusinformaatioServiceImpl(UrlConfiguration urlConfiguration) {
+		this.urlConfiguration = urlConfiguration;
 		clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
-		webResource = clientWithJacksonSerializer.resource(koulutusinformaatioAOResourceUrl);
 	}
 
 	@Override
@@ -43,13 +44,12 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 		if (Strings.isNullOrEmpty(oid)) {
 			return null;
 		} else {
-			UriBuilder builder = webResource.path(oid).getUriBuilder();
+			WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio.ao", oid));
 			if (!StringUtils.isEmpty(lang)) {
-				builder.queryParam("uiLang", lang);
-				builder.queryParam("lang", lang);
+				asWebResource.queryParam("uiLang", lang);
+				asWebResource.queryParam("lang", lang);
 			}
-			LOGGER.debug(builder.build().toString());
-			WebResource asWebResource = clientWithJacksonSerializer.resource(builder.build());
+			LOGGER.debug(asWebResource.getUriBuilder().build().toString());
 			return asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {});
 		}
 	}

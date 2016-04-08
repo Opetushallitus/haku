@@ -1,13 +1,9 @@
 package fi.vm.sade.haku.oppija.lomake.domain;
 
-import com.google.common.collect.ImmutableMap;
 
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
@@ -25,7 +21,6 @@ public class ModelResponse {
     public static final String APPLICATION_PHASE_ID = "applicationPhaseId";
     public static final String ERROR_MESSAGES = "errorMessages";
     public static final String NOTE_MESSAGES = "noteMessages";
-    public static final String KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
     public static final String ELEMENT = "element";
     public static final String TEMPLATE = "template";
     public static final String FORM = "form";
@@ -63,22 +58,18 @@ public class ModelResponse {
     public ModelResponse(final Application application,
                          final Form form,
                          final Element element,
-                         final ValidationResult validationResult,
-                         final String koulutusinformaatioBaseUrl) {
+                         final ValidationResult validationResult) {
         this(application, form, element);
         setErrorMessages(validationResult.getErrorMessages());
-        setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
 
     }
 
     public ModelResponse(final Application application,
                          final Form form,
                          final List<Element> elements,
-                         final ValidationResult validationResult,
-                         final String koulutusinformaatioBaseUrl) {
+                         final ValidationResult validationResult) {
         this(application, form);
         setErrorMessages(validationResult.getErrorMessages());
-        setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         this.addObjectToModel("elements", elements);
     }
 
@@ -92,12 +83,10 @@ public class ModelResponse {
 
     public ModelResponse(final Application application,
                          final ApplicationSystem activeApplicationSystem,
-                         final List<ApplicationAttachment> attachments,
-                         final String koulutusinformaatioBaseUrl) {
+                         final List<ApplicationAttachment> attachments) {
         this(activeApplicationSystem);
         setApplication(application);
         setApplicationAttachments(attachments);
-        setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
     }
 
     public final Map<String, Object> getModel() {
@@ -156,10 +145,6 @@ public class ModelResponse {
             combinedAnswers.putAll(answers);
             addObjectToModel(ANSWERS, combinedAnswers);
         }
-    }
-
-    public void setKoulutusinformaatioBaseUrl(final String url) {
-        this.addObjectToModel(KOULUTUSINFORMAATIO_BASE_URL, url);
     }
 
     public void setForm(final Form form) {

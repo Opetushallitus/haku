@@ -21,6 +21,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
@@ -63,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     public AuthenticationServiceImpl(
-    @Value("${web.url.cas}") String casUrl,
+    UrlConfiguration urlConfiguration,
     @Value("${cas.service.authentication-service}") String targetService,
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
     @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
@@ -73,7 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
         cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
-        cachingRestClient.setWebCasUrl(casUrl);
+        cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);
         cachingRestClient.setPassword(clientAppPass);

@@ -42,7 +42,7 @@ var preferenceRow = {
         if (sortabletable_settings.baseEducation) {
             lopParams.baseEducation = sortabletable_settings.baseEducation;
         }
-        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(term),
+        $.getJSON(window.url("koulutusinformaatio.lop.search", term),
             lopParams, function(data) {
                 lopCache[term] = data;
                 response($.map(data, resultToResponse));
@@ -50,7 +50,7 @@ var preferenceRow = {
     },
     populateSelectInput: function(orgId, selectInputId, isInit, providerInputId) {
 
-        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
+        $.getJSON(window.url("koulutusinformaatio.ao.search", sortabletable_settings.applicationSystemId, orgId),
             {
                 baseEducation: sortabletable_settings.baseEducation,
                 vocational: sortabletable_settings.vocational,
