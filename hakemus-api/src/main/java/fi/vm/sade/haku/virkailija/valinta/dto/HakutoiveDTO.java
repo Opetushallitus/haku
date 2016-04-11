@@ -8,6 +8,7 @@ public class HakutoiveDTO implements Comparable<HakutoiveDTO> {
     private Integer hakutoive;
     private String hakukohdeOid;
     private String tarjoajaOid;
+    private ValintatuloksenTila vastaanottotieto;
     private List<PistetietoDTO> pistetiedot = new ArrayList<PistetietoDTO>();
     private List<HakutoiveenValintatapajonoDTO> hakutoiveenValintatapajonot = new ArrayList<HakutoiveenValintatapajonoDTO>();
 
@@ -57,5 +58,13 @@ public class HakutoiveDTO implements Comparable<HakutoiveDTO> {
 
     public void setPistetiedot(List<PistetietoDTO> pistetiedot) {
         this.pistetiedot = pistetiedot;
+    }
+
+    public ValintatuloksenTila getVastaanottotieto() {
+        return vastaanottotieto;
+    }
+
+    public void setVastaanottotieto(ValintatuloksenTila vastaanottotieto) {
+        this.vastaanottotieto = vastaanottotieto;
     }
 }

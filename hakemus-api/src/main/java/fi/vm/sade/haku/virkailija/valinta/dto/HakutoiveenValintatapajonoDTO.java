@@ -14,7 +14,6 @@ public class HakutoiveenValintatapajonoDTO {
     private Integer varasijanNumero;
     private HakemuksenTila tila;
     private Map<String, String> tilanKuvaukset = new HashMap<String, String>();
-    private ValintatuloksenTila vastaanottotieto;
     private IlmoittautumisTila ilmoittautumisTila;
     private boolean hyvaksyttyHarkinnanvaraisesti = false;
     private Integer tasasijaJonosija;
@@ -136,14 +135,6 @@ public class HakutoiveenValintatapajonoDTO {
 
     public void setPisteet(BigDecimal pisteet) {
         this.pisteet = pisteet;
-    }
-
-    public ValintatuloksenTila getVastaanottotieto() {
-        return vastaanottotieto;
-    }
-
-    public void setVastaanottotieto(ValintatuloksenTila vastaanottotieto) {
-        this.vastaanottotieto = vastaanottotieto;
     }
 
     public Integer getValintatapajonoPrioriteetti() {
