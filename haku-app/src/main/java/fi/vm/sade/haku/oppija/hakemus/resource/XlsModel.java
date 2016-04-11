@@ -415,7 +415,7 @@ public class XlsModel {
     }
 
     private static String getAttachmentId(ApplicationAttachmentRequest request) {
-        String id = request.getApplicationAttachment().getName().toString();
+        String id = new TreeMap(request.getApplicationAttachment().getName().getTranslations()).toString();
         return id;
     }
 
