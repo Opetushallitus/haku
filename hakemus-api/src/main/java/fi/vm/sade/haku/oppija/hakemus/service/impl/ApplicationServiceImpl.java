@@ -283,6 +283,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         return getApplication(new Application(oid));
     }
 
+
+
+    @Override
+    public List<Map<String, Object>> findApplicationsWithKeys(
+            final ApplicationQueryParameters applicationQueryParameters,
+            final String... keys) {
+        return applicationDAO.findAllQueriedWithKeys(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters), keys);
+    }
+
     @Override
     public ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters) {
         return applicationDAO.findAllQueried(applicationQueryParameters,

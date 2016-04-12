@@ -148,6 +148,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
+    public List<Map<String, Object>> findAllQueriedWithKeys(ApplicationQueryParameters queryParameters,
+                                                             ApplicationFilterParameters filterParameters,
+                                                             String... queryKeys) {
+        final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);
+        final DBObject keys = generateKeysDBObject(queryKeys);
+        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
+        final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
+                dbObjectToMapFunction, false);
+        return searchResults.searchResultsList;
+
+    }
+
+    @Override
     public ApplicationSearchResultDTO findAllQueried(ApplicationQueryParameters queryParameters,
                                                      ApplicationFilterParameters filterParameters) {
         final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);

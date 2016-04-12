@@ -74,6 +74,10 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     ApplicationSearchResultDTO findAllQueried(ApplicationQueryParameters queryParameters,
                                               ApplicationFilterParameters filterParameters);
 
+    List<Map<String, Object>> findAllQueriedWithKeys(ApplicationQueryParameters queryParameters,
+                                                     ApplicationFilterParameters filterParameters,
+                                                     String... queryKeys);
+
     List<Map<String, Object>> findAllQueriedFull(ApplicationQueryParameters queryParameters,
                                                  ApplicationFilterParameters filterParameters);
 

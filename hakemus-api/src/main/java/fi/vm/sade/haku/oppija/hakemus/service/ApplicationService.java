@@ -109,6 +109,10 @@ public interface ApplicationService {
 
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
+    List<Map<String, Object>> findApplicationsWithKeys(
+            final ApplicationQueryParameters applicationQueryParameters,
+            final String... keys);
+    
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 
     Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids);

@@ -281,6 +281,7 @@ public class ApplicationResource {
         List<String> state = applicationSearchDTO.states;
         List<String> asIds = applicationSearchDTO.asIds;
         List<String> aoOid = applicationSearchDTO.aoOids;
+        List<String> keys = applicationSearchDTO.keys;
 
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms("")
@@ -291,7 +292,7 @@ public class ApplicationResource {
                 .setOrderDir(1)
                 .build();
 
-        List<Map<String, Object>> apps = applicationService.findFullApplications(queryParams);
+        List<Map<String, Object>> apps = applicationService.findApplicationsWithKeys(queryParams, keys.toArray(new String[]{}));
         LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
         return apps;
     }

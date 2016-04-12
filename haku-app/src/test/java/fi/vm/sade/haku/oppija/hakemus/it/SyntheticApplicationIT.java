@@ -126,16 +126,12 @@ public class SyntheticApplicationIT {
         Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
         final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
-        assertEquals(1, applications.size());
-    }
 
-    @Test
-    public void testCreateRoundTripPost() {
-        Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
-        verifyPutResponse(resp1);
-        ApplicationSearchDTO asdto = new ApplicationSearchDTO(Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"));
-        final List<Map<String, Object>> applications = applicationResource.findFullApplicationsPost(asdto);
+        ApplicationSearchDTO asdto = new ApplicationSearchDTO("", Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"), Arrays.asList("oid"));
+        final List<Map<String, Object>> applicationsPost = applicationResource.findFullApplicationsPost(asdto);
+        System.out.println(applicationsPost.get(0));
         assertEquals(2, applications.size());
+        assertEquals(2, applicationsPost.size());
     }
 
     @Test
