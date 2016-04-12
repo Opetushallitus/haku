@@ -21,6 +21,6 @@ public class ApplicationSearchDTO {
 
     @Override
     public String toString() {
-        return "ApplicationSearchDTO{applicationOptionOids=" + aoOids + ", asIds='" + asIds + ", states='" + asIds + "'}";
+        return "ApplicationSearchDTO{applicationOptionOids=" + aoOids + ", asIds='" + asIds + ", states='" + states + " keys='"+ keys +"'}";
     }
 }

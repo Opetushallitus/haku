@@ -288,8 +288,6 @@ public class ApplicationResource {
                 .setStates(state)
                 .setAsIds(asIds)
                 .addAoOid(aoOid.toArray(new String[0]))
-                .setOrderBy("oid")
-                .setOrderDir(1)
                 .build();
 
         List<Map<String, Object>> apps = applicationService.findFullApplications(queryParams);
