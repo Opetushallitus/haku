@@ -6,9 +6,11 @@ import org.apache.catalina.LifecycleException;
 import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.integrationtest.tomcat.EmbeddedTomcat;
-import fi.vm.sade.integrationtest.tomcat.SharedTomcat;
 import fi.vm.sade.integrationtest.util.PortChecker;
 import fi.vm.sade.integrationtest.util.ProjectRootFinder;
+
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class HakuAppTomcat extends EmbeddedTomcat {
     static final String HAKU_MODULE_ROOT = ProjectRootFinder.findProjectRoot() + "/haku-app";
@@ -25,10 +27,17 @@ public class HakuAppTomcat extends EmbeddedTomcat {
 
     public HakuAppTomcat(int port, int ajpPort) {
         super(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
+        addWebApp(ProjectRootFinder.findProjectRoot() + "/haku-mock", "/");
+        printClassPath();
     }
 
-    public static void startShared() {
-        SharedTomcat.start(HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
+    private static void printClassPath() {
+        System.out.println("CLASSPATH POW");
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+        for(URL url: urls){
+            System.out.println(url.getFile());
+        }
     }
 
     public static void startForIntegrationTestIfNotRunning() {
