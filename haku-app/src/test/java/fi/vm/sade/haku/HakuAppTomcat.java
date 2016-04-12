@@ -28,16 +28,6 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     public HakuAppTomcat(int port, int ajpPort) {
         super(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
         addWebApp(ProjectRootFinder.findProjectRoot() + "/haku-mock", "/");
-        printClassPath();
-    }
-
-    private static void printClassPath() {
-        System.out.println("CLASSPATH POW");
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
-        URL[] urls = ((URLClassLoader)cl).getURLs();
-        for(URL url: urls){
-            System.out.println(url.getFile());
-        }
     }
 
     public static void startForIntegrationTestIfNotRunning() {

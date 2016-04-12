@@ -28,10 +28,10 @@
         <mockito.version>1.9.5</mockito.version>
         <guava.version>15.0</guava.version>
         <ehcache.version>2.5.0</ehcache.version>
-        <flapdoodle.version>1.36</flapdoodle.version>
+        <flapdoodle.version>1.50.2</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
         <jackson.version>2.3.0</jackson.version>
-        <selenium.version>2.50.1</selenium.version>
+        <selenium.version>2.53.0</selenium.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
