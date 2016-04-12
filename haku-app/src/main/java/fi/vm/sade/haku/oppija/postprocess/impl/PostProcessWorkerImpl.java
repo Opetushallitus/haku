@@ -143,7 +143,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             }
         } catch (Exception e) {
             LOGGER.error("post process (identification) failed for application: " + updateQuery.getOid(), e);
-            setProcessingStateToFailed(updateQuery, e.getMessage());
+            setProcessingStateToFailed(updateQuery, null);
         }
     }
 
@@ -169,8 +169,10 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     }
     private void setProcessingStateToFailed(final Application queryApplication, String message) {
         final Application application = applicationDAO.find(queryApplication).get(0);
-        final ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), SYSTEM_USER);
-        application.addNote(note);
+        if(message != null) {
+            final ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), SYSTEM_USER);
+            application.addNote(note);
+        }
         application.setRedoPostProcess(PostProcessingState.FAILED);
         this.applicationDAO.update(queryApplication, application);
     }
