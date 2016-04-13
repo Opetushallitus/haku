@@ -47,11 +47,10 @@ public class PDFServiceImpl implements PDFService {
 		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
 		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
 		
-		String url = "/api/v1/printer/pdf";
-		CachingRestClient cachingRestClient = getCachingRestClient();
-		
-		try {
-			return cachingRestClient.post(url, MediaType.APPLICATION_JSON, documentSourceJson);
+		String url = urlConfiguration.url("viestintapalvelu.uriToPDF");
+
+        try {
+			return getCachingRestClient().post(url, MediaType.APPLICATION_JSON, documentSourceJson);
 		} catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
@@ -62,11 +61,10 @@ public class PDFServiceImpl implements PDFService {
 		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
 		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
 		
-		String url = "/api/v1/printer/pdf/content";
-		CachingRestClient cachingRestClient = getCachingRestClient();
-		
-		try {
-			return cachingRestClient.post(url, MediaType.APPLICATION_JSON, documentSourceJson);
+		String url = urlConfiguration.url("viestintapalvelu.pdfContent");
+
+        try {
+			return getCachingRestClient().post(url, MediaType.APPLICATION_JSON, documentSourceJson);
 		} catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }	

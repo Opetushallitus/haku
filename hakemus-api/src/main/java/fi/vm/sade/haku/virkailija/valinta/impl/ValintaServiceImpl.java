@@ -31,6 +31,7 @@ import java.util.Map;
 public class ValintaServiceImpl implements ValintaService {
 
     private static final Logger log = LoggerFactory.getLogger(ValintaServiceImpl.class);
+    private final UrlConfiguration urlConfiguration;
 
     private String casUrl;
 
@@ -56,13 +57,13 @@ public class ValintaServiceImpl implements ValintaService {
     private static CachingRestClient cachingRestClientValintaTulosService;
 
     public ValintaServiceImpl(UrlConfiguration urlConfiguration) {
+        this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
     }
 
     @Override
     public HakemusDTO getHakemus(String asOid, String applicationOid) {
-        String url = String.format("/resources/hakemus/%s/%s", asOid, applicationOid);
-        CachingRestClient client = getCachingRestClientValinta();
+        String url = urlConfiguration.url("valintalaskenta-laskenta-service.hakemus", asOid, applicationOid);
 
         try {
             GsonBuilder builder = new GsonBuilder();
@@ -72,7 +73,7 @@ public class ValintaServiceImpl implements ValintaService {
                 }
             });
             Gson gson = builder.create();
-            return gson.fromJson(client.getAsString(url), HakemusDTO.class);
+            return gson.fromJson(getCachingRestClientValinta().getAsString(url), HakemusDTO.class);
         } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
             return new HakemusDTO();
@@ -97,13 +98,11 @@ public class ValintaServiceImpl implements ValintaService {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();
         String applicationOid = application.getOid();
-        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid/%s/hakemusOid/%s",
-                asId, personOid, applicationOid);
-        CachingRestClient client = getCachingRestClientKooste();
+        String url = urlConfiguration.url("valintalaskentakoostepalvelu.valintadata", asId, personOid, applicationOid);
         Map<String, String> valintadata = new HashMap<>();
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
-            valintadata = gson.<Map<String, String>>fromJson(client.getAsString(url), valintadata.getClass());
+            valintadata = gson.<Map<String, String>>fromJson(getCachingRestClientKooste().getAsString(url), valintadata.getClass());
         } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
             throw new ValintaServiceCallFailedException(e);

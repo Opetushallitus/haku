@@ -28,8 +28,6 @@ import java.io.IOException;
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class EmailServiceImpl implements EmailService {
 	private Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
-    @Value("${ryhmasahkoposti.rest.url}")
-    private String ryhmasahkopostiRestUrl;
     @Value("${cas.service.ryhmasahkoposti}")
     private String targetService;
     @Value("${haku.app.username.to.viestintapalvelu}")
@@ -87,15 +85,14 @@ public class EmailServiceImpl implements EmailService {
 			throw new RuntimeException(e);
 		}
 
-		CachingRestClient cachingRestClient = getCachingRestClient();
-
+		String url = urlConfiguration.url("ryhmasahkoposti-service.send");
 		try {
-			HttpResponse response = cachingRestClient.post(ryhmasahkopostiRestUrl, MediaType.APPLICATION_JSON, emailDataJson);
+			HttpResponse response = getCachingRestClient().post(url, MediaType.APPLICATION_JSON, emailDataJson);
 			String responseJson = EntityUtils.toString(response.getEntity());
 			EmailSendId emailSendId = new Gson().fromJson(responseJson, EmailSendId.class);
 			return emailSendId.getId();
 		} catch (IOException e) {
-            throw new RemoteServiceException(ryhmasahkopostiRestUrl, e);
+            throw new RemoteServiceException(url, e);
         }
 	}
 }

@@ -41,15 +41,15 @@ public class ValintaServiceTest {
     private UrlConfiguration urlConfiguration = new UrlConfiguration();
 
     public ValintaServiceTest() {
-        urlConfiguration.addDefault("host.cas","localhost");
+        urlConfiguration.addDefault("host.cas","localhost").addDefault("host.virkailija","localhost:9090");
     }
 
     @Test
     public void testHappy() throws IOException {
         CachingRestClient sijoitteluClient = mock(CachingRestClient.class);
         CachingRestClient valintaClient = mock(CachingRestClient.class);
-        when(sijoitteluClient.getAsString(startsWith("/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
-        when(valintaClient.getAsString(startsWith("/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
+        when(sijoitteluClient.getAsString(startsWith("https://localhost:9090/sijoittelu-service/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
+        when(valintaClient.getAsString(startsWith("https://localhost:9090/valintalaskenta-laskenta-service/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
         ValintaServiceImpl valintaService = new ValintaServiceImpl(urlConfiguration);
         valintaService.setCachingRestClientValinta(valintaClient);
@@ -61,8 +61,8 @@ public class ValintaServiceTest {
     public void testOfficerUi() throws Exception {
         CachingRestClient sijoitteluClient = mock(CachingRestClient.class);
         CachingRestClient valintaClient = mock(CachingRestClient.class);
-        when(sijoitteluClient.getAsString(startsWith("/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
-        when(valintaClient.getAsString(startsWith("/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
+        when(sijoitteluClient.getAsString(startsWith("https://localhost:9090/sijoittelu-service/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
+        when(valintaClient.getAsString(startsWith("https://localhost:9090/valintalaskenta-laskenta-service/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
         ValintaServiceImpl valintaService = new ValintaServiceImpl(urlConfiguration);
         valintaService.setCachingRestClientValinta(valintaClient);
