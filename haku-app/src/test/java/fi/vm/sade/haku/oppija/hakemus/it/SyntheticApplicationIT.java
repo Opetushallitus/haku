@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -51,9 +52,13 @@ public class SyntheticApplicationIT {
     @Autowired
     private I18nBundleService i18nBundleService;
 
+    @Autowired
+    protected MongoTemplate mongoTemplate;
+
     @Before
     public void setUp() {
         this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, syntheticApplicationService, i18nBundleService);
+        mongoTemplate.getCollection("application").drop();
     }
 
     @Test
@@ -123,14 +128,15 @@ public class SyntheticApplicationIT {
 
     @Test
     public void testCreateRoundTrip() {
+        ApplicationSearchDTO asdto = new ApplicationSearchDTO("", Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"), Arrays.asList("oid"));
+        int startingSize = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000).size();
+        assertEquals(0, startingSize);
+        assertEquals(0, applicationResource.findFullApplicationsPost(asdto).size());
+
         Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
-        final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
-        ApplicationSearchDTO asdto = new ApplicationSearchDTO("", Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"), Arrays.asList("oid"));
-        final List<Map<String, Object>> applicationsPost = applicationResource.findFullApplicationsPost(asdto);
-        System.out.println(applicationsPost.get(0));
-        assertEquals(2, applications.size());
-        assertEquals(2, applicationsPost.size());
+        assertEquals(1, applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000).size());
+        assertEquals(1, applicationResource.findFullApplicationsPost(asdto).size());
     }
 
     @Test
