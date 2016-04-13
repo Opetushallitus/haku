@@ -51,6 +51,7 @@
     <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
+    <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/haku-app-web-url_properties.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>

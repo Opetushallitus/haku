@@ -15,7 +15,6 @@ public class HakuAppTomcat {
     private static EmbeddedTomcat tomcat = null;
 
     public final static void main(String... args) throws ServletException, LifecycleException {
-        useIntegrationTestSettingsIfNoProfileSelected();
         create(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT))),
                 Integer.parseInt(System.getProperty("haku-app.port.ajp", String.valueOf(DEFAULT_AJP_PORT)))
         ).start().await();

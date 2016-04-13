@@ -41,6 +41,7 @@ public class UrlConfiguration extends OphProperties {
 
         if(haku != null) {
             addDefault("host.haku", haku);
+            addDefault("front.koulutusinformaatio.baseUrl", "//" + haku);
         }
 
         if(hakuSv != null) {
@@ -50,5 +51,8 @@ public class UrlConfiguration extends OphProperties {
         if(hakuEn != null) {
             addDefault("host.haku.en", hakuEn);
         }
+
+        // reload values in case user has overriden something
+        reload();
     }
 }
