@@ -40,6 +40,7 @@ public class SuoritusrekisteriServiceImplTest {
     @Before
     public void setUp() {
         UrlConfiguration urlConfiguration = new UrlConfiguration();
+        urlConfiguration.addDefault("host.virkailija","localhost:9090");
         suoritusrekisteriService =  new SuoritusrekisteriServiceImpl(urlConfiguration);
         cachingRestClient = mock(CachingRestClient.class);
 
