@@ -66,10 +66,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     private HttpClient httpClient;
     private Gson gson;
 
-    @Autowired
     private UrlConfiguration urlConfiguration;
 
-    public OrganizationServiceImpl() {
+    @Autowired
+    public OrganizationServiceImpl(UrlConfiguration urlConfiguration) {
+        this.urlConfiguration = urlConfiguration;
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());
         builder.registerTypeAdapter(OrganizationGroupListRestDTO.class, new OrganizationGroupListRestDTOAdapter());

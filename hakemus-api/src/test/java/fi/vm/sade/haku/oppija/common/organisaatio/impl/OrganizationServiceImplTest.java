@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 
 import com.google.gson.Gson;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
@@ -11,6 +12,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -31,6 +33,13 @@ public class OrganizationServiceImplTest {
 
     public static final String OID = "1";
 
+    private UrlConfiguration urlConfiguration = new UrlConfiguration();
+
+    @Before
+    public void before() {
+        urlConfiguration.addDefault("host.virkailija", "localhost:9090");
+    }
+
     @Test
     public void testSearch() throws IOException {
         Gson gson = new Gson();
@@ -41,7 +50,7 @@ public class OrganizationServiceImplTest {
         hakutulos.setOrganisaatiot(Collections.singletonList(pt));
         HttpClient client = mockClient(new ByteArrayInputStream(gson.toJson(hakutulos)
                         .getBytes(StandardCharsets.UTF_8)));
-        OrganizationServiceImpl service = new OrganizationServiceImpl();
+        OrganizationServiceImpl service = new OrganizationServiceImpl(urlConfiguration);
         service.setHttpClient(client);
 
         List<Organization> search = service.search(new OrganisaatioSearchCriteria());
@@ -53,7 +62,7 @@ public class OrganizationServiceImplTest {
         HttpClient httpClient = mockClient(new ByteArrayInputStream(
                 "1.2.246.562.10.00000000001/1.2.246.562.10.00000000001/1.2.246.562.10.00000000001"
                         .getBytes(StandardCharsets.UTF_8)));
-        OrganizationServiceImpl service = new OrganizationServiceImpl();
+        OrganizationServiceImpl service = new OrganizationServiceImpl(urlConfiguration);
         service.setHttpClient(httpClient);
         List<String> parentOids = service.findParentOids("1.2.246.562.10.00000000001");
         assertEquals(3, parentOids.size());
@@ -67,7 +76,7 @@ public class OrganizationServiceImplTest {
         HttpClient httpClient = mockClient(new ByteArrayInputStream(
                 "This is absolute / and total garbage"
                         .getBytes(StandardCharsets.UTF_8)));
-        OrganizationServiceImpl service = new OrganizationServiceImpl();
+        OrganizationServiceImpl service = new OrganizationServiceImpl(urlConfiguration);
         service.setHttpClient(httpClient);
         boolean thrown = false;
         try {
@@ -84,7 +93,7 @@ public class OrganizationServiceImplTest {
     public void testGetParentOidsFail2() throws IOException {
         HttpClient httpClient = mockClient(new ByteArrayInputStream(
                 "Absolute/Garbage".getBytes(StandardCharsets.UTF_8)));
-        OrganizationServiceImpl service = new OrganizationServiceImpl();
+        OrganizationServiceImpl service = new OrganizationServiceImpl(urlConfiguration);
         service.setHttpClient(httpClient);
         boolean thrown = false;
         try {
