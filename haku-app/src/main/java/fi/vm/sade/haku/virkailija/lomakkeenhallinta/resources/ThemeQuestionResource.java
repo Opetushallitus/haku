@@ -29,6 +29,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestionCompact;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConverter;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.bson.types.ObjectId;
@@ -74,6 +75,8 @@ public class ThemeQuestionResource {
     private AuthenticationService authenticationService;
     @Autowired
     private FormConfigurationService formConfigurationService;
+    @Autowired
+    private ThemeQuestionConverter themeQuestionConverter;
 
     public ThemeQuestionResource(){
     }
@@ -434,7 +437,7 @@ public class ThemeQuestionResource {
         queryParams.setApplicationSystemId(applicationSystemId);
 
         for (ThemeQuestion question : themeQuestionDAO.query(queryParams)) {
-            questionMap.put(question.getId(), ThemeQuestionCompact.convert(question, lang));
+            questionMap.put(question.getId(), themeQuestionConverter.convert(question, lang));
         }
 
         return ok(questionMap).build();
