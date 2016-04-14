@@ -68,13 +68,10 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     @Override
     public List<OpiskelijaDTO> getOpiskelijatiedot(String personOid) {
 
-        CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-        String url = "/rest/v1/opiskelijat?henkilo=" + personOid;
         try {
-            InputStream is = cachingRestClient.get(url);
+            InputStream is = getCachingRestClient().get(urlConfiguration.url("suoritusrekisteri.opiskelijatByPersonOid", personOid));
             response = IOUtils.toString(is);
-            log.debug("url: {}, response: {}", url, response);
         } catch (IOException e) {
             log.error("Fetching opiskelija failed: {}", e);
             return null;
@@ -91,13 +88,9 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     @Override
     public List<ArvosanaDTO> getArvosanat(String suoritusId) {
-        CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-
-        String url = "/rest/v1/arvosanat/?suoritus="+suoritusId;
         try {
-            response = cachingRestClient.getAsString(url);
-            log.debug("url: {}, response: {}", url, response);
+            response = getCachingRestClient().getAsString(urlConfiguration.url("suoritusrekisteri.arvosanatBySuoritusId", suoritusId));
         } catch (IOException e) {
             throw new ResourceNotFoundException("Fetching grades failed: ", e);
         }
@@ -123,11 +116,9 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     @Override
     public List<String> getChanges(String komoOid, Date since) {
-        CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-        String url = buildSuoritusUrl(null, komoOid, since);
         try {
-            InputStream is = cachingRestClient.get(url);
+            InputStream is = getCachingRestClient().get(buildSuoritusUrl(null, komoOid, since));
             response = IOUtils.toString(is);
         } catch (IOException e) {
             log.error("Fetching suoritukset failed: {}", e);
@@ -147,13 +138,10 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     @Override
     public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since) {
-        CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-        String url = buildSuoritusUrl(personOid, komoOid, since);
         try {
-            InputStream is = cachingRestClient.get(url);
+            InputStream is = getCachingRestClient().get(buildSuoritusUrl(personOid, komoOid, since));
             response = IOUtils.toString(is);
-            log.debug("url: {}, response: {}", url, response);
         } catch (IOException e) {
             log.error("Fetching suoritukset failed: {}", e);
             throw new ResourceNotFoundException("Fetching suoritukset failed", e);
@@ -185,28 +173,19 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     private String buildSuoritusUrl(String personOid, String komoOid, Date since) {
-        StringBuilder urlBuilder = new StringBuilder("/rest/v1/suoritukset");
-        boolean firstParam = true;
-        firstParam = appendUrlParam(urlBuilder, firstParam, "henkilo", personOid);
-        firstParam = appendUrlParam(urlBuilder, firstParam, "komo", komoOid);
+        Map params = new HashMap();
+        appendUrlParam(params, "henkilo", personOid);
+        appendUrlParam(params, "komo", komoOid);
         if (since != null) {
-            appendUrlParam(urlBuilder, firstParam, "muokattuJalkeen", ISO_DATE_FMT.format(since));
+            appendUrlParam(params, "muokattuJalkeen", ISO_DATE_FMT.format(since));
         }
-        return urlBuilder.toString();
+        return urlConfiguration.url("suoritusrekisteri.suoritus.search", params);
     }
 
-    private boolean appendUrlParam(StringBuilder urlBuilder, boolean firstParam, String param, String value) {
+    private void appendUrlParam(Map params, String param, String value) {
         if (isNotBlank(value)) {
-            try {
-                urlBuilder.append(firstParam ? "?" : "&")
-                        .append(param).append("=").append(URLEncoder.encode(value, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                log.error("UTF-8 is not a supported encoding ", e);
-                throw new RuntimeException(e);
-            }
-            firstParam = false;
+            params.put(param, value);
         }
-        return firstParam;
     }
 
     private synchronized CachingRestClient getCachingRestClient() {
