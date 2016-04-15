@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.HakumaksuTest;
 import fi.vm.sade.haku.testfixtures.HakumaksuMockData;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 public class UIServiceImplTest extends HakumaksuTest {
 
-    private UIServiceImpl uiService = new UIServiceImpl(null, null, null, null, null, null, service, false, null, urlConfiguration);
+    private UIServiceImpl uiService = new UIServiceImpl(null, null, null, null, null, null, service, false);
 
     @Test
     public void testThatPaymentNotificationIsVisibleWhenPaymentIsRequired() {
