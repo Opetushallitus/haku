@@ -83,6 +83,16 @@ public final class Types {
         }
     }
 
+    public static final class ApplicationSystemOid extends Oid {
+        private ApplicationSystemOid(String value) {
+            super(value);
+        }
+
+        public static ApplicationSystemOid of(String value) {
+            return new ApplicationSystemOid(value);
+        }
+    }
+
     public static final class MergedAnswers extends Base<Map<String, String>> {
         private MergedAnswers(Map<String, String> value) {
             super(value);

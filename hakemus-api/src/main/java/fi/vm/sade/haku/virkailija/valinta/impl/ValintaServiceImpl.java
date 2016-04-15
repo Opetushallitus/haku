@@ -194,5 +194,7 @@ public class ValintaServiceImpl implements ValintaService {
     public void setCachingRestClientKooste(CachingRestClient cachingRestClientKooste) {
         ValintaServiceImpl.cachingRestClientKooste = cachingRestClientKooste;
     }
-
+    public void setCachingRestClientValintaTulosService(CachingRestClient cachingRestClientValintaTulosService) {
+        ValintaServiceImpl.cachingRestClientValintaTulosService = cachingRestClientValintaTulosService;
+    }
 }
