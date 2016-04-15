@@ -125,6 +125,7 @@ ohjausparametrit.resource.url=https\://${host.virkailija}/ohjausparametrit-servi
 user.home.conf=/data00/oph/haku/oph-configuration
 user.oid.prefix=1.2.246.562.24
 user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService
+valinta-tulos-service.url=https://${host.virkailija}/valinta-tulos-service
 web.url.cas=https\://${host.cas}/cas
 
 # Päivämääräväli, jolloin virkailijalla oletuksena kevätkauden hakemukset.

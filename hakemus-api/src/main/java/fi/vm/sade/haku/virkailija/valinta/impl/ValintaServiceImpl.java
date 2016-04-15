@@ -55,9 +55,13 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${haku.app.password.to.valintalaskentakoostepalvelu}")
     private String clientAppPassKooste;
 
+    @Value("${valinta-tulos-service.url")
+    private String targetServiceValintatulosService;
+
     private static CachingRestClient cachingRestClientValinta;
     private static CachingRestClient cachingRestClientSijoittelu;
     private static CachingRestClient cachingRestClientKooste;
+    private static CachingRestClient cachingRestClientValintaTulosService;
 
     @Override
     public HakemusDTO getHakemus(String asOid, String applicationOid) {
@@ -81,13 +85,13 @@ public class ValintaServiceImpl implements ValintaService {
 
     @Override
     public HakijaDTO getHakija(String asOid, String applicationOid) {
-        String url = String.format("/resources/sijoittelu/%s/sijoitteluajo/latest/hakemus/%s", asOid, applicationOid);
-        CachingRestClient client = getCachingRestClientSijoittelu();
+        String url = String.format("/haku/%s/sijoitteluajo/latest/hakemus/%s", asOid, applicationOid);
+        CachingRestClient client = getCachingRestClientValintaTulosService();
 
         try {
-            return new Gson().fromJson(client.getAsString(url), HakijaDTO.class);
+            return client.get(url, HakijaDTO.class);
         } catch (Exception e) {
-            log.error("GET {} failed: ", url, e);
+            log.error(String.format("GET %s with parameters hakuOid / hakemusOid %s / %s failed: ", url, asOid, applicationOid), e);
         }
         return new HakijaDTO();
     }
@@ -162,6 +166,23 @@ public class ValintaServiceImpl implements ValintaService {
             );
         }
         return cachingRestClientSijoittelu;
+    }
+
+    /**
+     * No CAS credentials, because from here we can use the private valinta-tulos-service API which does not
+     * need CAS and the public CASsed API of valinta-tulos-service would need the CAS ticket to be passed in
+     * differently than the others.
+     */
+    private synchronized CachingRestClient getCachingRestClientValintaTulosService() {
+        if (cachingRestClientValintaTulosService == null) {
+            cachingRestClientValintaTulosService = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
+            cachingRestClientValintaTulosService.setCasService(targetServiceValintatulosService);
+
+            log.debug("getcachingRestClientValintaTulosService "
+                    +" casService: "+cachingRestClientValintaTulosService.getCasService()
+            );
+        }
+        return cachingRestClientValintaTulosService;
     }
 
     public void setCachingRestClientValinta(CachingRestClient cachingRestClientValinta) {
