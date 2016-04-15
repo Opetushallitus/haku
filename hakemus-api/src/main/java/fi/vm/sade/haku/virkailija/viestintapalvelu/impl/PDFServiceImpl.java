@@ -43,30 +43,31 @@ public class PDFServiceImpl implements PDFService {
     }
     
 	@Override
-	public HttpResponse getUriToPDF(String urlToApplicationPrint) {
-		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
-		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
-		
+	public HttpResponse getUriToPDF(String applicationOid) {
+		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlConfiguration.url("haku-app.hakemusPdf", applicationOid));
+		String documentSourceJson = getDocumentsourceJson(applicationPrintView);
+
 		String url = urlConfiguration.url("viestintapalvelu.uriToPDF");
 
         try {
 			return getCachingRestClient().post(url, MediaType.APPLICATION_JSON, documentSourceJson);
 		} catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+            throw new RemoteServiceException(url, e);
         }
 	}
 
     @Override
+    @Deprecated // NOT IN USE?
 	public HttpResponse getPDF(String urlToApplicationPrint) {
 		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
-		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
-		
+		String documentSourceJson = getDocumentsourceJson(applicationPrintView);
+
 		String url = urlConfiguration.url("viestintapalvelu.pdfContent");
 
         try {
 			return getCachingRestClient().post(url, MediaType.APPLICATION_JSON, documentSourceJson);
 		} catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+            throw new RemoteServiceException(url, e);
         }	
 	}
 

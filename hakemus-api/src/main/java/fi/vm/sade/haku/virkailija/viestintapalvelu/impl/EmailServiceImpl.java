@@ -48,6 +48,7 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
+	@Deprecated // WTF, PDFService.getPDF takes an url, not oid
 	public String sendApplicationByEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
 		LOGGER.info("EmailServiceImpl.sendApplicationByEmail [applicationOID: " + applicationByEmail.getApplicationOID() + "]");
 		byte[] pdf = getPDF(applicationByEmail.getApplicationOID());		
@@ -65,7 +66,8 @@ public class EmailServiceImpl implements EmailService {
 	    }
 	    return cachingRestClient;
 	}
-	
+
+	@Deprecated // WTF, getPDF takes an url, not oid
 	private byte[] getPDF(String applicationOID) throws IOException {
 		HttpResponse response = pdfService.getPDF(applicationOID);
 		

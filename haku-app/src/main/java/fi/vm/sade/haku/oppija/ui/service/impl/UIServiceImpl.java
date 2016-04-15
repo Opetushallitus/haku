@@ -19,16 +19,13 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
-import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -353,13 +350,11 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public HttpResponse getUriToPDF(String applicationSystemId, String oid) {
-
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         if (application != null
                 && application.getApplicationSystemId().equals(applicationSystemId)
                 && application.getOid().equals(oid)) {
-            String url = "/virkailija/hakemus/" + oid + "/print/view";
-            return pdfService.getUriToPDF(url);
+            return pdfService.getUriToPDF(oid);
         }
         throw new ResourceNotFoundException("Not allowed");
     }

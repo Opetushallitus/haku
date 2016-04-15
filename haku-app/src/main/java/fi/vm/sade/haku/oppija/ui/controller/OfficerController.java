@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -27,11 +28,9 @@ import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
-import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
@@ -96,6 +95,8 @@ public class OfficerController {
     private PDFService pdfService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private UrlConfiguration urlConfiguration;
 
     @GET
     @Path("/hakemus/")
@@ -361,8 +362,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/print")
     @Produces(MediaType.TEXT_PLAIN)
     public Response applicationPrint(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
-		String url = "/virkailija/hakemus/" + oid + "/print/view";
-    	HttpResponse httpResponse = pdfService.getUriToPDF(url);
+    	HttpResponse httpResponse = pdfService.getUriToPDF(oid);
     	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
         AUDIT.log(builder()
                 .hakemusOid(oid)
@@ -385,6 +385,7 @@ public class OfficerController {
     @Path("/hakemus/email")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
+    @Deprecated // TODO NOT IN USE?
     public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws URISyntaxException, IOException {
     	String id = emailService.sendApplicationByEmail(applicationByEmail);
         AUDIT.log(builder()
