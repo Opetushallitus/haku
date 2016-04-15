@@ -541,6 +541,30 @@ public class ApplicationResource {
     }
 
     @PUT
+    @Path("/additionalData/{asId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public void putApplicationAdditionalData(@PathParam("asId") String asId,
+                                             List<ApplicationAdditionalDataDTO> additionalData) {
+        boolean saveSucceeded = false;
+        try {
+            applicationService.saveApplicationAdditionalInfo(additionalData);
+            saveSucceeded = true;
+        } finally {
+            if(saveSucceeded) {
+                for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
+                    AUDIT.log(builder().hakuOid(asId)
+                            .addAll(applicationAdditionalDataDTO.getAdditionalData())
+                            .hakemusOid(applicationAdditionalDataDTO.getOid())
+                            .setOperaatio(HakuOperation.SAVE_ADDITIONAL_DATA).build());
+                }
+
+            }
+        }
+    }
+
+    @PUT
     @Path("/syntheticApplication")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
