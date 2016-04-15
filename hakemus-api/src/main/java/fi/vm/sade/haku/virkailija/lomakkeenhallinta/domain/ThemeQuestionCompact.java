@@ -1,11 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ThemeQuestionCompact {
@@ -13,6 +12,7 @@ public class ThemeQuestionCompact {
     private String type;
     private String messageText;
     private Map<String, String> options;
+    private Set<String> applicationOptionOids = new HashSet<>();
 
     public String getMessageText() {
         return messageText;
@@ -38,27 +38,12 @@ public class ThemeQuestionCompact {
         this.type = type;
     }
 
-    public static ThemeQuestionCompact convert(ThemeQuestion question, String lang) {
-        ThemeQuestionCompact questionCompact = new ThemeQuestionCompact();
-
-        questionCompact.setMessageText(question.getMessageText().getText(lang));
-        questionCompact.setType(question.getClass().getSimpleName());
-
-        if (question instanceof ThemeOptionQuestion) {
-            questionCompact.setOptions(convertOptions((ThemeOptionQuestion) question, lang));
-        }
-
-        return questionCompact;
+    public Set<String> getApplicationOptionOids() {
+        return applicationOptionOids;
     }
 
-    public static Map<String, String> convertOptions(ThemeOptionQuestion optionQuestion, String lang) {
-        Map<String, String> options = new HashMap<>();
-
-        for (ThemeQuestionOption option : optionQuestion.getOptions()) {
-            options.put(option.getId(), option.getOptionText().getText(lang));
-        }
-
-        return options;
+    public void setApplicationOptionOids(Set<String> applicationOptionOids) {
+        this.applicationOptionOids = applicationOptionOids;
     }
 
 }

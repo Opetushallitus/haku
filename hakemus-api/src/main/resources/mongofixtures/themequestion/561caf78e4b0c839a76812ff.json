@@ -1,0 +1,72 @@
+{
+  "_id" : "561caf78e4b0c839a76812ff",
+  "type" : "RadioButton",
+  "applicationSystemId" : "1.2.246.562.29.75203638285",
+  "theme" : "hakutoiveet_teema",
+  "learningOpportunityId" : "1.2.246.562.28.62705498013",
+  "targetIsGroup" : true,
+  "ordinal" : 1,
+  "state" : "ACTIVE",
+  "creatorPersonOid" : "1.2.246.562.24.53282963501",
+  "ownerOrganizationOids" : [
+    "1.2.246.562.10.91392558028",
+    "1.2.246.562.10.00000000001",
+    "1.2.246.562.10.68005105934",
+    "1.2.246.562.10.77055527103"
+  ],
+  "messageText" : {
+    "translations" : {
+      "fi" : "Millä paikkakunnalla osallistut liikuntapedagogiikan/liikuntabiologisen aineryhmän valintakokeeseen 28.4.2016?",
+      "sv" : "På vilken ort skall du delta i den idrottspedagogik/idrottsbiologiska ämnesgruppens skriftliga  urvalsprov 28.4.2016?"
+    }
+  },
+  "helpText" : {
+    "translations" : {
+      "fi" : "Valitse paikkakunta, jossa haluat suorittaa kirjallisen kokeen (ilmoitus on sitova). Erillistä kutsua kokeeseen ei lähetetä. Tarkista valintakoepaikka osoitteesta: www.jyu.fi/sport/opiskelijavalinta",
+      "sv" : "Välj stad, var du vill avlägga skriftliga inträdesprovet. En separat inbjudan skickas inte."
+    }
+  },
+  "verboseHelpText" : {
+    "translations" : {}
+  },
+  "requiredFieldValidator" : false,
+  "onCompletedPage" : false,
+  "options" : [
+    {
+      "id" : "option_0",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        }
+      }
+    },
+    {
+      "id" : "option_1",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Espoo",
+          "sv" : "Esbo"
+        }
+      }
+    },
+    {
+      "id" : "option_2",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Oulu",
+          "sv" : "Uleåborg"
+        }
+      }
+    },
+    {
+      "id" : "option_3",
+      "optionText" : {
+        "translations" : {
+          "fi" : "Turku",
+          "sv" : "Åbo"
+        }
+      }
+    }
+  ]
+}
