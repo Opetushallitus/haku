@@ -1,9 +1,14 @@
 package fi.vm.sade.haku.virkailija.valinta.impl;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.valinta.MapJsonAdapter;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
@@ -15,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
@@ -161,13 +165,13 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     public void setCachingRestClientValinta(CachingRestClient cachingRestClientValinta) {
-        this.cachingRestClientValinta = cachingRestClientValinta;
+        ValintaServiceImpl.cachingRestClientValinta = cachingRestClientValinta;
     }
     public void setCachingRestClientSijoittelu(CachingRestClient cachingRestClientSijoittelu) {
-        this.cachingRestClientSijoittelu = cachingRestClientSijoittelu;
+        ValintaServiceImpl.cachingRestClientSijoittelu = cachingRestClientSijoittelu;
     }
     public void setCachingRestClientKooste(CachingRestClient cachingRestClientKooste) {
-        this.cachingRestClientKooste = cachingRestClientKooste;
+        ValintaServiceImpl.cachingRestClientKooste = cachingRestClientKooste;
     }
 
 }
