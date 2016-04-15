@@ -21,16 +21,21 @@ import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class HakumaksuServiceIT {
-    private static final HakumaksuService hakumaksuService = new HakumaksuService(new UrlConfiguration(),
-            new HttpRestClient());
+    private UrlConfiguration urlConfiguration = new UrlConfiguration();
+    private HakumaksuService hakumaksuService = null;
 
-    private static final String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";
-    private static final String koulutuksenMaa = "AFG";
-    private static final ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
+    private String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";
+    private String koulutuksenMaa = "AFG";
+    private ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
             "pohjakoulutus_ulk", "true",
             "pohjakoulutus_ulk_nimike", koulutuksenNimike,
             "pohjakoulutus_ulk_suoritusmaa", koulutuksenMaa);
-    private static final ApplicationOptionOid hakutoiveenOid = ApplicationOptionOid.of("1.2.246.562.20.40822369126");
+    private ApplicationOptionOid hakutoiveenOid = ApplicationOptionOid.of("1.2.246.562.20.40822369126");
+
+    public HakumaksuServiceIT() {
+        urlConfiguration.addDefault("host.virkailija","localhost:9090");
+        hakumaksuService = new HakumaksuService(urlConfiguration, new HttpRestClient());
+    }
 
     @Test
     public void endToEndPaymentRequirementTest() throws ExecutionException {
