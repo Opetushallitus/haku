@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.HakumaksuTest;
 import fi.vm.sade.haku.testfixtures.HakumaksuMockData;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;

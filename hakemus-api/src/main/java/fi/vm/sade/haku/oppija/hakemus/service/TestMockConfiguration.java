@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import javax.annotation.PostConstruct;
+
 import static fi.vm.sade.haku.testfixtures.HakumaksuMockData.testMappings;
 
 @Configuration
@@ -28,6 +30,11 @@ public class TestMockConfiguration {
     MockedRestClient restClient = new MockedRestClient(testMappings());
 
     EmailService emailService = new EmailServiceMockImpl();
+
+    @PostConstruct
+    private void setUrls() {
+        urlConfiguration.addDefault("host.virkailija", "localhost:9090").addDefault("host.haku","localhost:9090");
+    }
 
     @Bean(name = "hakumaksuService")
     public HakumaksuService hakumaksuService() {
