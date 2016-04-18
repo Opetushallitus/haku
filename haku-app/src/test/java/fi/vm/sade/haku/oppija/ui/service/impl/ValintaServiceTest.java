@@ -45,7 +45,6 @@ public class ValintaServiceTest {
         when(valintaClient.getAsString(startsWith("/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
         ValintaServiceImpl valintaService = new ValintaServiceImpl();
-        valintaService.setCachingRestClientSijoittelu(sijoitteluClient);
         valintaService.setCachingRestClientValinta(valintaClient);
         HakemusDTO hakemus = valintaService.getHakemus("", "");
         assertNotNull(hakemus);
@@ -59,7 +58,6 @@ public class ValintaServiceTest {
         when(valintaClient.getAsString(startsWith("/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
         ValintaServiceImpl valintaService = new ValintaServiceImpl();
-        valintaService.setCachingRestClientSijoittelu(sijoitteluClient);
         valintaService.setCachingRestClientValinta(valintaClient);
 
         ApplicationService applicationService = mock(ApplicationService.class);

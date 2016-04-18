@@ -41,13 +41,6 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${haku.app.password.to.valintalaskenta}")
     private String clientAppPassValinta;
 
-    @Value("${cas.service.sijoittelu-service}")
-    private String targetServiceSijoittelu;
-    @Value("${haku.app.username.to.sijoittelu}")
-    private String clientAppUserSijoittelu;
-    @Value("${haku.app.password.to.sijoittelu}")
-    private String clientAppPassSijoittelu;
-
     @Value("${cas.service.valintalaskentakoostepalvelu}")
     private String targetServiceKooste;
     @Value("${haku.app.username.to.valintalaskentakoostepalvelu}")
@@ -59,7 +52,6 @@ public class ValintaServiceImpl implements ValintaService {
     private String targetServiceValintatulosService;
 
     private static CachingRestClient cachingRestClientValinta;
-    private static CachingRestClient cachingRestClientSijoittelu;
     private static CachingRestClient cachingRestClientKooste;
     private static CachingRestClient cachingRestClientValintaTulosService;
 
@@ -150,24 +142,6 @@ public class ValintaServiceImpl implements ValintaService {
         return cachingRestClientValinta;
     }
 
-    private synchronized CachingRestClient getCachingRestClientSijoittelu() {
-        if (cachingRestClientSijoittelu == null) {
-            cachingRestClientSijoittelu = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
-            cachingRestClientSijoittelu.setWebCasUrl(casUrl);
-            cachingRestClientSijoittelu.setCasService(targetServiceSijoittelu);
-            cachingRestClientSijoittelu.setUsername(clientAppUserSijoittelu);
-            cachingRestClientSijoittelu.setPassword(clientAppPassSijoittelu);
-
-            log.debug("getCachingRestClientSijoittelu "
-                    +"carUrl: "+casUrl
-                    +" casService: "+targetServiceSijoittelu
-                    +" username: "+clientAppUserSijoittelu
-                    +" password: "+clientAppPassSijoittelu
-            );
-        }
-        return cachingRestClientSijoittelu;
-    }
-
     /**
      * No CAS credentials, because from here we can use the private valinta-tulos-service API which does not
      * need CAS and the public CASsed API of valinta-tulos-service would need the CAS ticket to be passed in
@@ -187,9 +161,6 @@ public class ValintaServiceImpl implements ValintaService {
 
     public void setCachingRestClientValinta(CachingRestClient cachingRestClientValinta) {
         ValintaServiceImpl.cachingRestClientValinta = cachingRestClientValinta;
-    }
-    public void setCachingRestClientSijoittelu(CachingRestClient cachingRestClientSijoittelu) {
-        ValintaServiceImpl.cachingRestClientSijoittelu = cachingRestClientSijoittelu;
     }
     public void setCachingRestClientKooste(CachingRestClient cachingRestClientKooste) {
         ValintaServiceImpl.cachingRestClientKooste = cachingRestClientKooste;
