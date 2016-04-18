@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceImpl;
@@ -16,7 +17,14 @@ public class ValintaServiceIntegrationTest {
     private final String luokkaValintaTulosServiceUrl = "https://itest-virkailija.oph.ware.fi/valinta-tulos-service";
     private final String localValintaTulosServiceUrl = "http://localhost:8097/valinta-tulos-service";
     private final String valintaTulosServiceUrl = luokkaValintaTulosServiceUrl;
-    private final ValintaServiceImpl valintaService = new ValintaServiceImpl();
+    private final ValintaServiceImpl valintaService;
+
+    public ValintaServiceIntegrationTest() {
+        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        urlConfiguration.addDefault("host.virkailija", "itest-virkailija.oph.ware.fi");
+        urlConfiguration.addDefault("host.cas", "localhost");
+        valintaService = new ValintaServiceImpl(urlConfiguration);
+    }
 
     @Before
     public void initClient() {
