@@ -49,7 +49,7 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${haku.app.password.to.valintalaskentakoostepalvelu}")
     private String clientAppPassKooste;
 
-    @Value("${valinta-tulos-service.url}")
+    @Value("${cas.service.valinta-tulos-service}")
     private String targetServiceValintatulosService;
 
     private static CachingRestClient cachingRestClientValinta;
@@ -82,7 +82,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     @Override
     public HakijaDTO getHakija(String asOid, String applicationOid) {
-        String url = String.format("/haku/%s/sijoitteluajo/latest/hakemus/%s", asOid, applicationOid);
+        String url = urlConfiguration.url("valinta-tulos-service.hakija", asOid, applicationOid);
         CachingRestClient client = getCachingRestClientValintaTulosService();
 
         try {
