@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 public class UrlConfiguration extends OphProperties {
     public UrlConfiguration() {
         addFiles("/hakemus-api-oph.properties");
-        addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
+        if("it".equals(System.getProperty("spring.profiles.active"))) {
+            addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
+        }
     }
 }
