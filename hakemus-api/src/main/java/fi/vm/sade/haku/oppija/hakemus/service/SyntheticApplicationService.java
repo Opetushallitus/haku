@@ -51,7 +51,7 @@ public class SyntheticApplicationService {
         return returns;
     }
 
-    private Application applicationForStub(SyntheticApplication.Hakemus hakemus, SyntheticApplication stub) {
+    private Application applicationForStub(SyntheticApplication.Hakemus hakemus, final SyntheticApplication stub) {
 
         Application query = new Application();
         query.setPersonOid(hakemus.hakijaOid);
@@ -60,8 +60,14 @@ public class SyntheticApplicationService {
         Iterator<Application> applications = Iterables.filter(applicationDAO.find(query), new Predicate<Application>() {
             @Override
             public boolean apply(Application application) {
-                return Application.State.ACTIVE.equals(application.getState())
-                        || Application.State.INCOMPLETE.equals(application.getState());
+                if(Application.State.ACTIVE.equals(application.getState())
+                        || Application.State.INCOMPLETE.equals(application.getState())) {
+                    Map<String, String> existing = existingPreferences(application);
+                    // duplicate hakemus when not same hakutoive
+                    return existing.containsValue(stub.hakukohdeOid);
+                } else {
+                    return false;
+                }
             }
         }).iterator();
 
@@ -166,7 +172,7 @@ public class SyntheticApplicationService {
     private void addHakutoive(Application application, final String hakukohdeOid, String tarjoajaOid) {
 
         Map<String, String> existing = existingPreferences(application);
-        if(!existing.values().contains(hakukohdeOid)) {
+        if(!existing.containsValue(hakukohdeOid)) {
             Map<String, String> hakutoiveet = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
             String suffix = getNextHakutoiveSuffix(existing);
             hakutoiveet.put("preference" + suffix + "-Koulutus-id", hakukohdeOid);
