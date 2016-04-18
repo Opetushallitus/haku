@@ -48,7 +48,7 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${haku.app.password.to.valintalaskentakoostepalvelu}")
     private String clientAppPassKooste;
 
-    @Value("${valinta-tulos-service.url")
+    @Value("${valinta-tulos-service.url}")
     private String targetServiceValintatulosService;
 
     private static CachingRestClient cachingRestClientValinta;
