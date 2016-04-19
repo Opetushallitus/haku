@@ -93,21 +93,31 @@ public class SyntheticApplicationIT {
         final String hakijaOid = "hakijaOid1";
 
         Response resp1 = put(hakukohde1, "1", hakijaOid, hetu, email1);
-        verifyPutResponse(resp1);
+        final Application app1 = verifyPutResponse(resp1).iterator().next();
 
         Response resp2 = put(hakukohde2, "2", hakijaOid, hetu, email2);
-        final List<Application> apps2 = verifyPutResponse(resp2);
+        final Application app2 = verifyPutResponse(resp2).iterator().next();
 
-        Application app = apps2.get(0);
-        Map<String, String> hakutoiveet = app.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
-        assertEquals(hakukohde2, hakutoiveet.get("preference2-Koulutus-id"));
+        {
+            Map<String, String> hakutoiveet = app2.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+            assertEquals(hakukohde2, hakutoiveet.get("preference1-Koulutus-id"));
+            Map<String, String> henkilotiedot = app2.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
+            assertEquals(email2, henkilotiedot.get("Sähköposti"));
+            assertEquals("Etu", henkilotiedot.get("Etunimet"));
+            assertEquals("Suku", henkilotiedot.get("Sukunimi"));
+            assertEquals("Etu", henkilotiedot.get("Kutsumanimi"));
+        }
+        {
+            Map<String, String> hakutoiveet = app1.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+            assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
+            Map<String, String> henkilotiedot = app1.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
+            assertEquals(email1, henkilotiedot.get("Sähköposti"));
+            assertEquals("Etu", henkilotiedot.get("Etunimet"));
+            assertEquals("Suku", henkilotiedot.get("Sukunimi"));
+            assertEquals("Etu", henkilotiedot.get("Kutsumanimi"));
+        }
 
-        Map<String, String> henkilotiedot = app.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
-        assertEquals(email2, henkilotiedot.get("Sähköposti"));
-        assertEquals("Etu", henkilotiedot.get("Etunimet"));
-        assertEquals("Suku", henkilotiedot.get("Sukunimi"));
-        assertEquals("Etu", henkilotiedot.get("Kutsumanimi"));
+
     }
 
     @Test
