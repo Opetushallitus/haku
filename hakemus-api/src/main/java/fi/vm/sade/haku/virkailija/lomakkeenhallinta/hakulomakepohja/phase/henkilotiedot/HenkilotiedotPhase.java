@@ -265,9 +265,9 @@ public final class HenkilotiedotPhase {
 
         Element asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
         asuinmaaEiOleSuomiRule.addChild(
-                TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().formParams(formParameters).build(),
-                TextQuestion("postinumeroUlkomaa").inline().size(12).required().formParams(formParameters).build(),
-                TextQuestion("kaupunkiUlkomaa").labelKey("kaupunki").inline().size(25).required().formParams(formParameters).build());
+                TextQuestion(OppijaConstants.ELEMENT_ID_ADDRESS_ABROAD).labelKey("osoite").inline().size(40).required().formParams(formParameters).build(),
+                TextQuestion(OppijaConstants.ELEMENT_ID_POSTAL_NUMBER_ABROAD).inline().size(12).required().formParams(formParameters).build(),
+                TextQuestion(OppijaConstants.ELEMENT_ID_CITY_ABROAD).labelKey("kaupunki").inline().size(25).required().formParams(formParameters).build());
 
         asuinmaa.addChild(asuinmaaEiOleSuomiRule);
         asuinmaa.addChild(asuinmaaFI);

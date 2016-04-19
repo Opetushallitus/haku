@@ -36,11 +36,17 @@ public class Person {
     private String contactLanguage;
     private String personOid;
     private String studentOid;
+    private String phone;
+    private String address;
+    private String postalCode;
+    private String postalCity;
+    private String countryOfResidence;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
                   String dateOfBirth, Boolean noSocialSecurityNumber, String email, String sex, String homeCity,
                   Boolean securityOrder, String language, String nationality, String contactLanguage,
-                  String personOid, String studentOid) {
+                  String personOid, String studentOid, String phone, String address, String postalCode,
+                  String postalCity, String country) {
         this.firstNames = firstNames;
         this.nickName = nickName;
         this.lastName = lastName;
@@ -55,17 +61,11 @@ public class Person {
         this.contactLanguage = contactLanguage;
         this.personOid = personOid;
         this.studentOid = studentOid;
-    }
-
-    public Person(String firstNames, String lastName, String socialSecurityNumber, String email, String studentOid, String dateOfBirth) {
-        this.firstNames = firstNames;
-        this.lastName = lastName;
-        this.socialSecurityNumber = socialSecurityNumber;
-        this.email = email;
-        this.personOid = studentOid;
-        this.studentOid = studentOid;
-        this.dateOfBirth = dateOfBirth;
-        this.nickName = firstNames;
+        this.phone = phone;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.postalCity = postalCity;
+        this.countryOfResidence = country;
     }
 
     public String getFirstNames() {
@@ -120,6 +120,53 @@ public class Person {
         return studentOid;
     }
 
+    public String getCountryOfResidence() {
+        return countryOfResidence;
+    }
+
+    public void setCountryOfResidence(String countryOfResidence) {
+        this.countryOfResidence = countryOfResidence;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getPostalCity() {
+        return postalCity;
+    }
+
+    public void setPostalCity(String postalCity) {
+        this.postalCity = postalCity;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder()
@@ -136,7 +183,12 @@ public class Person {
                 .append(" nationality: ").append(nationality)
                 .append(" contactLanguage: ").append(contactLanguage)
                 .append(" personOid: ").append(personOid)
-                .append(" studentOid: ").append(studentOid);
+                .append(" studentOid: ").append(studentOid)
+                .append(" countryOfResidence: ").append(countryOfResidence)
+                .append(" phone: ").append(phone)
+                .append(" address ").append(address)
+                .append(" postal code: ").append(postalCode)
+                .append(" postal city: ").append(postalCity);
         return sb.toString();
     }
 
@@ -161,14 +213,11 @@ public class Person {
         this.contactLanguage = isNotBlank(other.contactLanguage) ? other.contactLanguage : this.contactLanguage;
         this.personOid = isNotBlank(other.personOid) ? other.personOid : this.personOid;
         this.studentOid = isNotBlank(other.studentOid) ? other.studentOid : this.studentOid;
+        this.countryOfResidence = isNotBlank(other.countryOfResidence) ? other.countryOfResidence : this.countryOfResidence;
+        this.phone = isNotBlank(other.phone) ? other.phone : this.phone;
+        this.address = isNotBlank(other.address) ? other.address : this.address;
+        this.postalCode = isNotBlank(other.postalCode) ? other.postalCode : this.postalCode;
+        this.postalCity = isNotBlank(other.postalCity) ? other.postalCity : this.postalCity;
         return this;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 }

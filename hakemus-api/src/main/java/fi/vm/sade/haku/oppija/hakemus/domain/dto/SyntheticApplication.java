@@ -1,7 +1,5 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
-import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -37,6 +35,16 @@ public class SyntheticApplication {
         public final String henkilotunnus;
         public final String sahkoposti;
         public final String syntymaAika;
+        public final String asiointikieli;
+        public final String puhelinnumero;
+        public final String osoite;
+        public final String postinumero;
+        public final String postitoimipaikka;
+        public final String asuinmaa;
+        public final String kansalaisuus;
+        public final String kotikunta;
+        public final String toinenAstePohjakoulutusMaa;
+
 
         @JsonCreator
         public Hakemus(@JsonProperty("hakijaOid") String hakijaOid,
@@ -46,7 +54,17 @@ public class SyntheticApplication {
                        @JsonProperty("aidinkieli") String aidinkieli,
                        @JsonProperty("henkilotunnus") String henkilotunnus,
                        @JsonProperty("sahkoposti") String sahkoposti,
-                       @JsonProperty("syntymaAika") String syntymaAika) {
+                       @JsonProperty("syntymaAika") String syntymaAika,
+                       @JsonProperty("asiointikieli") String asiointikieli,
+                       @JsonProperty("puhelinnumero") String puhelinnumero,
+                       @JsonProperty("osoite") String osoite,
+                       @JsonProperty("postinumero") String postinumero,
+                       @JsonProperty("postitoimipaikka") String postitoimipaikka,
+                       @JsonProperty("asuinmaa") String asuinmaa,
+                       @JsonProperty("kansalaisuus") String kansalaisuus,
+                       @JsonProperty("kotikunta") String kotikunta,
+                       @JsonProperty("toinenAstePohjakoulutusMaa") String toinenAstePohjakoulutusMaa
+                       ) {
             this.hakijaOid = hakijaOid;
             this.etunimi = etunimi;
             this.sukupuoli = sukupuoli;
@@ -55,6 +73,15 @@ public class SyntheticApplication {
             this.henkilotunnus = henkilotunnus;
             this.sahkoposti = sahkoposti;
             this.syntymaAika = syntymaAika;
+            this.asiointikieli = asiointikieli;
+            this.puhelinnumero = puhelinnumero;
+            this.osoite = osoite;
+            this.postinumero = postinumero;
+            this.postitoimipaikka = postitoimipaikka;
+            this.asuinmaa = asuinmaa;
+            this.kansalaisuus = kansalaisuus;
+            this.kotikunta = kotikunta;
+            this.toinenAstePohjakoulutusMaa = toinenAstePohjakoulutusMaa;
         }
     }
 

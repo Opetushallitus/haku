@@ -35,7 +35,7 @@ public class SyntheticApplicationService {
     }
 
     public List<Application> createApplications(SyntheticApplication applicationStub) throws IOException {
-        List<Application> returns = new ArrayList<Application>();
+        List<Application> returns = new ArrayList<>();
         for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
             Application app = applicationForStub(hakemus, applicationStub);
             Application dbApp = applicationDAO.getApplication(app.getOid(), "oid", "version");
@@ -84,6 +84,28 @@ public class SyntheticApplicationService {
                 .setEmail(hakemus.sahkoposti)
                 .setPersonOid(hakemus.hakijaOid)
                 .setDateOfBirth(hakemus.syntymaAika);
+
+        if(StringUtils.trimToNull(hakemus.osoite) != null) {
+            builder.setAddress(hakemus.osoite);
+        }
+        if(StringUtils.trimToNull(hakemus.asuinmaa) != null) {
+            builder.setCountryOfResidence(hakemus.asuinmaa);
+        }
+        if(StringUtils.trimToNull(hakemus.asiointikieli) != null) {
+            builder.setContactLanguage(hakemus.asiointikieli);
+        }
+        if(StringUtils.trimToNull(hakemus.kansalaisuus) != null) {
+            builder.setNationality(hakemus.kansalaisuus);
+        }
+        if(StringUtils.trimToNull(hakemus.puhelinnumero) != null) {
+            builder.setPhone(hakemus.puhelinnumero);
+        }
+        if(StringUtils.trimToNull(hakemus.postinumero) != null) {
+            builder.setPostalCode(hakemus.postinumero);
+        }
+        if(StringUtils.trimToNull(hakemus.postitoimipaikka) != null) {
+            builder.setPostalCity(hakemus.postitoimipaikka);
+        }
         if(StringUtils.trimToNull(hakemus.sukupuoli) != null) {
             builder.setSex(hakemus.sukupuoli);
         }
@@ -110,7 +132,7 @@ public class SyntheticApplicationService {
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, new HashMap<String, String>());
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
-        HashMap<String, String> hakutoiveet = new HashMap<String, String>();
+        HashMap<String, String> hakutoiveet = new HashMap<>();
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
         hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
@@ -166,6 +188,31 @@ public class SyntheticApplicationService {
         if (isNotBlank(person.getEmail())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_EMAIL, person.getEmail());
         }
+        if (isNotBlank(person.getPhone())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER, person.getPhone());
+        }
+        String countryOfResidence = person.getCountryOfResidence();
+        if (isNotBlank(countryOfResidence)) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY, countryOfResidence);
+        }
+
+        boolean finnishResidence = null == StringUtils.trimToNull(countryOfResidence) &&
+                countryOfResidence.equalsIgnoreCase(OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN);
+
+        if (isNotBlank(person.getPostalCode())) {
+            String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_POSTAL_NUMBER : OppijaConstants.ELEMENT_ID_POSTAL_NUMBER_ABROAD;
+            henkilotiedot.put(key, person.getPostalCode());
+        }
+
+        if (isNotBlank(person.getAddress())) {
+            String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_ADDRESS : OppijaConstants.ELEMENT_ID_ADDRESS_ABROAD;
+            henkilotiedot.put(key, person.getAddress());
+        }
+
+        if (!finnishResidence && isNotBlank(person.getPostalCity())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_CITY_ABROAD, person.getPostalCity());
+        }
+
         return henkilotiedot;
     }
 
