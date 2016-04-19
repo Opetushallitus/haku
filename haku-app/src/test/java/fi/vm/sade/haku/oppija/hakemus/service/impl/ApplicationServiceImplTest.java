@@ -108,7 +108,7 @@ public class ApplicationServiceImplTest {
     private I18nBundleService i18nBundleService;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
 
         applicationQueryParameters = new ApplicationQueryParametersBuilder()
                 .setStates(null)
@@ -467,7 +467,7 @@ public class ApplicationServiceImplTest {
     }
 
     @Test
-    public void testRemoveOrphanedAnswers() {
+    public void testRemoveOrphanedAnswers() throws Exception {
         Form form = new Form("formId", createI18NAsIs("myForm"));
         form.addChild(
                 new Phase(OppijaConstants.PHASE_PERSONAL, createI18NAsIs("persPhase"), true, new ArrayList<String>()).addChild(
@@ -514,8 +514,11 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystemBuilder().setId("myAs").setName(createI18NAsIs("myAs")).setForm(form).get();
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
+        ValintaService valintaService = mock(ValintaService.class);
+        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(Collections.<String, String>emptyMap());
+
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null, null, null, null, null, null, "true");
+                null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);

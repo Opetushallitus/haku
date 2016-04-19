@@ -123,7 +123,7 @@ public interface ApplicationService {
 
     UpdatePreferenceResult updatePreferenceBasedData(final Application application);
 
-    Application removeOrphanedAnswers(Application application);
+    Application removeOrphanedAnswers(Application application) throws ValintaServiceCallFailedException ;
 
     Application getApplicationWithValintadata(Application application) throws ValintaServiceCallFailedException;
 }
