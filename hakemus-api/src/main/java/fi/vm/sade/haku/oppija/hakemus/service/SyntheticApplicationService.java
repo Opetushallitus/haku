@@ -132,6 +132,13 @@ public class SyntheticApplicationService {
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, new HashMap<String, String>());
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
+        Map<String, String> lisatiedot = updateLisatiedot(person, new HashMap<String, String>());
+        app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
+
+        Map<String, String> koulutustausta = updateKoulutustausta(person, new HashMap<String, String>());
+        app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
+
+
         HashMap<String, String> hakutoiveet = new HashMap<>();
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
         hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
@@ -144,6 +151,12 @@ public class SyntheticApplicationService {
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, current.getAnswers().get(OppijaConstants.PHASE_PERSONAL));
         current.updateNameMetadata();
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
+
+        Map<String, String> lisatiedot = updateLisatiedot(person, current.getAnswers().get(OppijaConstants.PHASE_MISC));
+        current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
+
+        Map<String, String> koulutustausta = updateKoulutustausta(person, current.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
+        current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
 
         addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
         return current;
@@ -214,6 +227,17 @@ public class SyntheticApplicationService {
         }
 
         return henkilotiedot;
+    }
+
+    private Map<String, String> updateLisatiedot(Person person, Map<String, String> lisatiedot) {
+        if (isNotBlank(person.getContactLanguage())) {
+            lisatiedot.put(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, person.getContactLanguage());
+        }
+        return lisatiedot;
+    }
+
+    private Map<String, String> updateKoulutustausta(Person person, Map<String, String> koulutustiedot) {
+        return koulutustiedot;
     }
 
     private void addHakutoive(Application application, final String hakukohdeOid, String tarjoajaOid) {
