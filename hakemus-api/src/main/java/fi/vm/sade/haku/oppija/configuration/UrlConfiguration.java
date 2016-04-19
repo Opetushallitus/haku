@@ -12,8 +12,13 @@ public class UrlConfiguration extends OphProperties {
         if(!"it".equals(System.getProperty("spring.profiles.active"))) {
             addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
         }
+    }
+
+    @Override
+    synchronized public String frontPropertiesToJson() {
         if(!frontProperties.containsKey("frontProperties.baseUrl")) {
             frontProperties.put("koulutusinformaatio.baseUrl", "//" + require("host.haku"));
         }
+        return super.frontPropertiesToJson();
     }
 }
