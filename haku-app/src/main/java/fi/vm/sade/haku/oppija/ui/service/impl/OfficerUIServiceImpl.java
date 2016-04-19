@@ -439,8 +439,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
-        application = applicationService.removeOrphanedAnswers(application);
-
+        try {
+            application = applicationService.removeOrphanedAnswers(application);
+        }
+        catch (ValintaServiceCallFailedException e) {
+            ModelResponse response = new ModelResponse(application, form);
+            response.getErrorMessages().put("virkailija.hakemus.valintaservicefail", ElementUtil.createI18NText("virkailija.hakemus.valintaservicefail", OppijaConstants.MESSAGES_BUNDLE_NAME));
+            return response;
+        }
         Map<String, String> allAnswers = application.getVastauksetMerged();
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,

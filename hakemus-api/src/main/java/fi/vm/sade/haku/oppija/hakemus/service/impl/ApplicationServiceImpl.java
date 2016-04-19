@@ -584,7 +584,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application removeOrphanedAnswers(Application application) {
+    public Application removeOrphanedAnswers(Application originalApplication) throws ValintaServiceCallFailedException {
+        Application application = getApplicationWithValintadata(originalApplication);
         Form form = applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).getForm();
         boolean answersRemoved = true;
 
