@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.util.UtfUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     private CachingRestClient cachingRestClient;
     private UrlConfiguration urlConfiguration;
 
+    @Autowired
     public ApplicationPrintViewServiceImpl(UrlConfiguration urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
     }
