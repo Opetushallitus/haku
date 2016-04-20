@@ -19,8 +19,8 @@ public interface PDFService {
 	/**
 	 * Gets the PDF document of application
 	 * 
-	 * @param urlToApplicationPrint The url to application printing
+	 * @param applicationOid Oid for PDF printing
 	 * @return The HttpResponse which contains the PDF document
 	 */
-	public HttpResponse getPDF(String urlToApplicationPrint);
+	public HttpResponse getPDF(String applicationOid);
 }

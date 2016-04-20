@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.koodisto;
+package fi.vm.sade.mockresources;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;

@@ -3,40 +3,33 @@ package fi.vm.sade.haku;
 import javax.servlet.ServletException;
 
 import org.apache.catalina.LifecycleException;
-import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.integrationtest.tomcat.EmbeddedTomcat;
-import fi.vm.sade.integrationtest.tomcat.SharedTomcat;
-import fi.vm.sade.integrationtest.util.PortChecker;
 import fi.vm.sade.integrationtest.util.ProjectRootFinder;
 
-public class HakuAppTomcat extends EmbeddedTomcat {
+public class HakuAppTomcat {
     static final String HAKU_MODULE_ROOT = ProjectRootFinder.findProjectRoot() + "/haku-app";
     static final String HAKU_CONTEXT_PATH = "/haku-app";
     static final int DEFAULT_PORT = 9090;
     static final int DEFAULT_AJP_PORT = 8506;
+    private static EmbeddedTomcat tomcat = null;
 
     public final static void main(String... args) throws ServletException, LifecycleException {
-        useIntegrationTestSettingsIfNoProfileSelected();
-        new HakuAppTomcat(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT))),
+        create(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT))),
                 Integer.parseInt(System.getProperty("haku-app.port.ajp", String.valueOf(DEFAULT_AJP_PORT)))
         ).start().await();
     }
 
-    public HakuAppTomcat(int port, int ajpPort) {
-        super(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
-    }
-
-    public static void startShared() {
-        SharedTomcat.start(HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
-    }
-
-    public static void startForIntegrationTestIfNotRunning() {
+    public static EmbeddedTomcat create(int port, int ajpPort) {
         useIntegrationTestSettingsIfNoProfileSelected();
-        if (PortChecker.isFreeLocalPort(DEFAULT_PORT) && PortChecker.isFreeLocalPort(DEFAULT_AJP_PORT)) {
-            new HakuAppTomcat(DEFAULT_PORT, DEFAULT_AJP_PORT).start();
-        } else {
-            LoggerFactory.getLogger(HakuAppTomcat.class).info("Not starting Tomcat: seems to be running on ports " + DEFAULT_PORT + "," + DEFAULT_AJP_PORT);
+        return new EmbeddedTomcat(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH).
+                addWebApp(ProjectRootFinder.findProjectRoot() + "/haku-mock", "/");
+    }
+
+    synchronized public static void startForIntegrationTestIfNotRunning() {
+        if(tomcat == null) {
+            tomcat = create(DEFAULT_PORT, DEFAULT_AJP_PORT);
+            tomcat.start();
         }
     }
 

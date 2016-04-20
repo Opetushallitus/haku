@@ -41,7 +41,6 @@ ldap.manager.userdn={{ldap_manager_userdn}}
 mode.demo={{mode_demo}}
 mongo.db.maxpoolsize=100
 mongodb.oppija.uri=mongodb://{{mongodb_hakemus_auth}}@{{mongodb_hakemus_host}}:{{mongodb_hakemus_port}}
-opintopolku.baseurl={{opintopolku_baseurl}}
 server.name={{ansible_hostname}}
 scheduler.run={{haku_scheduler_run}}
 scheduler.delay={{haku_scheduler_delay}}
@@ -55,7 +54,6 @@ scheduler.sendMail={{haku_scheduler_sendMail}}
 scheduler.demoCleanup={{haku_scheduler_demoCleanup | default('false')}}
 haku.langCookie={{ haku_lang_cookie | default('i18next') }}
 demo.hakuoids={{demo_hakuoids}}
-ryhmasahkoposti.rest.url=https://${host.virkailija}/ryhmasahkoposti-service/email
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
@@ -73,19 +71,17 @@ cas.user-search-base=ou\=people
 cas.user-search-filter=(|(mail\={0})(uid\={0}))
 cas.service.authentication-service=https://${host.virkailija}/authentication-service
 cas.service.haku=https://${host.virkailija}/haku-app
-cas.service.haku-service=https://${host.virkailija}/haku-app
 cas.service.koodisto-service=https://${host.virkailija}/koodisto-service
 cas.service.organisaatio-service=https://${host.virkailija}/organisaatio-service
+cas.service.sijoittelu-service=https://${host.virkailija}/sijoittelu-service
 cas.service.suoritusrekisteri=https://${host.virkailija}/suoritusrekisteri
 cas.service.valintalaskenta-service=https://${host.virkailija}/valintalaskenta-laskenta-service
 cas.service.valintalaskentakoostepalvelu=https://${host.virkailija}/valintalaskentakoostepalvelu
 cas.service.viestintapalvelu=https://${host.virkailija}/viestintapalvelu
 cas.service.ryhmasahkoposti=https://${host.virkailija}/ryhmasahkoposti-service
+cas.service.valinta-tulos-service=https://${host.virkailija}/valinta-tulos-service
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
 flyway.initOnMigrate=true
-hakuperusteet.url.fi=https://${host.haku}/hakuperusteet
-hakuperusteet.url.sv=https://${host.haku.sv}/hakuperusteet
-hakuperusteet.url.en=https://${host.haku.en}/hakuperusteet
 komo.oid.kuntouttava=1.2.246.562.5.2013112814572435755085
 komo.oid.lisaopetus=1.2.246.562.5.2013112814572435044876
 komo.oid.lukio=TODO lukio komo oid
@@ -96,8 +92,6 @@ komo.oid.valmistava=1.2.246.562.5.2013112814572438136372
 komo.oid.ylioopilastutkinto=1.2.246.562.5.2013061010184237348007
 koodi.public.webservice.url.backend=https://${host.virkailija}/koodisto-service/services/koodiService
 koodisto.public.webservice.url.backend=https://${host.virkailija}/koodisto-service/services/koodistoService
-koulutusinformaatio.ao.resource.url=https\://${host.haku}/ao
-koulutusinformaatio.base.url=${host.haku}
 jpa.schemaUpdate=validate
 jpa.showSql=false
 ldap.cache.size=10000
@@ -114,15 +108,10 @@ mongo.writeconcern={{ haku_mongo_writeconcern | default('ACKNOWLEDGED') }}
 mongodb.url=${mongodb.oppija.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 oid.rest.url.backend=${host.ilb}/oid-service/rest/oid
 oid.webservice.url.backend=${host.ilb}/services/oidService
-oppijantunnistus.create.url=https://${host.virkailija}/oppijan-tunnistus/api/v1/token
 root.organisaatio.oid=1.2.246.562.10.00000000001
-tarjonta.v1.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/v1/haku
-tarjonta.v1.hakukohde.resource.url=https\://${host.virkailija}/tarjonta-service/rest/v1/hakukohde
-ohjausparametrit.resource.url=https\://${host.virkailija}/ohjausparametrit-service/api/v1/rest/parametri
 user.home.conf=/data00/oph/haku/oph-configuration
 user.oid.prefix=1.2.246.562.24
 user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService
-valinta-tulos-service.url=https://${host.virkailija}/valinta-tulos-service
 web.url.cas=https\://${host.cas}/cas
 
 # Päivämääräväli, jolloin virkailijalla oletuksena kevätkauden hakemukset.
@@ -135,7 +124,4 @@ onlyBackgroundValidation =
 
 #Run every hour, cron enabled only on DEMO environment!
 scheduler.runDemoModeCleanupCron=0 0 * * * *
-email.application.modify.link.fi=https://{{host_haku}}/omatsivut/hakutoiveidenMuokkaus.html#/token/
-email.application.modify.link.sv=https://{{host_haku_sv}}/omatsivut/hakutoiveidenMuokkaus.html#/token/
-email.application.modify.link.en=https://{{host_haku_en}}/omatsivut/hakutoiveidenMuokkaus.html#/token/
 

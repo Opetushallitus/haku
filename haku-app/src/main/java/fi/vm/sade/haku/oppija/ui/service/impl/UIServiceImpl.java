@@ -19,16 +19,13 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
-import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -78,39 +75,30 @@ public class UIServiceImpl implements UIService {
 
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
-    private final String koulutusinformaatioBaseUrl;
     private final Session userSession;
-    private final KoulutusinformaatioService koulutusinformaatioService;
     private final AuthenticationService authenticationService;
     private final I18nBundleService i18nBundleService;
     private final PDFService pdfService;
     private final HakumaksuService hakumaksuService;
     private final boolean demoMode;
-    private final String opintopolkuBaseUrl;
 
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
                          final ApplicationSystemService applicationSystemService,
                          final Session userSession,
-                         final KoulutusinformaatioService koulutusinformaatioService,
                          final AuthenticationService authenticationService,
                          final I18nBundleService i18nBundleService,
-                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
                          final PDFService pdfService,
                          final HakumaksuService hakumaksuService,
-                         @Value("${mode.demo:false}") final boolean demoMode,
-                         @Value("${opintopolku.baseurl:https://opintopolku.fi}") final String opintopolkuBaseUrl) {
+                         @Value("${mode.demo:false}") final boolean demoMode) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
-        this.koulutusinformaatioService = koulutusinformaatioService;
         this.authenticationService = authenticationService;
-        this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.i18nBundleService = i18nBundleService;
         this.pdfService = pdfService;
         this.hakumaksuService = hakumaksuService;
         this.demoMode = demoMode;
-        this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
 
     @Override
@@ -119,8 +107,7 @@ public class UIServiceImpl implements UIService {
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
 
         ModelResponse response = new ModelResponse(application, activeApplicationSystem,
-                AttachmentUtil.resolveAttachments(application),
-                koulutusinformaatioBaseUrl);
+                AttachmentUtil.resolveAttachments(application));
 
         response.addObjectToModel("alatunnisterivit", new ArrayList<I18nText>(4) {{
             add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi1"));
@@ -129,7 +116,6 @@ public class UIServiceImpl implements UIService {
             add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi4"));
         }});
         response.addObjectToModel("demoMode", this.demoMode);
-        response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
 
         if (activeApplicationSystem.isMaksumuuriKaytossa()) {
             response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(MergedAnswers.of(application)));
@@ -154,7 +140,6 @@ public class UIServiceImpl implements UIService {
         modelResponse.addAnswers(application.getVastauksetMerged());
         modelResponse.setElement(activeApplicationSystem.getForm());
         modelResponse.addObjectToModel("demoMode", this.demoMode);
-        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -175,11 +160,9 @@ public class UIServiceImpl implements UIService {
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
         modelResponse.addAnswers(answers);
         modelResponse.setElement(phase);
-        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("demoMode", this.demoMode);
-        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -241,11 +224,9 @@ public class UIServiceImpl implements UIService {
         modelResponse.setElement(activeForm.getChildById(elementId));
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
-        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("demoMode", this.demoMode);
-        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -289,11 +270,9 @@ public class UIServiceImpl implements UIService {
         modelResponse.addObjectToModel("elements", ruleElements);
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
-        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("demoMode", this.demoMode);
-        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -307,11 +286,9 @@ public class UIServiceImpl implements UIService {
         ModelResponse modelResponse = new ModelResponse(application, activeForm, activeForm.getChildById(elementId));
         modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
         modelResponse.setApplicationSystemId(applicationSystemId);
-        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("demoMode", this.demoMode);
-        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
 
         return modelResponse;
     }
@@ -333,14 +310,12 @@ public class UIServiceImpl implements UIService {
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("demoMode", this.demoMode);
-        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         modelResponse.setApplicationState(applicationState);
         if (!applicationState.isValid()) {
             modelResponse.setApplicationState(applicationState);
             modelResponse.setApplicationSystemId(applicationSystemId);
             modelResponse.setElement(activeForm.getChildById(phaseId));
             modelResponse.setForm(activeForm);
-            modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         }
         return modelResponse;
 
@@ -365,13 +340,11 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public HttpResponse getUriToPDF(String applicationSystemId, String oid) {
-
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         if (application != null
                 && application.getApplicationSystemId().equals(applicationSystemId)
                 && application.getOid().equals(oid)) {
-            String url = "/virkailija/hakemus/" + oid + "/print/view";
-            return pdfService.getUriToPDF(url);
+            return pdfService.getUriToPDF(oid);
         }
         throw new ResourceNotFoundException("Not allowed");
     }

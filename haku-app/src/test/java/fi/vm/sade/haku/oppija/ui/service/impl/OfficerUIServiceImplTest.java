@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -107,12 +108,15 @@ public class OfficerUIServiceImplTest {
         }}));
         when(i18nBundleService.getBundle(any(ApplicationSystem.class))).thenReturn(i18nBundle);
 
+        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        urlConfiguration.addDefault("host.virkailija","localhost:9090");
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
                 formService,
                 koodistoService,
                 hakuPermissionService,
-                loggerAspect, "", "",
+                loggerAspect,
+                urlConfiguration,
                 elementTreeValidator,
                 applicationSystemService,
                 authenticationService,
@@ -148,7 +152,7 @@ public class OfficerUIServiceImplTest {
     public void testUpdateApplication() throws Exception {
         ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
-        assertTrue(12 == modelResponse.getModel().size());
+        assertEquals(11, modelResponse.getModel().size());
     }
 
     @Test
@@ -159,8 +163,10 @@ public class OfficerUIServiceImplTest {
 
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
-        ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertEquals("Model size does not match", 11, modelResponse.getModel().size());
+        ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions(
+
+        );
+        assertEquals("Model size does not match", 10, modelResponse.getModel().size());
     }
 
     @Test

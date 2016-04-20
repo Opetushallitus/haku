@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.haku.oppija.ki.resource;
+package fi.vm.sade.mockresources;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -38,7 +38,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl.Koulutusinformaati
  * @author Mikko Majapuro
  */
 @Component
-@Path("/education")
+@Path("/")
 @Profile(value = {"dev", "it"})
 public class SearchResourceMock {
     @Autowired

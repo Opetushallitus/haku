@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.DocumentSourceDTO;
@@ -25,8 +26,6 @@ import java.util.List;
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class PDFServiceImpl implements PDFService {
-    @Value("${web.url.cas}")
-    private String casUrl;
     @Value("${cas.service.viestintapalvelu}")
     private String targetService;
     @Value("${haku.app.username.to.viestintapalvelu}")
@@ -35,46 +34,47 @@ public class PDFServiceImpl implements PDFService {
     private String clientAppPass;
     private ApplicationPrintViewService applicationPrintViewService;
     private CachingRestClient cachingRestClient;
+    private UrlConfiguration urlConfiguration;
 
     @Autowired
-    public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService) {
+    public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, UrlConfiguration urlConfiguration) {
     	this.applicationPrintViewService = applicationPrintViewService;
+        this.urlConfiguration = urlConfiguration;
     }
     
 	@Override
-	public HttpResponse getUriToPDF(String urlToApplicationPrint) {
-		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
-		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
-		
-		String url = "/api/v1/printer/pdf";
-		CachingRestClient cachingRestClient = getCachingRestClient();
-		
-		try {
-			return cachingRestClient.post(url, MediaType.APPLICATION_JSON, documentSourceJson);
+	public HttpResponse getUriToPDF(String applicationOid) {
+		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlConfiguration.url("haku-app.hakemusPdf", applicationOid));
+		String documentSourceJson = getDocumentsourceJson(applicationPrintView);
+
+		String url = urlConfiguration.url("viestintapalvelu.uriToPDF");
+
+        try {
+			return getCachingRestClient().post(url, MediaType.APPLICATION_JSON, documentSourceJson);
 		} catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+            throw new RemoteServiceException(url, e);
         }
 	}
 
     @Override
+    @Deprecated // NOT IN USE?
 	public HttpResponse getPDF(String urlToApplicationPrint) {
 		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
-		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
-		
-		String url = "/api/v1/printer/pdf/content";
-		CachingRestClient cachingRestClient = getCachingRestClient();
-		
-		try {
-			return cachingRestClient.post(url, MediaType.APPLICATION_JSON, documentSourceJson);
+		String documentSourceJson = getDocumentsourceJson(applicationPrintView);
+
+		String url = urlConfiguration.url("viestintapalvelu.pdfContent");
+
+        try {
+			return getCachingRestClient().post(url, MediaType.APPLICATION_JSON, documentSourceJson);
 		} catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+            throw new RemoteServiceException(url, e);
         }	
 	}
 
 	private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
             cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
-            cachingRestClient.setWebCasUrl(casUrl);
+            cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);
             cachingRestClient.setPassword(clientAppPass);

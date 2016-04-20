@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class UIServiceImplTest extends HakumaksuTest {
 
-    private UIServiceImpl uiService = new UIServiceImpl(null, null, null, null, null, null, null, null, service, false, null);
+    private UIServiceImpl uiService = new UIServiceImpl(null, null, null, null, null, null, service, false);
 
     @Test
     public void testThatPaymentNotificationIsVisibleWhenPaymentIsRequired() {

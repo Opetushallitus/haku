@@ -17,6 +17,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
@@ -43,13 +44,11 @@ public class HakumaksuUtil {
     public static final String TRUE = "true";
 
     private RestClient restClient;
-    private final SafeString koulutusinformaatioUrl;
-    private SafeString koodistoServiceUrl;
+    private final UrlConfiguration urlConfiguration;
 
-    public HakumaksuUtil(RestClient restClient, SafeString koulutusinformaatioUrl, SafeString koodistoServiceUrl) {
+    public HakumaksuUtil(RestClient restClient, UrlConfiguration urlConfiguration) {
         this.restClient = restClient;
-        this.koulutusinformaatioUrl = koulutusinformaatioUrl;
-        this.koodistoServiceUrl = koodistoServiceUrl;
+        this.urlConfiguration = urlConfiguration;
         populateEaaCountriesCache();
     }
 
@@ -72,13 +71,13 @@ public class HakumaksuUtil {
      * @return true if send was successful
      */
     public ListenableFuture<Boolean> sendPaymentRequest(final PaymentEmail paymentEmail,
-                                                        final SafeString oppijanTunnistusUrl,
-                                                        final SafeString redirectUrl,
+                                                        final String oppijanTunnistusUrl,
+                                                        final String redirectUrl,
                                                         final ApplicationOid _hakemusOid,
                                                         final PersonOid _personOid,
                                                         final SafeString emailAddress) {
         OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
-            this.url = redirectUrl.getValue();
+            this.url = redirectUrl;
             this.expires = paymentEmail.expirationDate.getTime();
             this.email = emailAddress.getValue();
             this.subject = paymentEmail.subject.getValue();
@@ -90,7 +89,7 @@ public class HakumaksuUtil {
             }};
         }};
         try {
-            return Futures.transform(restClient.post(oppijanTunnistusUrl.getValue(), body, Object.class), new Function<Response<Object>, Boolean>() {
+            return Futures.transform(restClient.post(oppijanTunnistusUrl, body, Object.class), new Function<Response<Object>, Boolean>() {
                 @Override
                 public Boolean apply(Response<Object> input) {
                     return input.isSuccessStatusCode();
@@ -170,7 +169,7 @@ public class HakumaksuUtil {
     }
 
     private ListenableFuture<List<String>> getNumericEaaCountryCodes() throws IOException {
-        String url = koodistoServiceUrl + "/rest/codeelement/" + EEA_KOODI + "/1";
+        String url = urlConfiguration.url("koodisto-service.koodi", EEA_KOODI);
         return Futures.transform(restClient.get(url, KoodistoEAA.class), new Function<Response<KoodistoEAA>, List<String>>() {
             @Override
             public List<String> apply(Response<KoodistoEAA> response) {
@@ -191,7 +190,7 @@ public class HakumaksuUtil {
     }
 
     private ListenableFuture<IsoCountryCode> numericCountryCodeToIsoCountryCode(String numericCode) throws IOException {
-        String url = koodistoServiceUrl + "/rest/codeelement/" + NUMERIC_COUNTRY_KOODISTO + "_" + numericCode + "/1";
+        String url = urlConfiguration .url("koodisto-service.koodi", NUMERIC_COUNTRY_KOODISTO + "_" + numericCode);
         return Futures.transform(restClient.get(url, KoodistoMaakoodi.class), new Function<Response<KoodistoMaakoodi>, IsoCountryCode>() {
             @Override
             public IsoCountryCode apply(Response<KoodistoMaakoodi> response) {
@@ -229,7 +228,7 @@ public class HakumaksuUtil {
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build(new CacheLoader<ApplicationOptionOid, EducationRequirements>() {
                 public EducationRequirements load(ApplicationOptionOid applicationOptionOid) throws Exception {
-                    String url = String.format("%s/%s", koulutusinformaatioUrl.getValue(), applicationOptionOid.getValue());
+                    String url = urlConfiguration.url("koulutusinformaatio.ao",applicationOptionOid.getValue());
                     BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
                     return new EducationRequirements(applicationOptionOid, ImmutableSet.copyOf(requirements.requiredBaseEducations));
                 }

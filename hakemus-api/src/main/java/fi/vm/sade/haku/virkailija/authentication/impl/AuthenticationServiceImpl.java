@@ -21,6 +21,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
@@ -60,20 +61,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final Gson gson;
     private final String userOidPrefix;
     private final String langCookieName;
+    private UrlConfiguration urlConfiguration;
 
     @Autowired
     public AuthenticationServiceImpl(
-    @Value("${web.url.cas}") String casUrl,
+    UrlConfiguration urlConfiguration,
     @Value("${cas.service.authentication-service}") String targetService,
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
     @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
     @Value("${user.oid.prefix}") String userOidPrefix,
     @Value("${haku.langCookie}") String langCookieName) {
+        this.urlConfiguration = urlConfiguration;
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
         cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
-        cachingRestClient.setWebCasUrl(casUrl);
+        cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);
         cachingRestClient.setPassword(clientAppPass);
@@ -122,13 +125,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public List<String> getOrganisaatioHenkilo() {
         String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
-        String url = "/resources/henkilo/" + personOid + "/organisaatiohenkilo";
+        String url = urlConfiguration.url("authentication-service.organisaatiohenkilo", personOid);
         try {
             List<String> orgs = new ArrayList<>();
-            if (log.isDebugEnabled()) {
-                log.debug("Getting organisaatiohenkilos for {}", personOid);
-                log.debug("Using cachingRestClient webCasUrl: {}, casService: {} ", cachingRestClient.getWebCasUrl(), cachingRestClient.getCasService());
-            }
             InputStream is = cachingRestClient.get(url);
 
             JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
@@ -144,7 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             return orgs;
         } catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+            throw new RemoteServiceException(url, e);
         }
     }
 
@@ -164,7 +163,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Person getHenkilo(String personOid) {
-        String url = "/resources/s2s/" + personOid;
+        String url = urlConfiguration.url("authentication-service.s2s", personOid);
         try {
             String personJson = cachingRestClient.getAsString(url);
             log.debug("Got person: {}", personJson);
@@ -178,10 +177,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
     @Override
     public List<Person> getHenkiloList(List<String> personOids) {
-        String oidsJson = gson.toJson(personOids);
-        String url = "/resources/henkilo/henkilotByHenkiloOidList";
+        String url = urlConfiguration.url("authentication-service.henkilotByHenkiloOidList");
         try {
-            HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, oidsJson);
+            HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, gson.toJson(personOids));
             Type listType = new TypeToken<List<Person>>(){}.getType();
             BasicResponseHandler handler = new BasicResponseHandler();
             String responseJson = handler.handleResponse(response);
@@ -193,7 +191,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Person getStudentOid(String personOid) {
-        String url = "/resources/henkilo/" + personOid + "/yksiloi";
+        String url = urlConfiguration.url("authentication-service.henkiloYksiloi", personOid);
 
         String responseString = null;
         try {
@@ -211,7 +209,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Person createPerson(Person person) {
         String personJson = gson.toJson(person, Person.class);
-        String url = "/resources/henkilo";
+        String url = urlConfiguration.url("authentication-service.henkilo");
         try {
             log.debug("Creating person: {}", personJson);
             HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, personJson);
@@ -242,13 +240,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private Person fetchPerson(String hetu) {
-        String url = "/resources/s2s/byHetu/" + hetu;
-        return fetchPersonByResourceUrl(url);
+        return fetchPersonByResourceUrl(urlConfiguration.url("authentication-service.s2sByHetu", hetu));
     }
 
     private Person fetchPersonByStudentToken(String token) {
-        String url = "/resources/henkilo/identification?idp=oppijaToken&id=" + token;
-        return fetchPersonByResourceUrl(url);
+        return fetchPersonByResourceUrl(urlConfiguration.url("authentication-service.personByStudentToken", token));
     }
 
     public String getLangCookieName() {

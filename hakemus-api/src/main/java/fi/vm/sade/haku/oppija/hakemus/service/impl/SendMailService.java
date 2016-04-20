@@ -8,6 +8,7 @@ import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
@@ -15,6 +16,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.properties.OphProperties;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
@@ -58,12 +60,10 @@ public class SendMailService {
     final private Map<TemplateKey, Template> templateMap = new HashMap<>();
 
     public static final String TRUE = "true";
+    private final UrlConfiguration urlConfiguration;
 
     @Value("${mode.demo:false}")
     public boolean demoMode;
-
-    @Value("${oppijantunnistus.create.url}")
-    String oppijanTunnistusUrl;
 
     @Value("${email.replyTo:noreply@opintopolku.fi}")
     String emailFrom;
@@ -72,23 +72,14 @@ public class SendMailService {
 
     final EmailService emailService;
 
-    final Map<LanguageCodeISO6391, String> langToLink;
-
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
                            final RestClient restClient,
-                           final EmailService emailService,
-                           @Value("${email.application.modify.link.fi}") String emailApplicationModifyLinkFi,
-                           @Value("${email.application.modify.link.sv}") String emailApplicationModifyLinkSv,
-                           @Value("${email.application.modify.link.en}") String emailApplicationModifyLinkEn) {
+                           final EmailService emailService, UrlConfiguration urlConfiguration) {
         this.applicationSystemService = applicationSystemService;
         this.restClient = restClient;
         this.emailService = emailService;
-        this.langToLink = ImmutableMap.of(
-                fi, emailApplicationModifyLinkFi,
-                sv, emailApplicationModifyLinkSv,
-                en, emailApplicationModifyLinkEn
-        );
+        this.urlConfiguration = urlConfiguration;
         initTemplateMaps();
     }
 
@@ -188,7 +179,7 @@ public class SendMailService {
                                      final String emailSubject, final String emailTemplate,
                                      final LanguageCodeISO6391 emailLang) throws EmailException {
         OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
-            this.url = langToLink.get(emailLang);
+            this.url = urlConfiguration.url("omatsivut.email.application.modify.link." + emailLang.toString());
             this.expires = getModificationLinkExpiration(as);
             this.email = emailAddress;
             this.subject = emailSubject;
@@ -200,7 +191,7 @@ public class SendMailService {
         }};
 
         try {
-            boolean successStatusCode = Futures.transform(restClient.post(oppijanTunnistusUrl, body, Object.class), new Function<HttpRestClient.Response<Object>, Boolean>() {
+            boolean successStatusCode = Futures.transform(restClient.post(urlConfiguration.url("oppijan-tunnistus.create"), body, Object.class), new Function<HttpRestClient.Response<Object>, Boolean>() {
                 @Override
                 public Boolean apply(HttpRestClient.Response<Object> input) {
                     return input.isSuccessStatusCode();

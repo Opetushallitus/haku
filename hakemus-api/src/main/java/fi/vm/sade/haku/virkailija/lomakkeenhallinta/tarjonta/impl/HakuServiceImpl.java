@@ -19,8 +19,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl;
 import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
@@ -29,7 +29,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -48,21 +47,22 @@ public class HakuServiceImpl implements HakuService {
     public static final String MAX_COUNT = "10000"; // Tarjonta ei hyväksi -1:stä ja hajoaa Integer.MAX_VALUE:een.
     public static final String COUNT_PARAMETER = "count";
     public static final String MEDIA_TYPE = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    private final WebResource webResource;
+    private final UrlConfiguration urlConfiguration;
+    private final Client clientWithJacksonSerializer;
 
     @Autowired
-    public HakuServiceImpl(@Value("${tarjonta.v1.haku.resource.url}") final String tarjontaHakuResourceUrl) {
-        Client clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
-        webResource = clientWithJacksonSerializer.resource(tarjontaHakuResourceUrl).queryParam(COUNT_PARAMETER, MAX_COUNT); // todo pagination
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Tarjonnan uri: " + webResource.getURI().toString());
-        }
+    public HakuServiceImpl(UrlConfiguration urlConfiguration) {
+        this.urlConfiguration = urlConfiguration;
+        clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
     }
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        WebResource asListWebResource = webResource.path("find").queryParam("addHakuKohdes", String.valueOf(false));
-        ResultV1RDTO<List<HakuV1RDTO>> hakuResult = asListWebResource.accept(MEDIA_TYPE)
+        ResultV1RDTO<List<HakuV1RDTO>> hakuResult = clientWithJacksonSerializer
+                .resource(urlConfiguration.url("tarjonta-service.v1.haku.resource", "find"))
+                .queryParam(COUNT_PARAMETER, MAX_COUNT)
+                .queryParam("addHakuKohdes", String.valueOf(false))
+                .accept(MEDIA_TYPE)
                 .get(new GenericType<ResultV1RDTO<List<HakuV1RDTO>>>() {
                 });
         List<HakuV1RDTO> hakuDTOs = Lists.newArrayList();
@@ -98,8 +98,10 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public HakuV1RDTO getRawApplicationSystem(String oid) {
-        WebResource asWebResource = webResource.path(oid);
-        ResultV1RDTO<HakuV1RDTO> result = asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
+        ResultV1RDTO<HakuV1RDTO> result = clientWithJacksonSerializer
+                .resource(urlConfiguration.url("tarjonta-service.v1.haku.resource", oid))
+                .queryParam(COUNT_PARAMETER, MAX_COUNT)
+                .accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
         });
         HakuV1RDTO haku = result.getResult();
         if (haku != null && !"POISTETTU".equals(haku.getTila())) {

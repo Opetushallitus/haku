@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,13 +34,13 @@ public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImp
 
     @Autowired
     public AuthenticationServiceDevLuokkaImpl(
-            @Value("${web.url.cas}") String casUrl,
+            UrlConfiguration urlConfiguration,
             @Value("${cas.service.authentication-service}") String targetService,
             @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
             @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
             @Value("${user.oid.prefix}") String userOidPrefix,
             @Value("${haku.langCookie}") String langCookieName) {
-        super(casUrl, targetService, clientAppUser, clientAppPass, userOidPrefix, langCookieName);
+        super(urlConfiguration, targetService, clientAppUser, clientAppPass, userOidPrefix, langCookieName);
     }
 
     @Override

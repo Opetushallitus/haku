@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import fi.vm.sade.haku.oppija.common.organisaatio.*;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
@@ -36,7 +37,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -65,10 +66,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     private HttpClient httpClient;
     private Gson gson;
 
-    @Value("${cas.service.organisaatio-service}")
-    private String targetService;
+    private UrlConfiguration urlConfiguration;
 
-    public OrganizationServiceImpl() {
+    @Autowired
+    public OrganizationServiceImpl(UrlConfiguration urlConfiguration) {
+        this.urlConfiguration = urlConfiguration;
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());
         builder.registerTypeAdapter(OrganizationGroupListRestDTO.class, new OrganizationGroupListRestDTOAdapter());
@@ -83,17 +85,12 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> search(final OrganisaatioSearchCriteria searchCriteria) throws UnsupportedEncodingException {
-
-        String baseUrl = "/rest/organisaatio/hae";
-        String params = buildParamString(searchCriteria);
-
         OrganisaatioHakutulos hakutulos = null;
         try {
-            hakutulos = getCached(baseUrl + params, OrganisaatioHakutulos.class);
+            hakutulos = getCached(urlConfiguration.url("organisaatio-service.hae", buildParams(searchCriteria)), OrganisaatioHakutulos.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return flattenAndTransformResultList(hakutulos);
     }
 
@@ -116,40 +113,31 @@ public class OrganizationServiceImpl implements OrganizationService {
         return orgs;
     }
 
-    private String buildParamString(OrganisaatioSearchCriteria criteria) throws UnsupportedEncodingException {
-        StringBuilder builder = new StringBuilder("?");
+    private Map buildParams(OrganisaatioSearchCriteria criteria) throws UnsupportedEncodingException {
+        Map params = new HashMap();
 
         if (criteria.getOppilaitosTyyppi() != null && !criteria.getOppilaitosTyyppi().isEmpty()) {
-            builder.append("oppilaitosTyyppi=")
-                    .append(URLEncoder.encode(criteria.getOppilaitosTyyppi().toArray()[0].toString(), "UTF-8"))
-                    .append("&");
+            params.put("oppilaitosTyyppi", criteria.getOppilaitosTyyppi().toArray()[0]);
         }
         if (isNotBlank(criteria.getOrganisaatioTyyppi())) {
-            builder.append("organisaatioTyyppi=")
-                    .append(URLEncoder.encode(criteria.getOrganisaatioTyyppi(), "UTF-8"))
-                    .append("&");
+            params.put("organisaatioTyyppi", criteria.getOrganisaatioTyyppi());
         }
         for (String orgOid : criteria.getOidRestrictionList()) {
-            builder.append("oidRestrictionList=")
-                    .append(URLEncoder.encode(orgOid, "UTF-8"))
-                    .append("&");
+            params.put("oidRestrictionList", orgOid);
         }
         if (isNotBlank(criteria.getSearchStr())) {
-            builder.append("searchStr=")
-                    .append(URLEncoder.encode(criteria.getSearchStr(), "UTF-8"))
-                    .append("&");
+            params.put("searchStr", criteria.getSearchStr());
         }
-        builder.append("skipParents=").append(String.valueOf(criteria.getSkipParents())).append("&")
-                .append("suunnitellut=").append(String.valueOf(criteria.getSuunnitellut())).append("&")
-                .append("vainLakkautetut=").append(String.valueOf(criteria.getVainLakkautetut())).append("&")
-                .append("vainAktiiviset=").append(String.valueOf(criteria.getVainAktiiviset()));
-        return builder.toString();
+        params.put("skipParents",criteria.getSkipParents());
+        params.put("suunnitellut",criteria.getSuunnitellut());
+        params.put("vainLakkautetut",criteria.getVainLakkautetut());
+        params.put("vainAktiiviset",criteria.getVainAktiiviset());
+        return params;
     }
 
     @Override
     public List<String> findParentOids(final String organizationOid) throws IOException {
-        String url = "/rest/organisaatio/" + organizationOid + "/parentoids";
-        List<String> parents = Lists.newArrayList(getCached(url, String.class).split("/"));
+        List<String> parents = Lists.newArrayList(getCached(urlConfiguration.url("organisaatio-service.parentoids", organizationOid), String.class).split("/"));
         for (String parent : parents) {
             String prefix = parent.substring(0, ORGANIZATION_PREFIX.length());
             String suffix = parent.substring(ORGANIZATION_PREFIX.length(), parent.length());
@@ -164,8 +152,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization findByOid(String oid) throws IOException {
-        String url = "/rest/organisaatio/" + oid;
-        OrganizationRestDTO organisaatioRDTO = getCached(url, OrganizationRestDTO.class);
+        OrganizationRestDTO organisaatioRDTO = getCached(urlConfiguration.url("organisaatio-service.byOid", oid), OrganizationRestDTO.class);
         return new Organization(organisaatioRDTO);
     }
 
@@ -191,8 +178,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<OrganizationGroupRestDTO> findGroups(String term) throws IOException {
-        String url = "/rest/organisaatio/1.2.246.562.10.00000000001/ryhmat";
-        OrganizationGroupListRestDTO groupList = getCached(url, OrganizationGroupListRestDTO.class);
+        OrganizationGroupListRestDTO groupList = getCached(urlConfiguration.url("organisaatio-service.ryhmat"), OrganizationGroupListRestDTO.class);
         List<OrganizationGroupRestDTO> groups = groupList.getGroups();
         List<OrganizationGroupRestDTO> filtered = new ArrayList<OrganizationGroupRestDTO>();
         String termLC = term.toLowerCase();
@@ -226,7 +212,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     private <T> T get(String url, Class<T> resultType) throws IOException {
-        HttpGet get = new HttpGet(targetService + url);
+        HttpGet get = new HttpGet(url);
         get.setHeader("clientSubSystemCode", "haku.hakemus-api");
         try {
             HttpResponse response = this.httpClient.execute(get);

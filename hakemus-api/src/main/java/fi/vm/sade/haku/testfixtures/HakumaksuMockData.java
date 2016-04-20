@@ -148,8 +148,8 @@ public class HakumaksuMockData {
     public static final String APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS = "4.7.3.8.4";
     public static final String APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS = "7.3.2.9.3";
     public static final String APPLICATION_OPTION_WITHOUT_PAYMENT_EDUCATION_REQUIREMENTS = "912.123.2.123.12";
-    public static final String KOODISTO_SERVICE = "http://localhost:9090/haku-app/koodisto/";
-    public static final String KI_SERVICE = "http://localhost:9090/haku-app/education/";
+    public static final String KOODISTO_SERVICE = "https://localhost:9090/koodisto-service/";
+    public static final String KI_SERVICE = "https://localhost:9090/ao/";
 
     public static Map<String, Object> testMappings() {
         final ImmutableMap.Builder<String, Object> builder = new ImmutableMap.Builder<>();

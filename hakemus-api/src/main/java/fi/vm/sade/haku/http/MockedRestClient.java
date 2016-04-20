@@ -49,8 +49,12 @@ public class MockedRestClient implements RestClient {
 
     @Override
     public <T> ListenableFuture<Response<T>> get(String url, Class<T> responseClass) throws IOException {
+        Object o = mappings.get(url);
+        if(o == null) {
+            throw new RuntimeException("Url not mocked: " + url);
+        }
         capturedEvents.add(new Captured("GET", url, null));
-        return (ListenableFuture<Response<T>>) mappings.get(url);
+        return (ListenableFuture<Response<T>>) o;
     }
 
     @Override

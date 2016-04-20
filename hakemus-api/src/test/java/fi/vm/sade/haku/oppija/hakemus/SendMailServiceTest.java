@@ -7,6 +7,7 @@ import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.http.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
+import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
@@ -34,10 +35,6 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 public class SendMailServiceTest {
 
-    String oppijantunnistusUrl = "http://localhost/oppijan-tunnistus";
-    String linkFi = "http://localhost/fi/omatsivut";
-    String linkSv = "http://localhost/sv/omatsivut";
-    String linkEn = "http://localhost/en/omatsivut";
     String applicationSystemId = "1.2.246.562.29.75203638285";
     String applicationSystemIdSecondary = "1.2.246.562.29.75203638285";
     String applicationSystemIdErkka = "oid.erkka";
@@ -59,12 +56,12 @@ public class SendMailServiceTest {
         OppijanTunnistusDTO capturedBody = (OppijanTunnistusDTO) firstCaptured.body;
 
         assertEquals(lastApplicationPeriodEndDate.getTime(), capturedBody.expires);
-        assertEquals(firstCaptured.url, oppijantunnistusUrl);
-        assertEquals(firstCaptured.method, "POST");
-        assertEquals(capturedBody.url, linkFi);
-        assertEquals(capturedBody.lang, fi);
-        assertEquals(capturedBody.email, emailAddress);
-        assertEquals(capturedBody.metadata.hakemusOid, applicationOid);
+        assertEquals("https://localhost/oppijan-tunnistus/api/v1/token", firstCaptured.url);
+        assertEquals("POST", firstCaptured.method);
+        assertEquals("https://localhost:9090/omatsivut/hakutoiveidenMuokkaus.html#/token/", capturedBody.url);
+        assertEquals(fi, capturedBody.lang);
+        assertEquals(emailAddress, capturedBody.email);
+        assertEquals(applicationOid, capturedBody.metadata.hakemusOid);
         assertTrue(capturedBody.template.contains(hakuNimiFi));
     }
 
@@ -144,8 +141,9 @@ public class SendMailServiceTest {
         ApplicationSystem siirtohaku = mockApplicationSystem(applicationSystemIdSiirtohaku, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
         when(siirtohaku.getKohdejoukonTarkenne()).thenReturn(OppijaConstants.KOHDEJOUKON_TARKENNE_SIIRTOHAKU);
 
-        service = new SendMailService(applicationSystemService, restClient, emailServiceMockImpl, linkFi, linkSv, linkEn);
-        setField(service, "oppijanTunnistusUrl", oppijantunnistusUrl);
+        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        urlConfiguration.addDefault("host.haku","localhost:9090").addDefault("host.virkailija","localhost");
+        service = new SendMailService(applicationSystemService, restClient, emailServiceMockImpl, urlConfiguration);
     }
 
     private ApplicationSystem mockApplicationSystem(String oid, String kohdejoukkoUri) {

@@ -34,6 +34,9 @@
     <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/spin.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/underscore-min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/haku-app-web-url_properties.js" type="text/javascript"></script>
+    <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/bacon.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
@@ -56,8 +59,7 @@
         SUBMITTED: '<fmt:message key="virkailija.hakemus.tila.lahetetty"/>',
         DRAFT: '<fmt:message key="virkailija.hakemus.tila.luonnos"/>',
         NOT_IDENTIFIED: '<fmt:message key="virkailija.hakemus.tila.yksiloimatta"/>',
-        lang: '${requestScope['fi_vm_sade_oppija_language']}',
-        tarjontaUrl: "${it.tarjontaUrl}"
+        lang: '${requestScope['fi_vm_sade_oppija_language']}'
     }
 </script>
 <div id="viewport">
