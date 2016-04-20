@@ -848,7 +848,11 @@ public class ValintaServiceMockImpl implements ValintaService {
 
     @Override
     public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException{
-        throw new ValintaServiceCallFailedException(new IllegalStateException("test valintaservice down"));
+        Map<String, String> result = new HashMap<>();
+        for(Map<String, String> r : application.getAnswers().values()) {
+            result.putAll(r);
+        }
+        return result;
     }
 
 
