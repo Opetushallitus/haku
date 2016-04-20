@@ -209,8 +209,8 @@ public class SyntheticApplicationService {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY, countryOfResidence);
         }
 
-        boolean finnishResidence = null == StringUtils.trimToNull(countryOfResidence) &&
-                countryOfResidence.equalsIgnoreCase(OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN);
+        boolean finnishResidence = null == StringUtils.trimToNull(countryOfResidence) ||
+                OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN.equalsIgnoreCase(countryOfResidence);
 
         if (isNotBlank(person.getPostalCode())) {
             String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_POSTAL_NUMBER : OppijaConstants.ELEMENT_ID_POSTAL_NUMBER_ABROAD;
