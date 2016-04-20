@@ -16,7 +16,9 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.api.client.util.Maps;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimaps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -585,8 +587,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application removeOrphanedAnswers(Application originalApplication) throws ValintaServiceCallFailedException {
-        Application application = getApplicationWithValintadata(originalApplication);
+        Map<String, Map<String,String>> deepCopyOfOriginalAnswers = Maps.newHashMap();
         for(Map.Entry<String, Map<String, String>> phase : originalApplication.getAnswers().entrySet()) {
+            deepCopyOfOriginalAnswers.put(phase.getKey(), ImmutableMap.copyOf(phase.getValue()));
+        }
+        Application application = getApplicationWithValintadata(originalApplication);
+        for(Map.Entry<String, Map<String, String>> phase : deepCopyOfOriginalAnswers.entrySet()) {
             if(application.getAnswers().containsKey(phase.getKey())) {
                 application.getAnswers().get(phase.getKey()).putAll(phase.getValue());
             } else {
