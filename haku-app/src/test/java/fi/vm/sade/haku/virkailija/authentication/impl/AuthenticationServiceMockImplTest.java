@@ -36,7 +36,8 @@ public class AuthenticationServiceMockImplTest {
     @Test
     public void testAddUser() {
         Person p = new Person("Onni Pekka", "Onni", "Oppija", "111166-987F", null,
-                false, "mm@example.com", "MALE", "Helsinki", false, "fi", "FINLAND", "fi", "1.2.3.4", "1.2.3.4");
+                false, "mm@example.com", "MALE", "Helsinki", false, "fi", "FINLAND", "fi", "1.2.3.4", "1.2.3.4",
+                "040123456", "Onnentie 2", "00100", "HELSINKI", "FIN");
         assertNotNull(authenticationServiceMock.addPerson(p));
     }
 
