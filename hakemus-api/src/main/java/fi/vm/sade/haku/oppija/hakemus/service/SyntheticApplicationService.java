@@ -10,7 +10,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 @Service
 public class SyntheticApplicationService {
@@ -85,39 +85,55 @@ public class SyntheticApplicationService {
                 .setPersonOid(hakemus.hakijaOid)
                 .setDateOfBirth(hakemus.syntymaAika);
 
-        if(StringUtils.trimToNull(hakemus.osoite) != null) {
+        if(trimToNull(hakemus.osoite) != null) {
             builder.setAddress(hakemus.osoite);
         }
-        if(StringUtils.trimToNull(hakemus.asuinmaa) != null) {
+        if(trimToNull(hakemus.asuinmaa) != null) {
             builder.setCountryOfResidence(hakemus.asuinmaa);
         }
-        if(StringUtils.trimToNull(hakemus.asiointikieli) != null) {
+        if(trimToNull(hakemus.asiointikieli) != null) {
             builder.setContactLanguage(hakemus.asiointikieli);
         }
-        if(StringUtils.trimToNull(hakemus.kansalaisuus) != null) {
-            builder.setNationality(hakemus.kansalaisuus);
+        String nationality = hakemusNationalityToPersonNationality(hakemus.kansalaisuus);
+        if(trimToNull(hakemus.kansalaisuus) != null) {
+            builder.setNationality(nationality);
         }
-        if(StringUtils.trimToNull(hakemus.puhelinnumero) != null) {
+        if(trimToNull(hakemus.puhelinnumero) != null) {
             builder.setPhone(hakemus.puhelinnumero);
         }
-        if(StringUtils.trimToNull(hakemus.postinumero) != null) {
+        if(trimToNull(hakemus.postinumero) != null) {
             builder.setPostalCode(hakemus.postinumero);
         }
-        if(StringUtils.trimToNull(hakemus.postitoimipaikka) != null) {
+        if(trimToNull(hakemus.postitoimipaikka) != null) {
             builder.setPostalCity(hakemus.postitoimipaikka);
         }
-        if(StringUtils.trimToNull(hakemus.sukupuoli) != null) {
+        if(trimToNull(hakemus.sukupuoli) != null) {
             builder.setSex(hakemus.sukupuoli);
         }
-        if(StringUtils.trimToNull(hakemus.aidinkieli) != null) {
+        if(trimToNull(hakemus.aidinkieli) != null) {
             builder.setLanguage(hakemus.aidinkieli);
         }
-        if(StringUtils.trimToNull(hakemus.henkilotunnus) == null) {
+        if(trimToNull(hakemus.henkilotunnus) == null) {
             builder.setNoSocialSecurityNumber(true);
         } else {
             builder.setSocialSecurityNumber(hakemus.henkilotunnus);
         }
         return builder.get();
+    }
+
+    private String hakemusNationalityToPersonNationality(String hakemusNationality) {
+        if(null != trimToNull(hakemusNationality)) {
+            if("FI".equalsIgnoreCase(hakemusNationality)) {
+                return "suomi";
+            }
+            if("EN".equalsIgnoreCase(hakemusNationality)) {
+                return "englanti";
+            }
+            if("SV".equalsIgnoreCase(hakemusNationality)) {
+                return "ruotsi";
+            }
+        }
+        return null;
     }
 
     private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
@@ -209,7 +225,7 @@ public class SyntheticApplicationService {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY, countryOfResidence);
         }
 
-        boolean finnishResidence = null == StringUtils.trimToNull(countryOfResidence) ||
+        boolean finnishResidence = null == trimToNull(countryOfResidence) ||
                 OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN.equalsIgnoreCase(countryOfResidence);
 
         if (isNotBlank(person.getPostalCode())) {
@@ -224,6 +240,10 @@ public class SyntheticApplicationService {
 
         if (!finnishResidence && isNotBlank(person.getPostalCity())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_CITY_ABROAD, person.getPostalCity());
+        }
+
+        if(isNotBlank(person.getNationality())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_NATIONALITY, person.getNationality());
         }
 
         return henkilotiedot;

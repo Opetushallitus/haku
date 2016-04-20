@@ -72,7 +72,7 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
                 .setHomeCity("Kotikunta")
                 .setLanguage("fi")
                 .setLastName("Sukunimi")
-                .setNationality("fi")
+                .setNationality("suomi")
                 .setNickName("Etu")
                 .setNoSocialSecurityNumber(false)
                 .setPersonOid("1.2.246.562.24.00000000001")
