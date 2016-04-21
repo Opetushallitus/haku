@@ -111,7 +111,7 @@ public class SyntheticApplicationService {
             builder.setSex(hakemus.sukupuoli);
         }
         if(trimToNull(hakemus.aidinkieli) != null) {
-            builder.setLanguage(hakemus.aidinkieli);
+            builder.setLanguage(hakemus.aidinkieli.toUpperCase());
         }
         if(trimToNull(hakemus.henkilotunnus) == null) {
             builder.setNoSocialSecurityNumber(true);
@@ -154,7 +154,7 @@ public class SyntheticApplicationService {
         Map<String, String> lisatiedot = updateLisatiedot(person, new HashMap<String, String>());
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
 
-        Map<String, String> koulutustausta = updateKoulutustausta(person, new HashMap<String, String>());
+        Map<String, String> koulutustausta = updateKoulutustausta(person, hakemus, new HashMap<String, String>());
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
 
 
@@ -263,7 +263,10 @@ public class SyntheticApplicationService {
         return lisatiedot;
     }
 
-    private Map<String, String> updateKoulutustausta(Person person, Map<String, String> koulutustiedot) {
+    private Map<String, String> updateKoulutustausta(Person person, SyntheticApplication.Hakemus hakemus, Map<String, String> koulutustiedot) {
+        if (isNotBlank(hakemus.toinenAstePohjakoulutusMaa)) {
+            koulutustiedot.put(OppijaConstants.POHJAKOULUTUS_MAA_TOINEN_ASTE, hakemus.toinenAstePohjakoulutusMaa);
+        }
         return koulutustiedot;
     }
 
