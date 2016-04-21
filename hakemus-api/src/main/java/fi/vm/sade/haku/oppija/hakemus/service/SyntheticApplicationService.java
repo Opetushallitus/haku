@@ -174,7 +174,7 @@ public class SyntheticApplicationService {
         Map<String, String> lisatiedot = updateLisatiedot(person, current.getAnswers().get(OppijaConstants.PHASE_MISC));
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
 
-        Map<String, String> koulutustausta = updateKoulutustausta(person, current.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
+        Map<String, String> koulutustausta = updateKoulutustausta(person, hakemus, current.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
 
         addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
