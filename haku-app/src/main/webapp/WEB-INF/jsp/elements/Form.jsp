@@ -46,7 +46,7 @@
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
     <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/haku-app-web-oph.js.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/haku-app-web-oph.js" type="text/javascript"></script>
     <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
 
     <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message

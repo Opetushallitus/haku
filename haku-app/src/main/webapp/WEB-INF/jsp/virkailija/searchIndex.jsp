@@ -35,7 +35,7 @@
     <script src="${contextPath}/resources/javascript/spin.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/underscore-min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/haku-app-web-oph.js.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/haku-app-web-oph.js" type="text/javascript"></script>
     <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/bacon.min.js" type="text/javascript"></script>
