@@ -73,7 +73,6 @@ cas.service.authentication-service=https://${host.virkailija}/authentication-ser
 cas.service.haku=https://${host.virkailija}/haku-app
 cas.service.koodisto-service=https://${host.virkailija}/koodisto-service
 cas.service.organisaatio-service=https://${host.virkailija}/organisaatio-service
-cas.service.sijoittelu-service=https://${host.virkailija}/sijoittelu-service
 cas.service.suoritusrekisteri=https://${host.virkailija}/suoritusrekisteri
 cas.service.valintalaskenta-service=https://${host.virkailija}/valintalaskenta-laskenta-service
 cas.service.valintalaskentakoostepalvelu=https://${host.virkailija}/valintalaskentakoostepalvelu
