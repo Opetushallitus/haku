@@ -51,7 +51,7 @@ public class HakumaksuTest {
             new ApplicationPeriod(new Date(0), new Date(new Date().getTime() + 20000))
     );
 
-    private final UrlConfiguration urls = new UrlConfiguration();
+    private final UrlConfiguration urls = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
 
     protected HakumaksuService service;
 

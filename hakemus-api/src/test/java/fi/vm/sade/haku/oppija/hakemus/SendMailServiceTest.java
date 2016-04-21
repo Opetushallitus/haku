@@ -141,7 +141,7 @@ public class SendMailServiceTest {
         ApplicationSystem siirtohaku = mockApplicationSystem(applicationSystemIdSiirtohaku, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
         when(siirtohaku.getKohdejoukonTarkenne()).thenReturn(OppijaConstants.KOHDEJOUKON_TARKENNE_SIIRTOHAKU);
 
-        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
         urlConfiguration.addDefault("host.haku","localhost:9090").addDefault("host.virkailija","localhost");
         service = new SendMailService(applicationSystemService, restClient, emailServiceMockImpl, urlConfiguration);
     }
