@@ -23,7 +23,7 @@ function getPersonNames(personOids) {
     var personNames = [];
     $.ajax({
         type: 'POST',
-        url: contextPath + '/virkailija/hakemus/note/users/',
+        url: window.url("haku-app.hakemus.note.users"),
         async: false,
         data: JSON.stringify(personOids),
         contentType: "application/json",

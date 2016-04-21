@@ -540,7 +540,7 @@ var kjal = {
         this.LOGS('Lähettävä data:', submitData2);
         $.ajax({
             type: 'POST',
-            url: page_settings.contextPath + '/virkailija/hakemus/' +  applicationOid + '/processAttachmentsAndEligibility',
+            url: window.url("haku-app.processAttachmentsAndEligibility", applicationOid),
             data: JSON.stringify(submitData2),
             async: true,
             contentType: "application/json;charset=utf-8",
@@ -548,7 +548,7 @@ var kjal = {
             cache: false,
             success: function () {
                 var navToY = kjal.documentYposition();
-                window.location.href = page_settings.contextPath + '/virkailija/hakemus/' + applicationOid + '/#liitteetkelpoisuusTab#'+navToY;
+                window.location.href = window.url("haku-app.application", applicationOid) + '#liitteetkelpoisuusTab#'+navToY;
                 window.location.reload(true);
             },
             error: function (jqXHR, textStatus, errorThrown) {

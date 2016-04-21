@@ -56,10 +56,10 @@ function getCookie(cookieName, defaultValue) {
     return defaultValue;
 }
 
-function refreshSession(contextPath) {
+function refreshSession() {
     $.ajax({
         type: 'POST',
-        url: contextPath + '/lomake/session/refresh',
+        url: window.url("haku-app.session.refresh"),
         async: false,
         data: '',
         success: function (data, textStatus, jqXHR) {

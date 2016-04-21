@@ -63,7 +63,7 @@ $(document).ready(function() {
 
         initLink : function(oid, elementId, prev) {
             var id = elementId;
-            $.getJSON(page_settings.contextPath + "/applications/" + oid,
+            $.getJSON(window.url("haku-app.applications.single", oid),
                 function (data) {
                     var etunimet = data.answers.henkilotiedot.Etunimet;
                     var sukunimi = data.answers.henkilotiedot.Sukunimi;
@@ -71,7 +71,7 @@ $(document).ready(function() {
                         "&lt;&nbsp;Edellinen ("+sukunimi + " " + etunimet+")" :
                         "("+sukunimi + " " + etunimet+")&nbsp;Seuraava&nbsp;&gt;";
                     $('#'+elementId).text(linkText);
-                    $('#'+elementId).attr('href', page_settings.contextPath + "/virkailija/hakemus/" + oid + '/');
+                    $('#'+elementId).attr('href', window.url("haku-app.application", oid));
                 }
             )
         },
@@ -115,13 +115,13 @@ $(document).ready(function() {
             $('#applicationCount').text("" + i + " / " + applicationArray.length);
 
             if (previousApplication) {
-                $.getJSON(page_settings.contextPath + "/applications/" + previousApplication,
+                $.getJSON(window.url("haku-app.applications.single", previousApplication),
                     function (data) {
                         var etunimet = data.answers.henkilotiedot.Etunimet;
                         var sukunimi = data.answers.henkilotiedot.Sukunimi;
                         var linkText = "< Edellinen ("+sukunimi + " " + etunimet+")";
                         $('#previousApplication').text(linkText);
-                        var prevApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + previousApplication + "/";
+                        var prevApplicationUrl = window.url("haku-app.application", previousApplication);
                         $(document).bind('keypress', 'j', function() { location.href = prevApplicationUrl });
                         $('#previousApplication').attr('href', prevApplicationUrl);
                     }
@@ -129,13 +129,13 @@ $(document).ready(function() {
             }
             if (nextApplication) {
                 $(document).bind('keypress', 'l', function() {$('#nextApplication').click() });
-                $.getJSON(page_settings.contextPath + "/applications/" + nextApplication,
+                $.getJSON(window.url("haku-app.applications.single", nextApplication),
                     function (data) {
                         var etunimet = data.answers.henkilotiedot.Etunimet;
                         var sukunimi = data.answers.henkilotiedot.Sukunimi;
                         var linkText = "("+sukunimi + " " + etunimet+") Seuraava >";
                         $('#nextApplication').text(linkText);
-                        var nextApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + nextApplication + "/"
+                        var nextApplicationUrl = window.url("haku-app.application", nextApplication)
                         $(document).bind('keypress', 'k', function() { location.href = nextApplicationUrl });
                         $('#nextApplication').attr('href', nextApplicationUrl);
                     }

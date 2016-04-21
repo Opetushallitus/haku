@@ -52,7 +52,6 @@
 <body>
 <script type="text/javascript">
     var page_settings = {
-        contextPath: "${pageContext.request.contextPath}",
         ACTIVE: '<fmt:message key="virkailija.hakemus.tila.voimassa"/>',
         PASSIVE: '<fmt:message key="virkailija.hakemus.tila.peruttu"/>',
         INCOMPLETE: '<fmt:message key="virkailija.hakemus.tila.puutteellinen"/>',

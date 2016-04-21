@@ -17,7 +17,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<script>var contextPath = "${contextPath}"</script>
 <script src="${contextPath}/resources/javascript/virkailija/notes.js" type="text/javascript"></script>
 
 <fieldset id="notes">

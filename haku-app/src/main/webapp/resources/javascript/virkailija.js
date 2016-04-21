@@ -14,6 +14,7 @@
  * European Union Public Licence for more details.
  */
 
+var urlsWithoutEmptyQSParams = window.urls().omitEmptyValuesFromQuerystring()
 
 $(document).ready(function () {
 
@@ -49,7 +50,7 @@ $(document).ready(function () {
             var isAsync = !disableAsync;
             $.ajax({
                 dataType: "json",
-                url: page_settings.contextPath + "/virkailija/hakemus/applicationSystems",
+                url: window.url("haku-app.applicationSystem"),
                 data: null,
                 success: function (data) {
                     var selectedSemester = $('#hakukausi').val();
@@ -119,7 +120,7 @@ $(document).ready(function () {
                 var kohdejoukko = $(this).attr('data-kohdejoukko');
                 $.ajax({
                     dataType: "json",
-                    url: page_settings.contextPath + "/virkailija/hakemus/baseEducations/" + kohdejoukko,
+                    url: window.url("haku-app.baseEducations", kohdejoukko),
                     data: null,
                     success: function (data) {
                         $('#base-education option').remove();
@@ -200,7 +201,7 @@ $(document).ready(function () {
         minLength: 1,
         delay: 500,
         source: function (req, res) {
-            $.get(page_settings.contextPath + "/virkailija/autocomplete/school?term=" + encodeURI(req.term),
+            $.get(window.url("haku-app.autocomplete", "school", req.term),
                 function (data) {
                     res($.map(data, function (result) {
                         var name = result.name[page_settings.lang];
@@ -241,7 +242,7 @@ $(document).ready(function () {
         minLength: 1,
         delay: 500,
         source: function (req, res) {
-            $.get(page_settings.contextPath + "/virkailija/autocomplete/group?term=" + encodeURI(req.term),
+            $.get(window.url("haku-app.autocomplete", "group", req.term),
                 function (data) {
                     res($.map(data, function (result) {
                         var name = result.name[page_settings.lang];
@@ -371,7 +372,7 @@ $(document).ready(function () {
         $('#search-organizations').click(function (event) {
             var parameters = $('#orgsearchform').serialize();
             $('#search-organizations').attr('disabled', 'disabled');
-            $.getJSON(page_settings.contextPath + "/organization/hakemus?" + $('#orgsearchform').serialize(),
+            $.getJSON(window.url("haku-app.organization.hakemus") + $('#orgsearchform').serialize(),
                 function (data) {
                     var toTree = function (data) {
                         var ul = $(document.createElement("ul")).addClass('branch');
@@ -547,15 +548,14 @@ $(document).ready(function () {
             start = queryParameters.start;
             spinner.stop();
             spinner.spin(document.getElementById('search-spinner'));
-            $.getJSON(page_settings.contextPath + "/applications/listshort",
-                serializeParams(queryParameters),
+            $.getJSON(urlsWithoutEmptyQSParams.url("haku-app.listshort", queryParameters),
                 function (data) {
                     $tbody.empty();
                     self.updateCounters(data.totalCount);
                     if (data.totalCount > 0) {
                         $(data.results).each(function (index, item) {
                             var cleanOid = item.oid.replace(/\./g, '_');
-                            var applicationHref = page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/';
+                            var applicationHref = window.url("haku-app.application", item.oid);
                             var received = '';
                             if (item.received) {
                                 var receivedDate = new Date(item.received);
@@ -581,7 +581,7 @@ $(document).ready(function () {
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                         if (queryParameters.asId && (queryParameters.aoOid || queryParameters.aoidCode)) {
-                            var href = page_settings.contextPath + '/applications/excel?' + serializeParams(_.omit(queryParameters, ['rows','start']));
+                            var href = urlsWithoutEmptyQSParams.url("haku-app.excel",_.omit(queryParameters, ['rows','start']));
                             enableExcel(href);
                         } else {
                             disableExcel();
@@ -767,7 +767,7 @@ $(document).ready(function () {
             }
         }
         if (selectedApplication) {
-            location.href = page_settings.contextPath + "/virkailija/hakemus/" + selectedApplication + "/"
+            location.href = window.url("haku-app.application", selectedApplication)
         }
     });
 
@@ -778,12 +778,13 @@ $(document).ready(function () {
         var year = $('#hakukausiVuosi').val();
         var season = $('#hakukausi > option:selected').val();
         if (school && as) {
-            var url = location.protocol + "//" + location.host + "/suoritusrekisteri/#/eihakeneet?haku=" + as
-                + "&oppilaitos=" + school
-                + (clazz !== "" ? "&luokka=" + clazz : "")
-                + (year !== "" ? "&vuosi=" + year : "")
-                + (season !== "" ? "&kausi=" + season.slice(-1).toUpperCase() : "");
-            window.location.href = url;
+            window.location.href = urlsWithoutEmptyQSParams.url("suoritusrekisteri.eihakeneet.url", {
+                haku: as,
+                oppilaitos: school,
+                luokka: clazz,
+                vuosi: year,
+                kausi: season.slice(-1).toUpperCase()
+            } );
         } else {
             alert('Koulu ja haku ovat pakollisia tietoja')
         }
@@ -906,7 +907,7 @@ $(document).ready(function () {
             minLength: 3,
             delay: 500,
             source: function (req, res) {
-                var url = window.url("tarjonta-service.v1.hakukohde.search", {
+                var url = urlsWithoutEmptyQSParams.url("tarjonta-service.v1.hakukohde.search", {
                     hakuOid : asid,
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
@@ -958,7 +959,7 @@ $(document).ready(function () {
             minLength: 1,
             delay: 500,
             source: function (req, res) {
-                $.get(page_settings.contextPath + "/virkailija/autocomplete/preference?term=" + encodeURI(req.term),
+                $.get(window.url("haku-app.autocomplete", "preference", req.term),
                     function (data) {
                         res($.map(data, function (result) {
                             var name = result.name[page_settings.lang];
@@ -990,23 +991,6 @@ $(document).ready(function () {
     }
 });
 
-function serializeParams(params) {
-    var parts = [];
-    _.each(params, function(value, key) {
-        if (!value || !key) {
-            return;
-        }
-        if ($.isArray(value)) {
-            _.each(value, function(arrayItem) {
-                parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(arrayItem));
-            });
-        }
-        else {
-            parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-        }
-    });
-    return parts.join('&');
-}
 function disableExcel() {
     var link = $('#excel-link');
     link.addClass('disabled');

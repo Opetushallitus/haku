@@ -64,7 +64,6 @@
 <body>
 <script type="text/javascript">
     var page_settings = {
-        contextPath: "${pageContext.request.contextPath}",
         applicationOid: "${oid}",
         lang: "${requestScope['fi_vm_sade_oppija_language']}",
         preview: "${preview}"
