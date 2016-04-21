@@ -586,25 +586,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application removeOrphanedAnswers(Application originalApplication) throws ValintaServiceCallFailedException {
-        Map<String, Map<String,String>> deepCopyOfOriginalAnswers = Maps.newHashMap();
-        for(Map.Entry<String, Map<String, String>> phase : originalApplication.getAnswers().entrySet()) {
-            deepCopyOfOriginalAnswers.put(phase.getKey(), ImmutableMap.copyOf(phase.getValue()));
-        }
-        Application application = getApplicationWithValintadata(originalApplication);
-        for(Map.Entry<String, Map<String, String>> phase : deepCopyOfOriginalAnswers.entrySet()) {
-            if(application.getAnswers().containsKey(phase.getKey())) {
-                application.getAnswers().get(phase.getKey()).putAll(phase.getValue());
-            } else {
-                application.getAnswers().put(phase.getKey(), phase.getValue());
-            }
-        }
+    public Application removeOrphanedAnswers(Application application) throws ValintaServiceCallFailedException {
+        final Map<String, String> answersFromValintaService = valintaService.fetchValintaData(application);
         Form form = applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).getForm();
         boolean answersRemoved = true;
 
         while (answersRemoved) {
             answersRemoved = false;
-            Map<String, String> answers = application.getVastauksetMerged();
+            Map<String, String> applicationAnswers = application.getVastauksetMerged();
+            Map<String, String> answers = new HashMap<>(Math.max(applicationAnswers.size(),answersFromValintaService.size()));
+            answers.putAll(answersFromValintaService);
+            answers.putAll(applicationAnswers);
             Set<String> questions = new HashSet<>();
             Deque<Element> children = new LinkedList<>();
             children.push(form);
