@@ -52,7 +52,8 @@ public final class PersonBuilder {
                 .setAddress(person.getAddress())
                 .setPostalCode(person.getPostalCode())
                 .setPostalCity(person.getPostalCity())
-                .setCountryOfResidence(person.getCountryOfResidence());
+                .setCountryOfResidence(person.getCountryOfResidence())
+                .setHomeCity(person.getHomeCity());
 
         return builder;
     }

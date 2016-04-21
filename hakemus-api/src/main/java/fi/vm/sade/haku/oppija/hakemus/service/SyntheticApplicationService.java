@@ -118,6 +118,9 @@ public class SyntheticApplicationService {
         } else {
             builder.setSocialSecurityNumber(hakemus.henkilotunnus);
         }
+        if(trimToNull(hakemus.kotikunta) != null) {
+            builder.setHomeCity(hakemus.kotikunta);
+        }
         return builder.get();
     }
 
@@ -218,7 +221,7 @@ public class SyntheticApplicationService {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_EMAIL, person.getEmail());
         }
         if (isNotBlank(person.getPhone())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER, person.getPhone());
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + "1", person.getPhone());
         }
         String countryOfResidence = person.getCountryOfResidence();
         if (isNotBlank(countryOfResidence)) {
@@ -244,6 +247,10 @@ public class SyntheticApplicationService {
 
         if(isNotBlank(person.getNationality())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_NATIONALITY, person.getNationality());
+        }
+
+        if(isNotBlank(person.getHomeCity())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_HOME_CITY, person.getHomeCity());
         }
 
         return henkilotiedot;

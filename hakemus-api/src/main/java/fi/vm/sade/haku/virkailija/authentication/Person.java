@@ -41,6 +41,7 @@ public class Person {
     private String postalCode;
     private String postalCity;
     private String countryOfResidence;
+    private String homeCity;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
                   String dateOfBirth, Boolean noSocialSecurityNumber, String email, String sex, String homeCity,
@@ -66,6 +67,7 @@ public class Person {
         this.postalCode = postalCode;
         this.postalCity = postalCity;
         this.countryOfResidence = country;
+        this.homeCity = homeCity;
     }
 
     public String getFirstNames() {
@@ -168,6 +170,14 @@ public class Person {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getHomeCity() {
+        return homeCity;
+    }
+
+    public void setHomeCity(String homeCity) {
+        this.homeCity = homeCity;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append("firstNames: ").append(firstNames)
@@ -188,7 +198,8 @@ public class Person {
                 .append(" phone: ").append(phone)
                 .append(" address ").append(address)
                 .append(" postal code: ").append(postalCode)
-                .append(" postal city: ").append(postalCity);
+                .append(" postal city: ").append(postalCity)
+                .append(" home city").append(homeCity);
         return sb.toString();
     }
 
@@ -218,6 +229,7 @@ public class Person {
         this.address = isNotBlank(other.address) ? other.address : this.address;
         this.postalCode = isNotBlank(other.postalCode) ? other.postalCode : this.postalCode;
         this.postalCity = isNotBlank(other.postalCity) ? other.postalCity : this.postalCity;
+        this.homeCity = isNotBlank(other.homeCity) ? other.homeCity : this.homeCity;
         return this;
     }
 }
