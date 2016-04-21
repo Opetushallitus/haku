@@ -91,12 +91,12 @@ public class SyntheticApplicationService {
         if(trimToNull(hakemus.asuinmaa) != null) {
             builder.setCountryOfResidence(hakemus.asuinmaa);
         }
-        if(trimToNull(hakemus.asiointikieli) != null) {
-            builder.setContactLanguage(hakemus.asiointikieli);
+        String asiointikieli = asiointikieli(hakemus.asiointikieli);
+        if(trimToNull(asiointikieli) != null) {
+            builder.setContactLanguage(asiointikieli);
         }
-        String nationality = hakemusNationalityToPersonNationality(hakemus.kansalaisuus);
         if(trimToNull(hakemus.kansalaisuus) != null) {
-            builder.setNationality(nationality);
+            builder.setNationality(hakemus.kansalaisuus);
         }
         if(trimToNull(hakemus.puhelinnumero) != null) {
             builder.setPhone(hakemus.puhelinnumero);
@@ -121,15 +121,15 @@ public class SyntheticApplicationService {
         return builder.get();
     }
 
-    private String hakemusNationalityToPersonNationality(String hakemusNationality) {
-        if(null != trimToNull(hakemusNationality)) {
-            if("FI".equalsIgnoreCase(hakemusNationality)) {
+    private String asiointikieli(String asiointikieli) {
+        if(null != trimToNull(asiointikieli)) {
+            if("FI".equalsIgnoreCase(asiointikieli)) {
                 return "suomi";
             }
-            if("EN".equalsIgnoreCase(hakemusNationality)) {
+            if("EN".equalsIgnoreCase(asiointikieli)) {
                 return "englanti";
             }
-            if("SV".equalsIgnoreCase(hakemusNationality)) {
+            if("SV".equalsIgnoreCase(asiointikieli)) {
                 return "ruotsi";
             }
         }
