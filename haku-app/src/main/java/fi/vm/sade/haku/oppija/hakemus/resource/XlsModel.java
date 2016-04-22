@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
 
@@ -46,6 +47,7 @@ public class XlsModel {
     private final List<Element> columnKeyList;
 
     private static final String ELIGIBILITY_STATUS = "eligibility_status";
+    private static final String INELIGIBLE_REASON = "ineligible_reason";
     private static final String ELIGIBILITY_SOURCE = "eligibility_source";
 
     public XlsModel(final ApplicationOption ao,
@@ -97,6 +99,11 @@ public class XlsModel {
                         (String) application.get("oid"),
                         additionalQuestions.get(ELIGIBILITY_STATUS),
                         getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.getStatus().toString(), "hakukelpoisuus_")
+                );
+                table.put(
+                        (String) application.get("oid"),
+                        additionalQuestions.get(INELIGIBLE_REASON),
+                        StringUtils.trimToEmpty(preferenceEligibility.getRejectionBasis())
                 );
                 table.put(
                         (String) application.get("oid"),
@@ -344,6 +351,7 @@ public class XlsModel {
         Map<String, Element> elements = new LinkedHashMap<>();
 
         elements.put(ELIGIBILITY_STATUS, TextQuestion("hakukelpoisuus").i18nText(i18nBundle.get("hakukelpoisuus")).build());
+        elements.put(INELIGIBLE_REASON, TextQuestion("hakukelpoisuus_hylkaamisen_peruste").i18nText(i18nBundle.get("hakukelpoisuus_hylkaamisen_peruste")).build());
         elements.put(ELIGIBILITY_SOURCE, TextQuestion("hakukelpoisuus_lahde").i18nText(i18nBundle.get("hakukelpoisuus_lahde")).build());
 
         return elements;
