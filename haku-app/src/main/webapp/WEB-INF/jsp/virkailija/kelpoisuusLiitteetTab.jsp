@@ -5,6 +5,8 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <% pageContext.setAttribute("newLineEscaped", "\\n"); %>
+<% pageContext.setAttribute("illegalUnicode1", "\u2028"); %>
+<% pageContext.setAttribute("illegalUnicode2", "\u2029"); %>
 
 <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
 <script src="${contextPath}/resources/javascript/underscore.string.min.js" type="text/javascript"></script>
@@ -111,6 +113,8 @@
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}" />";
                         attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
                         <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped)}"/>;
+                        <c:set var="desc" value="${fn:replace(desc, illegalUnicode1, '')}"/>;
+                        <c:set var="desc" value="${fn:replace(desc, illegalUnicode2, '')}"/>;
                         var desc = "<c:out value="${desc}"/>",
                             lng = 'fi=';
                         if (desc !== undefined && desc.length > 0 && (desc.match(lng) !== null) ) {
