@@ -99,7 +99,7 @@ public class ValintaServiceImpl implements ValintaService {
         Map<String, String> valintadata = new HashMap<>();
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
-            valintadata = gson.fromJson(client.getAsString(url), valintadata.getClass());
+            valintadata = gson.fromJson(client.postForLocation(url, new Gson().toJson(application)), valintadata.getClass());
         } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
             throw new ValintaServiceCallFailedException(e);
