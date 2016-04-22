@@ -108,7 +108,7 @@ public class OfficerUIServiceImplTest {
         }}));
         when(i18nBundleService.getBundle(any(ApplicationSystem.class))).thenReturn(i18nBundle);
 
-        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,

@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 
 public class ValintaServiceTest {
 
-    private UrlConfiguration urlConfiguration = new UrlConfiguration();
+    private UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
 
     public ValintaServiceTest() {
         urlConfiguration.addDefault("host.cas","localhost").addDefault("host.virkailija","localhost:9090");

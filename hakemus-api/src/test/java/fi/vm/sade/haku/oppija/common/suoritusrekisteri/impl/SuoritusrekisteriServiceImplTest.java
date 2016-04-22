@@ -39,7 +39,7 @@ public class SuoritusrekisteriServiceImplTest {
 
     @Before
     public void setUp() {
-        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
         suoritusrekisteriService =  new SuoritusrekisteriServiceImpl(urlConfiguration);
         cachingRestClient = mock(CachingRestClient.class);

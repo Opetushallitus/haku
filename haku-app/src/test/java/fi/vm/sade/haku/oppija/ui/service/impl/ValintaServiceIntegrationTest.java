@@ -20,7 +20,7 @@ public class ValintaServiceIntegrationTest {
     private final ValintaServiceImpl valintaService;
 
     public ValintaServiceIntegrationTest() {
-        UrlConfiguration urlConfiguration = new UrlConfiguration();
+        UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
         urlConfiguration.addDefault("host.virkailija", "itest-virkailija.oph.ware.fi");
         urlConfiguration.addDefault("host.cas", "localhost");
         valintaService = new ValintaServiceImpl(urlConfiguration);

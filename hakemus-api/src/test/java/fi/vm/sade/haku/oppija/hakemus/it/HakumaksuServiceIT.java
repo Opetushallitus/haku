@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class HakumaksuServiceIT {
-    private UrlConfiguration urlConfiguration = new UrlConfiguration();
+    private UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
     private HakumaksuService hakumaksuService = null;
 
     private String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";

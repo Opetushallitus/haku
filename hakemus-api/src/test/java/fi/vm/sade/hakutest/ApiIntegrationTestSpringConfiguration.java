@@ -23,6 +23,7 @@ public class ApiIntegrationTestSpringConfiguration {
     public static AnnotationConfigApplicationContext createApplicationContext() {
         final AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext();
         appContext.getEnvironment().setActiveProfiles("it");
+        System.setProperty("spring.profiles.active","it");
         appContext.register(ApiIntegrationTestSpringConfiguration.class);
         appContext.refresh();
         return appContext;

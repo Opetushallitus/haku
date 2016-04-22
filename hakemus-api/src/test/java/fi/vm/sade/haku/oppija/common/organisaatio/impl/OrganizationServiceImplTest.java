@@ -33,7 +33,7 @@ public class OrganizationServiceImplTest {
 
     public static final String OID = "1";
 
-    private UrlConfiguration urlConfiguration = new UrlConfiguration();
+    private UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
 
     @Before
     public void before() {

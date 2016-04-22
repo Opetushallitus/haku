@@ -55,6 +55,10 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected Logger logger;
 
+    public AbstractSeleniumBase() {
+        System.setProperty("spring.profiles.active","it");
+    }
+
     @Before
     public void before() {
         logger = LoggerFactory.getLogger(this.getClass());
