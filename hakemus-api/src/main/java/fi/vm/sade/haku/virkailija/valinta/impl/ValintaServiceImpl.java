@@ -9,6 +9,9 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +19,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,16 +96,20 @@ public class ValintaServiceImpl implements ValintaService {
     public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();
-        String applicationOid = application.getOid();
-        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid/%s/hakemusOid/%s",
-                asId, personOid, applicationOid);
+        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid/%s",
+                asId, personOid);
         CachingRestClient client = getCachingRestClientKooste();
         Map<String, String> valintadata = new HashMap<>();
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
-            valintadata = gson.fromJson(client.getAsString(url), valintadata.getClass());
+            HttpResponse response = client.post(url, "application/json", new Gson().toJson(application));
+            HttpEntity responseEntity = response.getEntity();
+            InputStream stream = responseEntity.getContent();
+            String json = IOUtils.toString(stream);
+            IOUtils.closeQuietly(stream);
+            valintadata = gson.fromJson(json, valintadata.getClass());
         } catch (Exception e) {
-            log.error("GET {} failed: ", url, e);
+            log.error("POST {} failed: ", url, e);
             throw new ValintaServiceCallFailedException(e);
         }
         return valintadata;

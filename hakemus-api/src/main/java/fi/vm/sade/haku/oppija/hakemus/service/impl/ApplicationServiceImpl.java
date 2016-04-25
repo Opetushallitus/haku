@@ -595,8 +595,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             answersRemoved = false;
             Map<String, String> applicationAnswers = application.getVastauksetMerged();
             Map<String, String> answers = new HashMap<>(Math.max(applicationAnswers.size(),answersFromValintaService.size()));
-            answers.putAll(answersFromValintaService);
             answers.putAll(applicationAnswers);
+            answers.putAll(answersFromValintaService);
             Set<String> questions = new HashSet<>();
             Deque<Element> children = new LinkedList<>();
             children.push(form);
