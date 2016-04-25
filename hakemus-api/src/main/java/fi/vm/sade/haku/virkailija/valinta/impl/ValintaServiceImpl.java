@@ -101,10 +101,11 @@ public class ValintaServiceImpl implements ValintaService {
         String personOid = application.getPersonOid();
         String applicationOid = application.getOid();
         String url = urlConfiguration.url("valintalaskentakoostepalvelu.valintadata", asId, personOid, applicationOid);
+        CachingRestClient client = getCachingRestClientKooste();
         Map<String, String> valintadata = new HashMap<>();
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
-            valintadata = gson.<Map<String, String>>fromJson(getCachingRestClientKooste().getAsString(url), valintadata.getClass());
+            valintadata = gson.fromJson(client.postForLocation(url, new Gson().toJson(application)), valintadata.getClass());
         } catch (Exception e) {
             log.error("GET {} failed: ", url, e);
             throw new ValintaServiceCallFailedException(e);
