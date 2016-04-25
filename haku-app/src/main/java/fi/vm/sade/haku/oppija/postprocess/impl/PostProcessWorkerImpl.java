@@ -139,7 +139,6 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
         try {
             final Application original = application.clone();
             application = applicationPostProcessorService.checkStudentOid(application);
-            application = applicationService.removeOrphanedAnswers(application);
             final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Identification Post Processing");
             if (identificationModifiedApplication(application, original)) {
                 application.setLastAutomatedProcessingTime(System.currentTimeMillis());
