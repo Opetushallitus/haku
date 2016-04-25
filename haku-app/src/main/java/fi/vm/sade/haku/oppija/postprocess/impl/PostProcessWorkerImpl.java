@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.postprocess.PostProcessWorker;
@@ -50,6 +51,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     private final LoggerAspect loggerAspect;
     private final SendMailService sendMailService;
     private final ApplicationPostProcessorService applicationPostProcessorService;
+    private final ApplicationService applicationService;
 
     @Value("${scheduler.maxBatchSize:10}")
     private int maxBatchSize;
@@ -63,12 +65,14 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
                                  final AuditLogRepository auditLogRepository,
                                  final SendMailService sendMailService,
                                  final ApplicationPostProcessorService applicationPostProcessorService,
+                                 final ApplicationService applicationService,
                                  @Value("${server.name}") final String serverName) {
         this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
         this.sendMailService = sendMailService;
         this.applicationPostProcessorService = applicationPostProcessorService;
+        this.applicationService = applicationService;
     }
 
     @Override
@@ -102,6 +106,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             //TODO =RS= add Version
             final Application original = application.clone();
             application = applicationPostProcessorService.process(application);
+            application = applicationService.removeOrphanedAnswers(application);
             final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing");
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             this.applicationDAO.update(queryApplication, application);
@@ -134,7 +139,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
         try {
             final Application original = application.clone();
             application = applicationPostProcessorService.checkStudentOid(application);
-
+            application = applicationService.removeOrphanedAnswers(application);
             final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Identification Post Processing");
             if (identificationModifiedApplication(application, original)) {
                 application.setLastAutomatedProcessingTime(System.currentTimeMillis());
