@@ -92,9 +92,8 @@ public class ValintaServiceImpl implements ValintaService {
     public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();
-        String applicationOid = application.getOid();
-        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid",
-                asId, personOid, applicationOid);
+        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid/%s",
+                asId, personOid);
         CachingRestClient client = getCachingRestClientKooste();
         Map<String, String> valintadata = new HashMap<>();
         try {
