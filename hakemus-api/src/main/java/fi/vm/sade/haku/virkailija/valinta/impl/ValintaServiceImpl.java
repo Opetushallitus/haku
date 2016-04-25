@@ -93,7 +93,7 @@ public class ValintaServiceImpl implements ValintaService {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();
         String applicationOid = application.getOid();
-        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid/%s/hakemusOid/%s",
+        String url = String.format("/resources/proxy/suoritukset/suorituksetByOpiskelijaOid/hakuOid/%s/opiskeljaOid",
                 asId, personOid, applicationOid);
         CachingRestClient client = getCachingRestClientKooste();
         Map<String, String> valintadata = new HashMap<>();
@@ -101,7 +101,7 @@ public class ValintaServiceImpl implements ValintaService {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
             valintadata = gson.fromJson(client.postForLocation(url, new Gson().toJson(application)), valintadata.getClass());
         } catch (Exception e) {
-            log.error("GET {} failed: ", url, e);
+            log.error("POST {} failed: ", url, e);
             throw new ValintaServiceCallFailedException(e);
         }
         return valintadata;
