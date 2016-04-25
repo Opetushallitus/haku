@@ -65,29 +65,34 @@ public class ApplicationPostProcessorServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWillNotMergePersonsWithDifferentSSNs() {
-        Person p1 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-951E",
+        Person p1 = createPerson("Etunimi", "Etunimi", "Sukunimi", "070187-951E",
                 "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",
-                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
-                "", "");
-        Person p2 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi");
+        Person p2 = createPerson("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
                 "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",
-                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
-                "", "");
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi");
         p1.mergeWith(p2);
     }
 
     @Test
     public void testWillMergePersonsWithEqualSSNs() {
-        Person p1 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
+        Person p1 = createPerson("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
                 "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",
-                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
-                "", "");
-        Person p2 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi");
+        Person p2 = createPerson("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
                 "070187", false, "testi@example.org", "Mies", "Kaupunki",
-                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
-                "", "");
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi");
         p1.mergeWith(p2);
         assertEquals(p1.getEmail(), "testi@example.org");
+    }
+
+    private Person createPerson(String firstNames, String nickName, String lastName, String socialSecurityNumber,
+                              String dateOfBirth, Boolean noSocialSecurityNumber, String email, String sex, String homeCity,
+                              Boolean securityOrder, String language, String nationality, String contactLanguage) {
+        return new Person(firstNames, nickName, lastName, socialSecurityNumber,
+                dateOfBirth, noSocialSecurityNumber, email, sex, homeCity,
+                securityOrder, language, nationality, contactLanguage,
+                "", "", null, null, null, null, null);
     }
 
     @Test

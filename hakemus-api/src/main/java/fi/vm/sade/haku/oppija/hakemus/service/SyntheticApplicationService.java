@@ -10,7 +10,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 @Service
 public class SyntheticApplicationService {
@@ -35,7 +35,7 @@ public class SyntheticApplicationService {
     }
 
     public List<Application> createApplications(SyntheticApplication applicationStub) throws IOException {
-        List<Application> returns = new ArrayList<Application>();
+        List<Application> returns = new ArrayList<>();
         for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
             Application app = applicationForStub(hakemus, applicationStub);
             Application dbApp = applicationDAO.getApplication(app.getOid(), "oid", "version");
@@ -84,18 +84,59 @@ public class SyntheticApplicationService {
                 .setEmail(hakemus.sahkoposti)
                 .setPersonOid(hakemus.hakijaOid)
                 .setDateOfBirth(hakemus.syntymaAika);
-        if(StringUtils.trimToNull(hakemus.sukupuoli) != null) {
+
+        if(trimToNull(hakemus.osoite) != null) {
+            builder.setAddress(hakemus.osoite);
+        }
+        if(trimToNull(hakemus.asuinmaa) != null) {
+            builder.setCountryOfResidence(hakemus.asuinmaa);
+        }
+        String asiointikieli = asiointikieli(hakemus.asiointikieli);
+        if(trimToNull(asiointikieli) != null) {
+            builder.setContactLanguage(asiointikieli);
+        }
+        if(trimToNull(hakemus.kansalaisuus) != null) {
+            builder.setNationality(hakemus.kansalaisuus);
+        }
+        if(trimToNull(hakemus.puhelinnumero) != null) {
+            builder.setPhone(hakemus.puhelinnumero);
+        }
+        if(trimToNull(hakemus.postinumero) != null) {
+            builder.setPostalCode(hakemus.postinumero);
+        }
+        if(trimToNull(hakemus.postitoimipaikka) != null) {
+            builder.setPostalCity(hakemus.postitoimipaikka);
+        }
+        if(trimToNull(hakemus.sukupuoli) != null) {
             builder.setSex(hakemus.sukupuoli);
         }
-        if(StringUtils.trimToNull(hakemus.aidinkieli) != null) {
-            builder.setLanguage(hakemus.aidinkieli);
+        if(trimToNull(hakemus.aidinkieli) != null) {
+            builder.setLanguage(hakemus.aidinkieli.toUpperCase());
         }
-        if(StringUtils.trimToNull(hakemus.henkilotunnus) == null) {
+        if(trimToNull(hakemus.henkilotunnus) == null) {
             builder.setNoSocialSecurityNumber(true);
         } else {
             builder.setSocialSecurityNumber(hakemus.henkilotunnus);
         }
+        if(trimToNull(hakemus.kotikunta) != null) {
+            builder.setHomeCity(hakemus.kotikunta);
+        }
         return builder.get();
+    }
+
+    private String asiointikieli(String asiointikieli) {
+        if(null != trimToNull(asiointikieli)) {
+            if("FI".equalsIgnoreCase(asiointikieli)) {
+                return "suomi";
+            }
+            if("EN".equalsIgnoreCase(asiointikieli)) {
+                return "englanti";
+            }
+            if("SV".equalsIgnoreCase(asiointikieli)) {
+                return "ruotsi";
+            }
+        }
+        return null;
     }
 
     private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
@@ -110,7 +151,14 @@ public class SyntheticApplicationService {
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, new HashMap<String, String>());
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
-        HashMap<String, String> hakutoiveet = new HashMap<String, String>();
+        Map<String, String> lisatiedot = updateLisatiedot(person, new HashMap<String, String>());
+        app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
+
+        Map<String, String> koulutustausta = updateKoulutustausta(person, hakemus, new HashMap<String, String>());
+        app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
+
+
+        HashMap<String, String> hakutoiveet = new HashMap<>();
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
         hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
@@ -122,6 +170,12 @@ public class SyntheticApplicationService {
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, current.getAnswers().get(OppijaConstants.PHASE_PERSONAL));
         current.updateNameMetadata();
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
+
+        Map<String, String> lisatiedot = updateLisatiedot(person, current.getAnswers().get(OppijaConstants.PHASE_MISC));
+        current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
+
+        Map<String, String> koulutustausta = updateKoulutustausta(person, hakemus, current.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
+        current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
 
         addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
         return current;
@@ -166,7 +220,54 @@ public class SyntheticApplicationService {
         if (isNotBlank(person.getEmail())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_EMAIL, person.getEmail());
         }
+        if (isNotBlank(person.getPhone())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + "1", person.getPhone());
+        }
+        String countryOfResidence = person.getCountryOfResidence();
+        if (isNotBlank(countryOfResidence)) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY, countryOfResidence);
+        }
+
+        boolean finnishResidence = null == trimToNull(countryOfResidence) ||
+                OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN.equalsIgnoreCase(countryOfResidence);
+
+        if (isNotBlank(person.getPostalCode())) {
+            String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_POSTAL_NUMBER : OppijaConstants.ELEMENT_ID_POSTAL_NUMBER_ABROAD;
+            henkilotiedot.put(key, person.getPostalCode());
+        }
+
+        if (isNotBlank(person.getAddress())) {
+            String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_ADDRESS : OppijaConstants.ELEMENT_ID_ADDRESS_ABROAD;
+            henkilotiedot.put(key, person.getAddress());
+        }
+
+        if (!finnishResidence && isNotBlank(person.getPostalCity())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_CITY_ABROAD, person.getPostalCity());
+        }
+
+        if(isNotBlank(person.getNationality())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_NATIONALITY, person.getNationality());
+        }
+
+        if(isNotBlank(person.getHomeCity())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_HOME_CITY, person.getHomeCity());
+        }
+
         return henkilotiedot;
+    }
+
+    private Map<String, String> updateLisatiedot(Person person, Map<String, String> lisatiedot) {
+        if (isNotBlank(person.getContactLanguage())) {
+            lisatiedot.put(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, person.getContactLanguage());
+        }
+        return lisatiedot;
+    }
+
+    private Map<String, String> updateKoulutustausta(Person person, SyntheticApplication.Hakemus hakemus, Map<String, String> koulutustiedot) {
+        if (isNotBlank(hakemus.toinenAstePohjakoulutusMaa)) {
+            koulutustiedot.put(OppijaConstants.POHJAKOULUTUSMAA_TOINEN_ASTE, hakemus.toinenAstePohjakoulutusMaa);
+        }
+        return koulutustiedot;
     }
 
     private void addHakutoive(Application application, final String hakukohdeOid, String tarjoajaOid) {

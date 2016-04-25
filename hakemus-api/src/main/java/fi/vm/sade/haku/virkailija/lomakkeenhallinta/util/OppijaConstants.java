@@ -61,13 +61,17 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_COUNTRY_OF_RESIDENCY = "asuinmaa";
     public static final String ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN = "FIN";
     public static final String ELEMENT_ID_FIN_ADDRESS = "lahiosoite";
+    public static final String ELEMENT_ID_ADDRESS_ABROAD = "osoiteUlkomaa";
     public static final String ELEMENT_ID_FIN_POSTAL_NUMBER = "Postinumero";
+    public static final String ELEMENT_ID_POSTAL_NUMBER_ABROAD = "postinumeroUlkomaa";
     public static final String ELEMENT_ID_PREFIX_PHONENUMBER = "matkapuhelinnumero";
     public static final String ELEMENT_ID_SEX = "sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
+    public static final String ELEMENT_ID_CITY_ABROAD = "kaupunkiUlkomaa";
+
     public static final String ELEMENT_ID_LANGUAGE = "aidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
@@ -148,6 +152,7 @@ public final class OppijaConstants {
     public static final String PERUSOPETUS_KIELI = "perusopetuksen_kieli";
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
     public static final String KYMPPI_PAATTOTODISTUSVUOSI = "KYMPPI_PAATTOTODISTUSVUOSI";
+    public static final String POHJAKOULUTUSMAA_TOINEN_ASTE = "pohjakoulutusmaa_toinen_aste";
 
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";

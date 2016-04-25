@@ -17,6 +17,11 @@ public final class PersonBuilder {
     private String contactLanguage;
     private String personOid;
     private String studentOid;
+    private String phone;
+    private String address;
+    private String postalCode;
+    private String postalCity;
+    private String countryOfResidence;
 
     private PersonBuilder() {
 
@@ -42,14 +47,21 @@ public final class PersonBuilder {
                 .setNationality(person.getNationality())
                 .setContactLanguage(person.getContactLanguage())
                 .setPersonOid(person.getPersonOid())
-                .setStudentOid(person.getStudentOid());
+                .setStudentOid(person.getStudentOid())
+                .setPhone(person.getPhone())
+                .setAddress(person.getAddress())
+                .setPostalCode(person.getPostalCode())
+                .setPostalCity(person.getPostalCity())
+                .setCountryOfResidence(person.getCountryOfResidence())
+                .setHomeCity(person.getHomeCity());
 
         return builder;
     }
 
     public Person get() {
         return new Person(firstNames, nickName, lastName, socialSecurityNumber, dateOfBirth, noSocialSecurityNumber,
-                email, sex, homeCity, securityOrder, language, nationality, contactLanguage, personOid, studentOid);
+                email, sex, homeCity, securityOrder, language, nationality, contactLanguage, personOid, studentOid,
+                phone, address, postalCode, postalCity, countryOfResidence);
     }
 
     public String getFirstNames() {
@@ -178,9 +190,53 @@ public final class PersonBuilder {
         return this;
     }
 
-
     public PersonBuilder setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public PersonBuilder setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public PersonBuilder setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public PersonBuilder setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    public String getPostalCity() {
+        return postalCity;
+    }
+
+    public PersonBuilder setPostalCity(String postalCity) {
+        this.postalCity = postalCity;
+        return this;
+    }
+
+    public String getCountryOfResidence() {
+        return countryOfResidence;
+    }
+
+    public PersonBuilder setCountryOfResidence(String countryOfResidence) {
+        this.countryOfResidence = countryOfResidence;
         return this;
     }
 }
