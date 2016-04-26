@@ -21,10 +21,10 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -36,7 +36,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -61,11 +60,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final Gson gson;
     private final String userOidPrefix;
     private final String langCookieName;
-    private UrlConfiguration urlConfiguration;
+    private OphProperties urlConfiguration;
 
     @Autowired
     public AuthenticationServiceImpl(
-    UrlConfiguration urlConfiguration,
+            OphProperties urlConfiguration,
     @Value("${cas.service.authentication-service}") String targetService,
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
     @Value("${haku.app.password.to.usermanagement}") String clientAppPass,

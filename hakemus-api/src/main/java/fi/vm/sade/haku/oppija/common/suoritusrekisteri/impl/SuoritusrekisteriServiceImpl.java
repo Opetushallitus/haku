@@ -6,8 +6,8 @@ import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -60,10 +58,10 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
     private Gson opiskelijaGson = new GsonBuilder().setDateFormat(ISO_DATE_FMT_STR).create();
     private Gson arvosanaGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
-    private UrlConfiguration urlConfiguration;
+    private OphProperties urlConfiguration;
 
     @Autowired
-    public SuoritusrekisteriServiceImpl(UrlConfiguration urlConfiguration) {
+    public SuoritusrekisteriServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
     }
 

@@ -18,9 +18,9 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.auditlog.haku.HakuOperation;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
@@ -37,14 +37,13 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
-import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -53,7 +52,10 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
@@ -96,7 +98,7 @@ public class OfficerController {
     @Autowired
     private EmailService emailService;
     @Autowired
-    private UrlConfiguration urlConfiguration;
+    private OphProperties urlConfiguration;
 
     @GET
     @Path("/hakemus/")

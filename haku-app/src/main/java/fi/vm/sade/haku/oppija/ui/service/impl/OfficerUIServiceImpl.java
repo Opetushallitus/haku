@@ -8,7 +8,6 @@ import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
@@ -52,6 +51,7 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +86,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
     private final LoggerAspect loggerAspect;
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
@@ -107,7 +107,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
-                                UrlConfiguration urlConfiguration,
+                                OphProperties urlConfiguration,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,

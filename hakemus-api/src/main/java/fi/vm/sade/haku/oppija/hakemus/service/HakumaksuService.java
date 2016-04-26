@@ -7,7 +7,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -16,7 +15,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.properties.OphProperties;
-import fi.vm.sade.properties.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +25,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static com.google.common.collect.Iterables.*;
-import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.kkBaseEducationRequirements;
@@ -45,10 +42,10 @@ public class HakumaksuService {
 
     private final HakumaksuUtil util;
 
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
 
     public HakumaksuService(
-            final UrlConfiguration urlConfiguration,
+            final OphProperties urlConfiguration,
             final RestClient restClient
     ) {
         this.urlConfiguration = urlConfiguration;

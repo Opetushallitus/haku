@@ -20,11 +20,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import fi.vm.sade.haku.oppija.common.organisaatio.*;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -46,7 +46,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -66,10 +65,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     private HttpClient httpClient;
     private Gson gson;
 
-    private UrlConfiguration urlConfiguration;
+    private OphProperties urlConfiguration;
 
     @Autowired
-    public OrganizationServiceImpl(UrlConfiguration urlConfiguration) {
+    public OrganizationServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());

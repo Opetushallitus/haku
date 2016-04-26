@@ -2,15 +2,13 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.DocumentSourceDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.json.DocumentSourceJsonAdapter;
-
+import fi.vm.sade.properties.OphProperties;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +16,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +31,10 @@ public class PDFServiceImpl implements PDFService {
     private String clientAppPass;
     private ApplicationPrintViewService applicationPrintViewService;
     private CachingRestClient cachingRestClient;
-    private UrlConfiguration urlConfiguration;
+    private OphProperties urlConfiguration;
 
     @Autowired
-    public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, UrlConfiguration urlConfiguration) {
+    public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, OphProperties urlConfiguration) {
     	this.applicationPrintViewService = applicationPrintViewService;
         this.urlConfiguration = urlConfiguration;
     }

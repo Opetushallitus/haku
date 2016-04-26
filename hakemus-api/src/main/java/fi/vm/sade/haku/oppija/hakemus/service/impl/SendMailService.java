@@ -8,7 +8,6 @@ import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
@@ -35,7 +34,6 @@ import java.text.DateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.HIGHER;
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.SECONDARY;
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.*;
@@ -60,7 +58,7 @@ public class SendMailService {
     final private Map<TemplateKey, Template> templateMap = new HashMap<>();
 
     public static final String TRUE = "true";
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
 
     @Value("${mode.demo:false}")
     public boolean demoMode;
@@ -75,7 +73,7 @@ public class SendMailService {
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
                            final RestClient restClient,
-                           final EmailService emailService, UrlConfiguration urlConfiguration) {
+                           final EmailService emailService, OphProperties urlConfiguration) {
         this.applicationSystemService = applicationSystemService;
         this.restClient = restClient;
         this.emailService = emailService;

@@ -20,8 +20,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.properties.OphProperties;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +44,11 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     private final String PARAM_APPLICATION_SYSTEM_OID= "hakuOid";
 
     private static final Map<String, SoftReference<HakukohdeV1RDTO>> cache = new HashMap<String, SoftReference<HakukohdeV1RDTO>>();
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
     private final Client clientWithJacksonSerializer;
 
     @Autowired
-    public HakukohdeServiceImpl(UrlConfiguration urlConfiguration) {
+    public HakukohdeServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
         clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
     }

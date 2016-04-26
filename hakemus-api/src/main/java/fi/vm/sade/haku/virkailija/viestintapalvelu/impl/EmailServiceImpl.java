@@ -3,11 +3,11 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 import com.google.gson.Gson;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
+import fi.vm.sade.properties.OphProperties;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
 import org.apache.http.HttpResponse;
@@ -38,10 +38,10 @@ public class EmailServiceImpl implements EmailService {
     private EmailDataBuilder emailDataBuilder;
     private CachingRestClient cachingRestClient;
 	private ObjectMapper objectMapper = new ObjectMapper();
-	private UrlConfiguration urlConfiguration;
+	private OphProperties urlConfiguration;
 
 	@Autowired
-    public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, UrlConfiguration urlConfiguration) {
+    public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, OphProperties urlConfiguration) {
     	this.pdfService = pdfService;
     	this.emailDataBuilder = emailDataBuilder;
 		this.urlConfiguration = urlConfiguration;

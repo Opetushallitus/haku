@@ -16,8 +16,8 @@
 
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -34,7 +34,7 @@ public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImp
 
     @Autowired
     public AuthenticationServiceDevLuokkaImpl(
-            UrlConfiguration urlConfiguration,
+            OphProperties urlConfiguration,
             @Value("${cas.service.authentication-service}") String targetService,
             @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
             @Value("${haku.app.password.to.usermanagement}") String clientAppPass,

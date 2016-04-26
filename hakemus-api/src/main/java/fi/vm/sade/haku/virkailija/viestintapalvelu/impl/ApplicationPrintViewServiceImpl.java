@@ -2,10 +2,9 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.util.UtfUtil;
-
+import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -23,10 +22,10 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     @Value("${haku.app.password.to.haku}")
     private String clientAppPass;
     private CachingRestClient cachingRestClient;
-    private UrlConfiguration urlConfiguration;
+    private OphProperties urlConfiguration;
 
     @Autowired
-    public ApplicationPrintViewServiceImpl(UrlConfiguration urlConfiguration) {
+    public ApplicationPrintViewServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
     }
 

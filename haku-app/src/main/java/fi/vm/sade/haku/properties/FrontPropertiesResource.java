@@ -1,6 +1,6 @@
 package fi.vm.sade.haku.properties;
 
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
+import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 public class FrontPropertiesResource {
 
     @Autowired
-    UrlConfiguration urlConfiguration;
+    OphProperties urlConfiguration;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

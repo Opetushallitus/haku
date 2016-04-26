@@ -1,20 +1,14 @@
 package fi.vm.sade.haku.virkailija.valinta.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-
+import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.virkailija.valinta.MapJsonAdapter;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,7 +30,7 @@ import java.util.Map;
 public class ValintaServiceImpl implements ValintaService {
 
     private static final Logger log = LoggerFactory.getLogger(ValintaServiceImpl.class);
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
 
     private String casUrl;
 
@@ -62,7 +56,7 @@ public class ValintaServiceImpl implements ValintaService {
     private static CachingRestClient cachingRestClientValintaTulosService;
 
     @Autowired
-    public ValintaServiceImpl(UrlConfiguration urlConfiguration) {
+    public ValintaServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
     }

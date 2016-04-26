@@ -17,12 +17,12 @@ import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.IsoCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
+import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +44,9 @@ public class HakumaksuUtil {
     public static final String TRUE = "true";
 
     private RestClient restClient;
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
 
-    public HakumaksuUtil(RestClient restClient, UrlConfiguration urlConfiguration) {
+    public HakumaksuUtil(RestClient restClient, OphProperties urlConfiguration) {
         this.restClient = restClient;
         this.urlConfiguration = urlConfiguration;
         populateEaaCountriesCache();

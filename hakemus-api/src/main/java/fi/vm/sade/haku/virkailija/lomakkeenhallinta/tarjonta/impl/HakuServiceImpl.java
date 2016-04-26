@@ -20,10 +20,10 @@ import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.properties.OphProperties;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import org.slf4j.Logger;
@@ -47,11 +47,11 @@ public class HakuServiceImpl implements HakuService {
     public static final String MAX_COUNT = "10000"; // Tarjonta ei hyväksi -1:stä ja hajoaa Integer.MAX_VALUE:een.
     public static final String COUNT_PARAMETER = "count";
     public static final String MEDIA_TYPE = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    private final UrlConfiguration urlConfiguration;
+    private final OphProperties urlConfiguration;
     private final Client clientWithJacksonSerializer;
 
     @Autowired
-    public HakuServiceImpl(UrlConfiguration urlConfiguration) {
+    public HakuServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
         clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
     }

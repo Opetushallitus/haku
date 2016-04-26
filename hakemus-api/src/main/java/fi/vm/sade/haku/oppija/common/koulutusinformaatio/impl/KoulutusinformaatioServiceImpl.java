@@ -6,8 +6,8 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
-import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +22,10 @@ import javax.ws.rs.core.MediaType;
 public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationOptionServiceImpl.class);
 	private final Client clientWithJacksonSerializer;
-	private final UrlConfiguration urlConfiguration;
+	private final OphProperties urlConfiguration;
 
 	@Autowired
-	public KoulutusinformaatioServiceImpl(UrlConfiguration urlConfiguration) {
+	public KoulutusinformaatioServiceImpl(OphProperties urlConfiguration) {
 		this.urlConfiguration = urlConfiguration;
 		clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
 	}
