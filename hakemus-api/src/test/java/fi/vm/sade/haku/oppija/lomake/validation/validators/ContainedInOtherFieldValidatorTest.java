@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -140,6 +141,25 @@ public class ContainedInOtherFieldValidatorTest {
         values.put(thatField, "Teemu-Hanz");
         values.put(thisField, "    Teemu-Hanz");
         ValidationResult result = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertFalse(result.hasErrors());
+    }
+
+    @Test
+    public void testPostProcessingNickName() {
+        Element elementNickName = new TextQuestion(OppijaConstants.ELEMENT_ID_NICKNAME, ElementUtil.createI18NAsIs(thisField));
+
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put(thatField, "First-Name");
+        values.put(thisField, "Last");
+        values.put(OppijaConstants.ELEMENT_ID_NICKNAME, "Last");
+
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.background));
+        assertTrue(result.hasErrors());
+
+        result = validator.validate(new ValidationInput(elementNickName, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertTrue(result.hasErrors());
+
+        result = validator.validate(new ValidationInput(elementNickName, values, null, "", ValidationInput.ValidationContext.background));
         assertFalse(result.hasErrors());
     }
 }
