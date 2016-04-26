@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -41,6 +42,11 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
     public ValidationResult validate(final ValidationInput validationInput) {
         String otherValue = StringUtils.trim(validationInput.getValueByKey(otherFieldName));
         String thisValue = StringUtils.trim(validationInput.getValue());
+
+        if (ValidationInput.ValidationContext.background.equals(validationInput.getValidationContext()) &&
+            OppijaConstants.ELEMENT_ID_NICKNAME.equals(validationInput.getElement().getId())) {
+            return validValidationResult;
+        }
 
         if (isBlank(otherValue) && isBlank(thisValue)) {
             return validValidationResult;
