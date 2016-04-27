@@ -509,6 +509,8 @@ public class ApplicationServiceImplTest {
             put("aoQuestion1", "aoAnswer1");
             put("aoQuestion2", "aoAnswer2");
             put("preference1-ao", "preference1-ao");
+            put("preference1-Koulutus-id-discretionary", "false");
+            put("preference1-discretionary", "true");
             put("preference2-ao", "preference2-ao");
         }});
         ApplicationSystem as = new ApplicationSystemBuilder().setId("myAs").setName(createI18NAsIs("myAs")).setForm(form).get();
@@ -539,6 +541,8 @@ public class ApplicationServiceImplTest {
         assertEquals("preference1-pers", persAnswers.get("preference1-pers"));
         assertEquals("preference1-edu", eduAnswers.get("preference1-edu"));
         assertEquals("preference1-ao", aoAnswers.get("preference1-ao"));
+        assertEquals("false", aoAnswers.get("preference1-Koulutus-id-discretionary"));
+        assertNull(persAnswers.get("preference1-discretionary"));
 
         assertNull(persAnswers.get("preference2-pers"));
         assertNull(eduAnswers.get("preference2-edu"));
