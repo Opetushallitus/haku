@@ -330,6 +330,14 @@ public class Application implements Serializable {
         return new HashMap<String, String>();
     }
 
+    public Map<String, String> getPhaseAnswersForModify(final String phaseId) {
+        Map<String, String> phaseAnswers = this.answers.get(phaseId);
+        if (phaseAnswers != null && !phaseAnswers.isEmpty()) {
+            return phaseAnswers;
+        }
+        return new HashMap<String, String>();
+    }
+
     @JsonIgnore
     public boolean isNew() {
         return this.phaseId == null;

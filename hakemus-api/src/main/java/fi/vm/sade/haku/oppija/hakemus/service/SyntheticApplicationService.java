@@ -167,14 +167,14 @@ public class SyntheticApplicationService {
 
     private Application updateApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus, Application current) {
         Person person = hakemusToPerson(hakemus);
-        Map<String, String> henkilotiedot = updateHenkiloTiedot(person, current.getAnswers().get(OppijaConstants.PHASE_PERSONAL));
+        Map<String, String> henkilotiedot = updateHenkiloTiedot(person, current.getPhaseAnswersForModify(OppijaConstants.PHASE_PERSONAL));
         current.updateNameMetadata();
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
-        Map<String, String> lisatiedot = updateLisatiedot(person, current.getAnswers().get(OppijaConstants.PHASE_MISC));
+        Map<String, String> lisatiedot = updateLisatiedot(person, current.getPhaseAnswersForModify(OppijaConstants.PHASE_MISC));
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_MISC, lisatiedot);
 
-        Map<String, String> koulutustausta = updateKoulutustausta(person, hakemus, current.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
+        Map<String, String> koulutustausta = updateKoulutustausta(person, hakemus, current.getPhaseAnswersForModify(OppijaConstants.PHASE_EDUCATION));
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
 
         addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
