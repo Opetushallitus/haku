@@ -580,7 +580,7 @@ public class ApplicationResource {
                 return Response.status(Status.BAD_REQUEST).build();
             }
         } catch (Throwable e) {
-            LOGGER.error("Could not import application: {} {}", syntheticApplication, e);
+            LOGGER.error(String.format("Could not import application: %s", syntheticApplication), e);
             throw new JSONException(Status.INTERNAL_SERVER_ERROR, "Could not import application", e);
         }
     }
