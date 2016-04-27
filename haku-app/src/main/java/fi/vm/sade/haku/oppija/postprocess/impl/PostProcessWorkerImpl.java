@@ -106,7 +106,6 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             //TODO =RS= add Version
             final Application original = application.clone();
             application = applicationPostProcessorService.process(application);
-            application = applicationService.removeOrphanedAnswers(application);
             final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing");
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             this.applicationDAO.update(queryApplication, application);
