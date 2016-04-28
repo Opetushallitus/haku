@@ -137,7 +137,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
         Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
                 applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID));
 
-        assertEquals(21, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
         assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
     }
 
