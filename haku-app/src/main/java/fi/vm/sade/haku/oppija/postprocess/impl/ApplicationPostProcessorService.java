@@ -18,6 +18,7 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +79,10 @@ public class ApplicationPostProcessorService {
         this.paymentDueDateProcessingWorker = paymentDueDateProcessingWorker;
     }
 
-    public Application process(Application application) throws IOException, ExecutionException, InterruptedException {
+    public Application process(Application application) throws IOException, ExecutionException, InterruptedException, ValintaServiceCallFailedException {
         application = addPersonOid(application, "jälkikäsittely");
         application = baseEducationService.addSendingSchool(application);
+        application = applicationService.removeOrphanedAnswers(application);
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);

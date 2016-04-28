@@ -619,9 +619,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
                     String answerKey = answer.getKey();
                     if (questions.contains(answerKey)
-                            || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))) {
+                        || !keyCanBePruned(phaseId, answerKey)
+                        ){
                         newAnswers.put(answerKey, answer.getValue());
                     } else {
+                        LOGGER.info("Removing orphaned answer with key " +  answerKey + " from application " + application.getOid());
                         answersRemoved = true;
                     }
                 }
@@ -629,6 +631,17 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         return application;
+    }
+
+    private boolean keyCanBePruned(String phaseId, String answerKey) {
+        if(OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId)
+           && answerKey.startsWith(OppijaConstants.PREFERENCE_PREFIX)) {
+            if(answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_NAME)) {
+                return false;
+            }
+            return answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_DISCRETIONARY);
+        }
+        return true;
     }
 
     @Override
