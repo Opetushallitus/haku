@@ -206,11 +206,12 @@ public class OfficerController {
                 new ApplicationPhase(applicationSystemId, phaseId, toSingleValueMap(multiValues)),
                 userSession.getUser());
 
+        AUDIT.log(builder()
+                .hakuOid(applicationSystemId)
+                .hakemusOid(oid).add("phaseid", phaseId)
+                .setOperaatio(HakuOperation.UPDATE_APPLICATION_PHASE).build());
+
         if (modelResponse.hasErrors()) {
-            AUDIT.log(builder()
-                    .hakuOid(applicationSystemId)
-                    .hakemusOid(oid).add("phaseid", phaseId)
-                    .setOperaatio(HakuOperation.UPDATE_APPLICATION_PHASE).build());
             return ok(new Viewable(DEFAULT_VIEW, modelResponse.getModel())).build();
         } else {
             URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, PHASE_ID_PREVIEW, oid);
