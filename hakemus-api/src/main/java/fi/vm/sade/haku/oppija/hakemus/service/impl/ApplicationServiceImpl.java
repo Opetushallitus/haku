@@ -742,6 +742,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public void update(Application application, boolean postProcess) {
+        Application queryApplication = new Application(application.getOid(), application.getVersion());
+        this.update(queryApplication, application, postProcess);
+    }
+
+    @Override
     public void update(final Application queryApplication, final Application application,
                        final boolean postProcess) {
         if (postProcess) {
