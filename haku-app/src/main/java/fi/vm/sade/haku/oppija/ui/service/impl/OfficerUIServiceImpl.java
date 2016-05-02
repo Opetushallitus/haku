@@ -44,7 +44,6 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
@@ -69,9 +68,9 @@ import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.paymentNotificationAnswers;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_APPLICATION_OPTIONS;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -231,7 +230,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
 
-        String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+        String sendingSchoolOid = application.getVastauksetMerged().get(ELEMENT_ID_SENDING_SCHOOL);
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
             String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
@@ -242,7 +241,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
-            virkailijaErrors.put("virkailija.hakemus.omanmuokkauskielletty", ElementUtil.createI18NText("virkailija.hakemus.omanmuokkauskielletty", OppijaConstants.MESSAGES_BUNDLE_NAME));
+            virkailijaErrors.put("virkailija.hakemus.omanmuokkauskielletty", createI18NText("virkailija.hakemus.omanmuokkauskielletty", MESSAGES_BUNDLE_NAME));
         }
         if(!virkailijaErrors.isEmpty()) {
             modelResponse.setErrorMessages(virkailijaErrors);
@@ -257,7 +256,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 application = this.applicationService.getApplicationWithValintadata(application);
             }
             catch (ValintaServiceCallFailedException e) {
-                errors.put("virkailija.hakemus.valintaservicefail", ElementUtil.createI18NText("virkailija.hakemus.valintaservicefail", OppijaConstants.MESSAGES_BUNDLE_NAME));
+                errors.put("virkailija.hakemus.valintaservicefail", createI18NText("virkailija.hakemus.valintaservicefail", MESSAGES_BUNDLE_NAME));
             }
         }
         return application;
@@ -265,13 +264,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
         HakijaDTO hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
-        Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        Map<String, String> aoAnswers = application.getPhaseAnswers(PHASE_APPLICATION_OPTIONS);
 
-        Map<String, String> koulutusAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-        String education = koulutusAnswers.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
+        Map<String, String> koulutusAnswers = application.getPhaseAnswers(PHASE_EDUCATION);
+        String education = koulutusAnswers.get(ELEMENT_ID_BASE_EDUCATION);
         boolean showScores = education == null ||
-                (!OppijaConstants.KESKEYTYNYT.equals(education)
-                        && !OppijaConstants.ULKOMAINEN_TUTKINTO.equals(education));
+                (!KESKEYTYNYT.equals(education)
+                        && !ULKOMAINEN_TUTKINTO.equals(education));
 
         Map<String, HakutoiveDTO> hakijaMap = new HashMap<String, HakutoiveDTO>();
         for (HakutoiveDTO hakutoiveDTO : hakijaDTO.getHakutoiveet()) {
@@ -417,9 +416,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user) throws IOException {
 
         Application application = this.applicationService.getApplicationByOid(oid);
-        Application queryApplication = new Application(oid, application.getVersion());
-        Application.State state = application.getState();
-        if (state != null && state.equals(Application.State.PASSIVE)) {
+        Map<String, I18nText> errors = new HashMap<>();
+
+        if (Objects.equals(application.getState(), Application.State.PASSIVE)) {
             throw new ResourceNotFoundException("Passive application");
         }
 
@@ -433,18 +432,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
+        application.setPhaseId(applicationPhase.getPhaseId());
+
         try {
             application = applicationService.removeOrphanedAnswers(application);
         }
         catch (ValintaServiceCallFailedException e) {
-            ModelResponse response = new ModelResponse(application, form);
-            response.getErrorMessages().put("virkailija.hakemus.valintaservicefail", ElementUtil.createI18NText("virkailija.hakemus.valintaservicefail", OppijaConstants.MESSAGES_BUNDLE_NAME));
-            return response;
+            errors.put(
+                    "virkailija.hakemus.valintaservicefail",
+                    createI18NText("virkailija.hakemus.valinnatfail.block.save", MESSAGES_BUNDLE_NAME)
+            );
         }
-        Map<String, String> allAnswers = application.getVastauksetMerged();
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
-                allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
+                application.getVastauksetMerged(), oid, application.getApplicationSystemId(),
+                ValidationInput.ValidationContext.officer_modify));
         if (!application.isDraft()) {
             if (formValidationResult.hasErrors()) {
                 application.incomplete();
@@ -454,20 +456,27 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         Element phase = form.getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
-                allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
+                application.getVastauksetMerged(), oid, application.getApplicationSystemId(),
+                ValidationInput.ValidationContext.officer_modify));
 
-        String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        application.addNote(createNote(noteText));
-        UpdatePreferenceResult prefRes = this.applicationService.updatePreferenceBasedData(application);
-        if(prefRes != null && prefRes.getValidationResult() != null) {
-            for(Map.Entry<String, I18nText> entry : prefRes.getValidationResult().getErrorMessages().entrySet()) {
-                this.userSession.addNote(entry.getKey(), entry.getValue());
-            }
-        }
-        this.applicationService.updateAuthorizationMeta(application);
-        this.applicationService.update(queryApplication, application, true);
-        application.setPhaseId(applicationPhase.getPhaseId());
         ModelResponse response = new ModelResponse(application, form, phase, phaseValidationResult);
+
+        if (errors.isEmpty()) {
+            application.addNote(createNote(String.format("Päivitetty vaihetta '%s'", applicationPhase.getPhaseId())));
+
+            UpdatePreferenceResult prefRes = this.applicationService.updatePreferenceBasedData(application);
+            if (prefRes != null && prefRes.getValidationResult() != null) {
+                for (Map.Entry<String, I18nText> entry : prefRes.getValidationResult().getErrorMessages().entrySet()) {
+                    this.userSession.addNote(entry.getKey(), entry.getValue());
+                }
+            }
+
+            this.applicationService.updateAuthorizationMeta(application);
+            this.applicationService.update(application, true);
+        } else {
+            response.getErrorMessages().putAll(errors);
+        }
+
         response.addObjectToModel("ongoing", false);
         return response;
     }
@@ -669,8 +678,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             Map<String, String> opt = new HashMap<String, String>();
             opt.put("value", ed);
 
-            Map<String, String> trans = Maps.newHashMap(ElementUtil.createI18NText("pohjakoulutus_" + ed, OppijaConstants.FORM_COMMON_BUNDLE_NAME).getTranslations());
-            Map<String, String> transOverride = ElementUtil.createI18NText("virkailija.hakemus.pohjakoulutus." + ed, OppijaConstants.MESSAGES_BUNDLE_NAME).getTranslations();
+            Map<String, String> trans = Maps.newHashMap(createI18NText("pohjakoulutus_" + ed, FORM_COMMON_BUNDLE_NAME).getTranslations());
+            Map<String, String> transOverride = createI18NText("virkailija.hakemus.pohjakoulutus." + ed, MESSAGES_BUNDLE_NAME).getTranslations();
             trans.putAll(transOverride);
             for (String lang : new String[] {"fi", "sv", "en"}) {
                 opt.put("name_"+lang, trans.get(lang));

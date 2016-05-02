@@ -74,6 +74,8 @@ public interface ApplicationService {
      */
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo);
 
+    void update(final Application application, boolean postProcess);
+
     void update(final Application queryApplication, final Application application);
 
     void update(Application queryApplication, Application application,
