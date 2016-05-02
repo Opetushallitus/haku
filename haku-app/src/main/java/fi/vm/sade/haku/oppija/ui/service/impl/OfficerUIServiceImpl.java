@@ -434,7 +434,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         try {
-            application = applicationService.removeOrphanedAnswers(application);
+            if (StringUtils.isEmpty(application.getStudentOid())) {
+                LOGGER.info("Skipping orphan removal for new application: {}", oid);
+            } else {
+                application = applicationService.removeOrphanedAnswers(application);
+            }
         }
         catch (ValintaServiceCallFailedException e) {
             ModelResponse response = new ModelResponse(application, form);
