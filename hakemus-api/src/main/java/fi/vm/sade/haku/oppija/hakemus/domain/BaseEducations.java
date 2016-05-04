@@ -10,10 +10,6 @@ import java.util.Arrays;
 /**
  * Typing of Applications' base education Map<String, String> to concrete
  * NON NULL types.
- *
- * No base education requirement checks "pohjakoulutus_muu" base educations,
- * therefore it doesn't have a specified class here. Add it here if needed.
- * @see fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService
  */
 public class BaseEducations {
     private static boolean variablesNotNull(Object... vars) {
