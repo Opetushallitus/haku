@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,6 @@ public class ValidateEducationExpr extends Expr {
 
     @Override
     public List<Expr> children() {
-        return Arrays.asList();
+        return Collections.emptyList();
     }
 }
