@@ -58,7 +58,7 @@
         </bean>
 
         <context:property-placeholder
-                location="classpath:config/dev/haku.properties, config/dev/classpath:ext.properties,
+                location="classpath:config/dev/haku.properties, classpath:config/dev/ext.properties,
                     file:///${user.home:''}/oph-configuration/haku.properties,
                     file:///${user.home:''}/oph-configuration/common.properties"
                 ignore-resource-not-found="true" properties-ref="devProps"/>
