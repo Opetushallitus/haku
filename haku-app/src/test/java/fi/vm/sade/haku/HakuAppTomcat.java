@@ -22,8 +22,12 @@ public class HakuAppTomcat {
 
     public static EmbeddedTomcat create(int port, int ajpPort) {
         useIntegrationTestSettingsIfNoProfileSelected();
-        return new EmbeddedTomcat(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH).
-                addWebApp(ProjectRootFinder.findProjectRoot() + "/haku-mock", "/");
+        final EmbeddedTomcat embeddedTomcat = new EmbeddedTomcat(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
+        if (System.getProperty("spring.profiles.active").equals("it")) {
+            return embeddedTomcat.addWebApp(ProjectRootFinder.findProjectRoot() + "/haku-mock", "/");
+        } else {
+            return embeddedTomcat;
+        }
     }
 
     synchronized public static void startForIntegrationTestIfNotRunning() {
