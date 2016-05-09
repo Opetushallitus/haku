@@ -434,6 +434,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         application.setPhaseId(applicationPhase.getPhaseId());
 
+        if (isKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(applicationPhase)) {
+            final Map<String, String> updatedHakutoiveet = updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application);
+            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, updatedHakutoiveet);
+        }
+
         try {
             if (StringUtils.isEmpty(application.getStudentOid())) {
                 LOGGER.info("Skipping orphan removal for new application: {}", oid);
@@ -483,6 +488,27 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         response.addObjectToModel("ongoing", false);
         return response;
+    }
+
+    private boolean isKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(ApplicationPhase applicationPhase) {
+        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && (
+                KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+                        || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+        );
+    }
+
+    private Map<String, String> updateHakutoiveDiscretionaryIfKoulutusDiscretionary(Application application) {
+        final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
+        if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
+            for (int i = 1; i < 7; i++) {
+                if ("true".equals(hakutoiveet.get("preference" + i +"-Koulutus-id-discretionary"))) {
+                    final String discretionary = "preference" + i + "-discretionary";
+                    LOGGER.info("Application oid={} updating {} to true", application.getOid(), discretionary);
+                    hakutoiveet.put(discretionary, "true");
+                }
+            }
+        }
+        return hakutoiveet;
     }
 
     private void checkUpdatePermission(ApplicationSystem as, Application application, Form form, String phaseId) {
