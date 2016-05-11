@@ -351,7 +351,7 @@ public class ApplicationResource {
                 .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
                 .setStart(start)
                 .setRows(rows)
-                .setOrderBy(updatedAfter != null ? "received" : "oid")
+                .setOrderBy(null)
                 .setOrderDir(1)
                 .build();
 
