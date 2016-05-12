@@ -319,7 +319,8 @@ public class ApplicationResource {
                                                           @ApiParam(value="Lähtöluokka") @QueryParam("sendingClass") String sendingClass,
                                                           @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
                                                           @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                          @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+                                                          @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows,
+                                                          @ApiParam(value="Järjestetäänkö tulokset (suorituskyky)") @DefaultValue(value = "true") @QueryParam("sortResults") boolean sortResults) {
 
         LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
         List<String> asIds = new ArrayList<String>();
@@ -333,6 +334,9 @@ public class ApplicationResource {
                 return new ArrayList<Map<String, Object>>(0);
         }
 
+        String orderBy = null;
+        if(sortResults)
+            orderBy = updatedAfter != null ? "received" : "oid";
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
@@ -351,7 +355,7 @@ public class ApplicationResource {
                 .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
                 .setStart(start)
                 .setRows(rows)
-                .setOrderBy(null)
+                .setOrderBy(orderBy)
                 .setOrderDir(1)
                 .build();
 
