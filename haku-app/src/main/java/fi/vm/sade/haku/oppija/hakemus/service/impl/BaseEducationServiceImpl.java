@@ -80,7 +80,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     found = true;
                 }
             }
-            Map<String, String> educationAnswers = new HashMap(application.getPhaseAnswers(PHASE_EDUCATION));
+            Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(PHASE_EDUCATION));
 
             educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
             application.setVaiheenVastauksetAndSetPhaseId(PHASE_EDUCATION, educationAnswers);
