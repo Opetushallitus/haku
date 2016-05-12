@@ -124,11 +124,24 @@ public class OfficerUIServiceImplUpdateDiscretionaryTest {
         updateAndAssertChangedToDiscretionary(phase);
     }
 
+    @Test
+    public void testUpdateKoulutusToNotDiscretionary() throws Exception {
+        final HashMap<String, String> hakutoiveet = createHakutoiveet();
+        hakutoiveet.put("preference1-Koulutus-id-discretionary", "true");
+        hakutoiveet.put("preference1-discretionary", "true");
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
+        ApplicationPhase phase = new ApplicationPhase("asId", PHASE_EDUCATION, createNewAnswers(YLIOPPILAS));
+        ModelResponse response = officerUIService.updateApplication("oid", phase, user);
+        final Map<String, String> answers = (Map<String, String>) response.getModel().get("answers");
+        assertEquals(14, answers.size());
+        assertFalse(answers.containsKey("preference1--discretionary"));
+    }
+
     private void updateAndAssertNoChanges(ApplicationPhase phase) throws IOException {
         ModelResponse response = officerUIService.updateApplication("oid", phase, user);
         final Map<String, String> answers = (Map<String, String>) response.getModel().get("answers");
         assertEquals(13, answers.size());
-        assertFalse(answers.containsKey("preference1-Koulutus-id-discretionary"));
+        assertFalse(answers.containsKey("preference1-discretionary"));
     }
 
     private void updateAndAssertChangedToDiscretionary(ApplicationPhase phase) throws IOException {

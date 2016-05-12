@@ -435,8 +435,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setPhaseId(applicationPhase.getPhaseId());
 
         if (isKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(applicationPhase)) {
-            final Map<String, String> updatedHakutoiveet = updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application);
-            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, updatedHakutoiveet);
+            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
+                    updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application));
+        }
+
+        if (isKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(applicationPhase)) {
+            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
+                    updateHakutoiveNotDiscretionary(application));
         }
 
         try {
@@ -497,6 +502,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         );
     }
 
+    private boolean isKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(ApplicationPhase applicationPhase) {
+        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && !(
+                KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+                        || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+        );
+    }
+
     private Map<String, String> updateHakutoiveDiscretionaryIfKoulutusDiscretionary(Application application) {
         final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
         if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
@@ -505,6 +517,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     final String discretionary = "preference" + i + "-discretionary";
                     LOGGER.info("Application oid={} updating {} to true", application.getOid(), discretionary);
                     hakutoiveet.put(discretionary, "true");
+                }
+            }
+        }
+        return hakutoiveet;
+    }
+
+    private Map<String, String> updateHakutoiveNotDiscretionary(Application application) {
+        final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
+        if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
+            for (int i = 1; i < 7; i++) {
+                final String discretionary = "preference" + i + "-discretionary";
+                final String removed = hakutoiveet.remove(discretionary);
+                if (removed != null) {
+                    LOGGER.info("Application oid={} {} removed from hakutoiveet", application.getOid(), discretionary);
                 }
             }
         }
