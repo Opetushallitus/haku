@@ -51,7 +51,6 @@ import java.util.*;
 import static com.mongodb.QueryOperators.IN;
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
-import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_PERSONAL;
@@ -208,12 +207,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
         int searchHits = -1;
-
-        if (ensureIndex) {
-            final String hint = addIndexHint(query);
-            if (null != hint)
-                dbCursor.hint(hint);
-        }
 
         try {
             // Trying to avoid needless full table scans caused by data structuring
