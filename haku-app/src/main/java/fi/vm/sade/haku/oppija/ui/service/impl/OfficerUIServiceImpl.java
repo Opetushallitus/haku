@@ -440,8 +440,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
 
         if (isKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(applicationPhase)) {
-            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
-                    updateHakutoiveNotDiscretionary(application));
+            final Map<String, String> notDiscretionary = updateHakutoiveNotDiscretionary(application);
+            if (notDiscretionary != null) {
+                application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, notDiscretionary);
+            }
         }
 
         try {
