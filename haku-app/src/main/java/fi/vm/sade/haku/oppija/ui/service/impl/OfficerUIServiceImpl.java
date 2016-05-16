@@ -44,6 +44,7 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
@@ -83,6 +84,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private final ApplicationService applicationService;
     private final FormService formService;
+    private final FormConfigurationService formConfigurationService;
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
     private final LoggerAspect loggerAspect;
@@ -104,6 +106,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
                                 final FormService formService,
+                                final FormConfigurationService formConfigurationService,
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
@@ -118,6 +121,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.formService = formService;
+        this.formConfigurationService = formConfigurationService;
         this.koodistoService = koodistoService;
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
@@ -435,12 +439,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         application.setPhaseId(applicationPhase.getPhaseId());
 
-        if (isToisenAsteenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(as, applicationPhase)) {
+        final boolean kysytaankoHarkinnanvaraisuus = formConfigurationService.getFormParameters(application.getApplicationSystemId()).kysytaankoHarkinnanvaraisuus();
+
+        if (isHarkinnanvarainenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
             application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
                     updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application));
         }
 
-        if (isToisenAsteenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(as, applicationPhase)) {
+        if (isHarkinnanvarainenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
             final Map<String, String> notDiscretionary = updateHakutoiveNotDiscretionary(application);
             if (notDiscretionary != null) {
                 application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, notDiscretionary);
@@ -498,15 +504,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return response;
     }
 
-    private boolean isToisenAsteenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(ApplicationSystem as, ApplicationPhase applicationPhase) {
-        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(as.getKohdejoukkoUri()) && (
+    private boolean isHarkinnanvarainenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(boolean kysytaankoHarkinnanvaraisuus, ApplicationPhase applicationPhase) {
+        return kysytaankoHarkinnanvaraisuus && applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && (
                 KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
                         || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
         );
     }
 
-    private boolean isToisenAsteenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(ApplicationSystem as, ApplicationPhase applicationPhase) {
-        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(as.getKohdejoukkoUri()) && !(
+    private boolean isHarkinnanvarainenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(boolean kysytaankoHarkinnanvaraisuus, ApplicationPhase applicationPhase) {
+        return kysytaankoHarkinnanvaraisuus && applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && !(
                 KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
                         || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
         );

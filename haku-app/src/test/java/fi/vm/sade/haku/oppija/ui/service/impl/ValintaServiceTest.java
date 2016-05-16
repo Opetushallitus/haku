@@ -103,7 +103,7 @@ public class ValintaServiceTest {
         when(user.getUserName()).thenReturn(null);
         when(session.getUser()).thenReturn(user);
 
-        OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
+        OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null, null,
                 hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
                 null, null, valintaService, session, null, mock(HakumaksuService.class), null);
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu");

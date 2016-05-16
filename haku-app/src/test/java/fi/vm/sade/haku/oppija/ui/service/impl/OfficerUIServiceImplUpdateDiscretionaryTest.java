@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -18,7 +19,16 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.ThemeQuestionDAOMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceImpl;
 import org.apache.commons.io.IOUtils;
@@ -71,28 +81,43 @@ public class OfficerUIServiceImplUpdateDiscretionaryTest {
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(form.getChildById(any(String.class))).thenReturn(mock(Element.class));
 
+        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        ApplicationSystem applicationSystem = mock(ApplicationSystem.class);
+        when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(applicationSystem);
+        when(applicationSystem.getId()).thenReturn("asId");
+        when(applicationSystem.getKohdejoukkoUri()).thenReturn(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO);
+
+        HakuService hakuService = mock(HakuService.class);
+        when(hakuService.getApplicationSystem(any(String.class))).thenReturn(applicationSystem);
+
+        FormConfiguration formConfiguration = mock(FormConfiguration.class);
+
+        final FormConfigurationDAO formConfigurationDAO = mock(FormConfigurationDAO.class);
+        when(formConfigurationDAO.findByApplicationSystem(any(String.class))).thenReturn(formConfiguration);
+
+        FormConfigurationService formConfigurationService = new FormConfigurationService(
+                new KoodistoServiceMockImpl(),
+                hakuService,
+                new ThemeQuestionDAOMockImpl(),
+                mock(HakukohdeService.class),
+                mock(OrganizationService.class),
+                formConfigurationDAO,
+                mock(I18nBundleService.class));
+
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         ElementTreeValidator elementTreeValidator = new ElementTreeValidator(validatorFactory);
-
 
         Map<String, Boolean> perms = mock(HashMap.class);
         when(perms.get(any(String.class))).thenReturn(true);
         HakuPermissionService hakupermissionService = mock(HakuPermissionService.class);
         when(hakupermissionService.userHasEditRoleToPhases(any(ApplicationSystem.class), any(Application.class), any(Form.class))).thenReturn(perms);
 
-        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
-        ApplicationSystem applicationSystem = mock(ApplicationSystem.class);
-
-        when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(applicationSystem);
-        when(applicationSystem.getId()).thenReturn("asId");
-        when(applicationSystem.getKohdejoukkoUri()).thenReturn(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO);
-
         UserSession session = mock(UserSession.class);
         user = mock(User.class);
         when(user.getUserName()).thenReturn(null);
         when(session.getUser()).thenReturn(user);
 
-        officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
+        officerUIService = new OfficerUIServiceImpl(applicationService, formService, formConfigurationService, null,
                 hakupermissionService, mock(LoggerAspect.class), new UrlConfiguration(), elementTreeValidator, applicationSystemService,
                 null, null, valintaService, session, null, mock(HakumaksuService.class), null);
     }
