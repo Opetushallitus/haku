@@ -84,6 +84,7 @@ public class OfficerUIServiceImplUpdateDiscretionaryTest {
 
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(applicationSystem);
         when(applicationSystem.getId()).thenReturn("asId");
+        when(applicationSystem.getKohdejoukkoUri()).thenReturn(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO);
 
         UserSession session = mock(UserSession.class);
         user = mock(User.class);

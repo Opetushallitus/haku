@@ -434,12 +434,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         application.setPhaseId(applicationPhase.getPhaseId());
 
-        if (isKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(applicationPhase)) {
+        if (isToisenAsteenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(as, applicationPhase)) {
             application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
                     updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application));
         }
 
-        if (isKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(applicationPhase)) {
+        if (isToisenAsteenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(as, applicationPhase)) {
             final Map<String, String> notDiscretionary = updateHakutoiveNotDiscretionary(application);
             if (notDiscretionary != null) {
                 application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, notDiscretionary);
@@ -497,15 +497,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return response;
     }
 
-    private boolean isKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(ApplicationPhase applicationPhase) {
-        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && (
+    private boolean isToisenAsteenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(ApplicationSystem as, ApplicationPhase applicationPhase) {
+        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(as.getKohdejoukkoUri()) && (
                 KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
                         || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
         );
     }
 
-    private boolean isKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(ApplicationPhase applicationPhase) {
-        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && !(
+    private boolean isToisenAsteenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(ApplicationSystem as, ApplicationPhase applicationPhase) {
+        return applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(as.getKohdejoukkoUri()) && !(
                 KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
                         || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
         );
