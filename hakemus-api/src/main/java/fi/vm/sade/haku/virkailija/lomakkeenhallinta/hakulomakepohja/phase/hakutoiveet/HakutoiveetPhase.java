@@ -55,7 +55,7 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 public class HakutoiveetPhase {
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
     private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet_teema";
-    private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
+    public static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
     public static Element create(final FormParameters formParameters) {
         return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters)

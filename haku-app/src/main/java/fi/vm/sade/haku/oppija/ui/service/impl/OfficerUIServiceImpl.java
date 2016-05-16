@@ -41,6 +41,7 @@ import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -517,8 +518,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             for (int i = 1; i < 7; i++) {
                 if ("true".equals(hakutoiveet.get("preference" + i +"-Koulutus-id-discretionary"))) {
                     final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
-                    LOGGER.info("Application oid={} updating {} to true", application.getOid(), discretionary);
-                    hakutoiveet.put(discretionary, "true");
+                    final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+                    updateAndLog(application, hakutoiveet, discretionary, "true");
+                    updateAndLog(application, hakutoiveet, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
                 }
             }
         }
@@ -529,14 +531,24 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
         if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
             for (int i = 1; i < 7; i++) {
-                final String discretionary = "preference" + i + "-discretionary";
-                final String removed = hakutoiveet.remove(discretionary);
-                if (removed != null) {
-                    LOGGER.info("Application oid={} {} removed from hakutoiveet", application.getOid(), discretionary);
-                }
+                final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
+                final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+                removeAndLog(application, hakutoiveet, discretionary);
+                removeAndLog(application, hakutoiveet, followUp);
             }
         }
         return hakutoiveet;
+    }
+
+    private void updateAndLog(Application application, Map<String, String> hakutoiveet, String discretionary, String value) {
+        LOGGER.info("Application oid={} updating {} to {}", application.getOid(), discretionary, value);
+        hakutoiveet.put(discretionary, value);
+    }
+
+    private void removeAndLog(Application application, Map<String, String> hakutoiveet, String field) {
+        if (hakutoiveet.remove(field) != null) {
+            LOGGER.info("Application oid={} {} removed from hakutoiveet", application.getOid(), field);
+        }
     }
 
     private void checkUpdatePermission(ApplicationSystem as, Application application, Form form, String phaseId) {

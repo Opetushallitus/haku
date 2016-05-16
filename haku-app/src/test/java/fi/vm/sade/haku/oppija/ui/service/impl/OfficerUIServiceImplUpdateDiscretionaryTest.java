@@ -18,6 +18,7 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceImpl;
 import org.apache.commons.io.IOUtils;
@@ -143,13 +144,15 @@ public class OfficerUIServiceImplUpdateDiscretionaryTest {
         final Map<String, String> answers = (Map<String, String>) response.getModel().get("answers");
         assertEquals(13, answers.size());
         assertFalse(answers.containsKey("preference1-discretionary"));
+        assertFalse(answers.containsKey(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN));
     }
 
     private void updateAndAssertChangedToDiscretionary(ApplicationPhase phase) throws IOException {
         ModelResponse response = officerUIService.updateApplication("oid", phase, user);
         final Map<String, String> answers = (Map<String, String>) response.getModel().get("answers");
-        assertEquals(15, answers.size());
+        assertEquals(16, answers.size());
         assertEquals("true", answers.get("preference1-discretionary"));
+        assertEquals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN, answers.get("preference1-discretionary-follow-up"));
     }
 
     private void initDiscretionaryHakutoiveet() {
