@@ -41,8 +41,10 @@ import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
@@ -82,6 +84,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private final ApplicationService applicationService;
     private final FormService formService;
+    private final FormConfigurationService formConfigurationService;
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
     private final LoggerAspect loggerAspect;
@@ -103,6 +106,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
                                 final FormService formService,
+                                final FormConfigurationService formConfigurationService,
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
@@ -117,6 +121,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.formService = formService;
+        this.formConfigurationService = formConfigurationService;
         this.koodistoService = koodistoService;
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
@@ -434,6 +439,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         application.setPhaseId(applicationPhase.getPhaseId());
 
+        final boolean kysytaankoHarkinnanvaraisuus = formConfigurationService.getFormParameters(application.getApplicationSystemId()).kysytaankoHarkinnanvaraisuus();
+
+        if (isHarkinnanvarainenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
+            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
+                    updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application));
+        }
+
+        if (isHarkinnanvarainenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
+            final Map<String, String> notDiscretionary = updateHakutoiveNotDiscretionary(application);
+            if (notDiscretionary != null) {
+                application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, notDiscretionary);
+            }
+        }
+
         try {
             if (StringUtils.isEmpty(application.getStudentOid())) {
                 LOGGER.info("Skipping orphan removal for new application: {}", oid);
@@ -483,6 +502,59 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         response.addObjectToModel("ongoing", false);
         return response;
+    }
+
+    private boolean isHarkinnanvarainenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(boolean kysytaankoHarkinnanvaraisuus, ApplicationPhase applicationPhase) {
+        return kysytaankoHarkinnanvaraisuus && applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && (
+                KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+                        || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+        );
+    }
+
+    private boolean isHarkinnanvarainenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(boolean kysytaankoHarkinnanvaraisuus, ApplicationPhase applicationPhase) {
+        return kysytaankoHarkinnanvaraisuus && applicationPhase.getPhaseId().equals(PHASE_EDUCATION) && !(
+                KESKEYTYNYT.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+                        || ULKOMAINEN_TUTKINTO.equals(applicationPhase.getAnswers().get(ELEMENT_ID_BASE_EDUCATION))
+        );
+    }
+
+    private Map<String, String> updateHakutoiveDiscretionaryIfKoulutusDiscretionary(Application application) {
+        final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
+        if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
+            for (int i = 1; i < 7; i++) {
+                if ("true".equals(hakutoiveet.get("preference" + i +"-Koulutus-id-discretionary"))) {
+                    final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
+                    final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+                    updateAndLog(application, hakutoiveet, discretionary, "true");
+                    updateAndLog(application, hakutoiveet, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
+                }
+            }
+        }
+        return hakutoiveet;
+    }
+
+    private Map<String, String> updateHakutoiveNotDiscretionary(Application application) {
+        final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
+        if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
+            for (int i = 1; i < 7; i++) {
+                final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
+                final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+                removeAndLog(application, hakutoiveet, discretionary);
+                removeAndLog(application, hakutoiveet, followUp);
+            }
+        }
+        return hakutoiveet;
+    }
+
+    private void updateAndLog(Application application, Map<String, String> hakutoiveet, String discretionary, String value) {
+        LOGGER.info("Application oid={} updating {} to {}", application.getOid(), discretionary, value);
+        hakutoiveet.put(discretionary, value);
+    }
+
+    private void removeAndLog(Application application, Map<String, String> hakutoiveet, String field) {
+        if (hakutoiveet.remove(field) != null) {
+            LOGGER.info("Application oid={} {} removed from hakutoiveet", application.getOid(), field);
+        }
     }
 
     private void checkUpdatePermission(ApplicationSystem as, Application application, Form form, String phaseId) {

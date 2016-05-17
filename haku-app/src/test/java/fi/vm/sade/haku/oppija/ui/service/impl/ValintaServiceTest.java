@@ -70,21 +70,7 @@ public class ValintaServiceTest {
         ApplicationService applicationService = mock(ApplicationService.class);
         Application application = new Application();
         application.setState(Application.State.ACTIVE);
-        Map<String, String> aoMap = new HashMap<String, String>(){{
-                put("preference1-Opetuspiste", "Yrkesakademin i Österbotten, Jakobstad, Köpmansgatan");
-                put("preference1-Koulutus-educationDegree", "32");
-                put("preference1_kaksoistutkinnon_lisakysymys", "false");
-                put("preference1-Opetuspiste-id", "1.2.246.562.10.56173627367");
-                put("preference1-Koulutus-id-sora", "false");
-                put("preference1-Koulutus-id-aoIdentifier", "460");
-                put("preference1-Koulutus-id-educationcode", "koulutus_321204");
-                put("preference1-Koulutus-id-vocational", "true");
-                put("preference1-Koulutus-id-attachments", "true");
-                put("preference1-Koulutus-id", "1.2.246.562.20.65821322891");
-                put("preference1-Koulutus", "Utbildningsprogrammet för musik, gr (Grundexamen i musik)");
-                put("preference1-Koulutus-id-kaksoistutkinto", "true");
-                put("preference1-Koulutus-id-lang", "SV");
-        }};
+        Map<String, String> aoMap = OfficerUIServiceImplUpdateDiscretionaryTest.createHakutoiveet();
         Map<String, String> eduMap = new HashMap<String, String>() {{
             put(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO, "true");
             put("PK_PAATTOTODISTUSVUOSI", "2012");
@@ -117,7 +103,7 @@ public class ValintaServiceTest {
         when(user.getUserName()).thenReturn(null);
         when(session.getUser()).thenReturn(user);
 
-        OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
+        OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null, null,
                 hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
                 null, null, valintaService, session, null, mock(HakumaksuService.class), null);
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu");

@@ -21,9 +21,16 @@ import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.ThemeQuestionDAOMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
@@ -51,6 +58,7 @@ public class OfficerUIServiceImplTest {
     private ApplicationSystemService applicationSystemService;
     private BaseEducationService baseEducationService;
     private FormService formService;
+    private FormConfigurationService formConfigurationService;
     private KoodistoService koodistoService;
     private HakuPermissionService hakuPermissionService;
     private LoggerAspect loggerAspect;
@@ -92,6 +100,14 @@ public class OfficerUIServiceImplTest {
         applicationService = mock(ApplicationService.class);
         applicationSystemService = mock(ApplicationSystemService.class);
         formService = mock(FormService.class);
+        formConfigurationService = new FormConfigurationService(
+                        new KoodistoServiceMockImpl(),
+                        new HakuServiceMockImpl(),
+                        new ThemeQuestionDAOMockImpl(),
+                        mock(HakukohdeService.class),
+                        mock(OrganizationService.class),
+                        mock(FormConfigurationDAO.class),
+                        mock(I18nBundleService.class));
         koodistoService = mock(KoodistoService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
         loggerAspect = mock(LoggerAspect.class);
@@ -113,6 +129,7 @@ public class OfficerUIServiceImplTest {
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
                 formService,
+                formConfigurationService,
                 koodistoService,
                 hakuPermissionService,
                 loggerAspect,
