@@ -264,8 +264,19 @@ public class ApplicationResource {
             value = "Palauttaa useamman hakemuksen tiedot oid-listan perusteella. Oid:t json-listana POST-pyynnön bodyssa.",
             response = Application.class,
 			responseContainer = "List")
-    public List<Application> getApplicationsByOidsPost(final List<String> oids) {
-        return getApplications(oids);
+    public List<?> getApplicationsByOidsPost(@ApiParam(value="Palautettavien tietojen rajaus avaimilla (valinnainen)") @QueryParam("keys") List<String> keys, final List<String> oids) {
+        if(keys == null || keys.isEmpty()) {
+            return getApplications(oids);
+        } else {
+            LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
+            ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                    .setSearchTerms("")
+                    .addAoOid(oids.toArray(new String[0]))
+                    .build();
+
+            List<Map<String, Object>> apps = applicationService.findApplicationsWithKeys(queryParams, keys.toArray(new String[]{}));
+            return apps;
+        }
     }
 
     @POST
