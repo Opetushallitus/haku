@@ -968,6 +968,12 @@ public final class KoulutustaustaPhase {
                 new Equals(
                         new Value(formParameters.getApplicationSystem().getApplicationSystemType()),
                         new Value(HAKUTYYPPI_VARSINAINEN_HAKU)
+                ),
+                new Not(
+                        new Equals(
+                                new Value(formParameters.getApplicationSystem().getKohdejoukkoUri()),
+                                new Value(KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA)
+                        )
                 )
         ));
         SimpleDateFormat fmt = new SimpleDateFormat("d.M.");
