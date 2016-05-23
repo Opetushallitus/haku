@@ -439,6 +439,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         application.setPhaseId(applicationPhase.getPhaseId());
 
+
+        // disable temporarily, needs more fixing
+        /*
         final boolean kysytaankoHarkinnanvaraisuus = formConfigurationService.getFormParameters(application.getApplicationSystemId()).kysytaankoHarkinnanvaraisuus();
 
         if (isHarkinnanvarainenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
@@ -452,6 +455,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, notDiscretionary);
             }
         }
+        */
 
         try {
             if (StringUtils.isEmpty(application.getStudentOid())) {
