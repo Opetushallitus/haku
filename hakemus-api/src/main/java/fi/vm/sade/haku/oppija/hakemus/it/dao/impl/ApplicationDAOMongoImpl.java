@@ -234,7 +234,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
             return new SearchResults<T>(searchHits, results);
         } catch (MongoException mongoException) {
-            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, null);
+            LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
             throw mongoException;
         }
     }
