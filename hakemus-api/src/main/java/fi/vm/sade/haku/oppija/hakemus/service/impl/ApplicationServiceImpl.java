@@ -888,10 +888,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application ensureApplicationOptionGroupData(final Application application) {
-        Map<String, String> phaseAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        Map<String, String> hakutoiveetAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
-        phaseAnswers = ensureApplicationOptionGroupData(phaseAnswers, lang);
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, phaseAnswers);
+        hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
         return application;
     }
 
