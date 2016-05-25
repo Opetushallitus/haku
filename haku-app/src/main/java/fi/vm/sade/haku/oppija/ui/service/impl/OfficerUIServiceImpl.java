@@ -440,13 +440,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setPhaseId(applicationPhase.getPhaseId());
 
 
-        // disable temporarily, needs more fixing
-        /*
         final boolean kysytaankoHarkinnanvaraisuus = formConfigurationService.getFormParameters(application.getApplicationSystemId()).kysytaankoHarkinnanvaraisuus();
 
         if (isHarkinnanvarainenKoulutustaustaUpdateToKeskeytynytOrUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
             application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
-                    updateHakutoiveDiscretionaryIfKoulutusDiscretionary(application));
+                    updateHakutoiveDiscretionary(application));
         }
 
         if (isHarkinnanvarainenKoulutustaustaUpdateToNotKeskeytynytOrNotUlkomainenTutkinto(kysytaankoHarkinnanvaraisuus, applicationPhase)) {
@@ -455,7 +453,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, notDiscretionary);
             }
         }
-        */
 
         try {
             if (StringUtils.isEmpty(application.getStudentOid())) {
@@ -522,11 +519,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         );
     }
 
-    private Map<String, String> updateHakutoiveDiscretionaryIfKoulutusDiscretionary(Application application) {
+    private Map<String, String> updateHakutoiveDiscretionary(Application application) {
         final Map<String, String> hakutoiveet = application.getAnswers().get(PHASE_APPLICATION_OPTIONS);
         if (application.getAnswers().containsKey(PHASE_APPLICATION_OPTIONS)) {
             for (int i = 1; i < 7; i++) {
-                if ("true".equals(hakutoiveet.get("preference" + i +"-Koulutus-id-discretionary"))) {
+                if (hakutoiveet.containsKey("preference" + i +"-Koulutus-id")) {
                     final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
                     final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
                     updateAndLog(application, hakutoiveet, discretionary, "true");
