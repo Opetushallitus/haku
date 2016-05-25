@@ -51,7 +51,6 @@ import static org.mockito.Matchers.startsWith;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Ignore
 public class OfficerUIServiceImplUpdateDiscretionaryTest {
     private UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
     private OfficerUIServiceImpl officerUIService;
@@ -125,45 +124,38 @@ public class OfficerUIServiceImplUpdateDiscretionaryTest {
     }
 
     @Test
-    public void testUpdateKoulutusNotUlkomainenOrKesken() throws Exception {
+    public void testUpdateKoulutusToPeruskouluChangesNothing() throws Exception {
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, createHakutoiveet());
         ApplicationPhase phase = new ApplicationPhase("asId", PHASE_EDUCATION, createNewAnswers(PERUSKOULU));
         updateAndAssertNoChanges(phase);
     }
 
-
     @Test
-    public void testUpdateKoulutusToDiscretionaryWhenKoulutusIsNotDiscretionary() throws Exception {
+    public void testUpdateKoulutusToUlkomainenChangesToDiscretionary() throws Exception {
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, createHakutoiveet());
-        ApplicationPhase phase = new ApplicationPhase("asId", PHASE_EDUCATION, createNewAnswers(ULKOMAINEN_TUTKINTO));
-        updateAndAssertNoChanges(phase);
-    }
-
-    @Test
-    public void testUpdateKoulutusToDiscretionaryWhenKoulutusIsDiscretionaryAndUlkomainen() throws Exception {
-        initDiscretionaryHakutoiveet();
         ApplicationPhase phase = new ApplicationPhase("asId", PHASE_EDUCATION, createNewAnswers(ULKOMAINEN_TUTKINTO));
         updateAndAssertChangedToDiscretionary(phase);
     }
 
     @Test
-    public void testUpdateKoulutusToDiscretionaryWhenKoulutusIsDiscretionaryAndKeskenjaanyt() throws Exception {
-        initDiscretionaryHakutoiveet();
+    public void testUpdateKoulutusToKeskenChangesToDiscretionary() throws Exception {
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, createHakutoiveet());
         ApplicationPhase phase = new ApplicationPhase("asId", PHASE_EDUCATION, createNewAnswers(KESKEYTYNYT));
         updateAndAssertChangedToDiscretionary(phase);
     }
 
     @Test
-    public void testUpdateKoulutusToNotDiscretionary() throws Exception {
+    public void testUpdateKoulutusYlioppilasRemovesDiscretionay() throws Exception {
         final HashMap<String, String> hakutoiveet = createHakutoiveet();
-        hakutoiveet.put("preference1-Koulutus-id-discretionary", "true");
         hakutoiveet.put("preference1-discretionary", "true");
+        hakutoiveet.put("preference1-discretionary-follow-up", "todistustenpuuttuminen");
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
         ApplicationPhase phase = new ApplicationPhase("asId", PHASE_EDUCATION, createNewAnswers(YLIOPPILAS));
         ModelResponse response = officerUIService.updateApplication("oid", phase, user);
         final Map<String, String> answers = (Map<String, String>) response.getModel().get("answers");
-        assertEquals(14, answers.size());
-        assertFalse(answers.containsKey("preference1--discretionary"));
+        assertEquals(13, answers.size());
+        assertFalse(answers.containsKey("preference1-discretionary"));
+        assertFalse(answers.containsKey("preference1-discretionary-follow-up"));
     }
 
     private void updateAndAssertNoChanges(ApplicationPhase phase) throws IOException {
@@ -177,15 +169,9 @@ public class OfficerUIServiceImplUpdateDiscretionaryTest {
     private void updateAndAssertChangedToDiscretionary(ApplicationPhase phase) throws IOException {
         ModelResponse response = officerUIService.updateApplication("oid", phase, user);
         final Map<String, String> answers = (Map<String, String>) response.getModel().get("answers");
-        assertEquals(16, answers.size());
+        assertEquals(15, answers.size());
         assertEquals("true", answers.get("preference1-discretionary"));
         assertEquals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN, answers.get("preference1-discretionary-follow-up"));
-    }
-
-    private void initDiscretionaryHakutoiveet() {
-        final HashMap<String, String> hakutoiveet = createHakutoiveet();
-        hakutoiveet.put("preference1-Koulutus-id-discretionary", "true");
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
     }
 
     private Map<String, String> createNewAnswers(final String pohjakoulutus) {
