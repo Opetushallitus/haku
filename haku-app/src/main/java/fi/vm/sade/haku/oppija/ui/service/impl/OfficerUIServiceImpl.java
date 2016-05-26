@@ -238,7 +238,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String sendingSchoolOid = application.getVastauksetMerged().get(ELEMENT_ID_SENDING_SCHOOL);
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
-            String sendingClass = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_CLASS);
+            String sendingClass = application.getVastauksetMerged().get(ELEMENT_ID_SENDING_CLASS);
             modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
             modelResponse.addObjectToModel("sendingClass", sendingClass);
         }
