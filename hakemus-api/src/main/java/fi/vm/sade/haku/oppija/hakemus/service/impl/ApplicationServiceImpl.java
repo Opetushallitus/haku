@@ -608,9 +608,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 }
             }
 
-            questions.add(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-            questions.add(OppijaConstants.ELEMENT_ID_SENDING_CLASS);
-            questions.add(OppijaConstants.ELEMENT_ID_CLASS_LEVEL);
+            questions.addAll(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
             questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
 
             for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
