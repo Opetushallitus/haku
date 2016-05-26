@@ -56,9 +56,11 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
@@ -97,6 +99,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationOidService applicationOidService;
     private final Session userSession;
     private final FormService formService;
+    private final FormConfigurationService formConfigurationService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
@@ -119,6 +122,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
                                   final Session userSession,
                                   @Qualifier("formServiceImpl") final FormService formService,
+                                  final FormConfigurationService formConfigurationService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
                                   AuthenticationService authenticationService,
                                   OrganizationService organizationService,
@@ -135,6 +139,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
+        this.formConfigurationService = formConfigurationService;
         this.applicationOidService = applicationOidService;
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
@@ -891,8 +896,38 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> hakutoiveetAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
+        Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
+        boolean koulutusDiscretionary = kysytaankoHarkinnanvaraisuus(application) && onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers);
+        if (koulutusDiscretionary) {
+            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+        }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
         return application;
+    }
+
+    private void updateKoulutusToDiscretionary(String oid, Map<String, String> hakutoiveetAnswers) {
+        for (int i = 1; i < 7; i++) {
+          if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
+              final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
+              final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+              updateAndLog(oid, hakutoiveetAnswers, discretionary, "true");
+              updateAndLog(oid, hakutoiveetAnswers, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
+          }
+        }
+    }
+
+    private boolean kysytaankoHarkinnanvaraisuus(final Application application) {
+        return formConfigurationService.getFormParameters(application.getApplicationSystemId()).kysytaankoHarkinnanvaraisuus();
+    }
+
+    private boolean onkoKeskeytynytTaiUlkomainenTutkinto(Map<String, String> koulutustaustaAnswers) {
+        return KESKEYTYNYT.equals(koulutustaustaAnswers.get(ELEMENT_ID_BASE_EDUCATION))
+                || ULKOMAINEN_TUTKINTO.equals(koulutustaustaAnswers.get(ELEMENT_ID_BASE_EDUCATION));
+    }
+
+    private void updateAndLog(String oid, Map<String, String> hakutoiveet, String key, String value) {
+        LOGGER.info("PostProcess discretionary update application oid={} {}={}", oid, key, value);
+        hakutoiveet.put(key, value);
     }
 
     public Application getApplication(final Application queryApplication) {

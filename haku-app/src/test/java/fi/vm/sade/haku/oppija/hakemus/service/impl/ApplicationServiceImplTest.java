@@ -190,7 +190,7 @@ public class ApplicationServiceImplTest {
         HakuService hakuService = null;
         ValintaService valintaService = null;
         String onlyBackgroundValidation = null;
-        service = new ApplicationServiceImpl(applicationDAO, session, formService, applicationOidService,
+        service = new ApplicationServiceImpl(applicationDAO, session, formService, null, applicationOidService,
                 authenticationService, organizationService, hakuPermissionService, applicationSystemService,
                 koulutusinformaatioService, i18nBundleService, suoritusrekisteriService, hakuService,
                 elementTreeValidator, valintaService, ohjausparametritService, onlyBackgroundValidation, "false");
@@ -554,7 +554,7 @@ public class ApplicationServiceImplTest {
         ValintaService valintaService = mock(ValintaService.class);
         when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(Collections.<String, String>emptyMap());
 
-        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
                 null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
@@ -687,7 +687,7 @@ public class ApplicationServiceImplTest {
             add(new PreferenceEligibility("manuallyEligibile", NOT_CHECKED, null, null));
         }});
 
-        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null, null,
                 null, null, null, suoritusrekisteriService, hakuService, null, null, ohjausparametritService, null, "true");
 
         application = applicationService.updateAutomaticEligibilities(application);
@@ -744,7 +744,7 @@ public class ApplicationServiceImplTest {
         when(elementTreeValidator.validate(any(ValidationInput.class))).thenReturn(validationResult);
 
         ApplicationServiceImpl applicationServiceImpl = new ApplicationServiceImpl(
-                null, userSession, null, null, null, null, null,
+                null, userSession, null, null, null, null, null, null,
                 applicationSystemService, null, null, null, null, elementTreeValidator, null, null, null, null);
         validationResult.setExpired(true);
         applicationServiceImpl.submitApplication(AS_ID, "fi");
