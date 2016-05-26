@@ -370,7 +370,7 @@ public class ApplicationServiceImplTest {
     }
 
     @Test
-    public void testGetApplicationWithValintadataSendingSchool() throws Exception {
+    public void testGetApplicationWithValintadata() throws Exception {
         Form form = new Form("formId", createI18NAsIs("myForm"));
         form.addChild(
                 new Phase(OppijaConstants.PHASE_EDUCATION, createI18NAsIs("eduPhase"), true, new ArrayList<String>()).addChild(
@@ -382,18 +382,22 @@ public class ApplicationServiceImplTest {
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, null,
                 new ArrayList<String>(), false, new ArrayList<String>(), null, false);
-        Map<String, String> educationAnswers = new HashMap<>();
-        educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
-        educationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSKOULU);
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
 
+        Map<String, String> originalEducationAnswers = new HashMap<>();
+        originalEducationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
+        originalEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSKOULU);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, originalEducationAnswers);
+
+        Map<String, String> valintaEducationAnswers = new HashMap<>(originalEducationAnswers);
+        valintaEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
         ValintaService valintaService = mock(ValintaService.class);
-        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(educationAnswers);
+        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(valintaEducationAnswers);
 
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
                 null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
         application = applicationService.getApplicationWithValintadata(application);
+        assertEquals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY, application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
         assertEquals("1.2.3.4", application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
     }
 
