@@ -370,6 +370,34 @@ public class ApplicationServiceImplTest {
     }
 
     @Test
+    public void testGetApplicationWithValintadataSendingSchool() throws Exception {
+        Form form = new Form("formId", createI18NAsIs("myForm"));
+        form.addChild(
+                new Phase(OppijaConstants.PHASE_EDUCATION, createI18NAsIs("eduPhase"), true, new ArrayList<String>()).addChild(
+                        TextQuestionBuilder.TextQuestion(OppijaConstants.ELEMENT_ID_BASE_EDUCATION).build()
+                ));
+        Application application = new Application();
+        application.setApplicationSystemId("myAsId");
+        ApplicationSystem as = new ApplicationSystem("myAsId", form, new I18nText(new HashMap<String, String>()),
+                "JULKAISTU", null, null, true, null, null, null,
+                OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, null,
+                new ArrayList<String>(), false, new ArrayList<String>(), null, false);
+        Map<String, String> educationAnswers = new HashMap<>();
+        educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
+        educationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSKOULU);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+
+        ValintaService valintaService = mock(ValintaService.class);
+        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(educationAnswers);
+
+        when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
+                null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
+        application = applicationService.getApplicationWithValintadata(application);
+        assertEquals("1.2.3.4", application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
+    }
+
+    @Test
     public void testAuthorizationMetaAoParents() throws IOException {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");

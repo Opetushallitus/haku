@@ -648,9 +648,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
 
-        HashMap<String, Element> educationElements = new HashMap<>();
+        HashSet<String> educationElementIds = new HashSet(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
         for (Element elem : educationPhase.getAllChildren()) {
-            educationElements.put(elem.getId(), elem);
+            educationElementIds.add(elem.getId());
         }
 
         HashMap<String, String> educationAnswers = new HashMap<>();
@@ -660,7 +660,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            if (educationElements.containsKey(key)) {
+            if (educationElementIds.contains(key)) {
                 educationAnswers.put(key, value);
             } else if (isPreferenceKey(key)) {
                 preferenceAnswers.put(key, value);
