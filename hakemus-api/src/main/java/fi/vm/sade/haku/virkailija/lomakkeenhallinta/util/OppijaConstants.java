@@ -69,6 +69,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
+    public static final Set<String> SENDING_SCHOOL_ELEMENT_IDS = Collections.unmodifiableSet(Sets.newHashSet(ELEMENT_ID_SENDING_SCHOOL, ELEMENT_ID_SENDING_CLASS, ELEMENT_ID_CLASS_LEVEL));
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
     public static final String ELEMENT_ID_CITY_ABROAD = "kaupunkiUlkomaa";
 
