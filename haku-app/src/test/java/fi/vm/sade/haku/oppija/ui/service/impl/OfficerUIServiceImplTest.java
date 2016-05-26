@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -23,7 +24,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.ThemeQuestionDAOMockImpl;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -40,6 +40,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ import static org.mockito.Mockito.*;
 public class OfficerUIServiceImplTest {
 
     private static final String OID = "1.2.3.4.5";
+    private static final String SENDING_SCHOOL_OID = "1.2.246.562.10.1";
 
     private OfficerUIServiceImpl officerUIService;
     private ApplicationService applicationService;
@@ -75,6 +77,8 @@ public class OfficerUIServiceImplTest {
             .i18nText(ElementUtil.createI18NAsIs("title")).build();
 
     private Form form;
+    private Organization sendingSchool;
+    private I18nText sendingSchoolName;
 
     @Rule public ExpectedException thrown = ExpectedException.none();
 
@@ -89,6 +93,7 @@ public class OfficerUIServiceImplTest {
         application.setPhaseId(OppijaConstants.PHASE_EDUCATION);
         HashMap<String, String> valintaData = new HashMap<>();
         valintaData.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSKOULU);
+        valintaData.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, SENDING_SCHOOL_OID);
         applicationValinnoissa.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, valintaData);
         as = new ApplicationSystemBuilder()
                 .setId("asid")
@@ -114,7 +119,14 @@ public class OfficerUIServiceImplTest {
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
         authenticationService = mock(AuthenticationService.class);
+
         organizationService = mock(OrganizationService.class);
+        HashMap<String ,String> lahtokoulunNimi = new HashMap<>();
+        lahtokoulunNimi.put("fi", "Lähtökoulu");
+        sendingSchoolName = new I18nText(lahtokoulunNimi);
+        sendingSchool = new Organization(sendingSchoolName, SENDING_SCHOOL_OID, null, Collections.<String>emptyList(), null, null, null);
+        when(organizationService.findByOid(SENDING_SCHOOL_OID)).thenReturn(sendingSchool);
+
         valintaService = new ValintaServiceMockImpl(); //mock(ValintaService.class);
         userSession = mock(UserSession.class);
         I18nBundleService i18nBundleService = mock(I18nBundleService.class);
@@ -163,6 +175,7 @@ public class OfficerUIServiceImplTest {
         ModelResponse modelResponse = officerUIService.getValidatedApplication(OID, OppijaConstants.PHASE_EDUCATION);
         assertTrue(modelResponse.getModel().size() > 0);
         assertEquals(OppijaConstants.PERUSKOULU, ((Map<String, String>) modelResponse.getModel().get(ModelResponse.ANSWERS)).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
+        assertEquals(sendingSchoolName, modelResponse.getModel().get("sendingSchool"));
     }
 
     @Test
