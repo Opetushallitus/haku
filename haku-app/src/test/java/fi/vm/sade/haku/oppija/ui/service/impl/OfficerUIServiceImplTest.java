@@ -141,7 +141,6 @@ public class OfficerUIServiceImplTest {
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
                 formService,
-                formConfigurationService,
                 koodistoService,
                 hakuPermissionService,
                 loggerAspect,
