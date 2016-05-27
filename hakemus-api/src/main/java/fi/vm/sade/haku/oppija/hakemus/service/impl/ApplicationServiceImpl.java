@@ -16,9 +16,8 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import com.google.api.client.util.Maps;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimaps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -78,6 +77,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 
+import static com.google.common.collect.Maps.*;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static fi.vm.sade.haku.oppija.lomake.domain.ModelResponse.ANSWERS;
@@ -672,8 +672,20 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
         addNewAnswersForPhase(application, OppijaConstants.PHASE_APPLICATION_OPTIONS, preferenceAnswers);
+        // BUG-856 remove grades from application data before adding derived ones from valintalaskentakoostepalvelu
+        removeGradesFromApplication(application);
         addNewAnswersForPhase(application, OppijaConstants.PHASE_GRADES, newGradeAnswers);
         return application;
+    }
+
+    private void removeGradesFromApplication(final Application application) {
+        final Map<String, String> filteredGrades = filterKeys(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES), new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return input != null && !isArvosanaKey(input);
+            }
+        });
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, filteredGrades);
     }
 
     private void addNewAnswersForPhase(Application application, String phaseId, HashMap<String, String> newAnswers) {

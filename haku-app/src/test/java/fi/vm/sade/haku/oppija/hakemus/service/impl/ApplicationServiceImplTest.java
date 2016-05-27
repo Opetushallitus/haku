@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -20,6 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
@@ -46,6 +48,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -745,6 +748,31 @@ public class ApplicationServiceImplTest {
                 applicationSystemService, null, null, null, null, elementTreeValidator, null, null, null, null);
         validationResult.setExpired(true);
         applicationServiceImpl.submitApplication(AS_ID, "fi");
+    }
+
+    @Test
+    public void testShowOnlyDerivedGradesOnApplication() throws ValintaServiceCallFailedException {
+        Application application = new Application();
+        application.setApplicationSystemId("foo");
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, ImmutableMap.of("PK_A1", "7"));
+
+        final ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        final ApplicationSystem applicationSystem = mock(ApplicationSystem.class);
+        when(applicationSystemService.getApplicationSystem("foo")).thenReturn(applicationSystem);
+        Form form = mock(Form.class);
+        Phase phase = mock(Phase.class);
+        when(form.getChildById(OppijaConstants.PHASE_EDUCATION)).thenReturn(phase);
+        when(phase.getAllChildren()).thenReturn(Collections.<Element>emptyList());
+        when(applicationSystem.getForm()).thenReturn(form);
+        final ValintaService valintaService = mock(ValintaService.class);
+        when(valintaService.fetchValintaData(application)).thenReturn(ImmutableMap.of("PK_A12", "10"));
+        final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null,
+                null, null, applicationSystemService, null, null, null, null, null, valintaService, null, null, null);
+
+        Application withValintadata = applicationService.getApplicationWithValintadata(application);
+
+        assertFalse(withValintadata.getPhaseAnswers(OppijaConstants.PHASE_GRADES).containsKey("PK_A1"));
+        assertTrue(withValintadata.getPhaseAnswers(OppijaConstants.PHASE_GRADES).containsKey("PK_A12"));
     }
 
 }
