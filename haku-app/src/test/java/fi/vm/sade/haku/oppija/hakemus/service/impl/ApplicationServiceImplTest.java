@@ -397,7 +397,7 @@ public class ApplicationServiceImplTest {
         when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(valintaEducationAnswers);
 
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
-        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
                 null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
         application = applicationService.getApplicationWithValintadata(application);
         assertEquals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY, application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
@@ -766,7 +766,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystem.getForm()).thenReturn(form);
         final ValintaService valintaService = mock(ValintaService.class);
         when(valintaService.fetchValintaData(application)).thenReturn(ImmutableMap.of("PK_A12", "10"));
-        final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null,
+        final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
                 null, null, applicationSystemService, null, null, null, null, null, valintaService, null, null, null);
 
         Application withValintadata = applicationService.getApplicationWithValintadata(application);
