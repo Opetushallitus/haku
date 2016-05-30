@@ -147,6 +147,7 @@ describe('2. asteen lomake', function () {
             partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
+            hidden(lomake.overlay),
             click(lomake.pohjakoulutus("1"))
         ));
 
@@ -185,6 +186,7 @@ describe('2. asteen lomake', function () {
             before(seqDone(
                 function() { S('#nav-koulutustausta')[0].click() },
                 headingVisible("Koulutustausta"),
+                hidden(lomake.overlay),
                 input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
                 input(lomake.pkKieli, "FI"),
                 click(lomake.ammatillinenKoulutuspaikka(false)),
