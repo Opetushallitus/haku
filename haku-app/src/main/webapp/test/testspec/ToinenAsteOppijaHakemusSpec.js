@@ -1,13 +1,12 @@
 describe('2. asteen lomake', function () {
-    var hakuOid = "1.2.246.562.5.50476818906"
-    var start = seq(
+    var hakuOidVanhaYhteishaku = "1.2.246.562.5.50476818906"
+    var startVanhaYhteishaku = seq(
         logout,
-        openPage("/haku-app/lomake/" + hakuOid, function() {
+        openPage("/haku-app/lomake/" + hakuOidVanhaYhteishaku, function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         })
     )
-
-    var start2 = seq(
+    var startTamanKevaanPervako = seq(
         logout,
         openPage("/haku-app/lomake/haku6", function() {
             return S("form#form-henkilotiedot").first().is(':visible')
@@ -18,7 +17,7 @@ describe('2. asteen lomake', function () {
       before(seqDone(
           login('officer', 'officer'),
           click(virkailija.createApplicationButton),
-          input(virkailija.selectHaku, hakuOid),
+          input(virkailija.selectHaku, hakuOidVanhaYhteishaku),
           click(virkailija.submitConfirm),
           exists(virkailija.hakemusOid),
           function() {
@@ -51,14 +50,14 @@ describe('2. asteen lomake', function () {
           it("vaihtuu hakemus aktiivinen tilaan", function () {
           });
           it("on yhä arvosanojen editointiei ole enää mahdollista", function () {
-            expect(virkailija.editVaiheButton(hakuOid, 'osaaminen')().filter(":visible").length).to.equal(0);
+            expect(virkailija.editVaiheButton(hakuOidVanhaYhteishaku, 'osaaminen')().filter(":visible").length).to.equal(0);
           });
         });
       });
     });
-    describe("täyttö hakijana", function() {
+    describe("vanhan yhteishaun täyttö hakijana", function() {
         before(seqDone(
-            start,
+            startVanhaYhteishaku,
             partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
@@ -143,7 +142,7 @@ describe('2. asteen lomake', function () {
 
     describe("Koulutustausta eri PK päättötodistusvuosilla", function() {
         before(seqDone(
-            start2,
+            startTamanKevaanPervako,
             partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
@@ -214,7 +213,7 @@ describe('2. asteen lomake', function () {
 
     describe("Sääntötestit", function() {
         before(seqDone(
-            start,
+            startVanhaYhteishaku,
             visible(lomake.sukunimi),
             postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
                 "Sukunimi": "Testikäs",
@@ -278,7 +277,7 @@ describe('2. asteen lomake', function () {
 
     describe("Urheilijakohteet", function() {
         before(seqDone(
-            start,
+            startVanhaYhteishaku,
             visible(lomake.sukunimi),
             postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
                 "Sukunimi": "Testikäs",
@@ -317,7 +316,7 @@ describe('2. asteen lomake', function () {
 
     describe("Harkinnanvaraisuus lisäkysymykset", function() {
         before(seqDone(
-            start,
+            startVanhaYhteishaku,
             visible(lomake.sukunimi),
             postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
                 "Sukunimi": "Testikäs",
@@ -353,7 +352,7 @@ describe('2. asteen lomake', function () {
 
     describe("VALMA, TELMA ja oppisopimus", function() {
         before(seqDone(
-            start,
+            startVanhaYhteishaku,
             visible(lomake.sukunimi),
             postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
                 "Sukunimi": "Testikäs",
@@ -400,7 +399,7 @@ describe('2. asteen lomake', function () {
 
     describe("Kymppiluokan käynyt", function() {
         before(seqDone(
-            start,
+            startVanhaYhteishaku,
             visible(lomake.sukunimi),
             postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
                 "Sukunimi": "Testikäs",
