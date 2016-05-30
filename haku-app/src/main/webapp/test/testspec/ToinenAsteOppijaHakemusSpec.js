@@ -9,6 +9,12 @@ describe('2. asteen lomake', function () {
     var startTamanKevaanPervako = seq(
         logout,
         openPage("/haku-app/lomake/haku6", function() {
+          return S("form#form-henkilotiedot").first().is(':visible')
+        })
+    )
+    var startTamanKevaanYhteishaku = seq(
+        logout,
+        openPage("/haku-app/lomake/haku7", function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         })
     )
@@ -140,9 +146,35 @@ describe('2. asteen lomake', function () {
         ));
     });
 
-    describe("Koulutustausta eri PK päättötodistusvuosilla", function() {
+    describe("Tämän kevään valmistavan koulutuksen yhteishaun koulutustausta", function() {
+      before(seqDone(
+          startTamanKevaanPervako,
+          partials.henkilotiedotTestikaes(),
+          pageChange(lomake.fromHenkilotiedot),
+          headingVisible("Koulutustausta"),
+          hidden(lomake.overlay),
+          click(lomake.pohjakoulutus("1"))
+      ));
+      describe("Edellisvuonna suoritettu peruskoulu", function() {
         before(seqDone(
-            startTamanKevaanPervako,
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
+            input(lomake.pkKieli, "FI"),
+            click(lomake.ammatillinenKoulutuspaikka(false))
+        ));
+        describe("Ei vaadi saantiajankohtaa", function() {
+          before(seqDone(
+              pageChange(lomake.fromKoulutustausta)
+          ));
+          it('ei kysy todistuksen saanti ajankohtaa', seqDone(
+              headingVisible("Hakutoiveet")
+          ));
+        });
+      });
+    });
+
+    describe("Tämän kevään yhteishaun koulutustausta eri PK päättötodistusvuosilla", function() {
+        before(seqDone(
+            startTamanKevaanYhteishaku,
             partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
