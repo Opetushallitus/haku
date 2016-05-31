@@ -113,8 +113,13 @@ public class ApplicationPostProcessorService {
             }
         }
 
-        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
-            application = validateApplication(application);
+        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
+            ValidationResult validationResult = validateApplication(application);
+            if (validationResult.hasErrors()) {
+                application.incomplete();
+            } else {
+                application.activate();
+            }
         }
 
         if (applicationSystem.isMaksumuuriKaytossa()) {
@@ -127,20 +132,13 @@ public class ApplicationPostProcessorService {
         return application;
     }
 
-    private Application validateApplication(Application application) {
-        Map<String, String> allAnswers = application.getVastauksetMerged();
+    private ValidationResult validateApplication(final Application application) throws ValintaServiceCallFailedException {
+        Application applicationWithValintaData = applicationService.getApplicationWithValintadata(application);
+        Map<String, String> allAnswers = applicationWithValintaData.getVastauksetMerged();
         Form form = formService.getForm(application.getApplicationSystemId());
         ValidationInput validationInput = new ValidationInput(form, allAnswers,
                 application.getOid(), application.getApplicationSystemId(), ValidationInput.ValidationContext.background);
-        ValidationResult formValidationResult = elementTreeValidator.validate(validationInput);
-        if(!application.isDraft()) {
-            if (formValidationResult.hasErrors()) {
-                application.incomplete();
-            } else {
-                application.activate();
-            }
-        }
-        return application;
+        return elementTreeValidator.validate(validationInput);
     }
 
     /**
