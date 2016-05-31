@@ -895,17 +895,22 @@ public class ApplicationServiceImpl implements ApplicationService {
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
-        boolean koulutusDiscretionary = FormParameters.kysytaankoHarkinnanvaraisuus(as) && onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers);
-        if (koulutusDiscretionary) {
-            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+        if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
+            checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
         }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
         return application;
     }
 
+    private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
+        final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
+        if (onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers)) {
+            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+        }
+    }
+
     private void updateKoulutusToDiscretionary(String oid, Map<String, String> hakutoiveetAnswers) {
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < 20; i++) {
           if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
               final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
               final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
