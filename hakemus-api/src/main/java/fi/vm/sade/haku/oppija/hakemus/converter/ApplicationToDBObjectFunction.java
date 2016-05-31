@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,7 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
                     henkilotiedot.remove(SocialSecurityNumber.HENKILOTUNNUS);
                     henkilotiedot.remove(SocialSecurityNumber.HENKILOTUNNUS_HASH);
                 }
-                henkilotiedot.put("syntymaaika", ssnToDateOfBirth(hetu));
+                henkilotiedot.put(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH, ssnToDateOfBirth(hetu));
             }
         }
         final BasicDBObject basicDBObject = new BasicDBObject(m);
