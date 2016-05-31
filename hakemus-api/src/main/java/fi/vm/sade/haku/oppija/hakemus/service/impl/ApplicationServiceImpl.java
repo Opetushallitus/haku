@@ -890,7 +890,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application ensureApplicationOptionGroupData(final Application application) {
+    public Application postProcessApplicationAnswers(Application application) throws ValintaServiceCallFailedException {
         Map<String, String> hakutoiveetAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
@@ -899,7 +899,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
         }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
-        return application;
+        return removeOrphanedAnswers(application);
     }
 
     private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {

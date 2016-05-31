@@ -82,8 +82,7 @@ public class ApplicationPostProcessorService {
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException, ValintaServiceCallFailedException {
         application = addPersonOid(application, "jälkikäsittely");
         application = baseEducationService.addSendingSchool(application);
-        application = applicationService.ensureApplicationOptionGroupData(application);
-        application = applicationService.removeOrphanedAnswers(application);
+        application = applicationService.postProcessApplicationAnswers(application);
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.updateAutomaticEligibilities(application);
 
