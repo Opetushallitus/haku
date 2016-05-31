@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.common.collect.Sets;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,6 +57,8 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER = "onkoSinullaSuomalainenHetu";
     public static final String ELEMENT_ID_SECURITY_ORDER = "turvakielto";
     public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
+    public static final Set<String> HENKILOTUNNUS_BASED_ELEMENT_IDS = Collections.unmodifiableSet(Sets.newHashSet(SocialSecurityNumber.HENKILOTUNNUS_HASH, ELEMENT_ID_DATE_OF_BIRTH, ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER));
+
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_HUOLTAJANSAHKOPOSTI = "huoltajansahkoposti";
     public static final String ELEMENT_ID_COUNTRY_OF_RESIDENCY = "asuinmaa";

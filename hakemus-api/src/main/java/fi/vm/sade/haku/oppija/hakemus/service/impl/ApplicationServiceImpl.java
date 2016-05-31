@@ -611,6 +611,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
 
             questions.addAll(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
+            questions.addAll(OppijaConstants.HENKILOTUNNUS_BASED_ELEMENT_IDS);
             questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
 
             for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
