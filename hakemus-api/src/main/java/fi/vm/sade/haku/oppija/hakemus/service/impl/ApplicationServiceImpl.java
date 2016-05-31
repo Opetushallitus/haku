@@ -899,7 +899,26 @@ public class ApplicationServiceImpl implements ApplicationService {
             checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
         }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
-        return removeOrphanedAnswers(application);
+
+        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
+            Application applicationWithValintaData = getApplicationWithValintadata(application.clone());
+            application = removeOrphanedAnswers(application);
+            ValidationResult validationResult = validateApplication(applicationWithValintaData);
+            if (validationResult.hasErrors()) {
+                application.incomplete();
+            } else {
+                application.activate();
+            }
+        }
+        return application;
+    }
+
+    private ValidationResult validateApplication(final Application application) {
+        Map<String, String> allAnswers = application.getVastauksetMerged();
+        Form form = formService.getForm(application.getApplicationSystemId());
+        ValidationInput validationInput = new ValidationInput(form, allAnswers,
+                application.getOid(), application.getApplicationSystemId(), ValidationInput.ValidationContext.background);
+        return elementTreeValidator.validate(validationInput);
     }
 
     private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
