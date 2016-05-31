@@ -550,7 +550,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ValintaService valintaService = mock(ValintaService.class);
-        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(Collections.<String, String>emptyMap());
+        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(application.getVastauksetMerged());
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
                 null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");

@@ -589,23 +589,23 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application removeOrphanedAnswers(Application application) throws ValintaServiceCallFailedException {
-        final Map<String, String> answersFromValintaService = valintaService.fetchValintaData(application);
+        return removeOrphanedAnswers(application, getApplicationWithValintadata(application.clone()));
+    }
+
+    private Application removeOrphanedAnswers(Application application, Application applicationWithValintaData) {
+        Map<String, String> applicationWithValintaDataAnswers = new HashMap<>(applicationWithValintaData.getVastauksetMerged());
         Form form = applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).getForm();
         boolean answersRemoved = true;
 
         while (answersRemoved) {
             answersRemoved = false;
-            Map<String, String> applicationAnswers = application.getVastauksetMerged();
-            Map<String, String> answers = new HashMap<>(Math.max(applicationAnswers.size(),answersFromValintaService.size()));
-            answers.putAll(applicationAnswers);
-            answers.putAll(answersFromValintaService);
             Set<String> questions = new HashSet<>();
             Deque<Element> children = new LinkedList<>();
             children.push(form);
             while (children.size() > 0) {
                 Element e = children.pop();
                 questions.add(e.getId());
-                for (Element child : e.getChildren(answers)) {
+                for (Element child : e.getChildren(applicationWithValintaDataAnswers)) {
                     children.push(child);
                 }
             }
@@ -625,6 +625,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         newAnswers.put(answerKey, answer.getValue());
                     } else {
                         LOGGER.info("Removing orphaned answer with key " +  answerKey + " from application " + application.getOid());
+                        applicationWithValintaDataAnswers.remove(answerKey);
                         answersRemoved = true;
                     }
                 }
@@ -902,7 +903,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             Application applicationWithValintaData = getApplicationWithValintadata(application.clone());
-            application = removeOrphanedAnswers(application);
+            application = removeOrphanedAnswers(application, applicationWithValintaData);
             ValidationResult validationResult = validateApplication(applicationWithValintaData);
             if (validationResult.hasErrors()) {
                 application.incomplete();
