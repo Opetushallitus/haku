@@ -12,16 +12,12 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.HakuPermissionServiceMockImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
-import fi.vm.sade.haku.oppija.lomake.service.impl.FormServiceImpl;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
 import fi.vm.sade.hakutest.AuthedIntegrationTest;
 import org.joda.time.LocalDateTime;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +43,6 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         ApplicationService as = new ApplicationServiceImpl(
                 applicationDAO,
                 new UserSessionMock("foo"),
-                new FormServiceImpl(applicationSystemService),
                 null,
                 applicationOidService,
                 new AuthenticationServiceMockImpl(),
