@@ -37,7 +37,7 @@ public interface ApplicationService {
 
     Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers, String lang);
 
-    Application ensureApplicationOptionGroupData(Application application);
+    Application postProcessApplicationAnswers(Application application) throws ValintaServiceCallFailedException;
 
     Application getApplication(final Application queryApplication);
 

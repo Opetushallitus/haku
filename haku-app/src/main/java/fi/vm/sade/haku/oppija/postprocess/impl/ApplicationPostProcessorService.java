@@ -82,8 +82,7 @@ public class ApplicationPostProcessorService {
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException, ValintaServiceCallFailedException {
         application = addPersonOid(application, "jälkikäsittely");
         application = baseEducationService.addSendingSchool(application);
-        application = applicationService.ensureApplicationOptionGroupData(application);
-        application = applicationService.removeOrphanedAnswers(application);
+        application = applicationService.postProcessApplicationAnswers(application);
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.updateAutomaticEligibilities(application);
 
@@ -112,11 +111,6 @@ public class ApplicationPostProcessorService {
                         .build());
             }
         }
-
-        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
-            application = validateApplication(application);
-        }
-
         if (applicationSystem.isMaksumuuriKaytossa()) {
             application = paymentDueDateProcessingWorker.processPaymentDueDate(application);
         }
@@ -124,22 +118,6 @@ public class ApplicationPostProcessorService {
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
         if (null == application.getModelVersion())
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
-        return application;
-    }
-
-    private Application validateApplication(Application application) {
-        Map<String, String> allAnswers = application.getVastauksetMerged();
-        Form form = formService.getForm(application.getApplicationSystemId());
-        ValidationInput validationInput = new ValidationInput(form, allAnswers,
-                application.getOid(), application.getApplicationSystemId(), ValidationInput.ValidationContext.background);
-        ValidationResult formValidationResult = elementTreeValidator.validate(validationInput);
-        if(!application.isDraft()) {
-            if (formValidationResult.hasErrors()) {
-                application.incomplete();
-            } else {
-                application.activate();
-            }
-        }
         return application;
     }
 

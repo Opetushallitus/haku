@@ -589,28 +589,29 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application removeOrphanedAnswers(Application application) throws ValintaServiceCallFailedException {
-        final Map<String, String> answersFromValintaService = valintaService.fetchValintaData(application);
+        return removeOrphanedAnswers(application, getApplicationWithValintadata(application.clone()));
+    }
+
+    private Application removeOrphanedAnswers(Application application, Application applicationWithValintaData) {
+        Map<String, String> applicationWithValintaDataAnswers = new HashMap<>(applicationWithValintaData.getVastauksetMerged());
         Form form = applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).getForm();
         boolean answersRemoved = true;
 
         while (answersRemoved) {
             answersRemoved = false;
-            Map<String, String> applicationAnswers = application.getVastauksetMerged();
-            Map<String, String> answers = new HashMap<>(Math.max(applicationAnswers.size(),answersFromValintaService.size()));
-            answers.putAll(applicationAnswers);
-            answers.putAll(answersFromValintaService);
             Set<String> questions = new HashSet<>();
             Deque<Element> children = new LinkedList<>();
             children.push(form);
             while (children.size() > 0) {
                 Element e = children.pop();
                 questions.add(e.getId());
-                for (Element child : e.getChildren(answers)) {
+                for (Element child : e.getChildren(applicationWithValintaDataAnswers)) {
                     children.push(child);
                 }
             }
 
             questions.addAll(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
+            questions.addAll(OppijaConstants.HENKILOTUNNUS_BASED_ELEMENT_IDS);
             questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
 
             for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
@@ -624,6 +625,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         newAnswers.put(answerKey, answer.getValue());
                     } else {
                         LOGGER.info("Removing orphaned answer with key " +  answerKey + " from application " + application.getOid());
+                        applicationWithValintaDataAnswers.remove(answerKey);
                         answersRemoved = true;
                     }
                 }
@@ -889,22 +891,46 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application ensureApplicationOptionGroupData(final Application application) {
+    public Application postProcessApplicationAnswers(Application application) throws ValintaServiceCallFailedException {
         Map<String, String> hakutoiveetAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
-        boolean koulutusDiscretionary = FormParameters.kysytaankoHarkinnanvaraisuus(as) && onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers);
-        if (koulutusDiscretionary) {
-            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+        if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
+            checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
         }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
+
+        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
+            Application applicationWithValintaData = getApplicationWithValintadata(application.clone());
+            application = removeOrphanedAnswers(application, applicationWithValintaData);
+            ValidationResult validationResult = validateApplication(applicationWithValintaData);
+            if (validationResult.hasErrors()) {
+                application.incomplete();
+            } else {
+                application.activate();
+            }
+        }
         return application;
     }
 
+    private ValidationResult validateApplication(final Application application) {
+        Map<String, String> allAnswers = application.getVastauksetMerged();
+        Form form = formService.getForm(application.getApplicationSystemId());
+        ValidationInput validationInput = new ValidationInput(form, allAnswers,
+                application.getOid(), application.getApplicationSystemId(), ValidationInput.ValidationContext.background);
+        return elementTreeValidator.validate(validationInput);
+    }
+
+    private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
+        final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
+        if (onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers)) {
+            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+        }
+    }
+
     private void updateKoulutusToDiscretionary(String oid, Map<String, String> hakutoiveetAnswers) {
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < 20; i++) {
           if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
               final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
               final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";

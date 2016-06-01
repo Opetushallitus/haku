@@ -114,7 +114,7 @@ public final class HenkilotiedotPhase {
 
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
-        Element onkoSuomalainenKysymys = Radio("onkoSinullaSuomalainenHetu")
+        Element onkoSuomalainenKysymys = Radio(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER)
                 .addOptions(ImmutableList.of(
                         new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
                         new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
@@ -123,7 +123,7 @@ public final class HenkilotiedotPhase {
         eiSuomalainen.addChild(onkoSuomalainenKysymys);
         henkilotiedotTeema.addChild(eiSuomalainen);
 
-        Expr onSuomalainenHetu = new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(KYLLA));
+        Expr onSuomalainenHetu = new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(KYLLA));
 
         Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
         Element kysytaankoHetuSaanto = Rule(kysytaankoHetu).build();
@@ -170,13 +170,13 @@ public final class HenkilotiedotPhase {
                 .build();
         kysytaankoHetuSaanto.addChild(socialSecurityNumber, hetuMies, hetuNainen);
 
-        Element syntymaaika = Date("syntymaaika").formParams(formParameters).build();
+        Element syntymaaika = Date(ELEMENT_ID_DATE_OF_BIRTH).formParams(formParameters).build();
         syntymaaika.setValidator(new PastDateValidator("henkilotiedot.syntymaaika.tulevaisuudessa"));
         syntymaaika.setValidator(new RegexFieldValidator("henkilotiedot.syntymaaika.virhe", DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
-        Element eiHetuaSaanto = Rule(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).build();
+        Element eiHetuaSaanto = Rule(new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(EI))).build();
         eiHetuaSaanto.addChild(
                 sukupuoli,
                 syntymaaika,
