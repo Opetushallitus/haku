@@ -215,8 +215,12 @@ public class FormParameters {
         return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
 
+    public static boolean kysytaankoHarkinnanvaraisuus(ApplicationSystem applicationSystem) {
+        return KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri());
+    }
+
     public boolean kysytaankoHarkinnanvaraisuus() {
-        return ! (isPerusopetuksenJalkeinenValmentava() || isHigherEd() || applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
+        return kysytaankoHarkinnanvaraisuus(applicationSystem);
     }
 
     public boolean kysytaankoSora() {
