@@ -30,9 +30,7 @@
             göra ändringar via följande länk
             <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig.
         </p>
-        <p>
-            Länken är i kraft ända till ${expires}.
-        </p>
+
         <p>
             Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt
             ID-kort, kan du alternativt logga in i Studieinfo.fi och under
