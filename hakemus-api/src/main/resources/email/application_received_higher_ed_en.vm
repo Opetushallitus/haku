@@ -31,9 +31,7 @@
             can use the following link and make the changes within the application
             period: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal.
         </p>
-        <p>
-            The link is valid until ${expires}.
-        </p>
+
         <p>
             If you have Finnish online banking credentials, an electronic ID-card
             or mobile certificate, you can also log in at Studyinfo.fi and make
