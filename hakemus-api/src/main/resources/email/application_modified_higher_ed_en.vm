@@ -21,8 +21,7 @@
     #else
         <p>
             The changes to your application have been saved. You can change your study programme choices during the
-            application period with the following link: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal. The link
-            is valid until ${expires}.
+            application period with the following link: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal.
         </p>
     #end
 
