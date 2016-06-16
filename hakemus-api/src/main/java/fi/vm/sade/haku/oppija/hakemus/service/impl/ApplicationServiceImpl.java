@@ -354,7 +354,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         String hakutapa = null;
         List<String> queriedAss = applicationQueryParameters.getAsIds();
         for (ApplicationSystem as : ass) {
-            if (queriedAss.isEmpty() || queriedAss.contains(as.getId())) {
+            if (queriedAss == null || queriedAss.isEmpty() || queriedAss.contains(as.getId())) {
                 kohdejoukko = as.getKohdejoukkoUri();
                 hakutapa = as.getHakutapa();
                 if (as.getMaxApplicationOptions() > max) {
