@@ -251,8 +251,29 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Hakemusten haku henkilönumeroiden perusteella", response = Application.class, responseContainer = "Map")
-    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids) {
-        return applicationService.findApplicationsByPersonOid(personOids);
+    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(
+            Set<String> personOids,
+            @QueryParam("allKeys") @DefaultValue("false") @ApiParam(value="Return all keys from db objects") boolean allKeys,
+            @QueryParam("removeSensitiveInfo") @DefaultValue("true") @ApiParam(value="Remove sensitive info from returned db objects") boolean removeSensitiveInfo) {
+        return applicationService.findApplicationsByPersonOid(personOids, allKeys, removeSensitiveInfo);
+    }
+
+    @POST
+    @Path("/byApplicationOption")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
+    @ApiOperation(value="Hakemusten haku hakukohteen OIDin perusteella", response = Application.class, responseContainer = "Map")
+    public Collection<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptions) {
+        return applicationService.findApplicationsByApplicationOptionOids(applicationOptions, false);
+    }
+
+    @POST
+    @Path("/personOIDsbyApplicationOption")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
+    @ApiOperation(value="Henkilö OIDien haku hakukohteen OIDin perusteella", response=String.class, responseContainer="List")
+    public Set<String> findPersonOIDsByApplicationOption(Set<String> applicationOptions) {
+        return applicationService.findPersonOidsByApplicationOptionOids(applicationOptions);
     }
 
     @POST

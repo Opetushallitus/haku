@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
@@ -11,12 +12,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.servlet.jsp.jstl.core.Config;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @ActiveProfiles("it")
 public class TestApplicationResource extends IntegrationTestSupport {
@@ -135,10 +133,94 @@ public class TestApplicationResource extends IntegrationTestSupport {
         final String PERSON2_OID = "1.2.246.562.24.40135708059";
 
         Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
-                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID));
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), false, true);
 
         assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
         assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
     }
+
+    @Test
+    public void testFindApplicationsByPersonOidsWithAllKeys() {
+        final String PERSON1_OID = "1.2.246.562.24.14229104472";
+        final String PERSON2_OID = "1.2.246.562.24.40135708059";
+
+        Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), true, true);
+
+        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
+        assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
+    }
+
+    @Test
+    public void testFindApplicationsByPersonOidsWithAllKeysWithSensitiveInfo() {
+        final String PERSON1_OID = "1.2.246.562.24.14229104472";
+        final String PERSON2_OID = "1.2.246.562.24.40135708059";
+
+        Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), true, false);
+
+        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertTrue(applicationsByPersonOids.get(PERSON1_OID) != null);
+        assertTrue(applicationsByPersonOids.get(PERSON2_OID) != null);
+        assertNotNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
+        assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationOptions() {
+        Set<String> aos = new HashSet<>();
+        aos.add("1.2.246.562.20.91374364379");
+        aos.add("1.2.246.562.20.29983577775");
+        Collection<Map<String, Object>> applicationsByAOs = applicationResource.findApplicationsByApplicationOption(aos);
+        assertEquals(4, applicationsByAOs.size());
+
+        Set<String> emptyAOSet = new HashSet<>();
+        assertEquals(0, emptyAOSet.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationOptions() {
+        Set<String> aos = new HashSet<>();
+        aos.add("1.2.246.562.20.91374364379");
+        aos.add("1.2.246.562.20.29983577775");
+        aos.add("1.2.246.562.20.14048800487");
+        aos.add("1.2.246.562.20.40822369126");
+        aos.add("1.2.246.562.20.37345403259");
+        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationOption(aos);
+        assertEquals(3, personOids.size());
+        assertTrue(personOids.contains("1.2.246.562.24.25780876607"));
+        assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
+        Set<String> emptyAOSet = new HashSet<>();
+        assertEquals(0, emptyAOSet.size());
+    }
+
+    private String getHenkilotunnus(Collection<Map<String, Object>> applications) {
+        for (Map<String, Object> entry : applications) {
+            if (! entry.containsKey("answers")) {
+                continue;
+            }
+
+            Map<String, Object> answers = (HashMap<String, Object>) entry.get("answers");
+
+            if (answers == null || !answers.containsKey("henkilotiedot")) {
+                continue;
+            }
+
+            Map<String, Object> henkilotiedot = (HashMap<String, Object>) answers.get("henkilotiedot");
+            if (henkilotiedot == null || !henkilotiedot.containsKey("Henkilotunnus")) {
+                continue;
+            }
+            else {
+                String hetu = (String) henkilotiedot.get("Henkilotunnus");
+                if (hetu != null) {
+                    return hetu;
+                }
+            }
+        }
+        return null;
+    }
+
 
 }
