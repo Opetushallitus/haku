@@ -304,34 +304,31 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids) {
-        List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids);
+    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo) {
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids, allKeys, removeSensitiveInfo);
+        return transformApplicationsByKey(applications, ELEMENT_ID_PERSON_OID);
+    }
 
-        Iterable<Map<String, Object>> nonSensitiveApplications = removeSensitiveInfo(applications);
+    @Override
+    public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, final boolean removeSensitiveInfo) {
+        return applicationDAO.findApplicationsByApplicationOptionOids(applicationOptionOids);
+    }
 
-        Map<String, Collection<Map<String, Object>>> applicationsByPersonOid = Multimaps.index(nonSensitiveApplications, new Function<Map<String, Object>, String>() {
+    @Override
+    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids) {
+        return applicationDAO.findPersonOidsByApplicationOptionOids(applicationOptionOids);
+    }
+
+    private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
+
+        Map<String, Collection<Map<String, Object>>> applicationsByKey = Multimaps.index(applications, new Function<Map<String, Object>, String>() {
             @Override
             public String apply(Map<String, Object> application) {
-                return (String) application.get(ELEMENT_ID_PERSON_OID);
+                return (String) application.get(key);
             }
         }).asMap();
 
-        return applicationsByPersonOid;
-    }
-
-    private Iterable<Map<String, Object>> removeSensitiveInfo(Iterable<Map<String, Object>> sensitiveApplications) {
-        return Iterables.transform(sensitiveApplications, new Function<Map<String,Object>, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> apply(Map<String, Object> application) {
-                Map<String, Map<String, String>> answers = (Map<String, Map<String,String>>) application.get(ANSWERS);
-                Map<String, String> contactDetails = answers.get(PHASE_PERSONAL);
-
-                contactDetails.remove(HENKILOTUNNUS);
-                contactDetails.remove(HENKILOTUNNUS_HASH);
-
-                return application;
-            }
-        });
+        return applicationsByKey;
     }
 
     @Override
