@@ -117,7 +117,11 @@ public interface ApplicationService {
     
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 
-    Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids);
+    Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo);
+
+    List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, final boolean removeSensitiveInfo);
+
+    Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids);
 
     Application updateAuthorizationMeta(Application application) throws IOException;
 
