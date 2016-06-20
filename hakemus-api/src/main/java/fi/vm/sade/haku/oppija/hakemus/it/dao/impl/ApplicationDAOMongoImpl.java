@@ -18,10 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
@@ -33,6 +30,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
@@ -45,6 +43,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -53,6 +52,9 @@ import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
+import static fi.vm.sade.haku.oppija.lomake.domain.ModelResponse.ANSWERS;
+import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS;
+import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS_HASH;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_PERSONAL;
 import static java.lang.String.format;
@@ -72,6 +74,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
     private final DBObjectToMapFunction dbObjectToMapFunction;
     private final ApplicationDAOMongoQueryBuilder applicationQueryBuilder;
+
+    private final DBObjectToMapWithoutSensitiveFields dbObjectToMapWithoutSensitiveFields = new DBObjectToMapWithoutSensitiveFields();
+
 
     @Value("${mongodb.ensureIndex:true}")
     private boolean ensureIndex;
@@ -171,15 +176,50 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return new ApplicationSearchResultDTO(results.searchHits, results.searchResultsList);
     }
 
+    /**
+     * Returns application objects for queried person OIDs. Returned fields controlled by boolean flags.
+     *
+     * @param personOids List of person OIDs to query
+     * @param allKeys If true return all keys from the object else return a fixed subset of keys (could be generalized to take a set of keys to be returned if needed, but make sure Henkilo service is happy after this)
+     * @param removeSensitiveInfo If true remove sensitive (e.g. SSN) fields from the returned objects (omits SSN decryption on the lowest level)
+     * @return application objects for queried person OIDs
+     */
     @Override
-    public List<Map<String, Object>> findApplicationsByPersonOid(Set<String> personOids) {
+    public List<Map<String, Object>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo) {
         DBObject query = QueryBuilder.start(ELEMENT_ID_PERSON_OID).in(personOids).get();
-        DBObject keys = generateKeysDBObject("answers." + PHASE_PERSONAL, "oid", ELEMENT_ID_PERSON_OID, FIELD_RECEIVED, FIELD_APPLICATION_STATE);
+        DBObject keys = allKeys ?
+                generateKeysDBObject(DBObjectToMapFunction.KEYS)
+                : generateKeysDBObject("answers." + PHASE_PERSONAL, "oid", ELEMENT_ID_PERSON_OID, FIELD_RECEIVED, FIELD_APPLICATION_STATE);
         keys.put("_id", 0);
-        DBObject sortBy = new BasicDBObject(FIELD_RECEIVED, -1);
-        SearchResults<Map<String, Object>> result = searchListing(query, keys, sortBy, 0, 0, dbObjectToMapFunction, false);
+        SearchResults<Map<String, Object>> result = simpleSearchListing(query, keys, removeSensitiveInfo ? dbObjectToMapWithoutSensitiveFields : dbObjectToMapFunction, INDEX_PERSON_OID);
         return result.searchResultsList;
     }
+
+    @Override
+    public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids) {
+        DBObject query = QueryBuilder.start(META_FIELD_AO).in(applicationOptionOids).get();
+        DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
+        keys.put("_id", 0);
+        SearchResults<Map<String, Object>> result = simpleSearchListing(query, keys, dbObjectToMapFunction, INDEX_AO_OID);
+        return result.searchResultsList;
+    }
+
+    @Override
+    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids) {
+        class DBObjectToString implements Function<DBObject, String>  {
+            public String apply(DBObject dbObject) {
+                @SuppressWarnings("rawtypes")
+                final Map fromValue = dbObject.toMap();
+                return (String) fromValue.get(FIELD_PERSON_OID);
+            }
+        }
+        DBObject query = QueryBuilder.start(META_FIELD_AO).in(applicationOptionOids).exists(FIELD_PERSON_OID).get();
+        DBObject keys = generateKeysDBObject(FIELD_PERSON_OID);
+        keys.put("_id", 0);
+        SearchResults<String> result = simpleSearchListing(query, keys, new DBObjectToString(), INDEX_AO_OID);
+        return new HashSet<>(result.searchResultsList);
+    }
+
 
     @Override
     public List<Map<String, Object>> findAllQueriedFull(final ApplicationQueryParameters queryParameters,
@@ -190,6 +230,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
                 dbObjectToMapFunction, false);
         return searchResults.searchResultsList;
+    }
+
+    static class DBObjectToMapWithoutSensitiveFields implements Function<DBObject, Map<String, Object>>  {
+        public Map<String, Object> apply(DBObject dbObject) {
+            @SuppressWarnings("rawtypes")
+            final Map fromValue = dbObject.toMap();
+            @SuppressWarnings("unchecked")
+            final Map<String, Map<String, String>> answers = (Map<String, Map<String, String>>) fromValue.get("answers");
+            if (answers != null) {
+                final Map<String, String> henkilotiedot = answers.get("henkilotiedot");
+                if (henkilotiedot != null && henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
+                    henkilotiedot.remove(HENKILOTUNNUS);
+                    henkilotiedot.remove(HENKILOTUNNUS_HASH);
+                }
+            }
+            return fromValue;
+        }
     }
 
 
@@ -233,6 +290,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}",
                     (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
             return new SearchResults<T>(searchHits, results);
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
+            throw mongoException;
+        }
+    }
+
+    private <T> SearchResults<T> simpleSearchListing(final DBObject query, final  DBObject keys, final Function<DBObject, T> transformationFunction, final String indexHint) {
+        final long startTime = System.currentTimeMillis();
+        final DBCursor dbCursor = getCollection().find(query, keys);
+
+        try {
+            if (indexHint != null && ensureIndex) {
+                dbCursor.hint(indexHint);
+            }
+            final ImmutableList<T> results = ImmutableList.copyOf(Iterables.transform(dbCursor, transformationFunction));
+            LOG.debug("simpleSearchListing took {} ms.", System.currentTimeMillis() - startTime);
+            return new SearchResults<T>(results.size(), results);
         } catch (MongoException mongoException) {
             LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
             throw mongoException;
