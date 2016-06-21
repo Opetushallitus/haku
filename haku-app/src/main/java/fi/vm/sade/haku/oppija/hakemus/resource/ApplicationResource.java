@@ -264,16 +264,20 @@ public class ApplicationResource {
             value = "Palauttaa useamman hakemuksen tiedot oid-listan perusteella. Oid:t json-listana POST-pyynnön bodyssa.",
             response = Application.class,
 			responseContainer = "List")
-    public List<?> getApplicationsByOidsPost(@ApiParam(value="Palautettavien tietojen rajaus avaimilla (valinnainen)") @QueryParam("keys") List<String> keys, final List<String> oids) {
+    public List<?> getApplicationsByOidsPost(@ApiParam(value="Palautettavien tietojen rajaus avaimilla (valinnainen)") @QueryParam("keys") List<String> keys,
+                                             @ApiParam(value="Hakemusten tilarajaus (valinnainen)") @QueryParam("state") List<String> state,
+                                             @ApiParam(value="Haulla rajaus (valinnainen)") @QueryParam("asIds") List<String> asIds,
+                                             final List<String> oids) {
         if(keys == null || keys.isEmpty()) {
             return getApplications(oids);
         } else {
             LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
             ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                     .setSearchTerms("")
+                    .setStates(state)
+                    .setAsIds(asIds)
                     .addAoOid(oids.toArray(new String[0]))
                     .build();
-
             List<Map<String, Object>> apps = applicationService.findApplicationsWithKeys(queryParams, keys.toArray(new String[]{}));
             return apps;
         }
