@@ -214,6 +214,10 @@ final class ApplicationDAOMongoQueryBuilder {
             }
         }
 
+        final List<String> oids = applicationQueryParameters.getOids();
+        if(oids != null && !oids.isEmpty()) {
+            filters.add(QueryBuilder.start(FIELD_APPLICATION_OID).in(oids).get());
+        }
         // Koskee koko hakemusta
         final List<String> states = applicationQueryParameters.getState();
         if (states != null && !states.isEmpty()) {

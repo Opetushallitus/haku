@@ -27,6 +27,7 @@ public class ApplicationQueryParameters {
     private final String paymentState;
     private final Boolean preferenceChecked;
     private final List<String> asIds;
+    private final List<String> oids;
     private final String aoId;
     private final String lopOid;
     private final List<String> aoOids;
@@ -46,13 +47,14 @@ public class ApplicationQueryParameters {
 
     public ApplicationQueryParameters(final String searchTerms, final List<String> state, final String paymentState, final Boolean preferenceChecked,
                                       final List<String> asIds, final String aoId, final String lopOid,
-                                      final List<String> aoOids, final List<String> personOids, final String groupOid,
+                                      final List<String> aoOids, final List<String> oids, final List<String> personOids, final String groupOid,
                                       final Set<String> baseEducation, final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
                                       final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.searchTerms = searchTerms;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
+        this.oids = oids;
         this.state = state;
         this.paymentState = paymentState;
         this.preferenceChecked = preferenceChecked;
@@ -79,6 +81,10 @@ public class ApplicationQueryParameters {
             if (!StringUtils.isBlank(x)) nonEmpty.add(x);
         }
         return nonEmpty;
+    }
+
+    public List<String> getOids() {
+        return oids;
     }
 
     public List<String> getState() {

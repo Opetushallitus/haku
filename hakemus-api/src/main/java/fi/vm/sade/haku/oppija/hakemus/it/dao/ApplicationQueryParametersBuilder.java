@@ -10,6 +10,7 @@ public class ApplicationQueryParametersBuilder {
     private List<String> state;
     private String paymentState;
     private List<String> asIds;
+    private List<String> oids;
     private Boolean preferenceChecked;
     private String aoId;
     private String lopOid;
@@ -66,7 +67,10 @@ public class ApplicationQueryParametersBuilder {
         this.aoOids = aoOids;
         return this;
     }
-
+    public ApplicationQueryParametersBuilder setOids(List<String> oids) {
+        this.oids = oids;
+        return this;
+    }
     public ApplicationQueryParametersBuilder addAoOid(String... aoOids) {
         if (this.aoOids == null)
             this.aoOids = new ArrayList<>(aoOids.length);
@@ -151,7 +155,7 @@ public class ApplicationQueryParametersBuilder {
     }
 
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(searchTerms, state, paymentState, preferenceChecked, asIds, aoId, lopOid, aoOids,
+        return new ApplicationQueryParameters(searchTerms, state, paymentState, preferenceChecked, asIds, aoId, lopOid, aoOids, oids,
                 personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
                 sendingClass, updatedAfter, start, rows, orderBy, orderDir);
     }

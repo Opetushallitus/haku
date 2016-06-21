@@ -275,8 +275,8 @@ public class ApplicationResource {
             ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                     .setSearchTerms("")
                     .setStates(state)
+                    .setOids(oids)
                     .setAsIds(asIds)
-                    .addAoOid(oids.toArray(new String[0]))
                     .build();
             List<Map<String, Object>> apps = applicationService.findApplicationsWithKeys(queryParams, keys.toArray(new String[]{}));
             return apps;
