@@ -177,7 +177,8 @@ public class TestApplicationResource extends IntegrationTestSupport {
         assertEquals(4, applicationsByAOs.size());
 
         Set<String> emptyAOSet = new HashSet<>();
-        assertEquals(0, emptyAOSet.size());
+        Collection<Map<String, Object>> empty = applicationResource.findApplicationsByApplicationOption(emptyAOSet);
+        assertEquals(0, empty.size());
     }
 
     @Test
@@ -193,7 +194,8 @@ public class TestApplicationResource extends IntegrationTestSupport {
         assertTrue(personOids.contains("1.2.246.562.24.25780876607"));
         assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
         Set<String> emptyAOSet = new HashSet<>();
-        assertEquals(0, emptyAOSet.size());
+        Collection<String> empty = applicationResource.findPersonOIDsByApplicationOption(emptyAOSet);
+        assertEquals(0, empty.size());
     }
 
     private String getHenkilotunnus(Collection<Map<String, Object>> applications) {
