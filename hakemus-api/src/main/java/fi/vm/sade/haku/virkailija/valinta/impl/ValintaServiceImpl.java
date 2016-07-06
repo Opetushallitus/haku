@@ -34,6 +34,9 @@ public class ValintaServiceImpl implements ValintaService {
 
     private String casUrl;
 
+    @Value("${valinta-default.timeout.millis:4000}")
+    private int defaultValintaHttpRequestTimeoutMilliseconds;
+
     @Value("${cas.service.valintalaskenta-service}")
     private String targetServiceValinta;
     @Value("${haku.app.username.to.valintalaskenta}")
@@ -50,6 +53,8 @@ public class ValintaServiceImpl implements ValintaService {
 
     @Value("${cas.service.valinta-tulos-service}")
     private String targetServiceValintatulosService;
+    @Value("${valinta-tulos-service.timeout.millis:15000}")
+    private int valintaTulosServiceRequestTimeoutMilliseconds;
 
     private static CachingRestClient cachingRestClientValinta;
     private static CachingRestClient cachingRestClientKooste;
@@ -118,7 +123,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientKooste() {
         if (cachingRestClientKooste == null) {
-            cachingRestClientKooste = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
+            cachingRestClientKooste = new CachingRestClient(defaultValintaHttpRequestTimeoutMilliseconds).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientKooste.setWebCasUrl(casUrl);
             cachingRestClientKooste.setCasService(targetServiceKooste);
             cachingRestClientKooste.setUsername(clientAppUserKooste);
@@ -135,7 +140,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientValinta() {
         if (cachingRestClientValinta == null) {
-            cachingRestClientValinta = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
+            cachingRestClientValinta = new CachingRestClient(defaultValintaHttpRequestTimeoutMilliseconds).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientValinta.setWebCasUrl(casUrl);
             cachingRestClientValinta.setCasService(targetServiceValinta);
             cachingRestClientValinta.setUsername(clientAppUserValinta);
@@ -157,7 +162,8 @@ public class ValintaServiceImpl implements ValintaService {
      */
     private synchronized CachingRestClient getCachingRestClientValintaTulosService() {
         if (cachingRestClientValintaTulosService == null) {
-            cachingRestClientValintaTulosService = new CachingRestClient(4000).setClientSubSystemCode("haku.hakemus-api");
+            cachingRestClientValintaTulosService = new CachingRestClient(valintaTulosServiceRequestTimeoutMilliseconds).
+                setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientValintaTulosService.setCasService(targetServiceValintatulosService);
 
             log.debug("getcachingRestClientValintaTulosService "
