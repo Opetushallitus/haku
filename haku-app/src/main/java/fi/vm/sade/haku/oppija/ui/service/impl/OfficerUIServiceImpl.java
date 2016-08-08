@@ -46,6 +46,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
@@ -265,6 +266,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         HakijaDTO hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
         Map<String, String> aoAnswers = application.getPhaseAnswers(PHASE_APPLICATION_OPTIONS);
 
@@ -296,18 +298,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 break;
             }
             aos.add(createApplicationOption(i, aoAnswers, aoPrefix,
-                    hakijaMap.get(aoOid), hakemusMap.get(aoAnswers.get(aoKey)), showScores));
+                    hakijaMap.get(aoOid), hakemusMap.get(aoAnswers.get(aoKey)), showScores, as));
         }
         return aos;
     }
 
     private ApplicationOptionDTO createApplicationOption(int index, Map<String, String> applicatioOptions,
                                                          String aoPrefix, HakutoiveDTO hakutoive,
-                                                         HakukohdeDTO hakukohde, boolean showScores) {
+                                                         HakukohdeDTO hakukohde, boolean showScores, ApplicationSystem applicationSystem) {
         ApplicationOptionDTO ao = buildBasicAo(index, applicatioOptions, aoPrefix);
 
         if (hakutoive != null) {
-            ao = addAdditionalApplicationOptionData(ao, hakutoive, showScores);
+            ao = addAdditionalApplicationOptionData(ao, hakutoive, showScores, applicationSystem);
         }
 
         if (hakukohde == null || !showScores) {
@@ -357,7 +359,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     private ApplicationOptionDTO addAdditionalApplicationOptionData(ApplicationOptionDTO ao, HakutoiveDTO hakutoive,
-                                                                    boolean showScores) {
+                                                                    boolean showScores, ApplicationSystem applicationSystem) {
         List<HakutoiveenValintatapajonoDTO> jonot = hakutoive.getHakutoiveenValintatapajonot();
         Collections.sort(jonot, new Comparator<HakutoiveenValintatapajonoDTO>() {
             @Override
@@ -371,7 +373,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ao.setYhteispisteet(reallyShowScores ? PISTE_FMT.format(pisteet) : "");
         ao.setJonoId(jono.getValintatapajonoOid());
         ao.setSijoittelunTulos(jono.getTila());
-        ao.setVastaanottoTieto(hakutoive.getVastaanottotieto());
+
+        // For Toinen Aste swap VASTAANOTTANUT_SITOVASTI with VASTAANOTTANUT
+        if (OppijaConstants.TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(applicationSystem.getKohdejoukkoUri()) &&
+                hakutoive.getVastaanottotieto() == ValintatuloksenTila.VASTAANOTTANUT_SITOVASTI) {
+           ao.setVastaanottoTieto(ValintatuloksenTila.VASTAANOTTANUT);
+        } else {
+            ao.setVastaanottoTieto(hakutoive.getVastaanottotieto());
+        }
 
         return ao;
     }
