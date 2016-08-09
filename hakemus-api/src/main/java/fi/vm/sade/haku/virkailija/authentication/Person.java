@@ -183,7 +183,6 @@ public class Person {
                 .append("firstNames: ").append(firstNames)
                 .append(" nickName: ").append(nickName)
                 .append(" lastName: ").append(lastName)
-                .append(" socialSecurityNumber: ").append(socialSecurityNumber)
                 .append(" dateOfBirth: ").append(dateOfBirth)
                 .append(" noSocialSecurityNumber: ").append(noSocialSecurityNumber)
                 .append(" email: ").append(email)
