@@ -16,7 +16,9 @@
 package fi.vm.sade.hakutest;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,8 +47,13 @@ public class SeleniumContainer {
 
     public RemoteWebDriver getDriver() {
         if (webDriver == null) {
-            ChromeDriverManager.getInstance().setup();
-            this.webDriver = new ChromeDriver();
+            if(Boolean.getBoolean("it.usePhantomJs")) {
+                PhantomJsDriverManager.getInstance().setup();
+                this.webDriver = new PhantomJSDriver();
+            } else {
+                ChromeDriverManager.getInstance().setup();
+                this.webDriver = new ChromeDriver();
+            }
         }
         return webDriver;
     }
