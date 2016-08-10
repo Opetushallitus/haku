@@ -161,7 +161,6 @@ describe('Erityisoppilaitosten lomake', function () {
 
                     describe('hakutoiveiden täyttö', function () {
                         before(seqDone(
-                            function() { S('#nav-koulutustausta')[0].click() },
                             pageChange(lomake.fromKoulutustausta),
                             headingVisible("Hakutoiveet"),
                             valitseFaktiaJaKiipula
