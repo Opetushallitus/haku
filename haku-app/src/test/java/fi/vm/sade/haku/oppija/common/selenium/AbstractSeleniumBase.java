@@ -205,14 +205,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void elementsNotPresentBy(final By by) {
         seleniumContainer.getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        try {
-            List<WebElement> elements = seleniumContainer.getDriver().findElements(by);
-            if (!elements.isEmpty()) {
-                fail("elements " + by.toString() + " found:" + elements.size());
-            }
-        }
-        finally {
-            seleniumContainer.getDriver().manage().timeouts().implicitlyWait(SeleniumContainer.IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
+        List<WebElement> elements = seleniumContainer.getDriver().findElements(by);
+        if (!elements.isEmpty()) {
+            fail("elements " + by.toString() + " found:" + elements.size());
         }
     }
 

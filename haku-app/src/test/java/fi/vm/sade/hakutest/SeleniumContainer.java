@@ -24,7 +24,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Profile("it")
@@ -32,7 +31,6 @@ public class SeleniumContainer {
 
     private RemoteWebDriver webDriver;
     private final String webDriverBaseUrl;
-    public static final long IMPLICIT_WAIT_TIME_IN_SECONDS = 10;
 
     @Autowired
     public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:9090/haku-app/}") final String webDriverBaseUrl) {
@@ -49,7 +47,6 @@ public class SeleniumContainer {
         if (webDriver == null) {
             ChromeDriverManager.getInstance().setup();
             this.webDriver = new ChromeDriver();
-            this.webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
         }
         return webDriver;
     }
