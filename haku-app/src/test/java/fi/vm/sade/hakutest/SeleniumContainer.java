@@ -17,6 +17,7 @@ package fi.vm.sade.hakutest;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -54,6 +55,7 @@ public class SeleniumContainer {
                 ChromeDriverManager.getInstance().setup();
                 this.webDriver = new ChromeDriver();
             }
+            webDriver.manage().window().setSize(new Dimension(1000, 800));
         }
         return webDriver;
     }
