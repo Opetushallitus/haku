@@ -251,7 +251,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         (new WebDriverWait(seleniumContainer.getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 JavascriptExecutor js = (JavascriptExecutor) d;
-                return (Boolean) js.executeScript("return jQuery.active == 0");
+                return (Boolean) js.executeScript("return window.jQuery != undefined && jQuery.active == 0");
             }
         });
     }
