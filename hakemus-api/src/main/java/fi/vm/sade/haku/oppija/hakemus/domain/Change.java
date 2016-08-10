@@ -83,4 +83,9 @@ public class Change implements Serializable {
         result = 31 * result + (changes != null ? changes.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Change: modified=%s, modifier=%s, reason=%s, changes=%s", modified, modifier, reason, changes);
+    }
 }
