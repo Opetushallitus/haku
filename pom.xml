@@ -29,7 +29,7 @@
         <guava.version>15.0</guava.version>
         <ehcache.version>2.5.0</ehcache.version>
         <flapdoodle.version>1.50.2</flapdoodle.version>
-        <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
+        <org.apache.tomcat.embed>7.0.70</org.apache.tomcat.embed>
         <jackson.version>2.3.0</jackson.version>
         <selenium.version>2.53.0</selenium.version>
 
