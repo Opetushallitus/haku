@@ -15,12 +15,9 @@
  */
 package fi.vm.sade.hakutest;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import io.github.bonigarcia.wdm.MarionetteDriverManager;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -50,6 +47,7 @@ public class SeleniumContainer {
 
     public FirefoxDriver getDriver() {
         if (webDriver == null) {
+            MarionetteDriverManager.getInstance().setup();
             FirefoxProfile profile = new FirefoxProfile();
             profile.setPreference("focusmanager.testmode",true);
             this.webDriver = new FirefoxDriver(profile);

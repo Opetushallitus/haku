@@ -104,13 +104,19 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
+            <version>3.0.0-beta2</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.detro.ghostdriver</groupId>
+                    <artifactId>phantomjsdriver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-firefox-driver</artifactId>
-            <version>${selenium.version}</version>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>1.4.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
