@@ -15,9 +15,9 @@
  */
 package fi.vm.sade.hakutest;
 
-import io.github.bonigarcia.wdm.MarionetteDriverManager;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Profile("it")
 public class SeleniumContainer {
 
-    private FirefoxDriver webDriver;
+    private RemoteWebDriver webDriver;
     private final String webDriverBaseUrl;
     public static final long IMPLICIT_WAIT_TIME_IN_SECONDS = 10;
 
@@ -45,12 +45,10 @@ public class SeleniumContainer {
         getDriver().close();
     }
 
-    public FirefoxDriver getDriver() {
+    public RemoteWebDriver getDriver() {
         if (webDriver == null) {
-            MarionetteDriverManager.getInstance().setup();
-            FirefoxProfile profile = new FirefoxProfile();
-            profile.setPreference("focusmanager.testmode",true);
-            this.webDriver = new FirefoxDriver(profile);
+            ChromeDriverManager.getInstance().setup();
+            this.webDriver = new ChromeDriver();
             this.webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
         }
         return webDriver;
