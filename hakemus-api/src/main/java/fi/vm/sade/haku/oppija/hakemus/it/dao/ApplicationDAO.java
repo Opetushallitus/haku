@@ -111,5 +111,5 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids);
 
-    Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOid);
+    Set<String> findPersonOidsByApplicationSystemIds(Collection<String> applicationSystemIds);
 }

@@ -268,12 +268,12 @@ public class ApplicationResource {
     }
 
     @POST
-    @Path("/personOIDsbyApplicationOption")
+    @Path("/personOIDsbyApplicationSystem")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
-    @ApiOperation(value="Henkilö OIDien haku hakukohteen OIDin perusteella", response=String.class, responseContainer="List")
-    public Set<String> findPersonOIDsByApplicationOption(Set<String> applicationOptions) {
-        return applicationService.findPersonOidsByApplicationOptionOids(applicationOptions);
+    @ApiOperation(value="Henkilö OIDien haku haun oidien perusteella", response=String.class, responseContainer="Set")
+    public Set<String> findPersonOIDsByApplicationSystem(Set<String> applicationSystemIds) {
+        return applicationService.findPersonOidsByApplicationSystemIds(applicationSystemIds);
     }
 
     @POST
