@@ -15,27 +15,25 @@
  */
 package fi.vm.sade.hakutest;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Profile("it")
 public class SeleniumContainer {
 
-    private FirefoxDriver webDriver;
+    private RemoteWebDriver webDriver;
     private final String webDriverBaseUrl;
-    public static final long IMPLICIT_WAIT_TIME_IN_SECONDS = 10;
 
     @Autowired
     public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:9090/haku-app/}") final String webDriverBaseUrl) {
@@ -48,12 +46,16 @@ public class SeleniumContainer {
         getDriver().close();
     }
 
-    public FirefoxDriver getDriver() {
+    public RemoteWebDriver getDriver() {
         if (webDriver == null) {
-            FirefoxProfile profile = new FirefoxProfile();
-            profile.setPreference("focusmanager.testmode",true);
-            this.webDriver = new FirefoxDriver(profile);
-            this.webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
+            if(Boolean.getBoolean("it.usePhantomJs")) {
+                PhantomJsDriverManager.getInstance().setup();
+                this.webDriver = new PhantomJSDriver();
+            } else {
+                ChromeDriverManager.getInstance().setup();
+                this.webDriver = new ChromeDriver();
+            }
+            webDriver.manage().window().setSize(new Dimension(1000, 800));
         }
         return webDriver;
     }

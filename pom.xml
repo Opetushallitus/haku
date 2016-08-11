@@ -31,7 +31,6 @@
         <flapdoodle.version>1.50.2</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.70</org.apache.tomcat.embed>
         <jackson.version>2.3.0</jackson.version>
-        <selenium.version>2.53.1</selenium.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -118,7 +117,7 @@
                         <exclude>**/it/*</exclude>
                         <exclude>**/it/**/*</exclude>
                     </excludes>
-                    <argLine>-Xms256M -Xmx1024M -XX:PermSize=256M</argLine>
+                    <argLine>-client -Xms256M -Xmx1g</argLine>
                     <systemProperties>
                         <spring.profiles.active>dev</spring.profiles.active>
                         <application.system.cache>false</application.system.cache>
@@ -138,7 +137,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>2.19.1</version>
                         <configuration>
-                            <argLine>-Xms512M -Xmx2048M -XX:PermSize=512M -Xss2M -Dfile.encoding=UTF-8</argLine>
+                            <argLine>-client -Xms1g -Xmx2g -Xss2M -Dfile.encoding=UTF-8</argLine>
                             <includes>
                                 <include>**/it/*</include>
                                 <include>**/it/**/*</include>

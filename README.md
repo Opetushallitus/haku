@@ -118,7 +118,11 @@ Or build, start tomcat and run Mochas from the command line:
 
 Run all tests (including Mocha and Selenium tests):
 
-    mvn clean verify -Pit
+    mvn verify -Pit
+
+By default mocha and selenium tests use CromeWebDriver, if you want to use (like Bamboo build) PhantomsJs add system property it.usePhantomJs:
+
+    mvn verify -Pit -Dit.usePhantomJs=true
 
 Run single test class:
 

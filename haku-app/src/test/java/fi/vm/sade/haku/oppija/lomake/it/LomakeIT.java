@@ -32,6 +32,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -90,10 +91,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         typeWithoutTab("preference1-Opetuspiste", "sturen");
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
-        waitForMillis(100);
-
-        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
-        waitForMillis(500);
+        click(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']"));
 
         prevPhase(OppijaConstants.PHASE_EDUCATION);
 
@@ -114,10 +112,12 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
-        assertTrue("Warning text 'ristiriita' not found", !findByClassName("warning").isEmpty());
+        assertEquals("Valitse hakulomakkeelle vain pohjakoulutuksesi mukaisia hakutoiveita. Valitun hakutoiveen ja antamasi pohjakoulutuksen välillä on ristiriita:\n" +
+                "Stadin ammattiopisto, Sturenkadun toimipaikka\n" +
+                "Tieto- ja tietoliikennetekniikan perustutkinto, yo", findByClassName("warning").get(0).getText());
 
-        //Skip toimipiste
-        findByIdAndClick("preference1-reset");
+        //Remove invalid preference
+        click(By.id("preference1-reset"));
 
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 

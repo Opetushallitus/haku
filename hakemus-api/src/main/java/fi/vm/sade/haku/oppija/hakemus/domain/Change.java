@@ -21,9 +21,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -41,7 +39,7 @@ public class Change implements Serializable {
         this.modified = modified;
         this.modifier = modifier;
         this.reason = reason;
-        this.changes = changes;
+        this.changes = new ArrayList<>(new HashSet<>(changes));
     }
 
     public Date getModified() {
@@ -82,5 +80,10 @@ public class Change implements Serializable {
         result = 31 * result + (reason != null ? reason.hashCode() : 0);
         result = 31 * result + (changes != null ? changes.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Change: modified=%s, modifier=%s, reason=%s, changes=%s", modified, modifier, reason, changes);
     }
 }
