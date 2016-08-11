@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimaps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -79,12 +78,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.Maps.filterKeys;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
-import static fi.vm.sade.haku.oppija.lomake.domain.ModelResponse.ANSWERS;
-import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS;
-import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS_HASH;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -306,12 +302,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo) {
         List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids, allKeys, removeSensitiveInfo);
-        return transformApplicationsByKey(applications, ELEMENT_ID_PERSON_OID);
+        return transformApplicationsByKey(convertApplications(applications), ELEMENT_ID_PERSON_OID);
     }
 
     @Override
     public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, final boolean removeSensitiveInfo) {
-        return applicationDAO.findApplicationsByApplicationOptionOids(applicationOptionOids);
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationOptionOids(applicationOptionOids);
+        return convertApplications(applications);
     }
 
     @Override
@@ -331,16 +328,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationsByKey;
     }
 
-    @Override
-    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
-
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters,
-                buildFilterParams(applicationQueryParameters));
+    private List<Map<String, Object>> convertApplications(List<Map<String, Object>> applications) {
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
             removeAuthorizationMeta(application);
         }
         return applications;
+    }
+
+    @Override
+    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
+        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters));
+        return convertApplications(applications);
     }
 
     private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
