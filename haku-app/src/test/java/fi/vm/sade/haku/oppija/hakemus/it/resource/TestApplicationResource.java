@@ -182,19 +182,17 @@ public class TestApplicationResource extends IntegrationTestSupport {
     }
 
     @Test
-    public void testFindPersonOIDsByApplicationOptions() {
-        Set<String> aos = new HashSet<>();
-        aos.add("1.2.246.562.20.91374364379");
-        aos.add("1.2.246.562.20.29983577775");
-        aos.add("1.2.246.562.20.14048800487");
-        aos.add("1.2.246.562.20.40822369126");
-        aos.add("1.2.246.562.20.37345403259");
-        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationOption(aos);
+    public void testFindPersonOIDsByApplicationSystem() {
+        Set<String> asIds = Sets.newHashSet(
+                "1.2.246.562.5.2013080813081926341927",
+                "1.2.246.562.29.95390561488"
+        );
+        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationSystem(asIds);
         assertEquals(3, personOids.size());
         assertTrue(personOids.contains("1.2.246.562.24.25780876607"));
         assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
         Set<String> emptyAOSet = new HashSet<>();
-        Collection<String> empty = applicationResource.findPersonOIDsByApplicationOption(emptyAOSet);
+        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet);
         assertEquals(0, empty.size());
     }
 
