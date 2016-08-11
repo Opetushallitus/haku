@@ -205,7 +205,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids) {
+    public Set<String> findPersonOidsByApplicationSystemIds(Collection<String> applicationSystemIds) {
         class DBObjectToString implements Function<DBObject, String>  {
             public String apply(DBObject dbObject) {
                 @SuppressWarnings("rawtypes")
@@ -213,10 +213,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 return (String) fromValue.get(FIELD_PERSON_OID);
             }
         }
-        DBObject query = QueryBuilder.start(META_FIELD_AO).in(applicationOptionOids).exists(FIELD_PERSON_OID).get();
+        DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(applicationSystemIds).exists(FIELD_PERSON_OID).get();
         DBObject keys = generateKeysDBObject(FIELD_PERSON_OID);
         keys.put("_id", 0);
-        SearchResults<String> result = simpleSearchListing(query, keys, new DBObjectToString(), INDEX_AO_OID);
+        SearchResults<String> result = simpleSearchListing(query, keys, new DBObjectToString(), INDEX_APPLICATION_SYSTEM_ID);
         return new HashSet<>(result.searchResultsList);
     }
 

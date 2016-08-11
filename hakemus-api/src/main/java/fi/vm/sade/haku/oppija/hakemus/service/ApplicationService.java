@@ -121,7 +121,7 @@ public interface ApplicationService {
 
     List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, final boolean removeSensitiveInfo);
 
-    Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids);
+    Set<String> findPersonOidsByApplicationSystemIds(Collection<String> applicationSystemIds);
 
     Application updateAuthorizationMeta(Application application) throws IOException;
 
