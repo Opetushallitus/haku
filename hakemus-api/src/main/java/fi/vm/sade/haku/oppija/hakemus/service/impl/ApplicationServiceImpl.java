@@ -312,8 +312,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids) {
-        return applicationDAO.findPersonOidsByApplicationOptionOids(applicationOptionOids);
+    public Set<String> findPersonOidsByApplicationSystemIds(Collection<String> applicationSystemIds) {
+        return applicationDAO.findPersonOidsByApplicationSystemIds(applicationSystemIds);
     }
 
     private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
