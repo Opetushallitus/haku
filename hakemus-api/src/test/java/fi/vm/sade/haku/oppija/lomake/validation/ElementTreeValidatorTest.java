@@ -35,6 +35,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerato
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
@@ -81,6 +82,7 @@ public class ElementTreeValidatorTest {
                         mock(HakukohdeService.class),
                         mock(OrganizationService.class),
                         formConfigurationDAOMock,
+                        mock(OhjausparametritService.class),
                         i18nBundleService);
         FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService, false, null);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
