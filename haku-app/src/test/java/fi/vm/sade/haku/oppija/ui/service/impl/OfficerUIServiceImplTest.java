@@ -28,6 +28,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
@@ -112,6 +113,7 @@ public class OfficerUIServiceImplTest {
                         mock(HakukohdeService.class),
                         mock(OrganizationService.class),
                         mock(FormConfigurationDAO.class),
+                        mock(OhjausparametritService.class),
                         mock(I18nBundleService.class));
         koodistoService = mock(KoodistoService.class);
         hakuPermissionService = mock(HakuPermissionService.class);

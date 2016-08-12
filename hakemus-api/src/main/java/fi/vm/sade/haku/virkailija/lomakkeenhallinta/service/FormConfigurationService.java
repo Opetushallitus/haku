@@ -11,6 +11,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -45,6 +46,8 @@ public final class FormConfigurationService {
     private final FormConfigurationDAO formConfigurationDAO;
     @Autowired
     private final I18nBundleService i18nBundleService;
+    @Autowired
+    private final OhjausparametritService ohjausparametritService;
 
     @Value("${mode.demo:false}")
     public boolean demoMode;
@@ -56,6 +59,7 @@ public final class FormConfigurationService {
                                     final HakukohdeService hakukohdeService,
                                     final OrganizationService organizationService,
                                     final FormConfigurationDAO formConfigurationDAO,
+                                    final OhjausparametritService ohjausparametritService,
                                     final I18nBundleService i18nBundleService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
@@ -63,6 +67,7 @@ public final class FormConfigurationService {
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.formConfigurationDAO = formConfigurationDAO;
+        this.ohjausparametritService = ohjausparametritService;
         this.i18nBundleService = i18nBundleService;
     }
 
@@ -74,7 +79,7 @@ public final class FormConfigurationService {
     public FormParameters getFormParameters(final ApplicationSystem applicationSystem) {
         FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystem);
         return new FormParameters(applicationSystem, formConfiguration, koodistoService, themeQuestionDAO,
-                hakukohdeService, organizationService, i18nBundleService,
+                hakukohdeService, organizationService, i18nBundleService, ohjausparametritService,
                 this.demoMode);
     }
 
