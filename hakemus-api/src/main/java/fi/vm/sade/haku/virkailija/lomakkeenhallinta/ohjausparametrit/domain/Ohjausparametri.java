@@ -1,9 +1,13 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.Date;
 
 public class Ohjausparametri {
     private Date date;
+
+    @JsonProperty("booleanValue")
     private Boolean booleanValue;
 
     public Date getDate() {
@@ -18,7 +22,7 @@ public class Ohjausparametri {
         return booleanValue;
     }
 
-    public void setBooleanValue(Boolean value) {
+    public void setBooleanValue(Boolean booleanValue) {
         this.booleanValue = booleanValue;
     }
 
