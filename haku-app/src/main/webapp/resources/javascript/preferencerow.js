@@ -134,7 +134,6 @@ var preferenceRow = {
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
                     $selectInput.parent().find(".warning").hide();
                     var $providerInput = $("#" + providerInputId);
-                    preferenceRow.clearSelectInput(selectInputId);
                     $selectInput.after($("<div>", {
                         class: "notification warning margin-top-1",
                         html: [
@@ -144,6 +143,7 @@ var preferenceRow = {
                         ]
                     }));
                     $('[id|="' + providerInputId + '"]').val('');
+                    preferenceRow.clearSelectInput(selectInputId);
                 }
 
                 $selectInput.prop('readonly', false);
@@ -220,7 +220,7 @@ var preferenceRow = {
                         if($("#" + $select.attr('id') + "-id").val() === o.dataId){
                             attrs.selected="selected"
                         }
-                        $select.append("<option>", attrs)
+                        $select.append($("<option>", attrs))
                     });
                     $select.change(function(event) {
                         var $option = $(event.target).find(":selected");
