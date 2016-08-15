@@ -119,13 +119,13 @@ public interface ApplicationService {
 
     Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo);
 
-    List<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionOids, final boolean removeSensitiveInfo);
+    List<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionOids, final boolean removeSensitiveInfo, String organizationOid);
 
-    List<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids, final boolean removeSensitiveInfo);
+    List<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids, final boolean removeSensitiveInfo, String organizationOid);
 
-    Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids);
+    Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids, String organizationOid);
 
-    Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids);
+    Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids, String organizationOid);
 
     Application updateAuthorizationMeta(Application application) throws IOException;
 
