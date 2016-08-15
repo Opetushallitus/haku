@@ -182,6 +182,15 @@ public class TestApplicationResource extends IntegrationTestSupport {
     }
 
     @Test
+    public void testFindApplicationsByApplicationSystems() {
+        Set<String> applicationSystemOids = Sets.newHashSet(
+                "1.2.246.562.5.2014022711042555034240"
+        );
+        Collection<Map<String, Object>> applications = applicationResource.findApplicationsByApplicationSystem(applicationSystemOids);
+        assertEquals(1, applications.size());
+    }
+
+    @Test
     public void testFindPersonOIDsByApplicationSystem() {
         Set<String> asIds = Sets.newHashSet(
                 "1.2.246.562.5.2013080813081926341927",
