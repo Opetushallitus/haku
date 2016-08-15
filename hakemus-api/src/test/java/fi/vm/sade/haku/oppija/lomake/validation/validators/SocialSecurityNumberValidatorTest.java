@@ -48,7 +48,7 @@ public class SocialSecurityNumberValidatorTest {
 
     @Test
     public void testValidateValid() throws Exception {
-        String[] hetus = new String[]{"120187-123Y", "101167-157N", "211011A8927", "200114+870C"};
+        String[] hetus = new String[]{"120187-123Y", "101167-157N", "211011A8927", "010100A901H"};
         values.put("kansalaisuus", "fi");
         for (String hetu : hetus) {
             values.put("henkilotunnus", hetu);
@@ -62,6 +62,22 @@ public class SocialSecurityNumberValidatorTest {
     @Test
     public void testValidateInvalidCheck() throws Exception {
         values.put("henkilotunnus", "120187-123Z");
+        values.put("kansalaisuus", "fi");
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateInvalidWrongSeparatorCheck() throws Exception {
+        values.put("henkilotunnus", "010100-901H");
+        values.put("kansalaisuus", "fi");
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testValidateInvalidOverHundredCheck() throws Exception {
+        values.put("henkilotunnus", "200114+870C");
         values.put("kansalaisuus", "fi");
         ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
