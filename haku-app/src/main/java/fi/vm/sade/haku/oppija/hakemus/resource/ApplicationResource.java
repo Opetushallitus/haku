@@ -263,8 +263,11 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Hakemusten haku hakukohteen OIDin perusteella", response = Application.class, responseContainer = "Map")
-    public Collection<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionsOids) {
-        return applicationService.findApplicationsByApplicationOption(applicationOptionsOids, false);
+    public Collection<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionsOids,
+                                                                               @ApiParam("Filter results by organization oid")
+                                                                               @QueryParam("organizationOid")
+                                                                               String organizationOid) {
+        return applicationService.findApplicationsByApplicationOption(applicationOptionsOids, false, organizationOid);
     }
 
     @POST
@@ -272,8 +275,11 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Hakemusten haku haun OIDin perusteella", response = Application.class, responseContainer = "Map")
-    public Collection<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids) {
-        return applicationService.findApplicationsByApplicationSystem(applicationSystemOids, false);
+    public Collection<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids,
+                                                                               @ApiParam("Filter results by organization oid")
+                                                                               @QueryParam("organizationOid")
+                                                                               String organizationOid) {
+        return applicationService.findApplicationsByApplicationSystem(applicationSystemOids, false, organizationOid);
     }
 
     @POST
@@ -281,8 +287,11 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Henkilö OIDien haku haun oidien perusteella", response=String.class, responseContainer="Set")
-    public Set<String> findPersonOIDsByApplicationSystem(Set<String> applicationSystemOids) {
-        return applicationService.findPersonOidsByApplicationSystemOids(applicationSystemOids);
+    public Set<String> findPersonOIDsByApplicationSystem(Set<String> applicationSystemOids,
+                                                         @ApiParam("Filter results by organization oid")
+                                                         @QueryParam("organizationOid")
+                                                         String organizationOid) {
+        return applicationService.findPersonOidsByApplicationSystemOids(applicationSystemOids, organizationOid);
     }
 
     @POST
@@ -290,8 +299,11 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Henkilö OIDien haku hakukohteen oidien perusteella", response=String.class, responseContainer="Set")
-    public Set<String> findPersonOIDsByApplicationOption(Set<String> applicationOptionOids) {
-        return applicationService.findPersonOidsByApplicationOptionOids(applicationOptionOids);
+    public Set<String> findPersonOIDsByApplicationOption(Set<String> applicationOptionOids,
+                                                         @ApiParam("Filter results by organization oid")
+                                                         @QueryParam("organizationOid")
+                                                         String organizationOid) {
+        return applicationService.findPersonOidsByApplicationOptionOids(applicationOptionOids, organizationOid);
     }
 
     @POST

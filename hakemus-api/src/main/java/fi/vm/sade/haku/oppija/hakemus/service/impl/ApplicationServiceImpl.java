@@ -300,31 +300,33 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo) {
+    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, boolean allKeys, boolean removeSensitiveInfo) {
         List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids, allKeys, removeSensitiveInfo);
         return transformApplicationsByKey(convertApplications(applications), ELEMENT_ID_PERSON_OID);
     }
 
     @Override
-    public List<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionOids, final boolean removeSensitiveInfo) {
-        List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationOptionOids(applicationOptionOids);
+    public List<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionOids, boolean removeSensitiveInfo,
+                                                                         String organizationOid) {
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationOptionOids(applicationOptionOids, organizationOid);
         return convertApplications(applications);
     }
 
     @Override
-    public List<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids, final boolean removeSensitiveInfo) {
-        List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationSystemOids(applicationSystemOids);
+    public List<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids, boolean removeSensitiveInfo,
+                                                                         String organizationOid) {
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationSystemOids(applicationSystemOids, organizationOid);
         return convertApplications(applications);
     }
 
     @Override
-    public Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids) {
-        return applicationDAO.findPersonOidsByApplicationSystemOids(applicationSystemOids);
+    public Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids, String organizationOid) {
+        return applicationDAO.findPersonOidsByApplicationSystemOids(applicationSystemOids, organizationOid);
     }
 
     @Override
-    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids) {
-        return applicationDAO.findPersonOidsByApplicationOptionOids(applicationOptionOids);
+    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids, String organizationOid) {
+        return applicationDAO.findPersonOidsByApplicationOptionOids(applicationOptionOids, organizationOid);
     }
 
     private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
