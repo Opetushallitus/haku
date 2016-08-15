@@ -281,8 +281,17 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Henkilö OIDien haku haun oidien perusteella", response=String.class, responseContainer="Set")
-    public Set<String> findPersonOIDsByApplicationSystem(Set<String> applicationSystemIds) {
-        return applicationService.findPersonOidsByApplicationSystemIds(applicationSystemIds);
+    public Set<String> findPersonOIDsByApplicationSystem(Set<String> applicationSystemOids) {
+        return applicationService.findPersonOidsByApplicationSystemOids(applicationSystemOids);
+    }
+
+    @POST
+    @Path("/personOIDsbyApplicationOption")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
+    @ApiOperation(value="Henkilö OIDien haku hakukohteen oidien perusteella", response=String.class, responseContainer="Set")
+    public Set<String> findPersonOIDsByApplicationOption(Set<String> applicationOptionOids) {
+        return applicationService.findPersonOidsByApplicationOptionOids(applicationOptionOids);
     }
 
     @POST
