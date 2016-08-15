@@ -5,6 +5,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.Date;
 
 public class Ohjausparametri {
+
+    @JsonProperty("date")
     private Date date;
 
     @JsonProperty("booleanValue")
