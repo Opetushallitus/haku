@@ -10,7 +10,7 @@
                     <h3><fmt:message key="lomake.send.confirm.title"/></h3>
                 </div>
                 <div class="popup-dialog-content">
-                    <form method="post" onsubmit="this.submit_button.disabled = true;">
+                    <form method="post">
                         <p id="areyousure_question"><fmt:message key="lomake.send.confirm.message"/></p>
                         <button aria-labelledby="areyousure_question areyousure_question_no" name="nav-send" value="true" data-po-hide="areyousure">
                             <span>
