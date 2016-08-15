@@ -263,8 +263,17 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Hakemusten haku hakukohteen OIDin perusteella", response = Application.class, responseContainer = "Map")
-    public Collection<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptions) {
-        return applicationService.findApplicationsByApplicationOptionOids(applicationOptions, false);
+    public Collection<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionsOids) {
+        return applicationService.findApplicationsByApplicationOption(applicationOptionsOids, false);
+    }
+
+    @POST
+    @Path("/byApplicationSystem")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
+    @ApiOperation(value="Hakemusten haku haun OIDin perusteella", response = Application.class, responseContainer = "Map")
+    public Collection<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids) {
+        return applicationService.findApplicationsByApplicationSystem(applicationSystemOids, false);
     }
 
     @POST

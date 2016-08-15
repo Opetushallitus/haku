@@ -119,7 +119,9 @@ public interface ApplicationService {
 
     Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo);
 
-    List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, final boolean removeSensitiveInfo);
+    List<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionOids, final boolean removeSensitiveInfo);
+
+    List<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids, final boolean removeSensitiveInfo);
 
     Set<String> findPersonOidsByApplicationSystemIds(Collection<String> applicationSystemIds);
 
