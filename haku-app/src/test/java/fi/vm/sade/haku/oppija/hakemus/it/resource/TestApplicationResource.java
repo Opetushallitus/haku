@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
@@ -173,36 +172,70 @@ public class TestApplicationResource extends IntegrationTestSupport {
         Set<String> aos = new HashSet<>();
         aos.add("1.2.246.562.20.91374364379");
         aos.add("1.2.246.562.20.29983577775");
-        Collection<Map<String, Object>> applicationsByAOs = applicationResource.findApplicationsByApplicationOption(aos);
+        Collection<Map<String, Object>> applicationsByAOs = applicationResource.findApplicationsByApplicationOption(aos, null);
         assertEquals(4, applicationsByAOs.size());
 
         Set<String> emptyAOSet = new HashSet<>();
-        Collection<Map<String, Object>> empty = applicationResource.findApplicationsByApplicationOption(emptyAOSet);
+        Collection<Map<String, Object>> empty = applicationResource.findApplicationsByApplicationOption(emptyAOSet, "");
         assertEquals(0, empty.size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationOptionsWithOrganizationFilter() {
+        Set<String> applicationOptionOids = Sets.newHashSet(
+                "1.2.246.562.20.91374364379",
+                "1.2.246.562.20.29983577775"
+        );
+        Collection<Map<String, Object>> applicationsByAOs = applicationResource.findApplicationsByApplicationOption(applicationOptionOids, "1.2.246.562.10.2013102114310829376114");
+        assertEquals(3, applicationsByAOs.size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationSystemsWithOrganizationFilter() {
+        Set<String> applicationSystemOids = Sets.newHashSet(
+                "1.2.246.562.29.14662042044"
+        );
+        Collection<Map<String, Object>> res1 = applicationResource.findApplicationsByApplicationSystem(applicationSystemOids, "nonExistingOrg");
+        assertEquals(0, res1.size());
+
+        Collection<Map<String, Object>> res2 = applicationResource.findApplicationsByApplicationSystem(applicationSystemOids, "1.2.246.562.10.40384720658");
+        assertEquals(1, res2.size());
     }
 
     @Test
     public void testFindApplicationsByApplicationSystems() {
         Set<String> applicationSystemOids = Sets.newHashSet(
-                "1.2.246.562.5.2014022711042555034240"
+                "1.2.246.562.29.14662042044"
         );
-        Collection<Map<String, Object>> applications = applicationResource.findApplicationsByApplicationSystem(applicationSystemOids);
-        assertEquals(1, applications.size());
+        Collection<Map<String, Object>> applications = applicationResource.findApplicationsByApplicationSystem(applicationSystemOids, null);
+        assertEquals(3, applications.size());
     }
 
     @Test
     public void testFindPersonOIDsByApplicationSystem() {
-        Set<String> asIds = Sets.newHashSet(
+        Set<String> asOids = Sets.newHashSet(
                 "1.2.246.562.5.2013080813081926341927",
                 "1.2.246.562.29.95390561488"
         );
-        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationSystem(asIds);
+        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationSystem(asOids, null);
         assertEquals(3, personOids.size());
         assertTrue(personOids.contains("1.2.246.562.24.25780876607"));
         assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
         Set<String> emptyAOSet = new HashSet<>();
-        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet);
+        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet, null);
         assertEquals(0, empty.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationSystemWithOrganizationFilter() {
+        Set<String> asOids = Sets.newHashSet(
+                "1.2.246.562.5.2013080813081926341927",
+                "1.2.246.562.29.95390561488"
+        );
+        Collection<String> res1 = applicationResource.findPersonOIDsByApplicationSystem(asOids, "1.2.246.562.10.2013102114310829376114");
+        assertEquals(2, res1.size());
+        Collection<String> res2 = applicationResource.findPersonOIDsByApplicationSystem(asOids, "nonExistingOrg");
+        assertEquals(0, res2.size());
     }
 
     @Test
@@ -210,13 +243,24 @@ public class TestApplicationResource extends IntegrationTestSupport {
         Set<String> applicationOptionOids = Sets.newHashSet(
                 "1.2.246.562.20.92555013215"
         );
-        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids);
+        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, null);
         assertEquals(2, personOids.size());
         assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
         assertTrue(personOids.contains("1.2.246.562.24.39736979832"));
         Set<String> emptyAOSet = new HashSet<>();
-        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet);
+        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet, null);
         assertEquals(0, empty.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationOptionWithOrganizationFilter() {
+        Set<String> applicationOptionOids = Sets.newHashSet(
+                "1.2.246.562.20.92555013215"
+        );
+        Collection<String> res1 = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, "1.2.246.562.10.2013102114310829376114");
+        assertEquals(2, res1.size());
+        Collection<String> res2 = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, "nonExistingOrg");
+        assertEquals(0, res2.size());
     }
 
     private String getHenkilotunnus(Collection<Map<String, Object>> applications) {

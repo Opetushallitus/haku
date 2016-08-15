@@ -59,6 +59,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurit
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_PERSONAL;
 import static java.lang.String.format;
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
@@ -197,34 +198,39 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids) {
-        return findByOidList(META_FIELD_AO, INDEX_AO_OID, applicationOptionOids);
+    public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, String organizationOid) {
+        return findByOidList(META_FIELD_AO, INDEX_AO_OID, applicationOptionOids, organizationOid);
     }
 
     @Override
-    public List<Map<String, Object>> findApplicationsByApplicationSystemOids(Set<String> applicationSystemOids) {
-        return findByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids);
+    public List<Map<String, Object>> findApplicationsByApplicationSystemOids(Set<String> applicationSystemOids, String organizationOid) {
+        return findByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids, organizationOid);
     }
 
-    private List<Map<String, Object>> findByOidList(String field, String indexHint, Collection<String> oidList) {
-        DBObject query = QueryBuilder.start(field).in(oidList).get();
+    private List<Map<String, Object>> findByOidList(String field, String indexHint, Collection<String> oidList, String organizationOid) {
+        QueryBuilder queryBuilder = QueryBuilder.start(field).in(oidList);
+
+        if (!isBlank(organizationOid)) {
+            queryBuilder.and(META_ALL_ORGANIZATIONS).is(organizationOid);
+        }
+
         DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
         keys.put("_id", 0);
-        SearchResults<Map<String, Object>> result = simpleSearchListing(query, keys, dbObjectToMapFunction, indexHint);
+        SearchResults<Map<String, Object>> result = simpleSearchListing(queryBuilder.get(), keys, dbObjectToMapFunction, indexHint);
         return result.searchResultsList;
     }
 
     @Override
-    public Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids) {
-        return findPersonOidsByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids);
+    public Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids, String organizationOid) {
+        return findPersonOidsByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids, organizationOid);
     }
 
     @Override
-    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids) {
-        return findPersonOidsByOidList(META_FIELD_AO, INDEX_AO_OID, applicationOptionOids);
+    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids, String organizationOid) {
+        return findPersonOidsByOidList(META_FIELD_AO, INDEX_AO_OID, applicationOptionOids, organizationOid);
     }
 
-    private Set<String> findPersonOidsByOidList(String field, String indexHint, Collection<String> oidList) {
+    private Set<String> findPersonOidsByOidList(String field, String indexHint, Collection<String> oidList, String organizationOid) {
         class DBObjectToString implements Function<DBObject, String>  {
             public String apply(DBObject dbObject) {
                 @SuppressWarnings("rawtypes")
@@ -232,10 +238,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 return (String) fromValue.get(FIELD_PERSON_OID);
             }
         }
-        DBObject query = QueryBuilder.start(field).in(oidList).exists(FIELD_PERSON_OID).get();
+
+        QueryBuilder queryBuilder = QueryBuilder.start(field).in(oidList).exists(FIELD_PERSON_OID);
+
+        if (!isBlank(organizationOid)) {
+            queryBuilder.and(META_ALL_ORGANIZATIONS).is(organizationOid);
+        }
+
         DBObject keys = generateKeysDBObject(FIELD_PERSON_OID);
         keys.put("_id", 0);
-        SearchResults<String> result = simpleSearchListing(query, keys, new DBObjectToString(), indexHint);
+
+        SearchResults<String> result = simpleSearchListing(queryBuilder.get(), keys, new DBObjectToString(), indexHint);
         return new HashSet<>(result.searchResultsList);
     }
 
