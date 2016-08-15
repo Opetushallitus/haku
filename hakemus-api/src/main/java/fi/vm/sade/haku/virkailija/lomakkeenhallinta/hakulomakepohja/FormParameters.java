@@ -135,9 +135,9 @@ public class FormParameters {
 
     public boolean askOldEducationInfo() {
         if(isHigherEd() && isErillishaku()) {
-            Ohjausparametri PH_KTV = ohjausparametritService.fetchOhjausparametritForHaku(applicationSystem.getId()).getPH_KVT();
-            if(null != PH_KTV && null != PH_KTV.getBooleanValue()) {
-                return PH_KTV.getBooleanValue();
+            Ohjausparametri kysyVanhaaKoulutusta = ohjausparametritService.fetchOhjausparametritForHaku(applicationSystem.getId()).getPH_KVT();
+            if(null != kysyVanhaaKoulutusta && null != kysyVanhaaKoulutusta.getBooleanValue()) {
+                return kysyVanhaaKoulutusta.getBooleanValue();
             }
         }
         return true;
