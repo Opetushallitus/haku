@@ -69,13 +69,13 @@ var kjal = {
 
             for (var trs in liitteet){
                 var liiteDesc = liitteet[trs].description;
-                var tr = $("<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >");
                 var td = $("<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > ").text("Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header);
                 if (liiteDesc !== undefined && liiteDesc.length > 0) {
-                    td.append( "<a href=\"#\" class=\"helplink\">", {
+                    td.append( $("<a href=\"#\" class=\"helplink\">", {
                         title: liiteDesc
-                    });
+                    }));
                 }
+                var tr = $("<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >");
                 tr.append(td)
                 tr.append("<td>"
                     + "<select class=\"width-12-11\" id=\"select-saapunut-" +ind+ "-" + trs + "\" disabled onchange=\"kjal.saapumisTila("+ ind +","+ trs +")\">"
