@@ -342,7 +342,9 @@ public final class KoulutustaustaPhase {
 
         elements.add(pohjakoulutusGrp);
 
-        elements.addAll(buildSuoritusoikeusTaiAiempiTutkinto(formParameters, korkeakoulut, korkeakoulukoulutukset));
+        if(formParameters.askOldEducationInfo()) {
+            elements.addAll(buildSuoritusoikeusTaiAiempiTutkinto(formParameters, korkeakoulut, korkeakoulukoulutukset));
+        }
 
         return elements.toArray(new Element[elements.size()]);
     }

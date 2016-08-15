@@ -8,6 +8,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametri;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.AttachmentGroupConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
@@ -26,6 +28,7 @@ public class FormParameters {
     private final ThemeQuestionDAO themeQuestionDAO;
     private final HakukohdeService hakukohdeService;
     private final OrganizationService organizationService;
+    private final OhjausparametritService ohjausparametritService;
 
     private final FormConfiguration formConfiguration;
     private final I18nBundle i18nBundle;
@@ -41,6 +44,7 @@ public class FormParameters {
                           final HakukohdeService hakukohdeService,
                           final OrganizationService organizationService,
                           final I18nBundleService i18nBundleService,
+                          final OhjausparametritService ohjausparametritService,
                           final boolean demoMode) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
@@ -49,6 +53,7 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = i18nBundleService.getBundle(applicationSystem);
+        this.ohjausparametritService = ohjausparametritService;
         this.demoMode = demoMode;
     }
 
@@ -122,6 +127,20 @@ public class FormParameters {
             return true;
         }
         return false;
+    }
+
+    public boolean isErillishaku() {
+        return OppijaConstants.HAKUTAPA_ERILLISHAKU.equals(applicationSystem.getHakutapa());
+    }
+
+    public boolean askOldEducationInfo() {
+        if(isHigherEd() && isErillishaku()) {
+            Ohjausparametri kysyVanhaaKoulutusta = ohjausparametritService.fetchOhjausparametritForHaku(applicationSystem.getId()).getPH_KVT();
+            if(null != kysyVanhaaKoulutusta && null != kysyVanhaaKoulutusta.getBooleanValue()) {
+                return kysyVanhaaKoulutusta.getBooleanValue();
+            }
+        }
+        return true;
     }
 
     public boolean isKevaanLisahaku() {
