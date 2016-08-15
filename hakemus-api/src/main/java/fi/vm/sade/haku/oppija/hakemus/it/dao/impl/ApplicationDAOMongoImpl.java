@@ -18,7 +18,10 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
@@ -43,7 +46,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -52,7 +54,6 @@ import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
-import static fi.vm.sade.haku.oppija.lomake.domain.ModelResponse.ANSWERS;
 import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS;
 import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS_HASH;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
@@ -197,10 +198,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids) {
-        DBObject query = QueryBuilder.start(META_FIELD_AO).in(applicationOptionOids).get();
+        return findByOidList(META_FIELD_AO, INDEX_AO_OID, applicationOptionOids);
+    }
+
+    @Override
+    public List<Map<String, Object>> findApplicationsByApplicationSystemOids(Set<String> applicationSystemOids) {
+        return findByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids);
+    }
+
+    private List<Map<String, Object>> findByOidList(String field, String indexHint, Collection<String> oidList) {
+        DBObject query = QueryBuilder.start(field).in(oidList).get();
         DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
         keys.put("_id", 0);
-        SearchResults<Map<String, Object>> result = simpleSearchListing(query, keys, dbObjectToMapFunction, INDEX_AO_OID);
+        SearchResults<Map<String, Object>> result = simpleSearchListing(query, keys, dbObjectToMapFunction, indexHint);
         return result.searchResultsList;
     }
 

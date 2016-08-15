@@ -306,8 +306,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, final boolean removeSensitiveInfo) {
+    public List<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionOids, final boolean removeSensitiveInfo) {
         List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationOptionOids(applicationOptionOids);
+        return convertApplications(applications);
+    }
+
+    @Override
+    public List<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids, final boolean removeSensitiveInfo) {
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByApplicationSystemOids(applicationSystemOids);
         return convertApplications(applications);
     }
 
