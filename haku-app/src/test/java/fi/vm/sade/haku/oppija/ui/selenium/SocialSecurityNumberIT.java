@@ -55,13 +55,13 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
 
     @Test
     public void testInputMale() {
-        type("Henkilotunnus", "010101-111X", true);
+        type("Henkilotunnus", "010101A1119", true);
         elementsPresent("//*[text()='Mies']");
     }
 
     @Test
     public void testInputFemale() {
-        type("Henkilotunnus", "010101-112X", true);
+        type("Henkilotunnus", "010101A112A", true);
         elementsPresent("//*[text()='Nainen']");
     }
 }

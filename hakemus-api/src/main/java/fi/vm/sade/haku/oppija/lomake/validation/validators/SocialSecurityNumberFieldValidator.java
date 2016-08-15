@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -35,7 +36,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     // Hetussa on määrättyjä asioita tarkoittavia numeroita määrätyillä
     // paikoilla, enkä ala tehdä niitä varten erityisjärjestelyjä.
 
-    public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
+    public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
     public static final String GENERIC_ERROR_MESSAGE_KEY = "henkilotiedot.hetu.virhe";
     private final Pattern socialSecurityNumberPattern;
     private static final String NOT_A_DATE_ERROR_KEY = "henkilotiedot.hetu.eiPvm";
@@ -45,7 +46,6 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
 
     static {
-        centuries.put("+", 1800); // NOSONAR
         centuries.put("-", 1900); // NOSONAR
         centuries.put("a", 2000); // NOSONAR
         centuries.put("A", 2000); // NOSONAR
@@ -73,6 +73,9 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
             if (!validationResult.hasErrors()) {
                 validationResult = checkDOB(validationInput, socialSecurityNumber);
             }
+            if (!validationResult.hasErrors()) {
+                validationResult = checkSeparator(validationInput, socialSecurityNumber);
+            }
             if (!validationResult.hasErrors() && !validChecksum(socialSecurityNumber)) {
                 validationResult = getInvalidValidationResult(validationInput);
             }
@@ -90,6 +93,25 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     /**
+     * Tarkistus, että 00 - nykyvuosi hetuissa on A/a ja muissa - . ts. satavuotiaat on poistettu ilmoittautumisesta
+     */
+    private ValidationResult checkSeparator(final ValidationInput validationInput, final String socialSecurityNumber) {
+        ValidationResult result = new ValidationResult();
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR) - 2000;
+        int yearPart = Integer .valueOf(socialSecurityNumber.substring(4, 6));
+
+        String separator = socialSecurityNumber.substring(6, 7);
+
+        // separator should be a/A
+        if (yearPart <= currentYear && !separator.equalsIgnoreCase("a")) {
+            result = new ValidationResult(validationInput.getFieldName(), getI18Text(GENERIC_ERROR_MESSAGE_KEY, validationInput.getApplicationSystemId()));
+        }
+
+        return result;
+    }
+
+    /**
      * Tarkistaa, että annetussa hetussa on tunnistettava päivämäärä, ja että päivämäärä on menneisyydessä.
      *
      * @param socialSecurityNumber tarkastettavaksi
@@ -98,6 +120,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private ValidationResult checkDOB(final ValidationInput validationInput, final String socialSecurityNumber) {
         ValidationResult result = new ValidationResult();
         String dayAndMonth = socialSecurityNumber.substring(0, 4); // NOSONAR
+
         String year = Integer.toString((centuries.get(socialSecurityNumber.substring(6, 7)) + Integer // NOSONAR
           .valueOf(socialSecurityNumber.substring(4, 6)))); // NOSONAR
         Date dob = null;
