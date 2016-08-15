@@ -239,7 +239,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             }
         }
 
-        QueryBuilder queryBuilder = QueryBuilder.start(field).in(oidList).exists(FIELD_PERSON_OID);
+        QueryBuilder queryBuilder = QueryBuilder.start(field).in(oidList)
+                .and(FIELD_PERSON_OID).exists(true);
 
         if (!isBlank(organizationOid)) {
             queryBuilder.and(META_ALL_ORGANIZATIONS).is(organizationOid);
