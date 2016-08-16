@@ -170,10 +170,19 @@ $(document).ready(function () {
                 });
             }
         }
-    }
+    };
 
     popover.build();
 
+    $('#confirm-form #submit_confirm').on('click', function(e) {
+        e.preventDefault();
+        $('#submit_confirm').prop('disabled', true);
+        $('#confirm-form').submit();
+        if ($('#submit_confirm #areyousure_question_yes') && $('#submit_confirm #loading_button_text')) {
+            $('#submit_confirm #areyousure_question_yes').hide();
+            $('#submit_confirm #loading_button_text').show();
+        };
+    });
 });
 
 // Sets CSRF header for ajax and hidden field for FORMs
