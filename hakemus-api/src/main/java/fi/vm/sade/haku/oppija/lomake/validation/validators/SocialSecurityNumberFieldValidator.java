@@ -71,10 +71,10 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
                 validationResult = getInvalidValidationResult(validationInput);
             }
             if (!validationResult.hasErrors()) {
-                validationResult = checkDOB(validationInput, socialSecurityNumber);
+                validationResult = checkSeparator(validationInput, socialSecurityNumber);
             }
             if (!validationResult.hasErrors()) {
-                validationResult = checkSeparator(validationInput, socialSecurityNumber);
+                validationResult = checkDOB(validationInput, socialSecurityNumber);
             }
             if (!validationResult.hasErrors() && !validChecksum(socialSecurityNumber)) {
                 validationResult = getInvalidValidationResult(validationInput);
