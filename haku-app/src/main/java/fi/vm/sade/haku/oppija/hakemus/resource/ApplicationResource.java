@@ -259,30 +259,6 @@ public class ApplicationResource {
     }
 
     @POST
-    @Path("/byApplicationOption")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize(ALLOWED_FOR_ADMIN)
-    @ApiOperation(value="Hakemusten haku hakukohteen OIDin perusteella", response = Application.class, responseContainer = "Map")
-    public Collection<Map<String, Object>> findApplicationsByApplicationOption(Set<String> applicationOptionsOids,
-                                                                               @ApiParam("Filter results by organization oid")
-                                                                               @QueryParam("organizationOid")
-                                                                               String organizationOid) {
-        return applicationService.findApplicationsByApplicationOption(applicationOptionsOids, false, organizationOid);
-    }
-
-    @POST
-    @Path("/byApplicationSystem")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize(ALLOWED_FOR_ADMIN)
-    @ApiOperation(value="Hakemusten haku haun OIDin perusteella", response = Application.class, responseContainer = "Map")
-    public Collection<Map<String, Object>> findApplicationsByApplicationSystem(Set<String> applicationSystemOids,
-                                                                               @ApiParam("Filter results by organization oid")
-                                                                               @QueryParam("organizationOid")
-                                                                               String organizationOid) {
-        return applicationService.findApplicationsByApplicationSystem(applicationSystemOids, false, organizationOid);
-    }
-
-    @POST
     @Path("/personOIDsbyApplicationSystem")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
@@ -365,13 +341,13 @@ public class ApplicationResource {
     @Path("/listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-	@ApiOperation(
-            value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
+	@ApiOperation("Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
     public List<Map<String, Object>> findFullApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                           @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
                                                           @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
                                                           @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                           @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
+                                                          @ApiParam(value="Hakukohteiden oidit") @QueryParam("aoOids") List<String> aoOids,
                                                           @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
                                                           @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") Set<String> baseEducation,
                                                           @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
@@ -413,6 +389,7 @@ public class ApplicationResource {
                 .setPreferenceChecked(preferenceChecked)
                 .setAsIds(asIds)
                 .setAoId(aoid)
+                .setAoOids(aoOids)
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)

@@ -198,29 +198,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, String organizationOid) {
-        return findByOidList(META_FIELD_AO, INDEX_AO_OID, applicationOptionOids, organizationOid);
-    }
-
-    @Override
-    public List<Map<String, Object>> findApplicationsByApplicationSystemOids(Set<String> applicationSystemOids, String organizationOid) {
-        return findByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids, organizationOid);
-    }
-
-    private List<Map<String, Object>> findByOidList(String field, String indexHint, Collection<String> oidList, String organizationOid) {
-        QueryBuilder queryBuilder = QueryBuilder.start(field).in(oidList);
-
-        if (!isBlank(organizationOid)) {
-            queryBuilder.and(META_ALL_ORGANIZATIONS).is(organizationOid);
-        }
-
-        DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
-        keys.put("_id", 0);
-        SearchResults<Map<String, Object>> result = simpleSearchListing(queryBuilder.get(), keys, dbObjectToMapFunction, indexHint);
-        return result.searchResultsList;
-    }
-
-    @Override
     public Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids, String organizationOid) {
         return findPersonOidsByOidList(FIELD_APPLICATION_SYSTEM_ID, INDEX_APPLICATION_SYSTEM_ID, applicationSystemOids, organizationOid);
     }
