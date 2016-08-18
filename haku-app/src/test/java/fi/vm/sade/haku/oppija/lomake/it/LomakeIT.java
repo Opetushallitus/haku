@@ -50,7 +50,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("Etunimet", " Aku Kalle");
         setValue("Kutsumanimi", " AKu");
         setValue("onkosinullakaksoiskansallisuus", "false");
-        setValue("Henkilotunnus", "010113-668B");
+        setValue("Henkilotunnus", "010113A903X");
         setValue("Sähköposti", " aku.ankka@ankkalinna.al    "); // OVT-5952 spaces
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");

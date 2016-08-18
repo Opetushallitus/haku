@@ -75,7 +75,7 @@ public class SyntheticApplicationIT {
 
     @Test
     public void testCreate() {
-        Response resp1 = put(hakukohde1, "1", "hakijaOid1", "010101-123N", email1);
+        Response resp1 = put(hakukohde1, "1", "hakijaOid1", "010101A997V", email1);
 
         final List<Application> apps1 = verifyPutResponse(resp1);
 

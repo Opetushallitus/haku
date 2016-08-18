@@ -113,7 +113,7 @@
       "preference6-Opetuspiste-id" : "1.2.246.562.10.2013102114565876612670"
     },
     "henkilotiedot" : {
-      "Henkilotunnus_plain" : "010101-123N",
+      "Henkilotunnus_plain" : "010101A997V",
       "onkosinullakaksoiskansallisuus" : "false",
       "kansalaisuus" : "NPL",
       "koulusivistyskieli" : "EN",
@@ -621,7 +621,7 @@
     "Etunimet" : "Matti",
     "Sukunimi" : "Meikäläinen",
     "onkoSinullaSuomalainenHetu" : "true",
-    "Henkilotunnus": "010101-123N",
+    "Henkilotunnus": "010101A997V",
     "syntymaaika" : "21.11.1994",
     "aidinkieli" : "NE"
   },

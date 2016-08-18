@@ -85,7 +85,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testCheckIfExistsBySocialSecurityNumber() {
-        assertTrue(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", "010101-123N"));
+        assertTrue(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", "010101A997V"));
         assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", "040404-123T"));
         assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", ""));
         assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", null));
@@ -164,8 +164,8 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         assertEquals(1, countQueried(query().setSearchTerms("00000000001")));
         assertEquals(1, countQueried(query().setSearchTerms("00000000259")));
         assertEquals(0, countQueried(query().setSearchTerms("00000001259")));
-        assertEquals(1, countQueried(query().setSearchTerms("010101-123N")));
-        assertEquals(0, countQueried(query().setSearchTerms("010101-123K")));
+        assertEquals(1, countQueried(query().setSearchTerms("010101A997V")));
+        assertEquals(0, countQueried(query().setSearchTerms("010101A123K")));
     }
 
     @Test
