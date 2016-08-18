@@ -103,8 +103,8 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
         String separator = socialSecurityNumber.substring(6, 7);
 
-        // separator should be a/A
-        if (yearPart <= currentYear && !separator.equalsIgnoreCase("a")) {
+        // separator should be a/A and not in any case + (added for backward compatibility)
+        if ( ( yearPart <= currentYear && !separator.equalsIgnoreCase("a") ) || separator.equals("+")) {
             result = new ValidationResult(validationInput.getFieldName(), getI18Text(GENERIC_ERROR_MESSAGE_KEY, validationInput.getApplicationSystemId()));
         }
 
