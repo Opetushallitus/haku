@@ -376,6 +376,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
+                .setOrganizationFilter(applicationQueryParameters.getOrganizationFilter())
                 .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole())
                 .setMaxApplicationOptions(max);
         if (queriedAss != null && queriedAss.size() == 1) {

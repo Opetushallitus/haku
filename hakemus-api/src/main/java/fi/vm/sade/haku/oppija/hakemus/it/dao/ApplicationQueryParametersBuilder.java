@@ -27,6 +27,7 @@ public class ApplicationQueryParametersBuilder {
     private int orderDir= 1;
     private String groupOid;
     private Set<String> baseEducation = new HashSet<>();
+    private String organizationFilter;
 
     public ApplicationQueryParametersBuilder setStates(List<String> state) {
         this.state = state;
@@ -141,6 +142,12 @@ public class ApplicationQueryParametersBuilder {
         return this;
     }
 
+    public ApplicationQueryParametersBuilder setOrganizationFilter(String organizationFilter) {
+        this.organizationFilter = organizationFilter;
+        return this;
+    }
+
+
     public ApplicationQueryParametersBuilder setBaseEducation(String baseEducation) {
         this.baseEducation.add(baseEducation);
         return this;
@@ -157,7 +164,7 @@ public class ApplicationQueryParametersBuilder {
     public ApplicationQueryParameters build() {
         return new ApplicationQueryParameters(searchTerms, state, paymentState, preferenceChecked, asIds, aoId, lopOid, aoOids, oids,
                 personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
-                sendingClass, updatedAfter, start, rows, orderBy, orderDir);
+                sendingClass, updatedAfter, start, rows, orderBy, orderDir, organizationFilter);
     }
 
     public ApplicationQueryParametersBuilder setSearchTerms(String searchTerms) {
