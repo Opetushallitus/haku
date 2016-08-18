@@ -393,16 +393,16 @@ final class ApplicationDAOMongoQueryBuilder {
 
         final ArrayList<String> allowedOrganizations = new ArrayList<>();
 
-        if (StringUtils.isBlank(filterParameters.getOrganizationFilter())) {
-            if (filterParameters.getOrganizationsReadble().size() > 0) {
-                allowedOrganizations.addAll(filterParameters.getOrganizationsReadble());
-            }
+        if (!StringUtils.isBlank(filterParameters.getOrganizationFilter())) {
+            return QueryBuilder.start(META_ALL_ORGANIZATIONS).is(filterParameters.getOrganizationFilter()).get();
+        }
 
-            if (filterParameters.getOrganizationsReadble().contains(rootOrganizationOid)) {
-                allowedOrganizations.add(null);
-            }
-        } else {
-            allowedOrganizations.add(filterParameters.getOrganizationFilter());
+        if (filterParameters.getOrganizationsReadble().size() > 0) {
+            allowedOrganizations.addAll(filterParameters.getOrganizationsReadble());
+        }
+
+        if (filterParameters.getOrganizationsReadble().contains(rootOrganizationOid)) {
+            allowedOrganizations.add(null);
         }
 
         if (allowedOrganizations.size() > 0) {
