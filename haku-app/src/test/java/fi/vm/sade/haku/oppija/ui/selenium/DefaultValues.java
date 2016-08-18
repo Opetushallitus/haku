@@ -30,7 +30,7 @@ public final class DefaultValues {
         henkilotiedot.put("Sukunimi", "Ankka");
         henkilotiedot.put("Etunimet", "Aku Kalle");
         henkilotiedot.put("Kutsumanimi", "AKu");
-        henkilotiedot.put("Henkilotunnus", "010113-668B");
+        henkilotiedot.put("Henkilotunnus", "010113A915A");
         henkilotiedot.put("onkosinullakaksoiskansallisuus", "false");
         henkilotiedot.put("Sähköposti", "aku.ankka@ankkalinna.al");
         henkilotiedot.put("matkapuhelinnumero1", "0501000100");
