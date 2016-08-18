@@ -139,14 +139,14 @@ public class SyntheticApplicationIT {
     @Test
     public void testCreateRoundTrip() {
         ApplicationSearchDTO asdto = new ApplicationSearchDTO("", Arrays.asList(hakukohde1), Arrays.asList(hakuOid), Arrays.asList("ACTIVE", "INCOMPLETE"), Arrays.asList("oid"));
-        int startingSize = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000, true).size();
+        int startingSize = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000, true).size();
         assertEquals(0, startingSize);
         assertEquals(0, applicationResource.findFullApplicationsPost(asdto).size());
 
         Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
 
-        assertEquals(1, applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000, true).size());
+        assertEquals(1, applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000, true).size());
         assertEquals(1, applicationResource.findFullApplicationsPost(asdto).size());
     }
 

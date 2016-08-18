@@ -109,10 +109,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     List<Map<String, Object>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo);
 
-    List<Map<String, Object>> findApplicationsByApplicationOptionOids(Set<String> applicationOptionOids, String organizationOid);
-
-    List<Map<String, Object>> findApplicationsByApplicationSystemOids(Set<String> applicationSystemOids, String organizationOid);
-
     Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids, String organizationOid);
 
     Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids, String organizationOid);
