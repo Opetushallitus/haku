@@ -45,84 +45,42 @@ public class TestApplicationResource extends IntegrationTestSupport {
 
     }
 
+    private ApplicationSearchResultDTO findApplicationsOrderedWithBaseEducationFilter(Set<String> baseEducations) {
+        return applicationResource.findApplicationsOrdered(
+                "fullName",
+                "asc",
+                "",
+                null,
+                null,
+                null,
+                "",
+                "",
+                baseEducations,
+                "",
+                "1.2.246.562.29.95390561488",
+                "kausi_k",
+                "2015",
+                "1.2.246.562.20.63351226459",
+                false,
+                false,
+                "",
+                "",
+                null,
+                0,
+                50
+        );
+    }
+
     @Test
     public void testBaseEducationFilter() {
         // Should not find any when using non existing base education
-        ApplicationSearchResultDTO result = applicationResource.findApplicationsOrdered(
-                "fullName",
-                "asc",
-                "",
-                null,
-                null,
-                null,
-                "",
-                "",
-                Sets.newHashSet("base_education_that_does_not_exist"),
-                "",
-                "1.2.246.562.29.95390561488",
-                "kausi_k",
-                "2015",
-                "1.2.246.562.20.63351226459",
-                false,
-                false,
-                "",
-                "",
-                null,
-                0,
-                50
-        );
+        ApplicationSearchResultDTO result = findApplicationsOrderedWithBaseEducationFilter(Sets.newHashSet("base_education_that_does_not_exist"));
         assertEquals(0, result.getTotalCount());
 
-        // 2 applications exist with base education "ulk"
-        result = applicationResource.findApplicationsOrdered(
-                "fullName",
-                "asc",
-                "",
-                null,
-                null,
-                null,
-                "",
-                "",
-                Sets.newHashSet("ulk"),
-                "",
-                "1.2.246.562.29.95390561488",
-                "kausi_k",
-                "2015",
-                "1.2.246.562.20.63351226459",
-                false,
-                false,
-                "",
-                "",
-                null,
-                0,
-                50
-        );
+        result = findApplicationsOrderedWithBaseEducationFilter(Sets.newHashSet("ulk"));
         assertEquals(2, result.getTotalCount());
 
-        // 2 applications with base education "ulk" and 1 with base education "yo_ulkomainen" exist
-        result = applicationResource.findApplicationsOrdered(
-                "fullName",
-                "asc",
-                "",
-                null,
-                null,
-                null,
-                "",
-                "",
-                Sets.newHashSet("ulk", "yo_ulkomainen"),
-                "",
-                "1.2.246.562.29.95390561488",
-                "kausi_k",
-                "2015",
-                "1.2.246.562.20.63351226459",
-                false,
-                false,
-                "",
-                "",
-                null,
-                0,
-                50
-        );
+        result = findApplicationsOrderedWithBaseEducationFilter(Sets.newHashSet("ulk", "yo_ulkomainen"));
         assertEquals(3, result.getTotalCount());
     }
 
