@@ -143,7 +143,7 @@ public class ApplicationServiceImplTest {
                 .setRows(Integer.MAX_VALUE)
                 .setOrderBy("fullName")
                 .setOrderDir(1).build();
-        filterParameters = new ApplicationFilterParameters(6, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "", "");
+        filterParameters = new ApplicationFilterParameters(6, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), null, "", "");
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");

@@ -376,6 +376,7 @@ public class ApplicationResource {
                                                           @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") Set<String> baseEducation,
                                                           @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
                                                           @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
+                                                          @ApiParam(value="Filtteröi hakemuksia organisaation mukaan") @QueryParam("organizationFilter") String organizationFilter,
                                                           @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
                                                           @ApiParam(value="Hakuvuosi") @QueryParam("asYear") String asYear,
                                                           @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") String aoOid,
@@ -416,6 +417,7 @@ public class ApplicationResource {
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
                 .addAoOid(aoOid)
+                .setOrganizationFilter(organizationFilter)
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
