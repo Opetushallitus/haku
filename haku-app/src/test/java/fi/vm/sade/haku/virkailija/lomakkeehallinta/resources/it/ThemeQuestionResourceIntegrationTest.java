@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.virkailija.lomakkeehallinta.resources;
+package fi.vm.sade.haku.virkailija.lomakkeehallinta.resources.it;
 
 
 import com.google.common.collect.Sets;
