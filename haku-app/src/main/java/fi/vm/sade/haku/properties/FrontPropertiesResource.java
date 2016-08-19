@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 @Path("/rest/frontProperties")
 @Component
@@ -17,7 +16,7 @@ public class FrontPropertiesResource {
     OphProperties urlConfiguration;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces("application/javascript; charset=UTF-8")
     public String frontProperties() {
         return "window.urls.override=" + urlConfiguration.frontPropertiesToJson();
     }
