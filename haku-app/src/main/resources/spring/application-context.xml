@@ -49,7 +49,6 @@
             </property>
         </bean>
         <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>
-        <import resource="classpath:/META-INF/spring/logger-context.xml"/>
     </beans>
 
     <beans profile="devluokka">
