@@ -28,7 +28,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
 
     @Test
     public void testWorkExperienceShown() {
-        gotoHakutoiveet("010113A915A");
+        gotoHakutoiveet("010101A997V");
 
         clickByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
@@ -45,7 +45,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
 
     @Test
     public void testWorkExperienceNotShown() {
-        gotoHakutoiveet("010113A915A");
+        gotoHakutoiveet("010101A997V");
 
         clickByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
 
