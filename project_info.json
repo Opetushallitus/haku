@@ -7,5 +7,5 @@
 
   "csrf": "haku.haku-app.frontend ok (jquery-ajax + form posts), backend ?",
 
-  "uses": "activemq hakuperusteet-rest cas koodisto-rest koulutusinformaatio-rest oppijan-tunnistus suoritusrekisteri-rest organisaatio-rest tarjonta-rest ohjausparametrit authentication-service"
+  "uses": "hakuperusteet-rest cas koodisto-rest koulutusinformaatio-rest oppijan-tunnistus suoritusrekisteri-rest organisaatio-rest tarjonta-rest ohjausparametrit authentication-service"
 }

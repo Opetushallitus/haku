@@ -6,7 +6,6 @@
 #
 
 # Aseta vähintään nämä ympäristökohtaiset arvot
-activemq.brokerurl={{activemq_brokerurl}}
 auth.mode={{auth_mode}}
 env.loglevel={{env_loglevel}}
 email.from={{email_from}}
