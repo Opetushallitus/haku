@@ -21,17 +21,14 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
-import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
-import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -53,12 +50,7 @@ public class LoggerAspectTestIT extends IntegrationTestSupport {
         AuditLogRepository audit = IntegrationTestSupport.appContext.getBean(AuditLogRepository.class);
         ApplicationDAO applicationDAO = IntegrationTestSupport.appContext.getBean(ApplicationDAOMongoImpl.class);
 
-        LOGGER_ASPECT = new LoggerAspect(new Logger() {
-            @Override
-            public void log(Tapahtuma tapahtuma) {
-                System.err.println("foobar");
-            }
-        }, new UserSessionMock("test"), audit, "localhost");
+        LOGGER_ASPECT = new LoggerAspect(new UserSessionMock("test"), audit, "localhost");
 
         String content = IOUtils.toString(getSystemResourceAsStream("hakemus_audit_log.json"), "UTF-8");
         DBObject applicationFromJson = (DBObject) JSON.parse(content);

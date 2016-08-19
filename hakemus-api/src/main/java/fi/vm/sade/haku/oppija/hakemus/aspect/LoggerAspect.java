@@ -26,7 +26,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
-import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -54,14 +53,12 @@ public class LoggerAspect {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
 
-    private final Logger logger;
     private final Session userSession;
     private final AuditLogRepository auditLogRepository;
     private final String serverName;
 
     @Autowired
-    public LoggerAspect(final Logger logger, final Session userSession, final AuditLogRepository auditLogRepository, @Value("${server.name}") final String serverName ) {
-        this.logger = logger;
+    public LoggerAspect(final Session userSession, final AuditLogRepository auditLogRepository, @Value("${server.name}") final String serverName ) {
         this.userSession = userSession;
         this.auditLogRepository = auditLogRepository;
         if (null == serverName) {
@@ -146,7 +143,6 @@ public class LoggerAspect {
             LOGGER.debug(tapahtuma.toString());
 
             auditLogRepository.save(tapahtuma);
-            //logger.log(tapahtuma);
 
         } catch (Exception e) {
             LOGGER.error("Could not log update application event. {}", tapahtuma, e);

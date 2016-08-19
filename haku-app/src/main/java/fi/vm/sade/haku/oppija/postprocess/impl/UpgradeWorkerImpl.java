@@ -62,11 +62,10 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     public UpgradeWorkerImpl(ApplicationService applicationService,
                              ApplicationDAO applicationDAO,
                              StatusRepository statusRepository,
-                             fi.vm.sade.log.client.Logger logger,
                              AuditLogRepository auditLogRepository,
                              KoodistoService koodistoService,
                              @Value("${server.name}") final String serverName) {
-        this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
+        this.loggerAspect = new LoggerAspect(systemSession, auditLogRepository, serverName);
         this.applicationService = applicationService;
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;

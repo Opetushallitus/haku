@@ -61,13 +61,12 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     @Autowired
     public PostProcessWorkerImpl(final ApplicationDAO applicationDAO,
                                  final StatusRepository statusRepository,
-                                 final fi.vm.sade.log.client.Logger logger,
                                  final AuditLogRepository auditLogRepository,
                                  final SendMailService sendMailService,
                                  final ApplicationPostProcessorService applicationPostProcessorService,
                                  final ApplicationService applicationService,
                                  @Value("${server.name}") final String serverName) {
-        this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
+        this.loggerAspect = new LoggerAspect(systemSession, auditLogRepository, serverName);
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
         this.sendMailService = sendMailService;
