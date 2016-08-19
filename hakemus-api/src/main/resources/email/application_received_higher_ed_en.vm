@@ -54,6 +54,8 @@
     <h4>Attachment requests</h4>
     #parse("email/email_attachment_requests.vm")
     
+    <p>You can give feedback about Studyinfo with this <a href="https://www.webropolsurveys.com/S/EF6958A7610C2FB9.par"target="_blank">questionnaire</a>.</p>
+    
     <p>This is an automatically generated email, please do not reply.</p>
 </div>
 </body>
