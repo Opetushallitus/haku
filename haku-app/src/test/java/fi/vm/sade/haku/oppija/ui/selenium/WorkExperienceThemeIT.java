@@ -45,7 +45,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
 
     @Test
     public void testWorkExperienceNotShown() {
-        gotoHakutoiveet("010100A939R");
+        gotoHakutoiveet("010113A933W"); // liian nuori - alle 16v
 
         clickByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
 
