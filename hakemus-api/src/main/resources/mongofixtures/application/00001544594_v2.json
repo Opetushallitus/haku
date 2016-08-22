@@ -109,7 +109,7 @@
       "preference6-Opetuspiste-id" : "1.2.246.562.10.66542030912"
     },
     "henkilotiedot" : {
-      "Henkilotunnus_plain" : "010101A997V",
+      "Henkilotunnus_plain" : "010100A939R",
       "kansalaisuus" : "NPL",
       "koulusivistyskieli" : "EN",
       "postinumeroUlkomaa" : "44600",
@@ -571,7 +571,7 @@
     "Etunimet" : "Mohammed",
     "Sukunimi" : "Ghandi",
     "onkoSinullaSuomalainenHetu" : "false",
-    "Henkilotunnus": "010101A997V",
+    "Henkilotunnus": "010100A939R",
     "syntymaaika" : "27.07.1980",
     "aidinkieli" : "NE"
   },
