@@ -20,20 +20,30 @@ $(document).ready(function () {
 
             popover_close = '<span class="popup-dialog-close">&#8203;</span>';
 
-            html = '<div class="popup-dialog-wrapper generated" id="' + id + '" style="z-index:' + (popover.handlers.autoGenCount + 1000) + ';">';
-            html += popover_close;
-            html += '<div class="popup-dialog">';
-            html += popover_close;
-            html += '<div class="popup-dialog-header">';
-            html += '<h3>' + title + '</h3>';
-            html += '</div>';
-            html += '<div class="popup-dialog-content">';
-            html += content;
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
-
-            $('#overlay').append(html);
+            $('#overlay').append($("<div>", {
+                class: "popup-dialog-wrapper generated",
+                id: id,
+                style: "z-index:' + (popover.handlers.autoGenCount + 1000) + ';",
+                html: [
+                    popover_close,
+                    $("<div>", {
+                        class: "popup-dialog",
+                        html: [
+                            popover_close,
+                            $("<div>", {
+                                class: "popup-dialog-header",
+                                html: $("<h3>", {
+                                    text: title
+                                })
+                            }),
+                            $("<div>", {
+                                class: "popup-dialog-content",
+                                text: content
+                            })
+                        ]
+                    })
+                ]
+            }));
 
             $('#' + id).show();
             popover.handlers.openPopovers++;
