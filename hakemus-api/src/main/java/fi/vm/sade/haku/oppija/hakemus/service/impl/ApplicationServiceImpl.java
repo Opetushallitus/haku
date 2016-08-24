@@ -343,31 +343,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems(
-                "maxApplicationOptions", "kohdejoukkoUri", "hakutapa");
-        int max = 0;
-        String kohdejoukko = null;
-        String hakutapa = null;
-        List<String> queriedAss = applicationQueryParameters.getAsIds();
-        for (ApplicationSystem as : ass) {
-            if (queriedAss == null || queriedAss.isEmpty() || queriedAss.contains(as.getId())) {
-                kohdejoukko = as.getKohdejoukkoUri();
-                hakutapa = as.getHakutapa();
-                if (as.getMaxApplicationOptions() > max) {
-                    max = as.getMaxApplicationOptions();
-                }
-            }
-        }
+        List<String> queryASIds = applicationQueryParameters.getAsIds();
 
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
                 .setOrganizationFilter(applicationQueryParameters.getOrganizationFilter())
-                .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole())
-                .setMaxApplicationOptions(max);
-        if (queriedAss != null && queriedAss.size() == 1) {
-            builder.setKohdejoukko(kohdejoukko);
-            builder.setHakutapa(hakutapa);
+                .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole());
+        if (queryASIds != null) {
+            builder.setMaxApplicationOptions(applicationSystemService.getMaxApplicationOptions(applicationQueryParameters.getAsIds()));
+        }
+        if (queryASIds != null && queryASIds.size() == 1) {
+            ApplicationSystem as = applicationSystemService.getApplicationSystem(queryASIds.get(0), "kohdejoukkoUri", "hakutapa");
+            builder.setKohdejoukko(as.getKohdejoukkoUri());
+            builder.setHakutapa(as.getHakutapa());
         }
         return builder.build();
     }
