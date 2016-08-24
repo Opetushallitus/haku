@@ -113,6 +113,11 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     }
 
     @Override
+    public int getMaxApplicationOptions(List<String> applicationSystemIds) {
+        return applicationSystemRepository.maxApplicationOptions(applicationSystemIds);
+    }
+
+    @Override
     public List<String> findByYearAndSemester(String asSemester, String asYear) {
         List<ApplicationSystem> ass = applicationSystemRepository.findBySemesterAndYear(asSemester, asYear, "id", "name");
         return Lists.transform(ass, new Function<ApplicationSystem, String>() {
