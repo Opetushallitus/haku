@@ -185,6 +185,7 @@ describe('KK-hakemus', function () {
                             return visible(virkailija.notes)();
                         }),
                         click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
+                        tyhjennaHakutoiveet(5),
                         afrikka(1),
                         aasia(2),
                         oulu(3),
