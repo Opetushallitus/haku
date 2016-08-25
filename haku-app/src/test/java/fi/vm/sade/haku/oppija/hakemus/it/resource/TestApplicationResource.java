@@ -3,25 +3,26 @@ package fi.vm.sade.haku.oppija.hakemus.it.resource;
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.servlet.jsp.jstl.core.Config;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.junit.Assert.*;
 
 @ActiveProfiles("it")
 public class TestApplicationResource extends IntegrationTestSupport {
 
     ApplicationResource applicationResource = appContext.getBean(ApplicationResource.class);
+    ApplicationService applicationService = appContext.getBean(ApplicationService.class);
 
     @Test
     public void testKorkeakouluExcel() {
@@ -48,85 +49,52 @@ public class TestApplicationResource extends IntegrationTestSupport {
 
     }
 
+    private ApplicationSearchResultDTO findApplicationsOrderedWithBaseEducationFilter(Set<String> baseEducations) {
+        return applicationResource.findApplicationsOrdered(
+                "fullName",
+                "asc",
+                "",
+                null,
+                null,
+                null,
+                "",
+                "",
+                baseEducations,
+                "",
+                "1.2.246.562.29.95390561488",
+                "kausi_k",
+                "2015",
+                "1.2.246.562.20.63351226459",
+                false,
+                false,
+                "",
+                "",
+                null,
+                0,
+                50
+        );
+    }
+
     @Test
     public void testBaseEducationFilter() {
         // Should not find any when using non existing base education
-        ApplicationSearchResultDTO result = applicationResource.findApplicationsOrdered(
-                "fullName",
-                "asc",
-                "",
-                null,
-                null,
-                null,
-                "",
-                "",
-                Sets.newHashSet("base_education_that_does_not_exist"),
-                "",
-                "1.2.246.562.29.95390561488",
-                "kausi_k",
-                "2015",
-                "1.2.246.562.20.63351226459",
-                false,
-                false,
-                "",
-                "",
-                null,
-                0,
-                50
-        );
+        ApplicationSearchResultDTO result = findApplicationsOrderedWithBaseEducationFilter(Sets.newHashSet("base_education_that_does_not_exist"));
         assertEquals(0, result.getTotalCount());
 
-        // 2 applications exist with base education "ulk"
-        result = applicationResource.findApplicationsOrdered(
-                "fullName",
-                "asc",
-                "",
-                null,
-                null,
-                null,
-                "",
-                "",
-                Sets.newHashSet("ulk"),
-                "",
-                "1.2.246.562.29.95390561488",
-                "kausi_k",
-                "2015",
-                "1.2.246.562.20.63351226459",
-                false,
-                false,
-                "",
-                "",
-                null,
-                0,
-                50
-        );
+        result = findApplicationsOrderedWithBaseEducationFilter(Sets.newHashSet("ulk"));
         assertEquals(2, result.getTotalCount());
 
-        // 2 applications with base education "ulk" and 1 with base education "yo_ulkomainen" exist
-        result = applicationResource.findApplicationsOrdered(
-                "fullName",
-                "asc",
-                "",
-                null,
-                null,
-                null,
-                "",
-                "",
-                Sets.newHashSet("ulk", "yo_ulkomainen"),
-                "",
-                "1.2.246.562.29.95390561488",
-                "kausi_k",
-                "2015",
-                "1.2.246.562.20.63351226459",
-                false,
-                false,
-                "",
-                "",
-                null,
-                0,
-                50
-        );
+        result = findApplicationsOrderedWithBaseEducationFilter(Sets.newHashSet("ulk", "yo_ulkomainen"));
         assertEquals(3, result.getTotalCount());
+    }
+
+    @Test
+    public void testFindFullApplicationsWithOrganizationFilter() {
+        List<Map<String, Object>> result = applicationResource.findFullApplications(
+                null, null, null, null, null, null, null, null, null, null, "1.2.246.562.10.15816289258",
+                null, null, null, null, null, null, null, null, 0, 50, false
+        );
+        assertEquals(1, result.size());
     }
 
     @Test
@@ -135,10 +103,161 @@ public class TestApplicationResource extends IntegrationTestSupport {
         final String PERSON2_OID = "1.2.246.562.24.40135708059";
 
         Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
-                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID));
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), false, true);
 
         assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
         assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
     }
+
+    @Test
+    public void testFindApplicationsByPersonOidsWithAllKeys() {
+        final String PERSON1_OID = "1.2.246.562.24.14229104472";
+        final String PERSON2_OID = "1.2.246.562.24.40135708059";
+
+        Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), true, true);
+
+        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
+        assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
+    }
+
+    @Test
+    public void testFindApplicationsByPersonOidsWithAllKeysWithSensitiveInfo() {
+        final String PERSON1_OID = "1.2.246.562.24.14229104472";
+        final String PERSON2_OID = "1.2.246.562.24.40135708059";
+
+        Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
+                applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), true, false);
+
+        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertTrue(applicationsByPersonOids.get(PERSON1_OID) != null);
+        assertTrue(applicationsByPersonOids.get(PERSON2_OID) != null);
+        assertNotNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
+        assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationOptions() {
+        List<String> aoOids = newArrayList("1.2.246.562.20.29983577775", "1.2.246.562.20.91374364379");
+        List<Map<String, Object>> result = applicationService.findFullApplications(
+                new ApplicationQueryParametersBuilder().setAoOids(aoOids).build());
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationOptionsWithOrganizationFilter() {
+        List<String> aoOids = newArrayList(
+                "1.2.246.562.20.91374364379",
+                "1.2.246.562.20.29983577775"
+        );
+        List<Map<String, Object>> result = applicationService.findFullApplications(
+                new ApplicationQueryParametersBuilder().setAoOids(aoOids)
+                        .setOrganizationFilter("1.2.246.562.10.2013102114310829376114").build());
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationSystemsWithOrganizationFilter() {
+        List<String> asOids = newArrayList("1.2.246.562.29.14662042044");
+
+        List<Map<String, Object>> result1 = applicationService.findFullApplications(
+                new ApplicationQueryParametersBuilder().setAsIds(asOids)
+                        .setOrganizationFilter("nonExistingOrg").build());
+        assertEquals(0, result1.size());
+
+        List<Map<String, Object>> result2 = applicationService.findFullApplications(
+                new ApplicationQueryParametersBuilder().setAsIds(asOids)
+                        .setOrganizationFilter("1.2.246.562.10.40384720658").build());
+        assertEquals(1, result2.size());
+    }
+
+    @Test
+    public void testFindApplicationsByApplicationSystems() {
+        List<String> asOids = newArrayList("1.2.246.562.29.14662042044");
+        List<Map<String, Object>> result = applicationService.findFullApplications(new ApplicationQueryParametersBuilder().setAsIds(asOids).build());
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationSystem() {
+        Set<String> asOids = Sets.newHashSet(
+                "1.2.246.562.5.2013080813081926341927",
+                "1.2.246.562.29.95390561488"
+        );
+        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationSystem(asOids, null);
+        assertEquals(3, personOids.size());
+        assertTrue(personOids.contains("1.2.246.562.24.25780876607"));
+        assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
+        Set<String> emptyAOSet = new HashSet<>();
+        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet, null);
+        assertEquals(0, empty.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationSystemWithOrganizationFilter() {
+        Set<String> asOids = Sets.newHashSet(
+                "1.2.246.562.5.2013080813081926341927",
+                "1.2.246.562.29.95390561488"
+        );
+        Collection<String> res1 = applicationResource.findPersonOIDsByApplicationSystem(asOids, "1.2.246.562.10.2013102114310829376114");
+        assertEquals(2, res1.size());
+        Collection<String> res2 = applicationResource.findPersonOIDsByApplicationSystem(asOids, "nonExistingOrg");
+        assertEquals(0, res2.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationOption() {
+        Set<String> applicationOptionOids = Sets.newHashSet(
+                "1.2.246.562.20.92555013215"
+        );
+        Collection<String> personOids = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, null);
+        assertEquals(2, personOids.size());
+        assertTrue(personOids.contains("1.2.246.562.24.14229104472"));
+        assertTrue(personOids.contains("1.2.246.562.24.39736979832"));
+        Set<String> emptyAOSet = new HashSet<>();
+        Collection<String> empty = applicationResource.findPersonOIDsByApplicationSystem(emptyAOSet, null);
+        assertEquals(0, empty.size());
+    }
+
+    @Test
+    public void testFindPersonOIDsByApplicationOptionWithOrganizationFilter() {
+        Set<String> applicationOptionOids = Sets.newHashSet(
+                "1.2.246.562.20.92555013215"
+        );
+        Collection<String> res1 = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, "1.2.246.562.10.2013102114310829376114");
+        assertEquals(2, res1.size());
+        Collection<String> res2 = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, "nonExistingOrg");
+        assertEquals(0, res2.size());
+    }
+
+    private String getHenkilotunnus(Collection<Map<String, Object>> applications) {
+        for (Map<String, Object> entry : applications) {
+            if (! entry.containsKey("answers")) {
+                continue;
+            }
+
+            Map<String, Object> answers = (HashMap<String, Object>) entry.get("answers");
+
+            if (answers == null || !answers.containsKey("henkilotiedot")) {
+                continue;
+            }
+
+            Map<String, Object> henkilotiedot = (HashMap<String, Object>) answers.get("henkilotiedot");
+            if (henkilotiedot == null || !henkilotiedot.containsKey("Henkilotunnus")) {
+                continue;
+            }
+            else {
+                String hetu = (String) henkilotiedot.get("Henkilotunnus");
+                if (hetu != null) {
+                    return hetu;
+                }
+            }
+        }
+        return null;
+    }
+
 
 }

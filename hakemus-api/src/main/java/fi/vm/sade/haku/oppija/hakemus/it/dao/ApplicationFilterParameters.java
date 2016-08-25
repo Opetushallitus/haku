@@ -24,14 +24,17 @@ public class ApplicationFilterParameters {
     private final List<String> organizationsReadable;
     private final List<String> organizationsOpo;
     private final List<String> organizationsHetuttomienKasittely;
+    private final String organizationFilter;
     private final String kohdejoukko;
     private final String hakutapa;
 
     public ApplicationFilterParameters(int maxApplicationOptions, List<String> organizationsReadable,
                                        List<String> organizationsOpo, List<String> organizationsHetuttomienKasittely,
+                                       String organizationFilter,
                                        String kohdejoukko, String hakutapa) {
         this.maxApplicationOptions = maxApplicationOptions;
         this.organizationsReadable = organizationsReadable;
+        this.organizationFilter = organizationFilter;
         this.organizationsOpo = organizationsOpo;
         this.organizationsHetuttomienKasittely = organizationsHetuttomienKasittely;
         this.kohdejoukko = kohdejoukko;
@@ -48,6 +51,10 @@ public class ApplicationFilterParameters {
 
     public List<String> getOrganizationsOpo() {
         return organizationsOpo;
+    }
+
+    public String getOrganizationFilter() {
+        return organizationFilter;
     }
 
     public List<String> getOrganizationsHetuttomienKasittely() {

@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -96,5 +97,16 @@ public class ApplicationSystemRepository {
             q.fields().include(includeField);
         }
         return mongoOperations.find(q, ApplicationSystem.class);
+    }
+
+    public int maxApplicationOptions(List<String> applicationSystemIds) {
+        Query q = new Query();
+        if (!applicationSystemIds.isEmpty()) {
+            q.addCriteria(new Criteria("_id").in(applicationSystemIds));
+        }
+        q.fields().include("maxApplicationOptions");
+        q.with(new Sort(new Sort.Order(Sort.Direction.DESC, "maxApplicationOptions")));
+        q.limit(1);
+        return mongoOperations.find(q, ApplicationSystem.class).get(0).getMaxApplicationOptions();
     }
 }

@@ -8,6 +8,7 @@ public class ApplicationFilterParametersBuilder {
     private int maxApplicationOptions;
     private List<String> organizationsReadable;
     private List<String> organizationsOpo;
+    private String organizationFilter;
     private List<String> organizationsHetuttomienKasittely;
     private String kohdejoukko;
     private String hakutapa;
@@ -43,6 +44,11 @@ public class ApplicationFilterParametersBuilder {
 
     public List<String> getOrganizationsOpo() {
         return organizationsOpo;
+    }
+
+    public ApplicationFilterParametersBuilder setOrganizationFilter(String organizationFilter) {
+        this.organizationFilter = organizationFilter;
+        return this;
     }
 
     public ApplicationFilterParametersBuilder addOrganizationsOpo(List<String> organizationsOpo) {
@@ -91,7 +97,7 @@ public class ApplicationFilterParametersBuilder {
     public ApplicationFilterParameters build() {
         int realMaxApplicationOptions = maxApplicationOptions == 0 ? 6 : maxApplicationOptions;
         return new ApplicationFilterParameters(realMaxApplicationOptions, organizationsReadable, organizationsOpo,
-                organizationsHetuttomienKasittely, kohdejoukko, hakutapa);
+                organizationsHetuttomienKasittely, organizationFilter, kohdejoukko, hakutapa);
     }
 
 }

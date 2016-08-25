@@ -51,7 +51,7 @@ public class ApplicationSearchMongoIT extends AbstractDAOTest {
     @Before
     public void setUp() throws Exception {
         ArrayList<String> org = Lists.newArrayList(KOULUTUSKESKUS_SALPAUS);
-        koulutuskeskusSalpausOrganization = new ApplicationFilterParameters(5, org, org, org, null, null);
+        koulutuskeskusSalpausOrganization = new ApplicationFilterParameters(5, org, org, org, null, null, null);
 
         DBObject applicationFromJson = JsonTestData.readTestData("harkinnanvarainen_salpaus_ei_sirkus.json");
         mongoTemplate.getCollection(getCollectionName()).insert(applicationFromJson);
