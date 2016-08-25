@@ -157,6 +157,8 @@ public final class OppijaConstants {
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
     public static final String KYMPPI_PAATTOTODISTUSVUOSI = "KYMPPI_PAATTOTODISTUSVUOSI";
     public static final String POHJAKOULUTUSMAA_TOINEN_ASTE = "pohjakoulutusmaa_toinen_aste";
+    public static final String TOISEN_ASTEEN_SUORITUS = "toisen_asteen_suoritus";
+    public static final String TOISEN_ASTEEN_SUORITUSMAA = "toisen_asteen_suoritusmaa";
 
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";

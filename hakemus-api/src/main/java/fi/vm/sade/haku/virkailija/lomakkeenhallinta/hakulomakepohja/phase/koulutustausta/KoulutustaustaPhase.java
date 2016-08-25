@@ -41,6 +41,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.I
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.SecondaryEducationCountryRadioBuilder.SecondaryEducationCountryRadio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
@@ -247,7 +248,7 @@ public final class KoulutustaustaPhase {
                             .formParams(formParameters).build());
             elements.add(pedagogisetOpinnotOnSuoritettuRule);
         }
-        
+
         // Muut tutkinnot
         if (formParameters.isAmmattillinenOpettajaKoulutus() && formParameters.isAMKOpeMuutTutkinnotKysymys()) {
             Element muutTutkinnotGrp = TitledGroup("muut_tutkinnot").formParams(formParameters).inline().build();
@@ -342,11 +343,42 @@ public final class KoulutustaustaPhase {
 
         elements.add(pohjakoulutusGrp);
 
+        // Toisen asteen pohjakoulutuksen maa
+        elements.add(buildToisenAsteenSuoritusMaa(formParameters));
+
         if(formParameters.askOldEducationInfo()) {
             elements.addAll(buildSuoritusoikeusTaiAiempiTutkinto(formParameters, korkeakoulut, korkeakoulukoulutukset));
         }
 
         return elements.toArray(new Element[elements.size()]);
+    }
+
+    private static Element buildToisenAsteenSuoritusMaa(FormParameters formParameters) {
+        KoodistoService koodistoService = formParameters.getKoodistoService();
+        List<Option> maat = koodistoService.getCountries();
+
+        return buildToisenAsteenSuoritusMaaRadio(formParameters, maat);
+    }
+
+    private static Element buildToisenAsteenSuoritusMaaRadio(FormParameters formParameters, List<Option> maat) {
+        Option kyllaOption = new Option(formParameters.getI18nText("form.koulutustausta.valitse_maa"), KYLLA);
+        Option eiOption = new Option(formParameters.getI18nText("form.koulutustausta.ei_toisen_asteen_tutkintoa"), EI);
+        String radioId = TOISEN_ASTEEN_SUORITUS;
+
+        Element taSuoritusmaaRadio = SecondaryEducationCountryRadio(radioId)
+                .addOptions(ImmutableList.of(kyllaOption, eiOption))
+                .required()
+                .formParams(formParameters).build();
+
+        Element kyllaOptionMore = buildTrueOptionMore(radioId, buildSuoritusmaa(formParameters, maat, TOISEN_ASTEEN_SUORITUSMAA, ""));
+
+        kyllaOption.addChild(kyllaOptionMore);
+
+        return taSuoritusmaaRadio;
+    }
+
+    private static Element buildTrueOptionMore(String id, Element child) {
+        return Rule(new Equals(new Variable(id), new Value(KYLLA))).build().addChild(child);
     }
 
     private static List<Element> buildSuoritusoikeusTaiAiempiTutkinto(FormParameters formParameters,

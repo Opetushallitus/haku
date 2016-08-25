@@ -30,7 +30,9 @@
                 ruleId: "${element.id}",
                 childIds: [ ${nameSelectors} ]
             };
-            complexRule.init(ruleData);
+            $('#' + '${element.id}').closest('form').ready(function () {
+                complexRule.init(ruleData);
+            });
         })();
     </script>
     <haku:viewChilds element="${element}"/>
