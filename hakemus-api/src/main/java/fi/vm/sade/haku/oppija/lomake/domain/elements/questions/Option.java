@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 public class Option extends Question{
