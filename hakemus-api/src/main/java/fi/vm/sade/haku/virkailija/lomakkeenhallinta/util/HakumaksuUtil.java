@@ -228,7 +228,7 @@ public class HakumaksuUtil {
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build(new CacheLoader<ApplicationOptionOid, EducationRequirements>() {
                 public EducationRequirements load(ApplicationOptionOid applicationOptionOid) throws Exception {
-                    String url = urlConfiguration.url("koulutusinformaatio.ao",applicationOptionOid.getValue());
+                    String url = urlConfiguration.url("koulutusinformaatio-app.ao",applicationOptionOid.getValue());
                     BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
                     return new EducationRequirements(applicationOptionOid, ImmutableSet.copyOf(requirements.requiredBaseEducations));
                 }

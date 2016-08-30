@@ -1,6 +1,6 @@
 window.urls.properties = {
-  "koulutusinformaatio.ao.search": "/ao/search/$1/$2",
-  "koulutusinformaatio.lop.search": "/lop/search/$1",
+  "koulutusinformaatio-app.ao.search": "/ao/search/$1/$2",
+  "koulutusinformaatio-app.lop.search": "/lop/search/$1",
   "tarjonta-service.v1.hakukohde.search": "/tarjonta-service/rest/v1/hakukohde/search",
   "haku-app.applicationSystem": "/haku-app/virkailija/hakemus/applicationSystems",
   "haku-app.baseEducations": "/haku-app/virkailija/hakemus/baseEducations/$1",

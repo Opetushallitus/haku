@@ -41,7 +41,7 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 		if (Strings.isNullOrEmpty(oid)) {
 			return null;
 		} else {
-			WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio.ao", oid));
+			WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio-app.ao", oid));
 			if (!StringUtils.isEmpty(lang)) {
 				asWebResource.queryParam("uiLang", lang);
 				asWebResource.queryParam("lang", lang);
