@@ -83,6 +83,7 @@ public class ApplicationSystemRepository {
         if (isNotEmpty(year)) {
             q.addCriteria(new Criteria("hakukausiVuosi").is(Integer.valueOf(year)));
         }
+        q.fields().include("name"); // Mandatory field
         for (String includeField : includeFields) {
             q.fields().include(includeField);
         }
@@ -93,6 +94,7 @@ public class ApplicationSystemRepository {
     public List<ApplicationSystem> findAllPublished(String[] includeFields) {
         Query q = new Query();
         q.addCriteria(new Criteria("state").is("JULKAISTU"));
+        q.fields().include("name"); // Mandatory field
         for (String includeField : includeFields) {
             q.fields().include(includeField);
         }
@@ -104,6 +106,7 @@ public class ApplicationSystemRepository {
         if (!applicationSystemIds.isEmpty()) {
             q.addCriteria(new Criteria("_id").in(applicationSystemIds));
         }
+        q.fields().include("name"); // Mandatory field
         q.fields().include("maxApplicationOptions");
         q.with(new Sort(new Sort.Order(Sort.Direction.DESC, "maxApplicationOptions")));
         q.limit(1);
