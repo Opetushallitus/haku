@@ -18,7 +18,8 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {}
   },
   "1.2.246.562.20.91527858939": {
     "id": "1.2.246.562.20.91527858939",
@@ -39,6 +40,9 @@
       "applicationSystemIds": [
         "1.2.246.562.29.95390561488"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
     }
   },
   "1.2.246.562.14.2013120511174558582514": {
@@ -93,7 +97,10 @@
     "requiredBaseEducations": [
       "0",
       "6"
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
+    }
   },
   "1.2.246.562.20.85668637847": {
     "id": "1.2.246.562.20.85668637847",
@@ -118,6 +125,9 @@
         "1.2.246.562.5.2013112910452702965370",
         "1.2.246.562.29.95390561488"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
     }
   },
   "1.2.246.562.20.48556982121": {
@@ -143,6 +153,9 @@
         "1.2.246.562.5.2013112910452702965370",
         "1.2.246.562.29.95390561488"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
     }
   },
   "1.2.246.562.14.2013102812460331191879": {
@@ -169,6 +182,9 @@
       "applicationSystemIds": [
         "1.2.246.562.5.2013080813081926341927"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013080813081926341927"
     }
   },
   "1.2.246.562.20.94964838901": {
@@ -193,6 +209,9 @@
       "applicationSystemIds": [
         "1.2.246.562.29.173465377510"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.29.173465377510"
     }
   },
   "1.2.246.562.5.68672543292": {
@@ -219,6 +238,9 @@
         "1.2.246.562.5.2013112910452702965370",
         "1.2.246.562.5.2013080813081926341927"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
     }
   },
   "1.2.246.562.5.19132087818": {
@@ -243,6 +265,9 @@
       "applicationSystemIds": [
         "1.2.246.562.5.2014020613412490531399"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014020613412490531399"
     }
   },
   "1.2.246.562.20.645785477510": {
@@ -268,6 +293,9 @@
         "1.2.246.562.5.2013112910452702965370",
         "1.2.246.562.29.173465377510"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
     }
   },
   "1.2.246.562.5.31982630126": {
@@ -291,6 +319,9 @@
       "applicationSystemIds": [
         "1.2.246.562.5.2013080813081926341927"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013080813081926341927"
     }
   },
   "1.2.246.562.20.35798482663": {
@@ -316,7 +347,10 @@
     },
     "requiredBaseEducations": [
       "0"
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.40828730156": {
     "id": "1.2.246.562.20.40828730156",
@@ -337,6 +371,9 @@
       "applicationSystemIds": [
         "1.2.246.562.29.95390561488"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
     }
   },
   "1.2.246.562.20.18094409226": {
@@ -513,7 +550,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.14.2014040912353139913320": {
     "id": "1.2.246.562.14.2014040912353139913320",
@@ -538,7 +578,10 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014022711042555034240"
+    }
   },
   "1.2.246.562.5.72607738902": {
     "id": "1.2.246.562.5.72607738902",
@@ -571,7 +614,10 @@
       "0",
       "1"
     ],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013080813081926341927"
+    }
   },
   "1.2.246.562.5.16303028779": {
     "id": "1.2.246.562.5.16303028779",
@@ -604,7 +650,10 @@
       "0",
       "1"
     ],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013080813081926341927"
+    }
   },
   "1.2.246.562.20.60377543289": {
     "id": "1.2.246.562.20.60377543289",
@@ -630,6 +679,9 @@
       "applicationSystemIds": [
         "1.2.246.562.5.2013080813081926341927"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013080813081926341927"
     }
   },
   "1.2.246.562.20.78030966705": {
@@ -659,7 +711,10 @@
     "requiredBaseEducations": [
       "0",
       "1"
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014020613412490531399"
+    }
   },
   "1.2.246.562.20.656632485510": {
     "id": "1.2.246.562.20.656632485510",
@@ -712,7 +767,10 @@
           "hakukohde"
         ]
       }
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.28.90373737623"
+    }
   },
   "1.2.246.562.20.97520172236": {
     "id": "1.2.246.562.20.97520172236",
@@ -738,7 +796,10 @@
       "0",
       "1"
     ],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.173465377510"
+    }
   },
   "1.2.246.562.20.42250016427": {
     "id": "1.2.246.562.20.42250016427",
@@ -811,7 +872,10 @@
           "testi"
         ]
       }
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.173465377510"
+    }
   },
   "1.2.246.562.14.2014022408541751568934": {
     "id": "1.2.246.562.14.2014022408541751568934",
@@ -836,7 +900,10 @@
     },
     "requiredBaseEducations": [
       "0"
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
+    }
   },
   "1.2.246.562.14.2013120515524070995659": {
     "id": "1.2.246.562.14.2013120515524070995659",
@@ -861,7 +928,10 @@
     },
     "requiredBaseEducations": [
       "0"
-    ]
+    ],
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013112910452702965370"
+    }
   },
   "1.2.246.562.20.14660127086": {
     "id": "1.2.246.562.20.14660127086",
@@ -1042,7 +1112,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.61858589288": {
     "id": "1.2.246.562.20.61858589288",
@@ -1217,7 +1290,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.19202370003": {
     "id": "1.2.246.562.20.19202370003",
@@ -1401,7 +1477,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.14.79893512065": {
     "id": "1.2.246.562.14.79893512065",
@@ -1429,7 +1508,10 @@
       "1",
       "9"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.50476818906"
+    }
   },
   "1.2.246.562.20.17550428336": {
     "id": "1.2.246.562.20.17550428336",
@@ -1456,7 +1538,10 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.50476818906"
+    }
   },
   "1.2.246.562.20.30500448839": {
     "id": "1.2.246.562.20.30500448839",
@@ -1483,7 +1568,10 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "haku6"
+    }
   },
   "1.2.246.562.14.2014040212501070122979": {
     "id": "1.2.246.562.14.2014040212501070122979",
@@ -1509,7 +1597,10 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014022711042555034240"
+    }
   },
   "1.2.246.562.14.2014032610154661183054": {
     "id": "1.2.246.562.14.2014032610154661183054",
@@ -1535,7 +1626,10 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014022711042555034240"
+    }
   },
   "1.2.246.562.20.60377543290": {
     "id": "1.2.246.562.20.60377543290",
@@ -1561,7 +1655,10 @@
     "requiredBaseEducations": [
       "0"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2013080813081926341928"
+    }
   },
   "1.2.246.562.14.2014032812530780195965": {
     "id": "1.2.246.562.14.2014032812530780195965",
@@ -1588,7 +1685,10 @@
     "requiredBaseEducations": [
       "1"
     ],
-    "canBeApplied": true
+    "canBeApplied": true,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014022711042555034240"
+    }
   },
   "1.2.246.562.14.2014030415375012208392": {
     "id": "1.2.246.562.14.2014030415375012208392",
@@ -1614,6 +1714,9 @@
         "1.2.246.562.5.2014022711042555034240",
         "1.2.246.562.5.2013080813081926341927"
       ]
+    },
+    "applicationSystem": {
+      "id": "1.2.246.562.5.2014022711042555034240"
     }
   },
   "1.2.246.562.14.673437691210": {
@@ -1739,7 +1842,10 @@
     "educationTypeUri": null,
     "hakuaikaId": "434174",
     "organizationGroups": [],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.5.50476818906"
+    }
   },
   "template": {
     "id": "1.2.246.562.20.10457567187",
@@ -1865,7 +1971,10 @@
     "educationTypeUri": null,
     "hakuaikaId": "434174",
     "organizationGroups": [],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.53014649395": {
     "id": "1.2.246.562.20.53014649395",
@@ -2113,7 +2222,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.444206299810"
+    }
   },
   "1.2.246.562.20.17389359211": {
     "id": "1.2.246.562.20.17389359211",
@@ -2410,7 +2522,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.444206299810"
+    }
   },
   "1.2.246.562.20.46787381675": {
     "id": "1.2.246.562.20.46787381675",
@@ -2656,7 +2771,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.90095786571": {
     "id": "1.2.246.562.20.90095786571",
@@ -2875,7 +2993,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.74195328591": {
     "id": "1.2.246.562.20.74195328591",
@@ -3084,7 +3205,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.41854177239"
+    }
   },
   "1.2.246.562.20.18131989511": {
     "id": "1.2.246.562.20.18131989511",
@@ -3373,7 +3497,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.95390561488"
+    }
   },
   "1.2.246.562.20.809720376110": {
     "id": "1.2.246.562.20.809720376110",
@@ -3431,7 +3558,10 @@
     ],
     "kaksoistutkinto": false,
     "vocational": false,
-    "educationCodeUri": "koulutus_651602"
+    "educationCodeUri": "koulutus_651602",
+    "applicationSystem": {
+      "id": "1.2.246.562.29.822197749310"
+    }
   },
   "1.2.246.562.20.634960372910": {
     "aoIdentifier": null,
@@ -3529,7 +3659,10 @@
     "teachingLanguages": [
       "FI"
     ],
-    "vocational": false
+    "vocational": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.822197749310"
+    }
   },
   "1.2.246.562.20.773334214010": {
     "aoIdentifier": null,
@@ -3627,7 +3760,10 @@
     "teachingLanguages": [
       "FI"
     ],
-    "vocational": false
+    "vocational": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.822197749310"
+    }
   },
   "1.2.246.562.20.99933864235": {
     "aoIdentifier": null,
@@ -3685,7 +3821,10 @@
     "teachingLanguages": [
       "EN"
     ],
-    "vocational": false
+    "vocational": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.822197749310"
+    }
   },
   "1.2.246.562.20.14048800487": {
     "id": "1.2.246.562.20.14048800487",
@@ -3932,7 +4071,10 @@
         ]
       }
     ],
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.10714450698"
+    }
   },
   "1.2.246.562.20.66232176843": {
     "id": "1.2.246.562.20.66232176843",
@@ -4255,7 +4397,10 @@
     "peruutusEhdotKuvaukset": null,
     "pohjakoulutusLiitteet": null,
     "josYoEiMuitaLiitepyyntoja": false,
-    "kotitalous": false
+    "kotitalous": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.75203638285"
+    }
   },
   "1.2.246.562.20.37345403259": {
     "id": "1.2.246.562.20.37345403259",
@@ -4282,7 +4427,10 @@
     "vocational": true,
     "educationCodeUri": "koulutus_371101",
     "attachments": [],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.14662042044"
+    }
   },
   "1.2.246.562.20.62802979328": {
     "id": "1.2.246.562.20.62802979328",
@@ -4309,7 +4457,10 @@
     "vocational": true,
     "educationCodeUri": "koulutus_381113",
     "attachments": [],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.14662042044"
+    }
   },
   "1.2.246.562.20.21468913773": {
     "id": "1.2.246.562.20.21468913773",
@@ -4336,7 +4487,10 @@
     "vocational": true,
     "educationCodeUri": "koulutus_321501",
     "attachments": [],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.14662042044"
+    }
   },
   "1.2.246.562.20.77217276458": {
     "id": "1.2.246.562.20.77217276458",
@@ -4363,7 +4517,10 @@
     "vocational": true,
     "educationCodeUri": "koulutus_381203",
     "attachments": [],
-    "organizationGroups": []
+    "organizationGroups": [],
+    "applicationSystem": {
+      "id": "1.2.246.562.29.14662042044"
+    }
   },
   "1.2.246.562.20.26705556103": {
     "id": "1.2.246.562.20.26705556103",
@@ -4460,7 +4617,10 @@
     "pohjakoulutusLiitteet": null,
     "kysytaanHarkinnanvaraiset": false,
     "kotitalous": false,
-    "josYoEiMuitaLiitepyyntoja": false
+    "josYoEiMuitaLiitepyyntoja": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.14662042044"
+    }
   },
   "1.2.246.562.20.69015225225" : {
     "id": "1.2.246.562.20.69015225225",
@@ -4613,6 +4773,9 @@
     "pohjakoulutusLiitteet": null,
     "kysytaanHarkinnanvaraiset": false,
     "kotitalous": false,
-    "josYoEiMuitaLiitepyyntoja": false
+    "josYoEiMuitaLiitepyyntoja": false,
+    "applicationSystem": {
+      "id": "1.2.246.562.29.14662042044"
+    }
   }
 }

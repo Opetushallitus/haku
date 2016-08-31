@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -238,11 +237,20 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationSystem(final ValidationInput validationInput, final ApplicationOption applicationOption) {
-        final Set<String> allowedIds = applicationOption.getProvider().getApplicationSystemIds();
-        if (allowedIds.contains(validationInput.getApplicationSystemId())) {
+        if (applicationOption == null ||
+                applicationOption.getApplicationSystem() == null ||
+                applicationOption.getApplicationSystem().getId() == null) {
+            String aoid = applicationOption != null ? applicationOption.getId() : "null";
+            String asid = applicationOption != null && applicationOption.getApplicationSystem() != null ? applicationOption.getApplicationSystem().getId() : "null";
+            LOGGER.error("Application system validation failed for {}. Allowed application option id from KI: {}. Application system id: {}",
+                    applicationOption, aoid, asid);
+            return false;
+        }
+        if (applicationOption.getApplicationSystem().getId().equals(validationInput.getApplicationSystemId())) {
             return true;
         }
-        LOGGER.error("Application system validation failed for {}. Allowed ids: {}. Application system id: {}", applicationOption, allowedIds, validationInput.getApplicationSystemId());
+        LOGGER.error("Application system validation failed for {}. Allowed id: {}. Application system id: {}",
+                applicationOption, applicationOption.getApplicationSystem().getId(), validationInput.getApplicationSystemId());
         return false;
     }
 

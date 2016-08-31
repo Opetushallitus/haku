@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.common.koulutusinformaatio;
 
 import com.google.common.base.Function;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 
 /**
@@ -44,10 +45,19 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             for (OrganizationGroupDTO group : applicationOptionDTO.getOrganizationGroups()) {
                 ao.addGroup(new ApplicationOptionGroup(group.getOid(), group.getPrioriteetti()));
             }
+            ao.setApplicationSystem(getApplicationSystem(applicationOptionDTO.getApplicationSystem()));
             return ao;
         } else {
             return null;
         }
+    }
+
+    private ApplicationSystem getApplicationSystem(ApplicationSystemDTO dto) {
+        ApplicationSystem as = new ApplicationSystem();
+        if (dto != null) {
+            as.setId(dto.getId());
+        }
+        return as;
     }
 
     private LearningOpportunityProvider getProvider(ApplicationOptionDTO applicationOptionDTO) {
@@ -56,7 +66,6 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             lop.setId(applicationOptionDTO.getProvider().getId());
             lop.setName(applicationOptionDTO.getProvider().getName());
             lop.setAthleteEducation(applicationOptionDTO.getProvider().isAthleteEducation());
-            lop.setApplicationSystemIds(applicationOptionDTO.getProvider().getApplicationSystemIds());
         }
         return lop;
     }
