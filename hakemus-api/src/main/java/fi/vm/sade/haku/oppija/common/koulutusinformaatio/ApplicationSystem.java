@@ -16,16 +16,9 @@
 
 package fi.vm.sade.haku.oppija.common.koulutusinformaatio;
 
-import java.util.Set;
-
-/**
- * @author Mikko Majapuro
- */
-public class LearningOpportunityProvider {
+public class ApplicationSystem {
 
     private String id;
-    private String name;
-    private boolean athleteEducation;
 
     public String getId() {
         return id;
@@ -33,22 +26,6 @@ public class LearningOpportunityProvider {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isAthleteEducation() {
-        return athleteEducation;
-    }
-
-    public void setAthleteEducation(boolean athleteEducation) {
-        this.athleteEducation = athleteEducation;
     }
 
 }
