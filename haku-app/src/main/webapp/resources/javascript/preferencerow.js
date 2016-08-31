@@ -110,7 +110,19 @@ var preferenceRow = {
                         hasAttachments = true;
                     }
 
-                    $selectInput.append($("<option>", {
+                    function addAttributes(elem, map) {
+                        for (var property in map) {
+                            if (map.hasOwnProperty(property)) {
+                                var value = map[property];
+                                if(value != undefined) {
+                                    elem.attr(property, value)
+                                }
+                            }
+                        }
+                        return elem;
+                    }
+
+                    var option = addAttributes($("<option/>"), {
                         "value": item.name,
                         "selected": selected,
                         "data-id": item.id,
@@ -126,24 +138,25 @@ var preferenceRow = {
                         "data-attachments": hasAttachments,
                         "data-attachmentgroups": attachmentGroups.join(","),
                         "data-athlete": item.athleteEducation,
-                        "data-discretionary": item.kysytaanHarkinnanvaraiset,
-                        text: item.name
-                    }));
+                        "data-discretionary": item.kysytaanHarkinnanvaraiset
+                    });
+                    option.text(item.name);
+                    $selectInput.append(option);
                 });
                 
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
                     $selectInput.parent().find(".warning").hide();
-                    var $providerInput = $("#" + providerInputId);
-                    $selectInput.after($("<div>", {
-                        class: "notification warning margin-top-1",
-                        html: [
-                            $("<span>").text(sortabletable_settings.preferenceAndBaseEducationConflictMessage),
-                            $("<span>").append($("<small>").text($providerInput.val())),
-                            $("<span>").append($("<small>").text($selectInput.data('selectedname')))
-                        ]
-                    }));
+                    var $providerInput = $("#" + providerInputId),
+                        warning = '<div class="notification warning margin-top-1"><span>' +
+                            sortabletable_settings.preferenceAndBaseEducationConflictMessage +
+                            '</span><span><small>' +
+                            $providerInput.val() +
+                            '</small></span><span><small>' +
+                            $selectInput.data('selectedname') +
+                            '</small></span></div>';
                     $('[id|="' + providerInputId + '"]').val('');
                     preferenceRow.clearSelectInput(selectInputId);
+                    $selectInput.after(warning);
                 }
 
                 $selectInput.prop('readonly', false);
@@ -179,12 +192,13 @@ var preferenceRow = {
     },
 
     displayChildLONames: function (hakukohdeId, childLONamesId) {
-        var $names =  $("#" + childLONamesId), data = $('<ol class="list-style-none">'), loNames = childLONames[hakukohdeId];
+        var $names =  $("#" + childLONamesId), data = '<ol class="list-style-none">', loNames = childLONames[hakukohdeId];
 
         if (loNames && loNames.length > 0) {
             for (var index in loNames) {
-                data.append($("<li>").append( $("<small>").text(loNames[index])) );
+                data = data.concat("<li><small>", loNames[index], "</small></li>");
             }
+            data = data.concat("</ol>");
             $names.html(data);
             $("#container-" + childLONamesId).show();
         } else {
@@ -213,15 +227,13 @@ var preferenceRow = {
         if ($lopInputs.first().is('select')) {
             preferenceRow.searchLOP("*", function(options) {
                 $lopInputs.each(function() {
+                    var html = '<option value=""></option>';
                     var $select = $(this);
-                    $select.append('<option value=""/>');
                     options.forEach(function(o) {
-                        var attrs = {"data-id": o.dataId, value: o.value, text: o.label};
-                        if($("#" + $select.attr('id') + "-id").val() === o.dataId){
-                            attrs.selected="selected"
-                        }
-                        $select.append($("<option>", attrs))
+                        var selected = ($("#" + $select.attr('id') + "-id").val() === o.dataId ? ' selected' : '');
+                        html += '<option data-id="' + o.dataId + '" value="' + o.value + '"' + selected + '>' + o.label + '</option>';
                     });
+                    $select.html(html);
                     $select.change(function(event) {
                         var $option = $(event.target).find(":selected");
                         preferenceRow.clearSelectInput($select.data('id') + "-Koulutus");

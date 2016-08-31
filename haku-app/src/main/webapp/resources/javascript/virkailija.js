@@ -104,11 +104,7 @@ $(document).ready(function () {
                             }
                         }
 
-                        $('#application-system').append($("<option>", {
-                            value:id,
-                            "data-kohdejoukko": kohdejoukko,
-                            text: name
-                        }));
+                        $('#application-system').append('<option value="' + id + '" ' + 'data-kohdejoukko="' + kohdejoukko + '" ' + '>' + name + '</option>');
                     }
                 },
                 async: isAsync
@@ -142,10 +138,7 @@ $(document).ready(function () {
                         });
 
                         _.chain(baseEds).sortBy('name').each(function(ed) {
-                            $('#base-education').append($('<option>', {
-                                value: ed.value,
-                                text: ed.name
-                            }));
+                            $('#base-education').append('<option value="' + ed.value + '">' + ed.name + '</option>');
                         });
                     },
                     async: isAsync

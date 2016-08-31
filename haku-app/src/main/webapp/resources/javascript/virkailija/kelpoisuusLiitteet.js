@@ -22,10 +22,9 @@ var kjal = {
         this.LOGS('populoidaan kelpoisuus ja liittee välilehti: ', window.location.href);
         for (var hktindx in hakutoiveet) {
 
-            var liitteet = hakutoiveet[hktindx].attachments, ind = parseInt(hktindx) + 1;
-            var table = $('#liitteet-table-' + ind);
-
-            table.append($(
+            var liitteet = hakutoiveet[hktindx].attachments,
+                ind = parseInt(hktindx) + 1,
+                $form =
                     "<tr>"
                         + "<td style=\"font-weight: bold;\"> Hakukelpoisuus </td>"
                         + "<td>"
@@ -55,29 +54,29 @@ var kjal = {
                         + "<td colspan=\"2\">"
                         + "<textarea id=\"hylkaamisenperuste\" rows=\"4\" class=\"width-12-11\" disabled onblur=\"kjal.hylkaamisenSyy(" + ind + ")\"></textarea>"
                         + "</td>"
-                        + "</tr>"
-            ))
+                        + "</tr>";
 
-            if (liitteet !== undefined) {
-                table.append($("<tr>", {
-                    html: [
-                        $("<td id=\"liitteidenmaara\" style=\"font-weight: bold\">").text("Liitteiden määrä " + liitteet.length + " kpl "),
-                        "<td colspan=\"2\">"
-                    ]
-                }))
-            }
+                        if (liitteet !== undefined) {
+                           $form +="<tr>"
+                                + "<td id=\"liitteidenmaara\" style=\"font-weight: bold\">Liitteiden määrä " + liitteet.length + " kpl </td>"
+                                + "<td colspan=\"2\"></td>"
+                            + "</tr>";
+                        }
+
+
 
             for (var trs in liitteet){
                 var liiteDesc = liitteet[trs].description;
-                var td = $("<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > ").text("Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header);
-                if (liiteDesc !== undefined && liiteDesc.length > 0) {
-                    td.append( $("<a href=\"#\" class=\"helplink\">", {
-                        title: liiteDesc
-                    }));
-                }
-                var tr = $("<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >");
-                tr.append(td)
-                tr.append("<td>"
+                $form += "<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >"
+                    + "<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > "
+                    + "Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header;
+                    if (liiteDesc !== undefined && liiteDesc.length > 0) {
+                        $form += "<a href=\"#\" title=\"" + liiteDesc + " \" class=\"helplink\"></a>";
+                    }
+
+                    $form += "</td> "
+
+                    + "<td>"
                     + "<select class=\"width-12-11\" id=\"select-saapunut-" +ind+ "-" + trs + "\" disabled onchange=\"kjal.saapumisTila("+ ind +","+ trs +")\">"
                     + "<option value=\"ARRIVED\">Saapunut</option>"
                     + "<option value=\"ARRIVED_LATE\">Saapunut myöhässä</option>"
@@ -94,9 +93,9 @@ var kjal = {
                     + "<option value=\"UNNECESSARY\">Tarpeeton</option>"
                     + "</select>"
                     + "</td>"
-                )
-                table.append(tr)
+                    + "</tr>";
             }
+            $('#liitteet-table-' + ind).append($form);
         }
         this.asetaHakuKelpoisuudetJaLiitteidenTilat();
     },
