@@ -237,20 +237,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationSystem(final ValidationInput validationInput, final ApplicationOption applicationOption) {
-        if (applicationOption == null ||
-                applicationOption.getApplicationSystem() == null ||
-                applicationOption.getApplicationSystem().getId() == null) {
-            String aoid = applicationOption != null ? applicationOption.getId() : "null";
-            String asid = applicationOption != null && applicationOption.getApplicationSystem() != null ? applicationOption.getApplicationSystem().getId() : "null";
-            LOGGER.error("Application system validation failed for {}. Allowed application option id from KI: {}. Application system id: {}",
-                    applicationOption, aoid, asid);
-            return false;
-        }
-        if (applicationOption.getApplicationSystem().getId().equals(validationInput.getApplicationSystemId())) {
+        if (applicationOption.getApplicationSystemId().equals(validationInput.getApplicationSystemId())) {
             return true;
         }
         LOGGER.error("Application system validation failed for {}. Allowed id: {}. Application system id: {}",
-                applicationOption, applicationOption.getApplicationSystem().getId(), validationInput.getApplicationSystemId());
+                applicationOption, applicationOption.getApplicationSystemId(), validationInput.getApplicationSystemId());
         return false;
     }
 

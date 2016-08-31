@@ -36,7 +36,7 @@ public class ApplicationOption {
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
     private String educationCode;
-    private ApplicationSystem applicationSystem;
+    private String applicationSystemId;
     private List<ApplicationOptionGroup> groups;
 
     public String getId() {
@@ -170,12 +170,12 @@ public class ApplicationOption {
         return false;
     }
 
-    public ApplicationSystem getApplicationSystem() {
-        return applicationSystem;
+    public String getApplicationSystemId() {
+        return applicationSystemId;
     }
 
-    public void setApplicationSystem(ApplicationSystem applicationSystem) {
-        this.applicationSystem = applicationSystem;
+    public void setApplicationSystemId(String applicationSystemId) {
+        this.applicationSystemId = applicationSystemId;
     }
 
 }

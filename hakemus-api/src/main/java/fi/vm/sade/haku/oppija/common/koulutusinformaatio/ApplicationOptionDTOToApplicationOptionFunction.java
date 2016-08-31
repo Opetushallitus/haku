@@ -45,19 +45,11 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             for (OrganizationGroupDTO group : applicationOptionDTO.getOrganizationGroups()) {
                 ao.addGroup(new ApplicationOptionGroup(group.getOid(), group.getPrioriteetti()));
             }
-            ao.setApplicationSystem(getApplicationSystem(applicationOptionDTO.getApplicationSystem()));
+            ao.setApplicationSystemId(applicationOptionDTO.getApplicationSystem().getId());
             return ao;
         } else {
             return null;
         }
-    }
-
-    private ApplicationSystem getApplicationSystem(ApplicationSystemDTO dto) {
-        ApplicationSystem as = new ApplicationSystem();
-        if (dto != null) {
-            as.setId(dto.getId());
-        }
-        return as;
     }
 
     private LearningOpportunityProvider getProvider(ApplicationOptionDTO applicationOptionDTO) {
