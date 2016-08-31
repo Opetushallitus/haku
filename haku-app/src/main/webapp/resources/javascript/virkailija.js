@@ -104,7 +104,11 @@ $(document).ready(function () {
                             }
                         }
 
-                        $('#application-system').append('<option value="' + id + '" ' + 'data-kohdejoukko="' + kohdejoukko + '" ' + '>' + name + '</option>');
+                        $('#application-system').append($("<option>", {
+                            value:id,
+                            "data-kohdejoukko": kohdejoukko,
+                            text: name
+                        }));
                     }
                 },
                 async: isAsync
@@ -138,7 +142,10 @@ $(document).ready(function () {
                         });
 
                         _.chain(baseEds).sortBy('name').each(function(ed) {
-                            $('#base-education').append('<option value="' + ed.value + '">' + ed.name + '</option>');
+                            $('#base-education').append($('<option>', {
+                                value: ed.value,
+                                text: ed.name
+                            }));
                         });
                     },
                     async: isAsync
