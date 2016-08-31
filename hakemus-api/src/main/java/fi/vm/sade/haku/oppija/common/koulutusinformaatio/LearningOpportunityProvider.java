@@ -26,7 +26,6 @@ public class LearningOpportunityProvider {
     private String id;
     private String name;
     private boolean athleteEducation;
-    private Set<String> applicationSystemIds;
 
     public String getId() {
         return id;
@@ -52,11 +51,4 @@ public class LearningOpportunityProvider {
         this.athleteEducation = athleteEducation;
     }
 
-    public Set<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
-    }
 }

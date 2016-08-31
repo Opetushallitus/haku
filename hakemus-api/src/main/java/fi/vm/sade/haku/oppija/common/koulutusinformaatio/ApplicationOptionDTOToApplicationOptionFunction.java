@@ -56,7 +56,6 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             lop.setId(applicationOptionDTO.getProvider().getId());
             lop.setName(applicationOptionDTO.getProvider().getName());
             lop.setAthleteEducation(applicationOptionDTO.getProvider().isAthleteEducation());
-            lop.setApplicationSystemIds(applicationOptionDTO.getProvider().getApplicationSystemIds());
         }
         return lop;
     }
