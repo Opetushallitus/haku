@@ -91,10 +91,10 @@ public class TestApplicationResource extends IntegrationTestSupport {
     @Test
     public void testFindFullApplicationsWithOrganizationFilter() {
         List<Map<String, Object>> result = applicationResource.findFullApplications(
-                null, null, null, null, null, null, null, null, null, null, "1.2.246.562.10.15816289258",
+                null, null, null, null, null, null, null, null, null, null, "1.2.246.562.10.2013102114310829376114",
                 null, null, null, null, null, null, null, null, 0, 50, false
         );
-        assertEquals(1, result.size());
+        assertEquals(3, result.size());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
         List<Map<String, Object>> result = applicationService.findFullApplications(
                 new ApplicationQueryParametersBuilder().setAoOids(aoOids).build());
 
-        assertEquals(2, result.size());
+        assertEquals(4, result.size());
     }
 
     @Test
