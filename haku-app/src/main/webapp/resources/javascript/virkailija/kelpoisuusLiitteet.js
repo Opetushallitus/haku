@@ -71,9 +71,11 @@ var kjal = {
                 var liiteDesc = liitteet[trs].description;
                 var td = $("<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > ").text("Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header);
                 if (liiteDesc !== undefined && liiteDesc.length > 0) {
-                    td.append( $("<a href=\"#\" class=\"helplink\">", {
-                        title: liiteDesc
-                    }));
+                  td.append( $("<a>", {
+                    href: "#",
+                    class: "helplink",
+                    title: liiteDesc
+                  }));
                 }
                 var tr = $("<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >");
                 tr.append(td)
