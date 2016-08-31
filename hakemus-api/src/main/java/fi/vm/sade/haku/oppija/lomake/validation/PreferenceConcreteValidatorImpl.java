@@ -20,7 +20,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
@@ -33,7 +32,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -239,6 +237,15 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationSystem(final ValidationInput validationInput, final ApplicationOption applicationOption) {
+        if (applicationOption == null ||
+                applicationOption.getApplicationSystem() == null ||
+                applicationOption.getApplicationSystem().getId() == null) {
+            String aoid = applicationOption != null ? applicationOption.getId() : "null";
+            String asid = applicationOption != null && applicationOption.getApplicationSystem() != null ? applicationOption.getApplicationSystem().getId() : "null";
+            LOGGER.error("Application system validation failed for {}. Allowed application option id from KI: {}. Application system id: {}",
+                    applicationOption, aoid, asid);
+            return false;
+        }
         if (applicationOption.getApplicationSystem().getId().equals(validationInput.getApplicationSystemId())) {
             return true;
         }
