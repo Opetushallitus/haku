@@ -110,6 +110,10 @@ public class ApplicationSystemRepository {
         q.fields().include("maxApplicationOptions");
         q.with(new Sort(new Sort.Order(Sort.Direction.DESC, "maxApplicationOptions")));
         q.limit(1);
-        return mongoOperations.find(q, ApplicationSystem.class).get(0).getMaxApplicationOptions();
+        List<ApplicationSystem> as = mongoOperations.find(q, ApplicationSystem.class);
+        if (as.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("No application system found for oids %s", String.join(", ", applicationSystemIds)));
+        }
+        return as.get(0).getMaxApplicationOptions();
     }
 }
