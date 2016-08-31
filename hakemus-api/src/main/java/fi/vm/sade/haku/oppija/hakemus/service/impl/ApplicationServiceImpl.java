@@ -351,12 +351,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setOrganizationFilter(applicationQueryParameters.getOrganizationFilter())
                 .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole());
         if (queryASIds != null) {
-            builder.setMaxApplicationOptions(applicationSystemService.getMaxApplicationOptions(applicationQueryParameters.getAsIds()));
+            try {
+                builder.setMaxApplicationOptions(applicationSystemService.getMaxApplicationOptions(applicationQueryParameters.getAsIds()));
+            } catch (ResourceNotFoundException e) { }
         }
         if (queryASIds != null && queryASIds.size() == 1) {
-            ApplicationSystem as = applicationSystemService.getApplicationSystem(queryASIds.get(0), "kohdejoukkoUri", "hakutapa");
-            builder.setKohdejoukko(as.getKohdejoukkoUri());
-            builder.setHakutapa(as.getHakutapa());
+            try {
+                ApplicationSystem as = applicationSystemService.getApplicationSystem(queryASIds.get(0), "kohdejoukkoUri", "hakutapa");
+                builder.setKohdejoukko(as.getKohdejoukkoUri());
+                builder.setHakutapa(as.getHakutapa());
+            } catch (ResourceNotFoundException e) { }
         }
         return builder.build();
     }
