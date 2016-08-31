@@ -16,6 +16,8 @@
 
 package fi.vm.sade.haku.oppija.common.koulutusinformaatio;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class ApplicationOption {
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
     private String educationCode;
+    private ApplicationSystem applicationSystem;
     private List<ApplicationOptionGroup> groups;
 
     public String getId() {
@@ -169,4 +172,11 @@ public class ApplicationOption {
         return false;
     }
 
+    public ApplicationSystem getApplicationSystem() {
+        return applicationSystem;
+    }
+
+    public void setApplicationSystem(ApplicationSystem applicationSystem) {
+        this.applicationSystem = applicationSystem;
+    }
 }

@@ -20,6 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
@@ -238,11 +239,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationSystem(final ValidationInput validationInput, final ApplicationOption applicationOption) {
-        final Set<String> allowedIds = applicationOption.getProvider().getApplicationSystemIds();
-        if (allowedIds.contains(validationInput.getApplicationSystemId())) {
+        if (applicationOption.getApplicationSystem().getId().equals(validationInput.getApplicationSystemId())) {
             return true;
         }
-        LOGGER.error("Application system validation failed for {}. Allowed ids: {}. Application system id: {}", applicationOption, allowedIds, validationInput.getApplicationSystemId());
+        LOGGER.error("Application system validation failed for {}. Allowed id: {}. Application system id: {}",
+                applicationOption, applicationOption.getApplicationSystem().getId(), validationInput.getApplicationSystemId());
         return false;
     }
 
