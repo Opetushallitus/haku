@@ -17,23 +17,34 @@
 package fi.vm.sade.haku.oppija.lomake.domain;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.comparators.ComparatorChain;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.jsoup.Jsoup;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.api.client.repackaged.com.google.common.base.Strings.*;
 import static com.google.api.client.repackaged.com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.*;
+import static java.util.stream.Collectors.*;
 
 public class I18nText implements Serializable {
 
     private static final long serialVersionUID = 3485756393751579235L;
-    public static final String[] LANGS = {"fi", "sv", "en"};
+
+    public static final ArrayList<String> LANGS = newArrayList("fi", "sv", "en");
 
     private final Map<String, String> translations;
 
@@ -47,18 +58,45 @@ public class I18nText implements Serializable {
     }
 
     public String getText(String language) {
-        String[] langPreferences = (String[]) ArrayUtils.addAll(new String[]{language}, LANGS);
-        for (String lang : langPreferences) {
-            String translation = StringUtils.trimToEmpty(translations.get(lang));
-            if (isEmpty(translation))
-                return translation;
+        Stream<Map.Entry<String, String>> entries = translations.entrySet().stream();
+        ToIntFunction<String> isTargetLanguage = l -> language.equals(l) ? 0 : 1;
+        ToIntFunction<String> indexOfLanguage = l -> {
+            int indexOfLang = LANGS.indexOf(l);
+            if(indexOfLang == -1) {
+                return LANGS.size();
+            } else {
+                return indexOfLang;
+            }
+        };
+
+        List<Map.Entry<String, String>>
+                nonNullEntries =
+                entries.filter(e -> e.getKey() != null)
+                        .filter(nonNullValue()).sorted(
+                        (o1,o2) -> new CompareToBuilder()
+                                // is target language
+                                .append(isTargetLanguage.applyAsInt(o1.getKey()),
+                                        isTargetLanguage.applyAsInt(o2.getKey()))
+                                // or use language index to sorting
+                                .append(indexOfLanguage.applyAsInt(o1.getKey()),
+                                        indexOfLanguage.applyAsInt(o2.getKey())).build()
+                ).collect(toList());
+
+        if(!nonNullEntries.isEmpty()) {
+            return nonNullEntries.iterator().next().getValue();
+        } else {
+            return "";
         }
-        if(!translations.isEmpty())
-            return translations.values().iterator().next();
-        return "";
+    }
+
+    private Predicate<Map.Entry<String, String>> nonNullValue() {
+        return e -> !isEmpty(e.getValue());
     }
 
     private boolean isEmpty(String translation) {
+        if(translation == null) {
+            return true;
+        }
         boolean isEmpty;
         boolean isXmlOrHtml = translation.startsWith("<");
         if(isXmlOrHtml) {
