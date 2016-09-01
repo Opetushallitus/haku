@@ -251,8 +251,35 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize(ALLOWED_FOR_ADMIN)
     @ApiOperation(value="Hakemusten haku henkilönumeroiden perusteella", response = Application.class, responseContainer = "Map")
-    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids) {
-        return applicationService.findApplicationsByPersonOid(personOids);
+    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(
+            Set<String> personOids,
+            @QueryParam("allKeys") @DefaultValue("false") @ApiParam(value="Return all keys from db objects") boolean allKeys,
+            @QueryParam("removeSensitiveInfo") @DefaultValue("true") @ApiParam(value="Remove sensitive info from returned db objects") boolean removeSensitiveInfo) {
+        return applicationService.findApplicationsByPersonOid(personOids, allKeys, removeSensitiveInfo);
+    }
+
+    @POST
+    @Path("/personOIDsbyApplicationSystem")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
+    @ApiOperation(value="Henkilö OIDien haku haun oidien perusteella", response=String.class, responseContainer="Set")
+    public Set<String> findPersonOIDsByApplicationSystem(Set<String> applicationSystemOids,
+                                                         @ApiParam("Filter results by organization oid")
+                                                         @QueryParam("organizationOid")
+                                                         String organizationOid) {
+        return applicationService.findPersonOidsByApplicationSystemOids(applicationSystemOids, organizationOid);
+    }
+
+    @POST
+    @Path("/personOIDsbyApplicationOption")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize(ALLOWED_FOR_ADMIN)
+    @ApiOperation(value="Henkilö OIDien haku hakukohteen oidien perusteella", response=String.class, responseContainer="Set")
+    public Set<String> findPersonOIDsByApplicationOption(Set<String> applicationOptionOids,
+                                                         @ApiParam("Filter results by organization oid")
+                                                         @QueryParam("organizationOid")
+                                                         String organizationOid) {
+        return applicationService.findPersonOidsByApplicationOptionOids(applicationOptionOids, organizationOid);
     }
 
     @POST
@@ -314,17 +341,18 @@ public class ApplicationResource {
     @Path("/listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-	@ApiOperation(
-            value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
+	@ApiOperation("Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
     public List<Map<String, Object>> findFullApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                           @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
                                                           @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
                                                           @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                           @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
+                                                          @ApiParam(value="Hakukohteiden oidit") @QueryParam("aoOids") List<String> aoOids,
                                                           @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
                                                           @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") Set<String> baseEducation,
                                                           @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
                                                           @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
+                                                          @ApiParam(value="Filtteröi hakemuksia organisaation mukaan") @QueryParam("organizationFilter") String organizationFilter,
                                                           @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
                                                           @ApiParam(value="Hakuvuosi") @QueryParam("asYear") String asYear,
                                                           @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") String aoOid,
@@ -361,10 +389,12 @@ public class ApplicationResource {
                 .setPreferenceChecked(preferenceChecked)
                 .setAsIds(asIds)
                 .setAoId(aoid)
+                .setAoOids(aoOids)
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
                 .addAoOid(aoOid)
+                .setOrganizationFilter(organizationFilter)
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)

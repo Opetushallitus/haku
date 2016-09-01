@@ -18,6 +18,8 @@ public interface ApplicationSystemService {
 
     List<ApplicationSystem> getAllApplicationSystems(final String... includeFields);
 
+    int getMaxApplicationOptions(List<String> applicationSystemIds);
+
     List<String> findByYearAndSemester(String asSemester, String asYear);
 
     LoadingCache<String, ApplicationSystem> getCache();

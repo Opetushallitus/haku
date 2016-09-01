@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimaps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -79,12 +78,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.Maps.filterKeys;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
-import static fi.vm.sade.haku.oppija.lomake.domain.ModelResponse.ANSWERS;
-import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS;
-import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber.HENKILOTUNNUS_HASH;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -304,41 +300,34 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids) {
-        List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids);
-
-        Iterable<Map<String, Object>> nonSensitiveApplications = removeSensitiveInfo(applications);
-
-        Map<String, Collection<Map<String, Object>>> applicationsByPersonOid = Multimaps.index(nonSensitiveApplications, new Function<Map<String, Object>, String>() {
-            @Override
-            public String apply(Map<String, Object> application) {
-                return (String) application.get(ELEMENT_ID_PERSON_OID);
-            }
-        }).asMap();
-
-        return applicationsByPersonOid;
-    }
-
-    private Iterable<Map<String, Object>> removeSensitiveInfo(Iterable<Map<String, Object>> sensitiveApplications) {
-        return Iterables.transform(sensitiveApplications, new Function<Map<String,Object>, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> apply(Map<String, Object> application) {
-                Map<String, Map<String, String>> answers = (Map<String, Map<String,String>>) application.get(ANSWERS);
-                Map<String, String> contactDetails = answers.get(PHASE_PERSONAL);
-
-                contactDetails.remove(HENKILOTUNNUS);
-                contactDetails.remove(HENKILOTUNNUS_HASH);
-
-                return application;
-            }
-        });
+    public Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, boolean allKeys, boolean removeSensitiveInfo) {
+        List<Map<String, Object>> applications = applicationDAO.findApplicationsByPersonOid(personOids, allKeys, removeSensitiveInfo);
+        return transformApplicationsByKey(convertApplications(applications), ELEMENT_ID_PERSON_OID);
     }
 
     @Override
-    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
+    public Set<String> findPersonOidsByApplicationSystemOids(Collection<String> applicationSystemOids, String organizationOid) {
+        return applicationDAO.findPersonOidsByApplicationSystemOids(applicationSystemOids, organizationOid);
+    }
 
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters,
-                buildFilterParams(applicationQueryParameters));
+    @Override
+    public Set<String> findPersonOidsByApplicationOptionOids(Collection<String> applicationOptionOids, String organizationOid) {
+        return applicationDAO.findPersonOidsByApplicationOptionOids(applicationOptionOids, organizationOid);
+    }
+
+    private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
+
+        Map<String, Collection<Map<String, Object>>> applicationsByKey = Multimaps.index(applications, new Function<Map<String, Object>, String>() {
+            @Override
+            public String apply(Map<String, Object> application) {
+                return (String) application.get(key);
+            }
+        }).asMap();
+
+        return applicationsByKey;
+    }
+
+    private List<Map<String, Object>> convertApplications(List<Map<String, Object>> applications) {
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
             removeAuthorizationMeta(application);
@@ -346,31 +335,32 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applications;
     }
 
+    @Override
+    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
+        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters));
+        return convertApplications(applications);
+    }
+
     private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems(
-                "maxApplicationOptions", "kohdejoukkoUri", "hakutapa");
-        int max = 0;
-        String kohdejoukko = null;
-        String hakutapa = null;
-        List<String> queriedAss = applicationQueryParameters.getAsIds();
-        for (ApplicationSystem as : ass) {
-            if (queriedAss == null || queriedAss.isEmpty() || queriedAss.contains(as.getId())) {
-                kohdejoukko = as.getKohdejoukkoUri();
-                hakutapa = as.getHakutapa();
-                if (as.getMaxApplicationOptions() > max) {
-                    max = as.getMaxApplicationOptions();
-                }
-            }
-        }
+        List<String> queryASIds = applicationQueryParameters.getAsIds();
 
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
-                .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole())
-                .setMaxApplicationOptions(max);
-        if (queriedAss != null && queriedAss.size() == 1) {
-            builder.setKohdejoukko(kohdejoukko);
-            builder.setHakutapa(hakutapa);
+                .setOrganizationFilter(applicationQueryParameters.getOrganizationFilter())
+                .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole());
+        if (queryASIds != null) {
+            try {
+                builder.setMaxApplicationOptions(applicationSystemService.getMaxApplicationOptions(applicationQueryParameters.getAsIds()));
+            } catch (ResourceNotFoundException e) { }
+        }
+        if (queryASIds != null && queryASIds.size() == 1) {
+            try {
+                ApplicationSystem as = applicationSystemService.getApplicationSystem(queryASIds.get(0), "kohdejoukkoUri", "hakutapa");
+                builder.setKohdejoukko(as.getKohdejoukkoUri());
+                builder.setHakutapa(as.getHakutapa());
+            } catch (ResourceNotFoundException e) { }
         }
         return builder.build();
     }

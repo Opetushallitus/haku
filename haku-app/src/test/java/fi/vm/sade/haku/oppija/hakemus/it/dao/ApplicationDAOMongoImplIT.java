@@ -361,7 +361,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     private ApplicationSearchResultDTO findAllQueried(final ApplicationQueryParametersBuilder queryBuilder) {
         ApplicationQueryParameters applicationQueryParameters = queryBuilder.build();
         AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
-        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5, authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null);
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5, authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null);
         final ApplicationSearchResultDTO result = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
         return result;
     }

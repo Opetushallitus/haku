@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -376,8 +377,25 @@ final class ApplicationDAOMongoQueryBuilder {
         return _combineQueries(OPERATOR_OR, preferenceQueries);
     }
 
+    private boolean skipOrganizationFilter(final ApplicationFilterParameters filterParameters) {
+        return OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
+                && StringUtils.isBlank(filterParameters.getOrganizationFilter())
+                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(filterParameters.getKohdejoukko())
+                && !filterParameters.getOrganizationsHetuttomienKasittely().isEmpty();
+    }
+
     private DBObject _filterByOrganization(final ApplicationFilterParameters filterParameters) {
+        if (skipOrganizationFilter(filterParameters)) {
+            return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
+        }
+
+        final ArrayList<DBObject> queries = new ArrayList<>();
+
         final ArrayList<String> allowedOrganizations = new ArrayList<>();
+
+        if (!StringUtils.isBlank(filterParameters.getOrganizationFilter())) {
+            return QueryBuilder.start(META_ALL_ORGANIZATIONS).is(filterParameters.getOrganizationFilter()).get();
+        }
 
         if (filterParameters.getOrganizationsReadble().size() > 0) {
             allowedOrganizations.addAll(filterParameters.getOrganizationsReadble());
@@ -387,13 +405,6 @@ final class ApplicationDAOMongoQueryBuilder {
             allowedOrganizations.add(null);
         }
 
-        if (OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
-                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(filterParameters.getKohdejoukko())
-                && !filterParameters.getOrganizationsHetuttomienKasittely().isEmpty()) {
-            return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
-        }
-
-        final ArrayList<DBObject> queries = new ArrayList<>();
         if (allowedOrganizations.size() > 0) {
             queries.add(QueryBuilder.start(META_ALL_ORGANIZATIONS).in(allowedOrganizations).get());
         }

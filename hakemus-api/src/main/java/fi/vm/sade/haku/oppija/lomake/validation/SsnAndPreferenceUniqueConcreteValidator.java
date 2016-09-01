@@ -71,7 +71,7 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
         ValidationResult validationResult = new ValidationResult();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ApplicationFilterParameters filterParams =
-                new ApplicationFilterParameters(as.getMaxApplicationOptions(), null, null, null, null, null);
+                new ApplicationFilterParameters(as.getMaxApplicationOptions(), null, null, null, null, null, null);
         if (!Strings.isNullOrEmpty(ssn) && Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(filterParams, asId, ssn, aoId)) {
