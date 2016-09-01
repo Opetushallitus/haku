@@ -71,7 +71,7 @@ var kjal = {
                 var liiteDesc = liitteet[trs].description;
                 var td = $("<td class=\"width-25\">");
                 td.append($("<input type=\"checkbox\" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > "));
-                td.append("Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header);
+                td.append(" Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header);
                 if (liiteDesc !== undefined && liiteDesc.length > 0) {
                   td.append( $("<a>", {
                     href: "#",
