@@ -41,7 +41,7 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
 
     @Override
     public SubjectRow apply(final KoodiType koodiType) {
-        Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
+        I18nText translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
         String koodiArvo = koodiType.getKoodiArvo();
 
         boolean optional = false;
@@ -68,7 +68,7 @@ public class KoodiTypeToSubjectRowFunction implements Function<KoodiType, Subjec
             }
         }
 
-        SubjectRow subjectRow = new SubjectRow(koodiArvo, new I18nText(translationsMap), optional, highSchool, comprehensiveSchool, language);
+        SubjectRow subjectRow = new SubjectRow(koodiArvo, translationsMap, optional, highSchool, comprehensiveSchool, language);
         subjectRow.toString();
         return subjectRow;
     }

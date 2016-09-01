@@ -449,7 +449,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                                     @Override
                                     public Option apply(final KoodiType koodiType) {
                                         String version = withVersion ? "#" + koodiType.getVersio() : "";
-                                        return (Option) new OptionBuilder().setValue(koodiType.getKoodiUri() + version).i18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType))).build();
+                                        return (Option) new OptionBuilder().setValue(koodiType.getKoodiUri() + version).i18nText(TranslationsUtil.createTranslationsMap(koodiType)).build();
                                     }
                                 })));
     }

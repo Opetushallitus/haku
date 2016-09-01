@@ -32,8 +32,8 @@ public class OrganisaatioPerustietoToOrganizationFunction implements
 
         final String oppilaitostyyppi = input.getOppilaitostyyppi();
 
-        Map<String, String> nimiTranslations = TranslationsUtil.createTranslationsMap(input.getNimi());
-        return new Organization(new I18nText(nimiTranslations), oid, parentOid, types, oppilaitostyyppi,
+        I18nText nimiTranslations = TranslationsUtil.createTranslationsMap(input.getNimi());
+        return new Organization(nimiTranslations, oid, parentOid, types, oppilaitostyyppi,
                 startDate, endDate);
     }
 }

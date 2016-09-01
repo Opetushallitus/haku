@@ -68,7 +68,7 @@ public class ValmisPhase {
 
         Map<String, String> url = new HashMap();
         url.put("fi", "/");
-        elements.add(new Link("backLink", new I18nText(TranslationsUtil.createTranslationsMap(url)), formParameters.getI18nText("form.valmis.takaisin.opintopolkuun.linkki")));
+        elements.add(new Link("backLink", TranslationsUtil.createTranslationsMap(url), formParameters.getI18nText("form.valmis.takaisin.opintopolkuun.linkki")));
 
         return elements;
     }
