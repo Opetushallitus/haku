@@ -18,12 +18,17 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.jsoup.Jsoup;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.api.client.repackaged.com.google.common.base.Strings.*;
+import static com.google.api.client.repackaged.com.google.common.base.Strings.isNullOrEmpty;
 
 public class I18nText implements Serializable {
 
@@ -44,12 +49,24 @@ public class I18nText implements Serializable {
     public String getText(String language) {
         String[] langPreferences = (String[]) ArrayUtils.addAll(new String[]{language}, LANGS);
         for (String lang : langPreferences) {
-            if (!Strings.isNullOrEmpty(translations.get(lang)))
-                return translations.get(lang);
+            String translation = StringUtils.trimToEmpty(translations.get(lang));
+            if (isEmpty(translation))
+                return translation;
         }
         if(!translations.isEmpty())
             return translations.values().iterator().next();
         return "";
+    }
+
+    private boolean isEmpty(String translation) {
+        boolean isEmpty;
+        boolean isXmlOrHtml = translation.startsWith("<");
+        if(isXmlOrHtml) {
+            isEmpty = isNullOrEmpty(StringUtils.trimToEmpty(Jsoup.parse(translation).text()));
+        } else {
+            isEmpty = isNullOrEmpty(translation);
+        }
+        return isEmpty;
     }
 
     @Override
