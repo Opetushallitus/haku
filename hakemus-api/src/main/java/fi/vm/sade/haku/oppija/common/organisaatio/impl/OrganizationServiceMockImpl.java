@@ -55,9 +55,9 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
 
         public boolean apply(Organization org) {
-            final String nameFi = org.getName().getTranslations().get("fi");
-            final String nameEn = org.getName().getTranslations().get("en");
-            final String nameSv = org.getName().getTranslations().get("sv");
+            final String nameFi = org.getName().getTextOrNull("fi");
+            final String nameEn = org.getName().getTextOrNull("en");
+            final String nameSv = org.getName().getTextOrNull("sv");
             boolean match = searchString == null || (nameFi != null && nameFi.contains(searchString))
                     || (nameEn != null && nameEn.contains(searchString))
                     || (nameSv != null && nameSv.contains(searchString));

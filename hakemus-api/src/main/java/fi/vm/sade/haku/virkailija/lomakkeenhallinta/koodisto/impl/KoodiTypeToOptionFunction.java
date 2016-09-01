@@ -28,7 +28,7 @@ public class KoodiTypeToOptionFunction implements Function<KoodiType, Option> {
     public Option apply(final KoodiType koodiType) {
         return (Option) OptionBuilder.Option(koodiType.getKoodiArvo())
                 .setValue(koodiType.getKoodiArvo())
-                .i18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType)))
+                .i18nText(TranslationsUtil.createTranslationsMap(koodiType))
                 .build();
     }
 

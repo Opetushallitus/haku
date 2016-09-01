@@ -16,26 +16,20 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain;
 
-import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.comparators.ComparatorChain;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.jsoup.Jsoup;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.google.api.client.repackaged.com.google.common.base.Strings.*;
 import static com.google.api.client.repackaged.com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.*;
 import static java.util.Collections.*;
@@ -44,62 +38,79 @@ import static java.util.stream.Collectors.*;
 public class I18nText implements Serializable {
 
     private static final long serialVersionUID = 3485756393751579235L;
-
+    @JsonIgnore
     public static final ArrayList<String> LANGS = newArrayList("fi", "sv", "en");
 
-    private final Map<String, String> translations;
-
-
-    public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
-        if(translations == null) {
-            this.translations = emptyMap();
+    @JsonIgnore
+    private static final ToIntFunction<String> orderByLanguages = l -> {
+        int indexOfLang = LANGS.indexOf(l);
+        if(indexOfLang == -1) {
+            return LANGS.size();
         } else {
-            this.translations = unmodifiableMap(translations.entrySet().stream()
-                    .filter(e -> e.getKey() != null)
-                    .filter(nonNullValue())
-                    .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
+            return indexOfLang;
         }
-    }
+    };
+
+    private final Map<String, String> translations;
 
     public Map<String, String> getTranslations() {
         return translations;
     }
 
-    public String getText(String language) {
-        Stream<Map.Entry<String, String>> entries = translations.entrySet().stream();
-        ToIntFunction<String> isTargetLanguage = l -> language.equals(l) ? 0 : 1;
-        ToIntFunction<String> indexOfLanguage = l -> {
-            int indexOfLang = LANGS.indexOf(l);
-            if(indexOfLang == -1) {
-                return LANGS.size();
-            } else {
-                return indexOfLang;
-            }
-        };
-
-        List<Map.Entry<String, String>>
-                nonNullEntries =
-                entries.sorted(
-                        (o1,o2) -> new CompareToBuilder()
-                                // is target language
-                                .append(isTargetLanguage.applyAsInt(o1.getKey()),
-                                        isTargetLanguage.applyAsInt(o2.getKey()))
-                                // or use language index to sorting
-                                .append(indexOfLanguage.applyAsInt(o1.getKey()),
-                                        indexOfLanguage.applyAsInt(o2.getKey())).build()
-                ).collect(toList());
-
-        if(!nonNullEntries.isEmpty()) {
-            return nonNullEntries.iterator().next().getValue();
+    public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
+        if(translations == null) {
+            this.translations = emptyMap();
         } else {
-            return "";
+            Stream<Map.Entry<String, String>> entryStream = translations.entrySet().stream()
+                    .filter(e -> e.getKey() != null)
+                    .filter(nonNullValue());
+            Map<String, String> filteredCollection = entryStream.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+            if(filteredCollection.isEmpty()) {
+                this.translations = emptyMap();
+            } else {
+                this.translations = unmodifiableMap(filteredCollection);
+            }
         }
     }
+    @JsonIgnore
+    public boolean isEmpty() {
+        return this.translations.isEmpty();
+    }
+    @JsonIgnore
+    public Collection<String> getAvailableLanguages() {
+        return this.translations.keySet();
+    }
+    @JsonIgnore
+    public Collection<String> getAvailableTranslations() {
+        return this.translations.values();
+    }
+    @JsonIgnore
+    public String getTextOrNull(String language) {
+        return translations.get(language);
+    }
+    @JsonIgnore
+    public String getText(String language) {
+        ToIntFunction<String> isTargetLanguage = orderBySpecificLanguage(language);
+        return translations.entrySet().stream().sorted(
+                (o1,o2) -> new CompareToBuilder()
+                        // is target language
+                        .append(isTargetLanguage.applyAsInt(o1.getKey()),
+                                isTargetLanguage.applyAsInt(o2.getKey()))
+                        // or use language index to sorting
+                        .append(orderByLanguages.applyAsInt(o1.getKey()),
+                                orderByLanguages.applyAsInt(o2.getKey())).build()
+        ).map(e -> e.getValue()).findFirst().orElse("");
+    }
 
+    private ToIntFunction<String> orderBySpecificLanguage(String language) {
+        return l -> language.equals(l) ? 0 : 1;
+    }
     private Predicate<Map.Entry<String, String>> nonNullValue() {
         return e -> !isEmpty(e.getValue());
     }
-
+    public boolean containsAllDefaultLanguages() {
+        return this.translations.keySet().containsAll(LANGS);
+    }
     private boolean isEmpty(String translation) {
         if(translation == null) {
             return true;
@@ -116,27 +127,49 @@ public class I18nText implements Serializable {
 
     @Override
     public String toString() {
+        if(translations == null) return null;
         return translations.toString();
     }
 
-    public static I18nText copy(I18nText obj) {
-        if(obj != null) {
-            Map copy = new HashMap();
-            copy.putAll(obj.getTranslations());
-            return new I18nText(copy);
+    public static I18nText copyWithDefaultTranslations(I18nText obj) {
+        if(obj == null || obj.isEmpty()) {
+            return new I18nText(emptyMap());
+        } else {
+            if(obj.containsAllDefaultLanguages()) {
+                return obj;
+            } else {
+                return new I18nText(LANGS.stream().collect(Collectors.toMap(l -> l, obj::getText)));
+            }
         }
-        return null;
     }
 
+    public static I18nText copy(I18nText obj) {
+        return obj;
+    }
+    public I18nText prepend(String prefix) {
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        this.translations.forEach((key,val) -> builder.put(key, prefix + val));
+        return new I18nText(builder.build());
+    }
     public static boolean compare(I18nText obj1, I18nText obj2) {
         if(obj1 == null && obj2 != null) {
             return false;
         } else if(obj1 != null && obj2 == null) {
             return false;
-        } else if(obj1 != null && obj2 != null && !obj1.getTranslations().equals(obj2.getTranslations())) {
-            return false;
+        } else {
+            if(obj1 == obj2 || obj1.translations == obj2.translations) {
+                return true;
+            }
+            boolean equalSizes = obj1.translations.size() == obj2.translations.size();
+            if(!equalSizes) {
+                return false;
+            }
+            boolean equalObjects = obj1.translations.entrySet().containsAll(obj2.translations.entrySet());
+            return equalObjects;
         }
-        return true;
+    }
+    public int size() {
+        return translations.size();
     }
 
 }

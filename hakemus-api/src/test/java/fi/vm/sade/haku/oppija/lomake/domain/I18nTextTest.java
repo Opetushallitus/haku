@@ -9,6 +9,12 @@ import java.util.Map;
 import static com.google.common.collect.ImmutableMap.*;
 
 public class I18nTextTest {
+
+    @Test
+    public void testWithSpecialWhiteSpace() {
+        String someWhitespace = "\u0020";
+
+    }
     @Test
     public void testFallbackToFinlandWhenMissingText() {
         final String expectedDefault = "Suomea";

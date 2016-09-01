@@ -50,7 +50,7 @@ public class Organization {
     }
 
     public Organization(OrganizationRestDTO organisaatioRDTO) {
-        this.name = new I18nText(TranslationsUtil.createTranslationsMap(organisaatioRDTO.getNimi()));
+        this.name = TranslationsUtil.createTranslationsMap(organisaatioRDTO.getNimi());
         this.oid = organisaatioRDTO.getOid();
         this.types = organisaatioRDTO.getTyypit();
         this.parentOid = organisaatioRDTO.getParentOid();
