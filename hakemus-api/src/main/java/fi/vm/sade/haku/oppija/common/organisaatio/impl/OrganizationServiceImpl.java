@@ -182,8 +182,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         List<OrganizationGroupRestDTO> filtered = new ArrayList<OrganizationGroupRestDTO>();
         String termLC = term.toLowerCase();
         for (OrganizationGroupRestDTO group : groups) {
-            for (Map.Entry<String, String> entry : group.getNimi().getTranslations().entrySet()) {
-                String nameLC = entry.getValue().toLowerCase();
+            for (String translation : group.getNimi().getAvailableTranslations()) {
+                String nameLC = translation.toLowerCase();
                 if (nameLC.contains(termLC)) {
                     filtered.add(group);
                     break;
