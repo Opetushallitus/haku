@@ -12,6 +12,7 @@ public class ApplicationQueryParametersBuilder {
     private List<String> asIds;
     private List<String> oids;
     private Boolean preferenceChecked;
+    private String preferenceEligibility;
     private String aoId;
     private String lopOid;
     private List<String> aoOids;
@@ -162,9 +163,11 @@ public class ApplicationQueryParametersBuilder {
     }
 
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(searchTerms, state, paymentState, preferenceChecked, asIds, aoId, lopOid, aoOids, oids,
-                personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
-                sendingClass, updatedAfter, start, rows, orderBy, orderDir, organizationFilter);
+        return new ApplicationQueryParameters(
+                searchTerms, state, paymentState, preferenceChecked, preferenceEligibility, asIds, aoId, lopOid, aoOids,
+                oids, personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
+                sendingClass, updatedAfter, start, rows, orderBy, orderDir, organizationFilter
+        );
     }
 
     public ApplicationQueryParametersBuilder setSearchTerms(String searchTerms) {
@@ -179,6 +182,11 @@ public class ApplicationQueryParametersBuilder {
 
     public ApplicationQueryParametersBuilder setPreferenceChecked(Boolean preferenceChecked) {
         this.preferenceChecked = preferenceChecked;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setPreferenceEligibility(String preferenceEligibility) {
+        this.preferenceEligibility = preferenceEligibility;
         return this;
     }
 }

@@ -57,6 +57,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 null,
                 null,
                 null,
+                null,
                 "",
                 "",
                 baseEducations,

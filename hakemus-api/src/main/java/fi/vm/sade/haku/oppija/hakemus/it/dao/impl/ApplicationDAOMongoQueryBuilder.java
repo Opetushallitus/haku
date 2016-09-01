@@ -215,6 +215,12 @@ final class ApplicationDAOMongoQueryBuilder {
             }
         }
 
+        final String preferenceEligibility = applicationQueryParameters.getPreferenceEligibility();
+        if (preferenceEligibility != null) {
+            filters.add(QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES)
+                    .elemMatch(new BasicDBObject(FIELD_STATUS, preferenceEligibility)).get());
+        }
+
         final List<String> oids = applicationQueryParameters.getOids();
         if(oids != null && !oids.isEmpty()) {
             filters.add(QueryBuilder.start(FIELD_APPLICATION_OID).in(oids).get());

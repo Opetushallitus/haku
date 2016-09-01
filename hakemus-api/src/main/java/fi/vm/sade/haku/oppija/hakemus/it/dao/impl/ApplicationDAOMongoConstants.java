@@ -93,4 +93,8 @@ public final class ApplicationDAOMongoConstants {
     static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
     static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
+
+    // Preference Eligibilities
+    static final String FIELD_PREFERENCE_ELIGIBILITIES = "preferenceEligibilities";
+    static final String FIELD_STATUS = "status";
 }

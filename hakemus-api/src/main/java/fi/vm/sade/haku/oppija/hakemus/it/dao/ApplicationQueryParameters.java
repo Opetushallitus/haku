@@ -26,6 +26,7 @@ public class ApplicationQueryParameters {
     private final List<String> state;
     private final String paymentState;
     private final Boolean preferenceChecked;
+    private final String preferenceEligibility;
     private final List<String> asIds;
     private final List<String> oids;
     private final String aoId;
@@ -46,10 +47,12 @@ public class ApplicationQueryParameters {
     private final String searchTerms;
     private final String organizationFilter;
 
-    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final String paymentState, final Boolean preferenceChecked,
+    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final String paymentState,
+                                      final Boolean preferenceChecked, final String preferenceEligibility,
                                       final List<String> asIds, final String aoId, final String lopOid,
-                                      final List<String> aoOids, final List<String> oids, final List<String> personOids, final String groupOid,
-                                      final Set<String> baseEducation, final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
+                                      final List<String> aoOids, final List<String> oids, final List<String> personOids,
+                                      final String groupOid, final Set<String> baseEducation,
+                                      final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
                                       final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir,
                                       final String organizationFilter) {
@@ -60,6 +63,7 @@ public class ApplicationQueryParameters {
         this.state = state;
         this.paymentState = paymentState;
         this.preferenceChecked = preferenceChecked;
+        this.preferenceEligibility = preferenceEligibility;
         this.aoId = isEmpty(aoId) ? null : aoId;
         this.aoOids = nonEmptyStrings(aoOids);
         this.personOids = nonEmptyStrings(personOids);
@@ -100,6 +104,10 @@ public class ApplicationQueryParameters {
 
     public Boolean getPreferenceChecked() {
         return preferenceChecked;
+    }
+
+    public String getPreferenceEligibility() {
+        return preferenceEligibility;
     }
 
     public List<String> getAsIds() {
