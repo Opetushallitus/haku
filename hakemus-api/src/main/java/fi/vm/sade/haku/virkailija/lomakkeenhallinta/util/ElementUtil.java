@@ -86,13 +86,7 @@ public final class ElementUtil {
     }
 
     public static I18nText addSpaceAtTheBeginning(final I18nText i18nText) {
-        Map<String, String> newTranslations = new HashMap<String, String>();
-        for (Map.Entry<String, String> stringStringEntry : i18nText.getTranslations().entrySet()) {
-            // Add space at the beginning of string, making it appear before regular words in
-            // alphabetical order.
-            newTranslations.put(stringStringEntry.getKey(), "\u0020" + stringStringEntry.getValue());
-        }
-        return new I18nText(newTranslations);
+        return i18nText.prepend("\u0020");
     }
 
     private static String getString(final String bundleName, final String key, final String lang) {

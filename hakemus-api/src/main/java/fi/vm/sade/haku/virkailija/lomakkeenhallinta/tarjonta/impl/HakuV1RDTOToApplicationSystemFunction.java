@@ -50,7 +50,7 @@ public class HakuV1RDTOToApplicationSystemFunction implements Function<HakuV1RDT
             namesTransformed.put(key, value);
         }
 
-        I18nText name = new I18nText(TranslationsUtil.ensureDefaultLanguageTranslations(namesTransformed));
+        I18nText name = TranslationsUtil.ensureDefaultLanguageTranslations(namesTransformed);
 
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList();
         List<HakuaikaV1RDTO> hakuaikas = hakuDTO.getHakuaikas();
