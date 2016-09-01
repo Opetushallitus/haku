@@ -54,7 +54,7 @@ public class I18nText implements Serializable {
     private final Map<String, String> translations;
 
     public Map<String, String> getTranslations() {
-        return translations;
+        return I18nText.copyWithDefaultTranslations(this).getTranslations();
     }
 
     public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
