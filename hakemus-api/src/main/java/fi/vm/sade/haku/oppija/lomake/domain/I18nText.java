@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 import static com.google.api.client.repackaged.com.google.common.base.Strings.*;
 import static com.google.api.client.repackaged.com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.*;
+import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 
 public class I18nText implements Serializable {
@@ -50,7 +51,14 @@ public class I18nText implements Serializable {
 
 
     public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
-        this.translations = Collections.unmodifiableMap(translations);
+        if(translations == null) {
+            this.translations = emptyMap();
+        } else {
+            this.translations = unmodifiableMap(translations.entrySet().stream()
+                    .filter(e -> e.getKey() != null)
+                    .filter(nonNullValue())
+                    .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
+        }
     }
 
     public Map<String, String> getTranslations() {
@@ -71,8 +79,7 @@ public class I18nText implements Serializable {
 
         List<Map.Entry<String, String>>
                 nonNullEntries =
-                entries.filter(e -> e.getKey() != null)
-                        .filter(nonNullValue()).sorted(
+                entries.sorted(
                         (o1,o2) -> new CompareToBuilder()
                                 // is target language
                                 .append(isTargetLanguage.applyAsInt(o1.getKey()),
