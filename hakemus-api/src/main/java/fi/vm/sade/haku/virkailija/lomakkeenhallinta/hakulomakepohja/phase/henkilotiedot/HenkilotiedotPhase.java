@@ -136,9 +136,9 @@ public final class HenkilotiedotPhase {
                 .requiredInline()
                 .formParams(formParameters).build();
 
-        Option male = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
+        Option male = genders.get(0).getI18nText().getText("fi").equalsIgnoreCase("Mies") ?
                 genders.get(0) : sukupuoli.getOptions().get(1);
-        Option female = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
+        Option female = genders.get(0).getI18nText().getText("fi").equalsIgnoreCase("Nainen") ?
                 genders.get(0) : genders.get(1);
 
         ElementBuilder ssnElemBuilder = new SocialSecurityNumberBuilder(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER)

@@ -46,6 +46,6 @@ public class KoodiTypeToSubjectRowFunctionTest {
     public void testApplyText() throws Exception {
         koodiType.getMetadata().add(TestObjectCreator.createKoodiMetadataType());
         SubjectRow subjectRow = koodiTypeToSubjectRowFunction.apply(koodiType);
-        assertFalse(subjectRow.getI18nText().getTranslations().isEmpty());
+        assertFalse(subjectRow.getI18nText().isEmpty());
     }
 }

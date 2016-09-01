@@ -38,7 +38,7 @@ public class KoodiTypeToOptionFunctionTest {
     public void testApplyText() throws Exception {
         koodiType.getMetadata().add(TestObjectCreator.createKoodiMetadataType());
         Option option = koodiTypeToOptionFunction.apply(koodiType);
-        assertFalse(option.getI18nText().getTranslations().isEmpty());
+        assertFalse(option.getI18nText().isEmpty());
     }
 
     @Test

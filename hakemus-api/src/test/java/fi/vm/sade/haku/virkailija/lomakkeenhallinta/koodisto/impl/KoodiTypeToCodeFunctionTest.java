@@ -46,8 +46,8 @@ public class KoodiTypeToCodeFunctionTest {
     @Test
     public void testApplyText() {
         Code code = function.apply(koodiType);
-        assertEquals(TestObjectCreator.NIMI, code.getMetadata().getTranslations()
-                .get(TestObjectCreator.LANG.value().toLowerCase()));
+        assertEquals(TestObjectCreator.NIMI, code.getMetadata()
+                .getText(TestObjectCreator.LANG.value().toLowerCase()));
 
     }
 }

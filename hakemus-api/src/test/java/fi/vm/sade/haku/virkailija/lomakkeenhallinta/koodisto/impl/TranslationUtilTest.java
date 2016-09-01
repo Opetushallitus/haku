@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.koodisto.service.types.common.KieliType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
@@ -41,12 +42,12 @@ public class TranslationUtilTest {
     public void testCreateTranslationsMapNoTranslations() throws Exception {
         KoodiMetadataType koodiMetadataType = TestObjectCreator.createKoodiMetadataType();
         koodiType.getMetadata().add(koodiMetadataType);
-        Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
-        String value_fi = translationsMap.get(KieliType.FI.value().toLowerCase());
+        I18nText translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
+        String value_fi = translationsMap.getText(KieliType.FI.value().toLowerCase());
         assertEquals(TestObjectCreator.NIMI, value_fi);
-        String value_sv = translationsMap.get(KieliType.SV.value().toLowerCase());
+        String value_sv = translationsMap.getText(KieliType.SV.value().toLowerCase());
         assertEquals(TestObjectCreator.NIMI, value_sv);
-        String value_en = translationsMap.get(KieliType.EN.value().toLowerCase());
+        String value_en = translationsMap.getText(KieliType.EN.value().toLowerCase());
         assertEquals(TestObjectCreator.NIMI, value_en);
     }
 
@@ -56,18 +57,18 @@ public class TranslationUtilTest {
         KoodiMetadataType koodiMetadataType2 = TestObjectCreator.createKoodiMetadataType2();
         koodiType.getMetadata().add(koodiMetadataType);
         koodiType.getMetadata().add(koodiMetadataType2);
-        Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
-        String value_fi = translationsMap.get(KieliType.FI.value().toLowerCase());
+        I18nText translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
+        String value_fi = translationsMap.getText(KieliType.FI.value().toLowerCase());
         assertEquals(TestObjectCreator.NIMI, value_fi);
-        String value_sv = translationsMap.get(KieliType.SV.value().toLowerCase());
+        String value_sv = translationsMap.getText(KieliType.SV.value().toLowerCase());
         assertEquals(TestObjectCreator.NIMI_2, value_sv);
-        String value_en = translationsMap.get(KieliType.EN.value().toLowerCase());
+        String value_en = translationsMap.getText(KieliType.EN.value().toLowerCase());
         assertEquals(TestObjectCreator.NIMI, value_en);
     }
 
     @Test
     public void testEmptyMetadata() throws Exception {
-        Map<String, String> translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
+        I18nText translationsMap = TranslationsUtil.createTranslationsMap(koodiType);
         assertTrue(translationsMap.isEmpty());
     }
 }
