@@ -28,7 +28,7 @@ public class I18nTextTest {
         String someWhitespace = "\u0020";
         Map<String,String> translation = of(
                 "en", someWhitespace);
-        Assert.assertEquals(1,new I18nText(translation).size());
+        Assert.assertEquals(0,new I18nText(translation).size());
     }
     @Test
     public void testFallbackToFinlandWhenMissingText() {
