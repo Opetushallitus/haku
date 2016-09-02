@@ -159,30 +159,6 @@ $(document).ready(function () {
         }
     };
 
-    function togglePaymentStateSelect() {
-        var show = $("#application-system option:selected").filter(function () {
-                return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
-        }).length > 0;
-        if (show) {
-            $('#payment-state-select').show();
-        } else {
-            $('#payment-state-select').hide();
-            $('#payment-state').val('');
-        }
-    }
-
-    function togglePreferenceEligibilitySelect() {
-        var show = $("#application-system option:selected").filter(function () {
-                return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
-            }).length > 0;
-        if (show) {
-            $('#preference-eligibility-select').show();
-        } else {
-            $('#preference-eligibility-select').hide();
-            $('#preference-eligibility').val('');
-        }
-    }
-
     function toggleExcelLink() {
         $('#excel-link').hide();
         $("#application-system option:selected").each(function () {
@@ -193,9 +169,30 @@ $(document).ready(function () {
         });
     }
 
+    function updateKKSpecificFilters() {
+        if (KKHakuIsSelected) {
+            $('#preference-eligibility-select').show();
+            $('#payment-state-select').show();
+        }
+        else {
+            resetAndHideKKSpecificFilters();
+        }
+    }
+
+    function resetAndHideKKSpecificFilters() {
+        $('#preference-eligibility-select').hide();
+        $('#payment-state-select').hide();
+
+        $('#preference-eligibility').val('');
+        $('#payment-state').val('');
+    }
+
+    function KKHakuIsSelected() {
+        return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
+    }
+
     toggleExcelLink();
-    togglePaymentStateSelect();
-    togglePreferenceEligibilitySelect();
+    updateKKSpecificFilters();
 
     $('#hakukausi').change(function () {
         applicationSystemSelection.init()
@@ -207,8 +204,7 @@ $(document).ready(function () {
     $('#application-system').change(function () {
         baseEducationSelection.init();
         toggleExcelLink();
-        togglePaymentStateSelect();
-        togglePreferenceEligibilitySelect();
+        updateKKSpecificFilters();
     });
 
     $('input#sendingSchool').autocomplete({
@@ -547,8 +543,7 @@ $(document).ready(function () {
                 $.cookie(cookieName, obj);
             }
             toggleExcelLink();
-            togglePaymentStateSelect();
-            togglePreferenceEligibilitySelect();
+            updateKKSpecificFilters();
             return obj;
         }
 
@@ -686,8 +681,7 @@ $(document).ready(function () {
             $('#primary-preference-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
             disableExcel();
-            togglePaymentStateSelect();
-            togglePreferenceEligibilitySelect();
+            resetAndHideKKSpecificFilters();
         },
         this.getSortOrder = function (columnName) {
             var column = $('#application-table-header-' + columnName);
