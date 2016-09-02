@@ -120,7 +120,7 @@ public class I18nText implements Serializable {
         if(isXmlOrHtml) {
             isEmpty = isNullOrEmpty(StringUtils.trimToEmpty(Jsoup.parse(translation).text()));
         } else {
-            isEmpty = isNullOrEmpty(translation);
+            isEmpty = isNullOrEmpty(StringUtils.trimToEmpty(translation));
         }
         return isEmpty;
     }
