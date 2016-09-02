@@ -31,9 +31,8 @@ public class OptionBuilder extends QuestionBuilder {
 
 
     public static Option EmptyOption() {
-        // "\u0020" passes through as 'empty'
         return (Option) Option(ElementUtil.randomId())
-                .setValue("\u0020")
-                .i18nText(ElementUtil.createI18NAsIs("\u0020")).build();
+                .setValue("")
+                .i18nText(ElementUtil.createI18NAsIs("")).build();
     }
 }
