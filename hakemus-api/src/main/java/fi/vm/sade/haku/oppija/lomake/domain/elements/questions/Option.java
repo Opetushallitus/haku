@@ -22,6 +22,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 public class Option extends Question{
 
     private static final long serialVersionUID = 2199056039532430243L;
+    public static final String EMPTY_VALUE_PLACEHOLDER = "\u00A0";
     private final String value;
     private boolean defaultOption = false;
 

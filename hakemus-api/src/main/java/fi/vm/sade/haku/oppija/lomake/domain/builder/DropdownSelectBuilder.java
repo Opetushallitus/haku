@@ -35,8 +35,8 @@ public class DropdownSelectBuilder extends OptionQuestionBuilder {
 
     public OptionQuestionBuilder emptyOptionDefault() {
         options.add(OptionBuilder.EmptyOption());
-        this.defaultOption = "";
-        this.defaultValueAttribute = "";
+        this.defaultOption = Option.EMPTY_VALUE_PLACEHOLDER;
+        this.defaultValueAttribute = Option.EMPTY_VALUE_PLACEHOLDER;
         return this;
     }
 
