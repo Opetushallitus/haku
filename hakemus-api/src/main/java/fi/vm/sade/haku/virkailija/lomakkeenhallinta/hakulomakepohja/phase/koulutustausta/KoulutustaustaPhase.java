@@ -370,7 +370,14 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        Element kyllaOptionMore = buildTrueOptionMore(radioId, buildSuoritusmaa(formParameters, maat, TOISEN_ASTEEN_SUORITUSMAA, ""));
+        Element taSuoritusmaaDropdown = Dropdown(TOISEN_ASTEEN_SUORITUSMAA)
+                .emptyOptionDefault()
+                .addOptions(maat)
+                .labelKey(TOISEN_ASTEEN_SUORITUSMAA)
+                .requiredInline()
+                .formParams(formParameters).build();
+
+        Element kyllaOptionMore = buildTrueOptionMore(radioId, taSuoritusmaaDropdown);
 
         kyllaOption.addChild(kyllaOptionMore);
 
