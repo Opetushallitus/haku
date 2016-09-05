@@ -45,6 +45,9 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "1.2.246.562.10.57118763500");
         setValue("pohjakoulutus_am_nayttotutkintona", "false");
+        findByIdAndClick("toisen_asteen_suoritus_true_label");
+        setValue("toisen_asteen_suoritusmaa", "FIN");
+        waitForMillis(500);
 
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
