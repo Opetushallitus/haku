@@ -88,6 +88,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             } else if ("checkbox".equals(type)) {
                 findByIdAndClick(id);
             } else {
+                element.clear();
                 type(id, value, true);
             }
         } else {
