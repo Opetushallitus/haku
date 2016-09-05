@@ -170,7 +170,7 @@ $(document).ready(function () {
     }
 
     function updateKKSpecificFilters() {
-        if (KKHakuIsSelected) {
+        if (KKHakuIsSelected()) {
             $('#preference-eligibility-select').show();
             $('#payment-state-select').show();
         }
