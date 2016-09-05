@@ -188,7 +188,10 @@ $(document).ready(function () {
     }
 
     function KKHakuIsSelected() {
-        return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
+        var result = $("#application-system option:selected").filter(function () {
+            return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
+        }).length > 0;
+        return result;
     }
 
     toggleExcelLink();
