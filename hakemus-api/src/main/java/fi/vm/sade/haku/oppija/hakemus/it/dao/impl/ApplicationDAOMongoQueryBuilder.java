@@ -195,9 +195,10 @@ final class ApplicationDAOMongoQueryBuilder {
         if (null != preferenceQuery)
             filters.add(preferenceQuery);
 
+        final List<String> aoOids = applicationQueryParameters.getAoOids();
+
         final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
         if (preferenceChecked != null) {
-            final List<String> aoOids = applicationQueryParameters.getAoOids() ;
             if (!aoOids.isEmpty()) {
                 filters.add(
                         QueryBuilder.start("preferencesChecked").elemMatch(
@@ -217,8 +218,22 @@ final class ApplicationDAOMongoQueryBuilder {
 
         final String preferenceEligibility = applicationQueryParameters.getPreferenceEligibility();
         if (preferenceEligibility != null) {
-            filters.add(QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES)
-                    .elemMatch(new BasicDBObject(FIELD_STATUS, preferenceEligibility)).get());
+            if (!aoOids.isEmpty()) {
+                filters.add(
+                        QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES).elemMatch(
+                            QueryBuilder.start().and(
+                                    QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITY_AO_OID).in(aoOids).get(),
+                                    new BasicDBObject(FIELD_STATUS, preferenceEligibility)
+                            ).get()
+                        ).get()
+                );
+            }
+            else {
+                filters.add(
+                        QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES)
+                            .elemMatch(new BasicDBObject(FIELD_STATUS, preferenceEligibility)).get()
+                );
+            }
         }
 
         final List<String> oids = applicationQueryParameters.getOids();
