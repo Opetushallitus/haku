@@ -253,6 +253,12 @@ public class ApplicationResourceTest {
                 "class", new DateParam("201403041506"), 0, 20);
         param = myApplicationService.applicationQueryParameters;
         assertEquals("NOTIFIED", param.getPaymentState());
+
+        resource.findApplications("query", null, "NOTIFIED", "ELIGIBLE", null, "aoId", "groupOid", "baseEducation", "lopOid", "", "semester",
+                "year", "aoId", false, false, "sendingSchool",
+                "class", new DateParam("201403041506"), 0, 20);
+        param = myApplicationService.applicationQueryParameters;
+        assertEquals("ELIGIBLE", param.getPreferenceEligibility());
     }
 
     class ApplicationServiceMock extends ApplicationServiceImpl {
