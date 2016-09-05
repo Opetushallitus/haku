@@ -20,6 +20,8 @@ import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -30,6 +32,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestionCompact;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConverter;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.bson.types.ObjectId;
@@ -37,6 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -44,10 +49,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.status;
@@ -77,6 +84,8 @@ public class ThemeQuestionResource {
     private FormConfigurationService formConfigurationService;
     @Autowired
     private ThemeQuestionConverter themeQuestionConverter;
+    @Autowired
+    private HakuService hakuService;
 
     public ThemeQuestionResource(){
     }
@@ -86,12 +95,14 @@ public class ThemeQuestionResource {
                                  final HakukohdeService hakukohdeService,
                                  final OrganizationService organizationService,
                                  final AuthenticationService authenticationService,
-                                 final FormConfigurationService formConfigurationService) {
+                                 final FormConfigurationService formConfigurationService,
+                                 final HakuService hakuService) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.authenticationService = authenticationService;
         this.formConfigurationService = formConfigurationService;
+        this.hakuService = hakuService;
     }
 
     @GET
@@ -122,6 +133,9 @@ public class ThemeQuestionResource {
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+        if(!allowModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
+            throw new JSONException(FORBIDDEN, "theme question delete is not allowed", null);
+        }
         if (themeQuestionHasActiveOrLockedChildren(themeQuestionId)) {
             throw new JSONException(BAD_REQUEST, "question.has.followup.questions.deletion.not.allowed", null);
         }
@@ -167,6 +181,11 @@ public class ThemeQuestionResource {
         }
 
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+
+        if(!allowModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
+            throw new JSONException(FORBIDDEN, "theme question modify is not allowed", null);
+        }
+
         themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
         //Parent and ordinal cannot be changed here
         themeQuestion.setOrdinal(dbThemeQuestion.getOrdinal());
@@ -202,6 +221,8 @@ public class ThemeQuestionResource {
                                      @PathParam("themeId")  String themeId,
                                      ThemeQuestion themeQuestion) throws IOException {
 
+
+
         LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(BAD_REQUEST, "Missing pathparameters", null);
@@ -219,6 +240,9 @@ public class ThemeQuestionResource {
         String tqThemeId = themeQuestion.getTheme();
         if (! themeId.equals(tqThemeId)) {
             throw new JSONException(BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
+        }
+        if(!allowInsertApplicationSystemThemeQuestions(applicationSystemId)) {
+            throw new JSONException(FORBIDDEN, "theme question insert is not allowed", null);
         }
         //Check if parent exists
         String parentId = null;
@@ -441,6 +465,40 @@ public class ThemeQuestionResource {
         }
 
         return ok(questionMap).build();
+    }
+
+    private boolean allowModifyApplicationSystemThemeQuestions(String applicationSystemId) {
+        return isRekisterinpitaja() || isBeforeFirstHakuaika(getApplicationPeriods(applicationSystemId));
+    }
+
+    private boolean allowInsertApplicationSystemThemeQuestions(String applicationSystemId) {
+        return isRekisterinpitaja() || !isHakuaikaGoing(getApplicationPeriods(applicationSystemId));
+    }
+
+    private boolean isHakuaikaGoing(List<ApplicationPeriod> applicationPeriods) {
+        long now = System.currentTimeMillis();
+        return applicationPeriods.stream().anyMatch(p -> p.getStart().getTime() <= now && now <= p.getEnd().getTime());
+    }
+
+    private boolean isBeforeFirstHakuaika(List<ApplicationPeriod> applicationPeriods) {
+        return System.currentTimeMillis() < applicationPeriods.stream().mapToLong(p -> p.getStart().getTime()).min().getAsLong();
+    }
+
+    private List<ApplicationPeriod> getApplicationPeriods(String applicationSystemId) {
+        ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
+        if (applicationSystem == null)
+            throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
+        return applicationSystem.getApplicationPeriods();
+    }
+
+    private boolean isRekisterinpitaja() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+          .stream().map(GrantedAuthority::getAuthority).anyMatch(a -> isRekisterinpitajaRole(a));
+    }
+
+    private boolean isRekisterinpitajaRole(String role) {
+        return "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.00000000001" == role ||
+               "APP_HAKULOMAKKEENHALLINTA_READ_UPDATE_1.2.246.562.10.00000000001" == role;
     }
 
     private static Set<String> getThemeQuestionsAsMapValidationErrors(String applicationSystemId, String lang) {
