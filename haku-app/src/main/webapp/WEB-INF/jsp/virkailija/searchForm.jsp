@@ -111,6 +111,19 @@
                         </div>
                     </td>
                     <td>
+                        <div id="preference-eligibility-select">
+                            <label for="preference-eligibility"><fmt:message key="virkailija.hakemus.hakukelpoisuus.otsikko"/></label>
+                            <div class="field-select-containerbox">
+                                <select class="width-50" id="preference-eligibility" name="preference-eligibility">
+                                    <option selected="selected" value=""></option>
+                                    <option value="NOT_CHECKED"><fmt:message key="virkailija.hakemus.hakukelpoisuus.tarkistamatta"/></option>
+                                    <option value="ELIGIBLE"><fmt:message key="virkailija.hakemus.hakukelpoisuus.hakukelpoinen"/></option>
+                                    <option value="INELIGIBLE"><fmt:message key="virkailija.hakemus.hakukelpoisuus.eihakukelpoinen"/></option>
+                                    <option value="INADEQUATE"><fmt:message key="virkailija.hakemus.hakukelpoisuus.puutteellinen"/></option>
+                                    <option value="AUTOMATICALLY_CHECKED_ELIGIBLE"><fmt:message key="virkailija.hakemus.hakukelpoisuus.hyvaksyttyautomaattisesti"/></option>
+                                </select>
+                            </div>
+                        </div>
                         <div id="payment-state-select">
                             <label for="payment-state"><fmt:message key="virkailija.hakemus.maksun.tila.otsikko"/></label>
                             <div class="field-select-containerbox">

@@ -159,18 +159,6 @@ $(document).ready(function () {
         }
     };
 
-    function togglePaymentStateSelect() {
-        var show = $("#application-system option:selected").filter(function () {
-                return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
-        }).length > 0;
-        if (show) {
-            $('#payment-state-select').show();
-        } else {
-            $('#payment-state-select').hide();
-            $('#payment-state').val('');
-        }
-    }
-
     function toggleExcelLink() {
         $('#excel-link').hide();
         $("#application-system option:selected").each(function () {
@@ -181,8 +169,33 @@ $(document).ready(function () {
         });
     }
 
+    function updateKKSpecificFilters() {
+        if (KKHakuIsSelected()) {
+            $('#preference-eligibility-select').show();
+            $('#payment-state-select').show();
+        }
+        else {
+            resetAndHideKKSpecificFilters();
+        }
+    }
+
+    function resetAndHideKKSpecificFilters() {
+        $('#preference-eligibility-select').hide();
+        $('#payment-state-select').hide();
+
+        $('#preference-eligibility').val('');
+        $('#payment-state').val('');
+    }
+
+    function KKHakuIsSelected() {
+        var result = $("#application-system option:selected").filter(function () {
+            return $(this).attr('data-kohdejoukko') === 'haunkohdejoukko_12';
+        }).length > 0;
+        return result;
+    }
+
     toggleExcelLink();
-    togglePaymentStateSelect();
+    updateKKSpecificFilters();
 
     $('#hakukausi').change(function () {
         applicationSystemSelection.init()
@@ -194,7 +207,7 @@ $(document).ready(function () {
     $('#application-system').change(function () {
         baseEducationSelection.init();
         toggleExcelLink();
-        togglePaymentStateSelect();
+        updateKKSpecificFilters();
     });
 
     $('input#sendingSchool').autocomplete({
@@ -477,6 +490,7 @@ $(document).ready(function () {
                 $('#application-state').val(obj.appState);
                 $('#payment-state').val(obj.paymentState);
                 $('#preference-checked').val(obj.preferenceChecked);
+                $('#preference-eligibility').val(obj.preferenceEligibility);
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoidCode);
                 $('#application-preference-oid').val(obj.aoOid);
@@ -500,6 +514,7 @@ $(document).ready(function () {
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'paymentState', '#payment-state');
                 addParameter(obj, 'preferenceChecked', '#preference-checked');
+                addParameter(obj, 'preferenceEligibility', '#preference-eligibility');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'aoidCode', '#application-preference-code');
                 addParameter(obj, 'aoOid', '#application-preference-oid');
@@ -531,7 +546,7 @@ $(document).ready(function () {
                 $.cookie(cookieName, obj);
             }
             toggleExcelLink();
-            togglePaymentStateSelect();
+            updateKKSpecificFilters();
             return obj;
         }
 
@@ -669,7 +684,7 @@ $(document).ready(function () {
             $('#primary-preference-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
             disableExcel();
-            togglePaymentStateSelect();
+            resetAndHideKKSpecificFilters();
         },
         this.getSortOrder = function (columnName) {
             var column = $('#application-table-header-' + columnName);

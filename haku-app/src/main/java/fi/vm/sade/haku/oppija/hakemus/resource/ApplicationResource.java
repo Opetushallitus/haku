@@ -419,6 +419,7 @@ public class ApplicationResource {
     public ApplicationSearchResultDTO findApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String query,
                                                        @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
                                                        @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
+                                                       @ApiParam(value="Hakukelpoisuus", allowableValues="[NOT_CHECKED, ELIGIBLE, INELIGIBLE, INADEQUATE, AUTOMATICALLY_CHECKED_ELIGIBLE]") @QueryParam("preferenceEligibility") String preferenceEligibility,
                                                        @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                        @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
                                                        @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
@@ -436,7 +437,7 @@ public class ApplicationResource {
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
-        return findApplicationsOrdered("fullName", "asc", query, state, paymentState, preferenceChecked, aoid, groupOid, Sets.newHashSet(baseEducation), lopoid, asId,
+        return findApplicationsOrdered("fullName", "asc", query, state, paymentState, preferenceEligibility, preferenceChecked, aoid, groupOid, Sets.newHashSet(baseEducation), lopoid, asId,
                 asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
                 sendingClass, updatedAfter, start, rows);
     }
@@ -452,6 +453,7 @@ public class ApplicationResource {
                                                               @ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                               @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
                                                               @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
+                                                              @ApiParam(value="Hakukelpoisuus", allowableValues="[NOT_CHECKED, ELIGIBLE, INELIGIBLE, INADEQUATE, AUTOMATICALLY_CHECKED_ELIGIBLE]") @QueryParam("preferenceEligibility") String preferenceEligibility,
                                                               @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                               @ApiParam(value="Hakukohteen koodi") @QueryParam("aoidCode") String aoid,
                                                               @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
@@ -468,11 +470,7 @@ public class ApplicationResource {
                                                               @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
                                                               @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
                                                               @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
-//        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
-//                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
-//                q, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
-
-        List<String> asIds = new ArrayList<String>();
+        List<String> asIds = new ArrayList<>();
         if (isNotEmpty(asId)) {
             asIds.add(asId);
         } else if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
@@ -490,6 +488,7 @@ public class ApplicationResource {
                 .setStates(state)
                 .setPaymentState(paymentState)
                 .setPreferenceChecked(preferenceChecked)
+                .setPreferenceEligibility(preferenceEligibility)
                 .setAsIds(asIds)
                 .setAoId(aoid)
                 .setGroupOid(groupOid)
