@@ -199,41 +199,20 @@ final class ApplicationDAOMongoQueryBuilder {
 
         final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
         if (preferenceChecked != null) {
-            if (!aoOids.isEmpty()) {
-                filters.add(
-                        QueryBuilder.start("preferencesChecked").elemMatch(
-                                QueryBuilder.start().and(
-                                        QueryBuilder.start("preferenceAoOid").in(aoOids).get(),
-                                        new BasicDBObject("checked", preferenceChecked)
-                                ).get()
-                        ).get()
-                );
-            } else {
-                filters.add(
-                        QueryBuilder.start("preferencesChecked")
-                                .elemMatch(new BasicDBObject("checked", preferenceChecked)).get()
-                );
-            }
+            filters.add(
+                    QueryBuilder.start("preferencesChecked").elemMatch(
+                            aoOidElemMatcher(aoOids, QueryBuilder.start("checked").is(preferenceChecked), "preferenceAoOid")
+                    ).get()
+            );
         }
 
         final String preferenceEligibility = applicationQueryParameters.getPreferenceEligibility();
         if (preferenceEligibility != null) {
-            if (!aoOids.isEmpty()) {
-                filters.add(
-                        QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES).elemMatch(
-                            QueryBuilder.start().and(
-                                    QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITY_AO_OID).in(aoOids).get(),
-                                    new BasicDBObject(FIELD_STATUS, preferenceEligibility)
-                            ).get()
-                        ).get()
-                );
-            }
-            else {
-                filters.add(
-                        QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES)
-                            .elemMatch(new BasicDBObject(FIELD_STATUS, preferenceEligibility)).get()
-                );
-            }
+            filters.add(
+                    QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES).elemMatch(
+                            aoOidElemMatcher(aoOids, QueryBuilder.start(FIELD_STATUS).is(preferenceEligibility), FIELD_PREFERENCE_ELIGIBILITY_AO_OID)
+                    ).get()
+            );
         }
 
         final List<String> oids = applicationQueryParameters.getOids();
@@ -321,6 +300,14 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         return filters;
+    }
+    
+    private DBObject aoOidElemMatcher(List<String> aoOids, QueryBuilder query, String aoFieldName) {
+        if (aoOids.isEmpty()) {
+            return query.get();
+        } else {
+            return query.and(aoFieldName).in(aoOids).get();
+        }
     }
 
     private DBObject _createPreferenceFilters(final ApplicationQueryParameters applicationQueryParameters, final ApplicationFilterParameters filterParameters) {

@@ -1,8 +1,10 @@
 package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
 import com.google.common.collect.Sets;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
@@ -232,6 +234,31 @@ public class TestApplicationResource extends IntegrationTestSupport {
         assertEquals(2, res1.size());
         Collection<String> res2 = applicationResource.findPersonOIDsByApplicationOption(applicationOptionOids, "nonExistingOrg");
         assertEquals(0, res2.size());
+    }
+
+    @Test
+    public void testFindByPreferenceEligibilityWithEligible() {
+        ApplicationQueryParameters params = new ApplicationQueryParametersBuilder()
+                .setPreferenceEligibility(PreferenceEligibility.Status.ELIGIBLE.name()).build();
+        ApplicationSearchResultDTO applications = applicationService.findApplications(params);
+        assertEquals(3, applications.getTotalCount());
+    }
+
+    @Test
+    public void testFindByPreferenceEligibilityWithIneligibleAndAoOid() {
+        ApplicationQueryParameters params = new ApplicationQueryParametersBuilder()
+                .addAoOid("1.2.246.562.20.91374364379")
+                .setPreferenceEligibility(PreferenceEligibility.Status.INELIGIBLE.name()).build();
+        ApplicationSearchResultDTO applications = applicationService.findApplications(params);
+        assertEquals(2, applications.getTotalCount());
+    }
+
+    @Test
+    public void testFindByPreferenceEligibilityWithAoOid() {
+        ApplicationQueryParameters params = new ApplicationQueryParametersBuilder()
+                .addAoOid("1.2.246.562.20.91374364379").build();
+        ApplicationSearchResultDTO applications = applicationService.findApplications(params);
+        assertEquals(3, applications.getTotalCount());
     }
 
     private String getHenkilotunnus(Collection<Map<String, Object>> applications) {
