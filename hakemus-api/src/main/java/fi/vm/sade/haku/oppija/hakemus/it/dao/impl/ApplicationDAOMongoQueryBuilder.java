@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static com.mongodb.QueryBuilder.start;
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static java.lang.String.format;
@@ -58,17 +59,17 @@ final class ApplicationDAOMongoQueryBuilder {
 
     public DBObject buildApplicationByApplicationOption(final String applicationSystemId, final String aoId, final ApplicationFilterParameters filterParameters) {
         final DBObject orgFilter = _filterByOrganization(filterParameters);
-        return QueryBuilder.start().and(
+        return start().and(
                 new BasicDBObject(META_FIELD_AO, aoId),
                 new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).in(STATE_CONSIDERED_ACTIVE).get(),
+                start(FIELD_APPLICATION_STATE).in(STATE_CONSIDERED_ACTIVE).get(),
                 orgFilter).get();
     }
     public DBObject buildApplicationByApplicationOption(final List<String> oids, final ApplicationFilterParameters filterParameters) {
         final DBObject orgFilter = _filterByOrganization(filterParameters);
-        return QueryBuilder.start().and(
+        return start().and(
                 new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(QueryOperators.IN, oids)),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).in(STATE_CONSIDERED_ACTIVE).get(),
+                start(FIELD_APPLICATION_STATE).in(STATE_CONSIDERED_ACTIVE).get(),
                 orgFilter).get();
     }
     public DBObject buildApplicationExistsForSSN(final String ssn, final String asId) {
@@ -87,13 +88,13 @@ final class ApplicationDAOMongoQueryBuilder {
 
     private QueryBuilder _buildApplicationExistsForSSN(final String ssn, final String asId) {
         final String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
-        return QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
+        return start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                 .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                 .and(FIELD_APPLICATION_STATE).in(STATE_NOT_PASSIVE);
     }
 
     private QueryBuilder _buildApplicationExistsForEmail(final String email, final String asId) {
-        return QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
+        return start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                 .and(FIELD_EMAIL).is(email)
                 .and(FIELD_APPLICATION_STATE).in(STATE_NOT_PASSIVE);
     }
@@ -107,7 +108,7 @@ final class ApplicationDAOMongoQueryBuilder {
         }
         final DBObject orgFilter = _filterByOrganization(filterParameters);
         if (null == orgFilter) {
-            return QueryBuilder.start("_id").is(null).get();
+            return start("_id").is(null).get();
         }
 
         final  ArrayList<DBObject> filters =_buildQueryFilter(applicationQueryParameters, filterParameters);
@@ -121,7 +122,7 @@ final class ApplicationDAOMongoQueryBuilder {
         }
         queries.add(orgFilter);
 
-        final DBObject query = QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])).get();
+        final DBObject query = start().and(queries.toArray(new DBObject[queries.size()])).get();
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Constructed query: {}. Took: {} ms", query.toString(), System.currentTimeMillis() - startTime);
@@ -146,16 +147,16 @@ final class ApplicationDAOMongoQueryBuilder {
                     }
                 } else { // Short form
                     queries.add(
-                            QueryBuilder.start().or(
-                                    QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + searchTerm).get(),
-                                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + searchTerm).get()
+                            start().or(
+                                    start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + searchTerm).get(),
+                                    start(FIELD_PERSON_OID).is(userOidPrefix + "." + searchTerm).get()
                             ).get()
                     );
                 }
             } else if (HETU_PATTERN.matcher(searchTerm).matches()) {
                 String encryptedSsn = shaEncrypter.encrypt(searchTerm.toUpperCase());
                 queries.add(
-                        QueryBuilder.start(FIELD_SSN_DIGEST).is(encryptedSsn).get()
+                        start(FIELD_SSN_DIGEST).is(encryptedSsn).get()
                 );
             } else { // Name or date of birth
                 queries.add(_createDobOrNameQuery(searchTerm));
@@ -172,9 +173,9 @@ final class ApplicationDAOMongoQueryBuilder {
             dob = tryDate(new SimpleDateFormat("ddMMyyyy"), possibleDob);
         }
         if (dob != null) {
-            return QueryBuilder.start(FIELD_DATE_OF_BIRTH).is(new SimpleDateFormat("dd.MM.yyyy").format(dob)).get();
+            return start(FIELD_DATE_OF_BIRTH).is(new SimpleDateFormat("dd.MM.yyyy").format(dob)).get();
         }
-        return QueryBuilder.start(FIELD_SEARCH_NAMES).regex(Pattern.compile(REGEX_LINE_BEGIN + searchTerm.toLowerCase())).get();
+        return start(FIELD_SEARCH_NAMES).regex(Pattern.compile(REGEX_LINE_BEGIN + searchTerm.toLowerCase())).get();
     }
 
     private Date tryDate(DateFormat df, String str) {
@@ -200,8 +201,8 @@ final class ApplicationDAOMongoQueryBuilder {
         final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
         if (preferenceChecked != null) {
             filters.add(
-                    QueryBuilder.start("preferencesChecked").elemMatch(
-                            aoOidElemMatcher(aoOids, QueryBuilder.start("checked").is(preferenceChecked), "preferenceAoOid")
+                    start("preferencesChecked").elemMatch(
+                            aoOidElemMatcher(aoOids, start("checked").is(preferenceChecked), "preferenceAoOid")
                     ).get()
             );
         }
@@ -209,63 +210,63 @@ final class ApplicationDAOMongoQueryBuilder {
         final String preferenceEligibility = applicationQueryParameters.getPreferenceEligibility();
         if (preferenceEligibility != null) {
             filters.add(
-                    QueryBuilder.start(FIELD_PREFERENCE_ELIGIBILITIES).elemMatch(
-                            aoOidElemMatcher(aoOids, QueryBuilder.start(FIELD_STATUS).is(preferenceEligibility), FIELD_PREFERENCE_ELIGIBILITY_AO_OID)
+                    start(FIELD_PREFERENCE_ELIGIBILITIES).elemMatch(
+                            aoOidElemMatcher(aoOids, start(FIELD_STATUS).is(preferenceEligibility), FIELD_PREFERENCE_ELIGIBILITY_AO_OID)
                     ).get()
             );
         }
 
         final List<String> oids = applicationQueryParameters.getOids();
         if(oids != null && !oids.isEmpty()) {
-            filters.add(QueryBuilder.start(FIELD_APPLICATION_OID).in(oids).get());
+            filters.add(start(FIELD_APPLICATION_OID).in(oids).get());
         }
         // Koskee koko hakemusta
         final List<String> states = applicationQueryParameters.getState();
         if (states != null && !states.isEmpty()) {
             if (states.size() == 1) {
                 if ("NOT_IDENTIFIED".equals(states.get(0))) {
-                    filters.add(QueryBuilder.start(FIELD_STUDENT_OID).is(null).get());
+                    filters.add(start(FIELD_STUDENT_OID).is(null).get());
                 } else if ("NO_SSN".equals(states.get(0))) {
-                    filters.add(QueryBuilder.start(FIELD_SSN).is(null).get());
+                    filters.add(start(FIELD_SSN).is(null).get());
                 } else if ("POSTPROCESS_FAILED".equals(states.get(0))) {
-                    filters.add(QueryBuilder.start(FIELD_REDO_POSTPROCESS).is(Application.PostProcessingState.FAILED.toString()).get());
+                    filters.add(start(FIELD_REDO_POSTPROCESS).is(Application.PostProcessingState.FAILED.toString()).get());
                 } else {
-                    filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.valueOf(states.get(0)).toString()).get());
+                    filters.add(start(FIELD_APPLICATION_STATE).is(Application.State.valueOf(states.get(0)).toString()).get());
                 }
             } else {
-                filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).in(states).get());
+                filters.add(start(FIELD_APPLICATION_STATE).in(states).get());
             }
         }
 
         final String paymentState = applicationQueryParameters.getPaymentState();
         if (paymentState != null) {
-            filters.add(QueryBuilder.start(FIELD_REQUIRED_PAYMENT_STATE).is(paymentState).get());
+            filters.add(start(FIELD_REQUIRED_PAYMENT_STATE).is(paymentState).get());
         }
 
         final List<String> asIds = applicationQueryParameters.getAsIds();
         if (asIds != null && !asIds.isEmpty()) {
-            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
+            filters.add(start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
         final String sendingSchool = applicationQueryParameters.getSendingSchool();
         if (!isEmpty(sendingSchool)) {
-            filters.add(QueryBuilder.start(FIELD_SENDING_SCHOOL).is(sendingSchool).get());
+            filters.add(start(FIELD_SENDING_SCHOOL).is(sendingSchool).get());
         }
 
         final String sendingClass = applicationQueryParameters.getSendingClass();
         if (!isEmpty(sendingClass)) {
-            filters.add(QueryBuilder.start().or(
-                    QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get(),
-                    QueryBuilder.start(FIELD_CLASS_LEVEL).is(sendingClass.toUpperCase()).get()
+            filters.add(start().or(
+                    start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get(),
+                    start(FIELD_CLASS_LEVEL).is(sendingClass.toUpperCase()).get()
             ).get());
         }
 
         final Date updatedAfter = applicationQueryParameters.getUpdatedAfter();
         if (updatedAfter != null) {
             filters.add(
-                    QueryBuilder.start().or(
-                            QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
-                            QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
+                    start().or(
+                            start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
+                            start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
                     ).get()
             );
         }
@@ -280,7 +281,7 @@ final class ApplicationDAOMongoQueryBuilder {
                 for (String education : baseEducation) {
                     if (isNotBlank(education)) {
                         ors.add(
-                                QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, education))
+                                start(format(FIELD_HIGHER_ED_BASE_ED_T, education))
                                         .is(Boolean.TRUE.toString()).get()
                         );
                     }
@@ -288,7 +289,7 @@ final class ApplicationDAOMongoQueryBuilder {
 
                 if (!ors.isEmpty()) {
                     filters.add(
-                            QueryBuilder.start().or(ors.toArray(new DBObject[ors.size()])).get()
+                            start().or(ors.toArray(new DBObject[ors.size()])).get()
                     );
                 }
             }
@@ -296,7 +297,7 @@ final class ApplicationDAOMongoQueryBuilder {
 
         final List<String> personOids = applicationQueryParameters.getPersonOids();
         if (!personOids.isEmpty()) {
-            filters.add(QueryBuilder.start(FIELD_PERSON_OID).in(personOids).get());
+            filters.add(start(FIELD_PERSON_OID).in(personOids).get());
         }
 
         return filters;
@@ -321,7 +322,7 @@ final class ApplicationDAOMongoQueryBuilder {
         if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly && !primaryPreferenceOnly) {
             if (!aoOids.isEmpty()) {
                 // Simple query: just find by application option oid
-                return QueryBuilder.start(META_FIELD_AO).in(aoOids).get();
+                return start(META_FIELD_AO).in(aoOids).get();
             }
             // No query parameters related to application options
             return null;
@@ -336,46 +337,46 @@ final class ApplicationDAOMongoQueryBuilder {
             ArrayList<DBObject> preferenceQuery = new ArrayList<>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(format(META_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
+                        start(format(META_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
             }
             if (isNotBlank(preference)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(format(FIELD_AO_KOULUTUS_ID_T, i)).is(preference).get());
+                        start(format(FIELD_AO_KOULUTUS_ID_T, i)).is(preference).get());
             }
             if (discretionaryOnly) {
                 preferenceQuery.add(
-                        QueryBuilder.start(format(FIELD_DISCRETIONARY_T, i)).is("true").get());
+                        start(format(FIELD_DISCRETIONARY_T, i)).is("true").get());
             }
             if (!aoOids.isEmpty()) {
                 preferenceQuery.add(
-                        QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get());
+                        start(format(FIELD_AO_T, i)).in(aoOids).get());
             }
             if (isNotBlank(groupOid)) {
                 if (!primaryPreferenceOnly) {
-                    preferenceQuery.add(QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get());
+                    preferenceQuery.add(start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get());
                 } else {
                     if (!aoOids.isEmpty()) {
                         // Hakukohteen pitää olla jokin annetuista, ja lisäksi olla hakemuksella valittuun ryhmään kuuluvista ensisijainen
                         for (int j = 1; j < i; j++) {
                             preferenceQuery.add(
-                                QueryBuilder.start(format(FIELD_AO_GROUPS_T, j)).not().regex(Pattern.compile(groupOid)).get()
+                                start(format(FIELD_AO_GROUPS_T, j)).not().regex(Pattern.compile(groupOid)).get()
                             );
                         }
                         preferenceQuery.add(
-                            QueryBuilder.start().and(
-                                QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get(),
-                                QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get()
+                            start().and(
+                                start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get(),
+                                start(format(FIELD_AO_T, i)).in(aoOids).get()
                             ).get()
                         );
                     } else {
                         // Hakukohteen pitää olla ensisijainen ja kuulua valittuun ryhmään
-                        preferenceQuery.add(QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get());
+                        preferenceQuery.add(start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get());
                     }
                 }
             }
 
             if (!preferenceQuery.isEmpty()) {
-                preferenceQueries.add(QueryBuilder.start().and(
+                preferenceQueries.add(start().and(
                         preferenceQuery.toArray(new DBObject[preferenceQuery.size()])).get());
             } else {
                 System.out.println();
@@ -394,7 +395,7 @@ final class ApplicationDAOMongoQueryBuilder {
 
     private DBObject _filterByOrganization(final ApplicationFilterParameters filterParameters) {
         if (skipOrganizationFilter(filterParameters)) {
-            return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
+            return start(FIELD_APPLICATION_OID).exists(true).get();
         }
 
         final ArrayList<DBObject> queries = new ArrayList<>();
@@ -402,7 +403,7 @@ final class ApplicationDAOMongoQueryBuilder {
         final ArrayList<String> allowedOrganizations = new ArrayList<>();
 
         if (!StringUtils.isBlank(filterParameters.getOrganizationFilter())) {
-            return QueryBuilder.start(META_ALL_ORGANIZATIONS).is(filterParameters.getOrganizationFilter()).get();
+            return start(META_ALL_ORGANIZATIONS).is(filterParameters.getOrganizationFilter()).get();
         }
 
         if (filterParameters.getOrganizationsReadble().size() > 0) {
@@ -414,13 +415,13 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         if (allowedOrganizations.size() > 0) {
-            queries.add(QueryBuilder.start(META_ALL_ORGANIZATIONS).in(allowedOrganizations).get());
+            queries.add(start(META_ALL_ORGANIZATIONS).in(allowedOrganizations).get());
         }
 
         if (filterParameters.getOrganizationsOpo().size() > 0) {
-            queries.add(QueryBuilder.start().and(
-                    QueryBuilder.start(META_SENDING_SCHOOL_PARENTS).in(filterParameters.getOrganizationsOpo()).get(),
-                    QueryBuilder.start(META_FIELD_OPO_ALLOWED).is(true).get()).get());
+            queries.add(start().and(
+                    start(META_SENDING_SCHOOL_PARENTS).in(filterParameters.getOrganizationsOpo()).get(),
+                    start(META_FIELD_OPO_ALLOWED).is(true).get()).get());
         }
 
 
