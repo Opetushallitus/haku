@@ -8,6 +8,7 @@ describe('GroupConfiguration', function () {
         input(lomake.koulusivistyskieli, "FI"),
         click(
             lomake.fromHenkilotiedot,
+            lomake.enOleSuorittanutYoAmmatillistaTutkintoa,
             lomake.pohjakoulutusMuu
         ),
         input(

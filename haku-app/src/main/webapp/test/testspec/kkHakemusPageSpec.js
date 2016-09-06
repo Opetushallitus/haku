@@ -54,6 +54,7 @@ describe('KK-hakemus', function () {
                     virkailija.ammatillinenTutkintonimike, "400000",
                     virkailija.ammatillinenTutkinnonLaajuus, "120",
                     virkailija.ammatillinenOppilaitos, "1.2.246.562.10.57118763500"),
+                click(lomake.enOleSuorittanutYoAmmatillistaTutkintoa),
                 click(
                     virkailija.kkTutkintoSuoritettu(false),
                     virkailija.addAvoinCheckbox),
@@ -349,6 +350,7 @@ describe('KK-hakemus', function () {
                 lomake.lisaaUusiAmmatillinenPohjakoulutus(2)),
             partials.syotaAmmatillinenPohjakoulutus(1, "2000", "400000", "1000", "1.2.246.562.10.57118763500", false),
             partials.syotaAmmatillinenPohjakoulutus(2, "2001", "400000", "1000", "1.2.246.562.10.57118763500", false),
+            click(lomake.enOleSuorittanutYoAmmatillistaTutkintoa),
             click(
                 lomake.suoritusoikeusTaiAiempiTutkinto(false),
                 lomake.fromKoulutustausta),

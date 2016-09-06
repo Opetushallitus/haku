@@ -23,7 +23,7 @@ describe("KK-hakemus hakumaksulla", function() {
         describe("ulkomaisen ei-eta-maassa suoritetun kk-kelpoisuuden antavan koulutuksen lisääminen", function() {
             before(seqDone(
                 click(virkailija.editVaiheButton(hakuOid, "koulutustausta")),
-                wait.forMilliseconds(1000),
+                wait.forMilliseconds(2000),
                 click(virkailija.addUlkomainenKkKelpoisuus),
                 input(
                     virkailija.ulkomainenKkKelpoisuusVuosi, "2000",
@@ -31,6 +31,7 @@ describe("KK-hakemus hakumaksulla", function() {
                     virkailija.ulkomainenKkKelpoisuusOppilaitos, "foo-koulu",
                     virkailija.ulkomainenKkKelpoisuusMaa, "XXX",
                     virkailija.ulkomainenKkKelpoisuusMuuMaa, "foo-maa"),
+                click(lomake.enOleSuorittanutYoAmmatillistaTutkintoa),
                 click(virkailija.kkTutkintoSuoritettu(false)),
                 click(virkailija.saveVaiheButton("koulutustausta")),
                 visible(virkailija.editVaiheButton(hakuOid, "koulutustausta"))
