@@ -497,8 +497,8 @@ public class ThemeQuestionResource {
     }
 
     private boolean isRekisterinpitajaRole(String role) {
-        return "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.00000000001" == role ||
-               "APP_HAKULOMAKKEENHALLINTA_READ_UPDATE_1.2.246.562.10.00000000001" == role;
+        return "APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.00000000001".equals(role) ||
+               "APP_HAKULOMAKKEENHALLINTA_READ_UPDATE_1.2.246.562.10.00000000001".equals(role);
     }
 
     private static Set<String> getThemeQuestionsAsMapValidationErrors(String applicationSystemId, String lang) {
