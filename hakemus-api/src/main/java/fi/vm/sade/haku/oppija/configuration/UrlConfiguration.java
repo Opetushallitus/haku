@@ -23,7 +23,7 @@ public class UrlConfiguration extends OphProperties {
     @Override
     synchronized public String frontPropertiesToJson() {
         if(!frontProperties.containsKey("frontProperties.baseUrl")) {
-            frontProperties.put("koulutusinformaatio.baseUrl", "//" + require("host.haku"));
+            frontProperties.put("koulutusinformaatio-app.baseUrl", "//" + require("host.haku"));
         }
         return super.frontPropertiesToJson();
     }
