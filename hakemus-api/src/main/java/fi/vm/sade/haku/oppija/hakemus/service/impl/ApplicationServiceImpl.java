@@ -647,6 +647,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             educationElementIds.add(elem.getId());
         }
 
+        // HOTFIX: Radio option children are not included in the element children, this fix buys us time
+        educationElementIds.add("toisen_asteen_suoritusmaa");
+
         HashMap<String, String> educationAnswers = new HashMap<>();
         HashMap<String, String> preferenceAnswers = new HashMap<>();
         HashMap<String, String> newGradeAnswers = new HashMap<>();
