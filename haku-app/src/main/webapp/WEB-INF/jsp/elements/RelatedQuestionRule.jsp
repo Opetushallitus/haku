@@ -24,16 +24,14 @@
 <c:set var="variables" value="${ f:setToList(element.variables)}"/>
 <div id="${element.id}" class="related-question-rule-class">
     <script type="text/javascript">
-        (function () {
+        $(function () {
             var ruleData = {
                 variables: [${variables}],
                 ruleId: "${element.id}",
                 childIds: [ ${nameSelectors} ]
             };
-            $('#' + '${element.id}').closest('form').ready(function () {
-                complexRule.init(ruleData);
-            });
-        })();
+            complexRule.init(ruleData);
+        });
     </script>
     <haku:viewChilds element="${element}"/>
 </div>

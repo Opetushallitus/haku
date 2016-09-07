@@ -67,6 +67,7 @@ describe('2. asteen lomake', function () {
             partials.henkilotiedotTestikaes(),
             pageChange(lomake.fromHenkilotiedot),
             headingVisible("Koulutustausta"),
+            waitForFormReady(),
             click(lomake.pohjakoulutus("1")),
             input(
                 lomake.pkPaattotodistusVuosi, "2014",
@@ -124,6 +125,7 @@ describe('2. asteen lomake', function () {
         it('Peruskoulutus-ammattikoulutus-yhdistelmä pyytää lukioita', seqDone(
             function() { S('#nav-koulutustausta')[0].click() },
             headingVisible("Koulutustausta"),
+            waitForFormReady(),
             input(lomake.pkPaattotodistusVuosi, "2010"),
             click(
                 lomake.ammatillinenKoulutuspaikka(false),
@@ -136,6 +138,7 @@ describe('2. asteen lomake', function () {
         it('Lukio-ammattikoulutus-yhdistelmä estää pääsyn hakutoiveisiin', seqDone(
             function() { S('#nav-koulutustausta')[0].click() },
             headingVisible("Koulutustausta"),
+            waitForFormReady(),
             click(lomake.pohjakoulutus("9")),
             input(lomake.lukioPaattotodistusVuosi, "2010"),
             click(lomake.ammatillinenSuoritettu(true)),
@@ -152,6 +155,7 @@ describe('2. asteen lomake', function () {
           partials.henkilotiedotTestikaes(),
           pageChange(lomake.fromHenkilotiedot),
           headingVisible("Koulutustausta"),
+          waitForFormReady(),
           hidden(lomake.overlay),
           click(lomake.pohjakoulutus("1"))
       ));
@@ -217,6 +221,7 @@ describe('2. asteen lomake', function () {
             before(seqDone(
                 function() { S('#nav-koulutustausta')[0].click() },
                 headingVisible("Koulutustausta"),
+                waitForFormReady(),
                 hidden(lomake.overlay),
                 input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
                 input(lomake.pkKieli, "FI"),
@@ -233,6 +238,7 @@ describe('2. asteen lomake', function () {
             before(seqDone(
                 function() { S('#nav-koulutustausta')[0].click() },
                 headingVisible("Koulutustausta"),
+                waitForFormReady(),
                 input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear())),
                 input(lomake.pkKieli, "FI"),
                 pageChange(lomake.fromKoulutustausta)

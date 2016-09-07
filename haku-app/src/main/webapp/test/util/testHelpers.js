@@ -135,6 +135,15 @@ function waitPageLoad(promise) {
         wait.until(function() { return (testFrame().document.readyState === 'complete'); }));
 }
 
+function waitForFormReady() {
+    return seq(
+        wait.until(function() {
+            return S("input[name=clientSubSystemCode]").length > 0;
+        }),
+        wait.forMilliseconds(500)
+    );
+}
+
 function pageChange(promise) {
     return waitPageLoad(click(promise))
 }

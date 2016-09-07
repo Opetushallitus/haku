@@ -69,6 +69,7 @@ lomake = initSelectors({
     pohjakoulutusYoAmmatillinenVuosi: 'input#pohjakoulutus_yo_ammatillinen_vuosi',
     pohjakoulutusYoAmmatillinenNimike: 'select#pohjakoulutus_yo_ammatillinen_nimike',
     pohjakoulutusYoAmmatillinenLaajuus: 'input#pohjakoulutus_yo_ammatillinen_laajuus',
+    enOleSuorittanutYoAmmatillistaTutkintoa: "#toisen_asteen_suoritus_false_label",
     pohjakoulutusYoAmmatillinenOppilaitos: 'select#pohjakoulutus_yo_ammatillinen_oppilaitos',
 
     pohjakoulutusYoUlkomainen: 'input#pohjakoulutus_yo_ulkomainen',
