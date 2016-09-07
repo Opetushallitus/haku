@@ -96,6 +96,7 @@ partials = {
         var emailToUSe = email ? email : "foo@example.com";
         return seq(
             headingVisible("Henkilötiedot"),
+            waitForFormReady(),
             input(
                 lomake.sukunimi, "Testikäs",
                 lomake.etunimet, "Asia Kas",

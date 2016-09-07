@@ -22,8 +22,8 @@ describe("KK-hakemus hakumaksulla", function() {
 
         describe("ulkomaisen ei-eta-maassa suoritetun kk-kelpoisuuden antavan koulutuksen lisääminen", function() {
             before(seqDone(
-                click(virkailija.editVaiheButton(hakuOid, "koulutustausta")),
-                wait.forMilliseconds(2000),
+                waitPageLoad(click(virkailija.editVaiheButton(hakuOid, "koulutustausta"))),
+                waitForFormReady(),
                 click(virkailija.addUlkomainenKkKelpoisuus),
                 input(
                     virkailija.ulkomainenKkKelpoisuusVuosi, "2000",
@@ -50,6 +50,7 @@ describe("KK-hakemus hakumaksulla", function() {
             describe("lisättäessä hakumaksun vaativa hakutoive", function() {
                 before(seqDone(
                     click(virkailija.editVaiheButton(hakuOid, "hakutoiveet")),
+                    waitForFormReady(),
                     tyhjennaHakutoiveet(5),
                     aaltoTekniikanKandiJaDi(1),
                     click(virkailija.saveVaiheButton("hakutoiveet")),
@@ -68,7 +69,8 @@ describe("KK-hakemus hakumaksulla", function() {
         describe("palattaessa pohjakoulutusten muokkaukseen", function() {
             before(seqDone(
                 click(virkailija.editVaiheButton(hakuOid, "koulutustausta")),
-                visible(virkailija.saveVaiheButton("koulutustausta"))
+                visible(virkailija.saveVaiheButton("koulutustausta")),
+                waitForFormReady()
             ));
 
             it("maksunotifikaatio näkyy", function() {
