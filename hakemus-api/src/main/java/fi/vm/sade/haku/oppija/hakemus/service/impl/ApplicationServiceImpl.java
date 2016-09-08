@@ -16,16 +16,34 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import static com.google.common.collect.Maps.filterKeys;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_BASE_EDUCATION;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.KESKEYTYNYT;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_DISCRETIONARY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Multimaps;
+
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil;
-import fi.vm.sade.haku.oppija.hakemus.domain.*;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPreferenceMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
@@ -76,15 +94,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
-
-import static com.google.common.collect.Maps.filterKeys;
-import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
-import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
-import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -636,8 +657,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return true;
     }
 
-    @Override
-    public Application getApplicationWithValintadata(Application application) throws ValintaServiceCallFailedException {
+    public Application getApplicationWithValintadata(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
@@ -650,7 +670,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         HashMap<String, String> educationAnswers = new HashMap<>();
         HashMap<String, String> preferenceAnswers = new HashMap<>();
         HashMap<String, String> newGradeAnswers = new HashMap<>();
-        Map<String, String> valintaData = valintaService.fetchValintaData(application);
+        Map<String, String> valintaData = valintaService.fetchValintaData(application, valintaTimeout);
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -671,6 +691,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         addNewAnswersForPhase(application, OppijaConstants.PHASE_GRADES, newGradeAnswers);
         return application;
     }
+
+    @Override
+    public Application getApplicationWithValintadata(Application application) throws ValintaServiceCallFailedException {
+        return getApplicationWithValintadata(application, Optional.empty());
+    }
+
 
     private void removeGradesFromApplication(final Application application) {
         final Map<String, String> filteredGrades = filterKeys(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES), new Predicate<String>() {
@@ -881,7 +907,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application postProcessApplicationAnswers(Application application) throws ValintaServiceCallFailedException {
+    public Application postProcessApplicationAnswers(Application application, Duration postProcessorValintaTimeout) throws ValintaServiceCallFailedException {
         Map<String, String> hakutoiveetAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
@@ -892,7 +918,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
 
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
-            Application applicationWithValintaData = getApplicationWithValintadata(application.clone());
+            Application applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
             application = removeOrphanedAnswers(application, applicationWithValintaData);
             ValidationResult validationResult = validateApplication(applicationWithValintaData);
             if (validationResult.hasErrors()) {

@@ -1,5 +1,10 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
@@ -7,12 +12,9 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
-import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
@@ -26,15 +28,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static fi.vm.sade.haku.AuditHelper.AUDIT;
-import static fi.vm.sade.haku.AuditHelper.builder;
-import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 
 @Service
@@ -57,6 +54,9 @@ public class ApplicationPostProcessorService {
 
     @Value("${scheduler.retryFailedAgainTime:21600000}")
     private int retryFailedAgainTime;
+
+    @Value("${application.postprocessor.valinta.timeout.millis:120000}")
+    private int postProcessorValintaTimeoutMillis;
 
     @Autowired
     public ApplicationPostProcessorService(final ApplicationService applicationService,
@@ -82,7 +82,7 @@ public class ApplicationPostProcessorService {
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException, ValintaServiceCallFailedException {
         application = addPersonOid(application, "jälkikäsittely");
         application = baseEducationService.addSendingSchool(application);
-        application = applicationService.postProcessApplicationAnswers(application);
+        application = applicationService.postProcessApplicationAnswers(application, Duration.ofMillis(postProcessorValintaTimeoutMillis));
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.updateAutomaticEligibilities(application);
 

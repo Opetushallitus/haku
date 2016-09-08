@@ -56,6 +56,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -108,6 +109,7 @@ public class ApplicationServiceImplTest {
     private ApplicationServiceImpl service;
     private ElementTreeValidator elementTreeValidator;
     private I18nBundleService i18nBundleService;
+    private Optional<Duration> valintaTimeout = Optional.empty();
 
     @Before
     public void setUp() throws Exception {
@@ -392,7 +394,7 @@ public class ApplicationServiceImplTest {
         Map<String, String> valintaEducationAnswers = new HashMap<>(originalEducationAnswers);
         valintaEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
         ValintaService valintaService = mock(ValintaService.class);
-        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(valintaEducationAnswers);
+        when(valintaService.fetchValintaData(Mockito.<Application>any(), Mockito.same(valintaTimeout))).thenReturn(valintaEducationAnswers);
 
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
@@ -550,7 +552,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ValintaService valintaService = mock(ValintaService.class);
-        when(valintaService.fetchValintaData(Mockito.<Application>any())).thenReturn(application.getVastauksetMerged());
+        when(valintaService.fetchValintaData(Mockito.<Application>any(), Mockito.same(valintaTimeout))).thenReturn(application.getVastauksetMerged());
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
                 null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
@@ -763,7 +765,7 @@ public class ApplicationServiceImplTest {
         when(phase.getAllChildren()).thenReturn(Collections.<Element>emptyList());
         when(applicationSystem.getForm()).thenReturn(form);
         final ValintaService valintaService = mock(ValintaService.class);
-        when(valintaService.fetchValintaData(application)).thenReturn(ImmutableMap.of("PK_A12", "10"));
+        when(valintaService.fetchValintaData(application, valintaTimeout)).thenReturn(ImmutableMap.of("PK_A12", "10"));
         final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null,
                 null, null, applicationSystemService, null, null, null, null, null, valintaService, null, null, null);
 

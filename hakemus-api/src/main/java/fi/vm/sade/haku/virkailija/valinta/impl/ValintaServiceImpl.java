@@ -1,6 +1,12 @@
 package fi.vm.sade.haku.virkailija.valinta.impl;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.virkailija.valinta.MapJsonAdapter;
@@ -21,9 +27,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
@@ -99,11 +107,11 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     @Override
-    public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException {
+    public Map<String, String> fetchValintaData(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();
         String url = urlConfiguration.url("valintalaskentakoostepalvelu.valintadata", asId, personOid);
-        CachingRestClient client = getCachingRestClientKooste();
+        CachingRestClient client = getCachingRestClientKooste(valintaTimeout);
         Map<String, String> valintadata = new HashMap<>();
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(HashMap.class, new MapJsonAdapter()).create();
@@ -121,9 +129,10 @@ public class ValintaServiceImpl implements ValintaService {
 
     }
 
-    private synchronized CachingRestClient getCachingRestClientKooste() {
+    private synchronized CachingRestClient getCachingRestClientKooste(Optional<Duration> valintaTimeout) {
         if (cachingRestClientKooste == null) {
-            cachingRestClientKooste = new CachingRestClient(defaultValintaHttpRequestTimeoutMilliseconds).setClientSubSystemCode("haku.hakemus-api");
+            int timeoutMillis = (int) valintaTimeout.orElse(Duration.ofMillis(defaultValintaHttpRequestTimeoutMilliseconds)).toMillis();
+            cachingRestClientKooste = new CachingRestClient(timeoutMillis).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientKooste.setWebCasUrl(casUrl);
             cachingRestClientKooste.setCasService(targetServiceKooste);
             cachingRestClientKooste.setUsername(clientAppUserKooste);
