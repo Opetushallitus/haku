@@ -111,6 +111,7 @@ user.home.conf=/data00/oph/haku/oph-configuration
 user.oid.prefix=1.2.246.562.24
 user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService
 valinta-default.timeout.millis=4000
+application.postprocessor.valinta.timeout.millis=120000
 valinta-tulos-service.timeout.millis=15000
 web.url.cas=https\://${host.cas}/cas
 

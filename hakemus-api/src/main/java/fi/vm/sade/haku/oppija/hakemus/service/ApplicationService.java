@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public interface ApplicationService {
 
     Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers, String lang);
 
-    Application postProcessApplicationAnswers(Application application) throws ValintaServiceCallFailedException;
+    Application postProcessApplicationAnswers(Application application, Duration postProcessorValintaTimeout) throws ValintaServiceCallFailedException;
 
     Application getApplication(final Application queryApplication);
 

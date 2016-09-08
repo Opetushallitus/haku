@@ -2,7 +2,6 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.gson.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
@@ -11,9 +10,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Profile(value = {"dev", "it"})
@@ -847,7 +848,7 @@ public class ValintaServiceMockImpl implements ValintaService {
     }
 
     @Override
-    public Map<String, String> fetchValintaData(Application application) throws ValintaServiceCallFailedException{
+    public Map<String, String> fetchValintaData(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException{
         Map<String, String> result = new HashMap<>();
         for(Map<String, String> r : application.getAnswers().values()) {
             result.putAll(r);
