@@ -126,8 +126,8 @@ final class ApplicationDAOMongoIndexHelper {
     private String getHint() {
         if (LOG.isDebugEnabled() && indexFields.size() > 0) {
             LOG.debug("From query {} unused fields {}", query, new ToStringBuilder(indexFields, ToStringStyle.SHORT_PREFIX_STYLE).append(indexFields.toArray()));
+            LOG.debug("Chose: {} for query: {}", indexCandidate, query);
         }
-        LOG.info("Chose: {} for query: {}", indexCandidate, query);
         return indexCandidate;
     }
 }
