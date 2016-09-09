@@ -53,7 +53,7 @@ public class FormBuilderResource {
     @GET
     @Path("ping")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
-    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "') or @formBuilderPermissionChecker.isAllowedToGenerateHaku(#oid)")
+    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "')")
     public Response ping() throws URISyntaxException {
         log.info("Responding ok to ping");
         return Response.ok("ok").build();
