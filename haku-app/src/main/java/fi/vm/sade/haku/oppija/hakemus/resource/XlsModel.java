@@ -386,7 +386,7 @@ public class XlsModel {
                         id,
                         TextQuestion(id).i18nText(
                                 getPrefixedText(
-                                        request.getApplicationAttachment().getName(),
+                                        request.getApplicationAttachment().getName() || request.getApplicationAttachment().getHeader(),
                                         i18nBundle.get("liite_column_prefix"),
                                         number
                                 )
