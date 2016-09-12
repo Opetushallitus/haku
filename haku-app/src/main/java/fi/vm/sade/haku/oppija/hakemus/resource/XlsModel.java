@@ -382,11 +382,14 @@ public class XlsModel {
                 uniqueQuestions ++;
                 int number = uniqueQuestions;
 
+                I18nText name = request.getApplicationAttachment().getName();
+                if (name == null)
+                    name = request.getApplicationAttachment().getHeader();
                 attachmentQuestions.put(
                         id,
                         TextQuestion(id).i18nText(
                                 getPrefixedText(
-                                        request.getApplicationAttachment().getName() || request.getApplicationAttachment().getHeader(),
+                                        name,
                                         i18nBundle.get("liite_column_prefix"),
                                         number
                                 )
