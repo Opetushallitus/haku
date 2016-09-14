@@ -468,11 +468,19 @@ public class ThemeQuestionResource {
     }
 
     private boolean allowModifyApplicationSystemThemeQuestions(String applicationSystemId) {
-        return isRekisterinpitaja() || isBeforeFirstHakuaika(getApplicationPeriods(applicationSystemId));
+        ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
+        if(isYhteishaku(applicationSystem.getHakutapa())) {
+            return isRekisterinpitaja() || isBeforeFirstHakuaika(applicationSystem.getApplicationPeriods());
+        }
+        return true;
     }
 
     private boolean allowInsertApplicationSystemThemeQuestions(String applicationSystemId) {
-        return isRekisterinpitaja() || !isHakuaikaGoing(getApplicationPeriods(applicationSystemId));
+        ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
+        if(isYhteishaku(applicationSystem.getHakutapa())) {
+            return isRekisterinpitaja() || !isHakuaikaGoing(applicationSystem.getApplicationPeriods());
+        }
+        return true;
     }
 
     private boolean isHakuaikaGoing(List<ApplicationPeriod> applicationPeriods) {
@@ -484,11 +492,15 @@ public class ThemeQuestionResource {
         return System.currentTimeMillis() < applicationPeriods.stream().mapToLong(p -> p.getStart().getTime()).min().getAsLong();
     }
 
-    private List<ApplicationPeriod> getApplicationPeriods(String applicationSystemId) {
+    private ApplicationSystem getApplicationSystem(String applicationSystemId) {
         ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
         if (applicationSystem == null)
             throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
-        return applicationSystem.getApplicationPeriods();
+        return applicationSystem;
+    }
+
+    private boolean isYhteishaku(String hakutapa) {
+        return "hakutapa_01".equals(hakutapa);
     }
 
     private boolean isRekisterinpitaja() {
