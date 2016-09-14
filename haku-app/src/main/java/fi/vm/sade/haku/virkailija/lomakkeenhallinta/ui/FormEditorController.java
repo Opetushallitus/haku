@@ -191,15 +191,15 @@ public class FormEditorController {
     }
 
     @GET
-    @Path("application-system-form/{applicationSystemId}/applicationPeriods")
+    @Path("application-system-form/{applicationSystemId}/applicationPeriodsAndHakutapa")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
             "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
-    public List<ApplicationPeriod> getApplicationPeriods(@PathParam("applicationSystemId") String applicationSystemId){
+    public Map<String, Object> getApplicationPeriods(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
         if (applicationSystem == null)
             throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
-        return applicationSystem.getApplicationPeriods();
+        return ImmutableMap.of("hakutapa", applicationSystem.getHakutapa(), "hakukaudet", applicationSystem.getApplicationPeriods());
     }
 
     @GET
