@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationHierarchy;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -187,6 +188,18 @@ public class FormEditorController {
         if (applicationSystem == null)
             throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
         return ImmutableMap.of("name", applicationSystem.getName());
+    }
+
+    @GET
+    @Path("application-system-form/{applicationSystemId}/hakuajatJaHakutapa")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Map<String, Object> getApplicationPeriods(@PathParam("applicationSystemId") String applicationSystemId){
+        ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
+        if (applicationSystem == null)
+            throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
+        return ImmutableMap.of("hakutapa", applicationSystem.getHakutapa(), "hakuajat", applicationSystem.getApplicationPeriods());
     }
 
     @GET

@@ -28,10 +28,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
@@ -52,6 +49,15 @@ public class FormBuilderResource {
 
     @Autowired
     private HakuService hakuService;
+
+    @GET
+    @Path("ping")
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
+    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "')")
+    public Response ping() throws URISyntaxException {
+        log.info("Responding ok to ping");
+        return Response.ok("ok").build();
+    }
 
     @POST
     @Path("one/{oid}")

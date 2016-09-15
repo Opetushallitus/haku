@@ -155,7 +155,9 @@ public class FormParameters {
     }
 
     public boolean isUniqueApplicantRequired() {
-        return HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType());
+        return HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType()) &&
+                !(HAKUTAPA_ERILLISHAKU.equals(applicationSystem.getHakutapa()) &&
+                        TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(applicationSystem.getKohdejoukkoUri()));
     }
 
     public boolean isEmailRequired() {
