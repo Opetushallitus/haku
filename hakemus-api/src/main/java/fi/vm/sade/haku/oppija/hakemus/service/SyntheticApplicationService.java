@@ -264,6 +264,9 @@ public class SyntheticApplicationService {
     }
 
     private Map<String, String> updateKoulutustausta(Person person, SyntheticApplication.Hakemus hakemus, Map<String, String> koulutustiedot) {
+        if (hakemus.toisenAsteenSuoritus != null) {
+            koulutustiedot.put(OppijaConstants.TOISEN_ASTEEN_SUORITUS, Boolean.toString(hakemus.toisenAsteenSuoritus.booleanValue()));
+        }
         if (isNotBlank(hakemus.toinenAstePohjakoulutusMaa)) {
             koulutustiedot.put(OppijaConstants.POHJAKOULUTUSMAA_TOINEN_ASTE, hakemus.toinenAstePohjakoulutusMaa);
         }
