@@ -267,8 +267,8 @@ public class SyntheticApplicationService {
         if (hakemus.toisenAsteenSuoritus != null) {
             koulutustiedot.put(OppijaConstants.TOISEN_ASTEEN_SUORITUS, Boolean.toString(hakemus.toisenAsteenSuoritus.booleanValue()));
         }
-        if (isNotBlank(hakemus.toinenAstePohjakoulutusMaa)) {
-            koulutustiedot.put(OppijaConstants.POHJAKOULUTUSMAA_TOINEN_ASTE, hakemus.toinenAstePohjakoulutusMaa);
+        if (isNotBlank(hakemus.toisenAsteenSuoritusmaa)) {
+            koulutustiedot.put(OppijaConstants.TOISEN_ASTEEN_SUORITUSMAA, hakemus.toisenAsteenSuoritusmaa);
         }
         return koulutustiedot;
     }
