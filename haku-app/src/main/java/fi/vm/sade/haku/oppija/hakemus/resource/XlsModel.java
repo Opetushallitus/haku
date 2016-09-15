@@ -320,7 +320,7 @@ public class XlsModel {
 
     private static boolean isValidRequest(ApplicationAttachmentRequest request) {
         return request != null && request.getApplicationAttachment() != null
-                && request.getApplicationAttachment().getName() != null;
+                && (request.getApplicationAttachment().getName() != null || request.getApplicationAttachment().getHeader() != null);
     }
 
     private static boolean attachmentBelongsToAo(ApplicationOption ao, ApplicationAttachmentRequest request) {
