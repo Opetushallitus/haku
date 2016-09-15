@@ -43,6 +43,7 @@ public class SyntheticApplication {
         public final String asuinmaa;
         public final String kansalaisuus;
         public final String kotikunta;
+        public final Boolean toisenAsteenSuoritus;
         public final String toinenAstePohjakoulutusMaa;
 
 
@@ -63,6 +64,7 @@ public class SyntheticApplication {
                        @JsonProperty("asuinmaa") String asuinmaa,
                        @JsonProperty("kansalaisuus") String kansalaisuus,
                        @JsonProperty("kotikunta") String kotikunta,
+                       @JsonProperty("toisenAsteenSuoritus") Boolean toisenAsteenSuoritus,
                        @JsonProperty("toinenAstePohjakoulutusMaa") String toinenAstePohjakoulutusMaa
                        ) {
             this.hakijaOid = hakijaOid;
@@ -81,6 +83,7 @@ public class SyntheticApplication {
             this.asuinmaa = asuinmaa;
             this.kansalaisuus = kansalaisuus;
             this.kotikunta = kotikunta;
+            this.toisenAsteenSuoritus = toisenAsteenSuoritus;
             this.toinenAstePohjakoulutusMaa = toinenAstePohjakoulutusMaa;
         }
     }
