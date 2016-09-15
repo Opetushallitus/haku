@@ -426,7 +426,10 @@ public class XlsModel {
     }
 
     private static String getAttachmentId(ApplicationAttachmentRequest request) {
-        String id = new TreeMap(request.getApplicationAttachment().getName().getTranslations()).toString();
+        I18nText identifier = request.getApplicationAttachment().getName();
+        if (identifier == null)
+            identifier = request.getApplicationAttachment().getHeader();
+        String id = new TreeMap(identifier.getTranslations()).toString();
         return id;
     }
 
