@@ -320,7 +320,7 @@ public class XlsModel {
 
     private static boolean isValidRequest(ApplicationAttachmentRequest request) {
         return request != null && request.getApplicationAttachment() != null
-                && request.getApplicationAttachment().getName() != null;
+                && (request.getApplicationAttachment().getName() != null || request.getApplicationAttachment().getHeader() != null);
     }
 
     private static boolean attachmentBelongsToAo(ApplicationOption ao, ApplicationAttachmentRequest request) {
@@ -382,11 +382,14 @@ public class XlsModel {
                 uniqueQuestions ++;
                 int number = uniqueQuestions;
 
+                I18nText name = request.getApplicationAttachment().getName();
+                if (name == null)
+                    name = request.getApplicationAttachment().getHeader();
                 attachmentQuestions.put(
                         id,
                         TextQuestion(id).i18nText(
                                 getPrefixedText(
-                                        request.getApplicationAttachment().getName(),
+                                        name,
                                         i18nBundle.get("liite_column_prefix"),
                                         number
                                 )
@@ -423,7 +426,10 @@ public class XlsModel {
     }
 
     private static String getAttachmentId(ApplicationAttachmentRequest request) {
-        String id = new TreeMap(request.getApplicationAttachment().getName().getTranslations()).toString();
+        I18nText identifier = request.getApplicationAttachment().getName();
+        if (identifier == null)
+            identifier = request.getApplicationAttachment().getHeader();
+        String id = new TreeMap(identifier.getTranslations()).toString();
         return id;
     }
 

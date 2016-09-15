@@ -11,6 +11,7 @@ import java.util.Set;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class AttachmentRequest {
+    private final I18nText name;
     private final I18nText header;
     private final I18nText description;
     private final Date deliveryDue;
@@ -20,9 +21,10 @@ public final class AttachmentRequest {
     private final String attachedToOptionId;
 
     @JsonCreator
-    public AttachmentRequest(@JsonProperty(value = "header") final I18nText header, @JsonProperty(value = "description") final I18nText description,
+    public AttachmentRequest(@JsonProperty(value = "name") final I18nText name, @JsonProperty(value = "header") final I18nText header, @JsonProperty(value = "description") final I18nText description,
       @JsonProperty(value = "deliveryDue") final  Date deliveryDue,  @JsonProperty(value = "overrideAddress") final Boolean overrideAddress,
       @JsonProperty(value = "deliveryAddress") final SimpleAddress deliveryAddress, @JsonProperty(value = "attachedToOption") final String attachedToOptionId) {
+        this.name = name;
         this.header = header;
         this.description = description;
         this.deliveryDue = deliveryDue;
@@ -32,7 +34,8 @@ public final class AttachmentRequest {
     }
 
     public I18nText getHeader() {
-        return header;
+        if (header != null) return header;
+        else return name;
     }
 
     public I18nText getDescription() {
