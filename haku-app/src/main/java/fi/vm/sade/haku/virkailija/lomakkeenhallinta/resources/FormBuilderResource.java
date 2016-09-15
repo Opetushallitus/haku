@@ -51,10 +51,10 @@ public class FormBuilderResource {
     private HakuService hakuService;
 
     @GET
-    @Path("ping")
+    @Path("ping/{oid}")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
-    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "')")
-    public Response ping() throws URISyntaxException {
+    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "') or @formBuilderPermissionChecker.isAllowedToGenerateHaku(#oid)")
+    public Response ping(@PathParam("oid") final String oid) throws URISyntaxException {
         log.info("Responding ok to ping");
         return Response.ok("ok").build();
     }
