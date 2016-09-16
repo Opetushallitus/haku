@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -189,9 +190,6 @@ public class SyntheticApplicationService {
         if (isNotBlank(person.getLastName())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_LAST_NAME, person.getLastName());
         }
-        if (isNotBlank(person.getSocialSecurityNumber())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER, person.getSocialSecurityNumber());
-        }
         if (isNotBlank(person.getSex())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_SEX, person.getSex());
         }
@@ -201,57 +199,36 @@ public class SyntheticApplicationService {
         if (isNotBlank(person.getDateOfBirth())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH, person.getDateOfBirth());
         }
-        Boolean eiSuomalaistaHetua = person.isNoSocialSecurityNumber();
-        if (eiSuomalaistaHetua != null) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER, String.valueOf(!eiSuomalaistaHetua));
+
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER, person.getSocialSecurityNumber(), henkilotiedot);
+        boolean eiSuomalaistaHetua = BooleanUtils.isTrue(person.isNoSocialSecurityNumber());
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER, !eiSuomalaistaHetua, henkilotiedot);
+
+        if (person.isSecurityOrder() != null) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_SECURITY_ORDER, Boolean.toString(person.isSecurityOrder()));
         }
-        Boolean securityOrder = person.isSecurityOrder();
-        if (securityOrder != null) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_SECURITY_ORDER, String.valueOf(securityOrder));
-        }
-        String personOid = person.getPersonOid();
-        if (isNotBlank(personOid)) {
+        if (isNotBlank(person.getPersonOid())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_PERSON_OID, person.getPersonOid());
         }
-        String studentOid = person.getStudentOid();
-        if (isNotBlank(studentOid)) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_STUDENT_OID, person.getStudentOid());
-        }
-        if (isNotBlank(person.getEmail())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_EMAIL, person.getEmail());
-        }
-        if (isNotBlank(person.getPhone())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + "1", person.getPhone());
-        }
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_EMAIL, person.getEmail(), henkilotiedot);
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + "1", person.getPhone(), henkilotiedot);
+
         String countryOfResidence = person.getCountryOfResidence();
-        if (isNotBlank(countryOfResidence)) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY, countryOfResidence);
-        }
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY, countryOfResidence, henkilotiedot);
 
         boolean finnishResidence = null == trimToNull(countryOfResidence) ||
                 OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN.equalsIgnoreCase(countryOfResidence);
 
-        if (isNotBlank(person.getPostalCode())) {
-            String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_POSTAL_NUMBER : OppijaConstants.ELEMENT_ID_POSTAL_NUMBER_ABROAD;
-            henkilotiedot.put(key, person.getPostalCode());
-        }
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_FIN_ADDRESS, finnishResidence ? person.getAddress() : null, henkilotiedot);
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_ADDRESS_ABROAD, finnishResidence ? null : person.getAddress(), henkilotiedot);
 
-        if (isNotBlank(person.getAddress())) {
-            String key = finnishResidence ? OppijaConstants.ELEMENT_ID_FIN_ADDRESS : OppijaConstants.ELEMENT_ID_ADDRESS_ABROAD;
-            henkilotiedot.put(key, person.getAddress());
-        }
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_FIN_POSTAL_NUMBER, finnishResidence ? person.getPostalCode() : null, henkilotiedot);
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_POSTAL_NUMBER_ABROAD, finnishResidence ? null : person.getPostalCode(), henkilotiedot);
 
-        if (!finnishResidence && isNotBlank(person.getPostalCity())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_CITY_ABROAD, person.getPostalCity());
-        }
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_HOME_CITY, finnishResidence ? person.getHomeCity() : null, henkilotiedot);
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_CITY_ABROAD, finnishResidence ? null : person.getPostalCity(), henkilotiedot);
 
-        if(isNotBlank(person.getNationality())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_NATIONALITY, person.getNationality());
-        }
-
-        if(isNotBlank(person.getHomeCity())) {
-            henkilotiedot.put(OppijaConstants.ELEMENT_ID_HOME_CITY, person.getHomeCity());
-        }
+        setOrRemoveOsioValue(OppijaConstants.ELEMENT_ID_NATIONALITY, person.getNationality(), henkilotiedot);
 
         return henkilotiedot;
     }
@@ -264,13 +241,27 @@ public class SyntheticApplicationService {
     }
 
     private Map<String, String> updateKoulutustausta(Person person, SyntheticApplication.Hakemus hakemus, Map<String, String> koulutustiedot) {
-        if (hakemus.toisenAsteenSuoritus != null) {
-            koulutustiedot.put(OppijaConstants.TOISEN_ASTEEN_SUORITUS, Boolean.toString(hakemus.toisenAsteenSuoritus.booleanValue()));
-        }
-        if (isNotBlank(hakemus.toisenAsteenSuoritusmaa)) {
-            koulutustiedot.put(OppijaConstants.TOISEN_ASTEEN_SUORITUSMAA, hakemus.toisenAsteenSuoritusmaa);
-        }
+        setOrRemoveOsioValue(OppijaConstants.TOISEN_ASTEEN_SUORITUS, hakemus.toisenAsteenSuoritus, koulutustiedot);
+        setOrRemoveOsioValue(OppijaConstants.TOISEN_ASTEEN_SUORITUSMAA, hakemus.toisenAsteenSuoritusmaa, koulutustiedot);
         return koulutustiedot;
+    }
+
+    private void setOrRemoveOsioValue(String key, Boolean value, Map<String, String> osio) {
+        if (value != null) {
+            osio.put(key, Boolean.toString(value.booleanValue()));
+        }
+        else if (osio.containsKey(key)) {
+            osio.remove(key);
+        }
+    }
+
+    private void setOrRemoveOsioValue(String key, String value, Map<String, String> osio) {
+        if (isNotBlank(value)) {
+            osio.put(key, value);
+        }
+        else if (osio.containsKey(key)) {
+            osio.remove(key);
+        }
     }
 
     private void addHakutoive(Application application, final String hakukohdeOid, String tarjoajaOid) {
