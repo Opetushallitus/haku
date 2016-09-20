@@ -24,7 +24,9 @@ public interface OfficerUIService {
                                         final boolean validate,
                                         final Map<String, String> currentAnswers);
 
-    ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException;
+    ModelResponse getValintaTab(final String oid) throws IOException;
+
+    ModelResponse getValidatedApplication(final String oid, final String phaseId, final boolean withValintatiedot) throws IOException;
 
     ModelResponse getAdditionalInfo(final String oid);
 

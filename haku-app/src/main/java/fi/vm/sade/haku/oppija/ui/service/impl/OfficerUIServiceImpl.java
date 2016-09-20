@@ -193,9 +193,17 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return modelResponse;
     }
 
+    public ModelResponse getValintaTab(final String oid) {
+        Map<String, I18nText> virkailijaErrors = new HashMap<>();
+        Application application = getApplicationWithValintadataIfNotDraft(oid, virkailijaErrors);
+        ModelResponse modelResponse =
+                new ModelResponse(application);
+        modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
+        return modelResponse;
+    }
 
     @Override
-    public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
+    public ModelResponse getValidatedApplication(final String oid, final String phaseId, boolean withValintatiedot) throws IOException {
         Map<String, I18nText> virkailijaErrors = new HashMap<>();
         Application application = getApplicationWithValintadataIfNotDraft(oid, virkailijaErrors);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
@@ -229,8 +237,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", postProcessAllowed);
         modelResponse.addObjectToModel("applicationSystem", as);
-
-        modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
+        if(withValintatiedot) {
+            modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
+        }
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
 
         String sendingSchoolOid = application.getVastauksetMerged().get(ELEMENT_ID_SENDING_SCHOOL);
@@ -599,7 +608,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             Map<String, String> nextHenk = nextApp.getPhaseAnswers("henkilotiedot");
             nextApplicant = nextHenk.get("Etunimet") + " " + nextHenk.get("Sukunimi");
         }
-        ModelResponse response = getValidatedApplication(application.getOid(), "esikatselu");
+        ModelResponse response = getValidatedApplication(application.getOid(), "esikatselu", false);
         response.addObjectToModel("previousApplication", prev);
         response.addObjectToModel("previousApplicant", prevApplicant);
         response.addObjectToModel("nextApplication", next);
