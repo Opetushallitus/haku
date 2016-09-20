@@ -84,7 +84,7 @@ public class OfficerControllerTest {
 
         OfficerUIService officerApplicationService = mock(OfficerUIService.class);
         ModelResponse modelResponse = new ModelResponse();
-        when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE)).thenReturn(modelResponse);
+        when(officerApplicationService.getValidatedApplication(OID, PREVIEW_PHASE,true)).thenReturn(modelResponse);
         when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(modelResponse);
         when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(modelResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);

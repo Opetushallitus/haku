@@ -173,7 +173,7 @@ public class OfficerUIServiceImplTest {
 
     @Test
     public void testGetValidatedApplication() throws Exception {
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(OID, OppijaConstants.PHASE_EDUCATION);
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(OID, OppijaConstants.PHASE_EDUCATION, true);
         assertTrue(modelResponse.getModel().size() > 0);
         assertEquals(OppijaConstants.PERUSKOULU, ((Map<String, String>) modelResponse.getModel().get(ModelResponse.ANSWERS)).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
         assertEquals(sendingSchoolName, modelResponse.getModel().get("sendingSchool"));
