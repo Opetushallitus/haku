@@ -235,8 +235,9 @@
                 <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
                          style="display: none">
                     <div id="valintaContent" data-url="${pageContext.request.contextPath}/virkailija/hakemus/${application.oid}/valinta">
-                        <img src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif" />
+
                     </div>
+                    <img id="valintaContentLoaderIcon" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif" />
                 </section>
 
                 <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
