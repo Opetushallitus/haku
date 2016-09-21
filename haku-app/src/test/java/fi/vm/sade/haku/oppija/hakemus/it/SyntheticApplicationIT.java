@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
@@ -126,14 +127,12 @@ public class SyntheticApplicationIT {
         final String hakijaOid = "hakijaOid1";
 
         Response resp1 = put(hakukohde1, "1", hakijaOid, hetu, email1);
-        verifyPutResponse(resp1);
+        final Application app1 = verifyPutResponse(resp1).get(0);
+        assertEquals(email1, app1.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti"));
 
         Response resp2 = put(hakukohde1, "2", hakijaOid, hetu, "");
-        final List<Application> apps2 = verifyPutResponse(resp2);
-
-        Application app = apps2.get(0);
-        Map<String, String> henkilotiedot = app.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
-        assertEquals(email1, henkilotiedot.get("Sähköposti"));
+        final Application app2 = verifyPutResponse(resp2).get(0);
+        assertNull(app2.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti"));
     }
 
     @Test
@@ -185,7 +184,7 @@ public class SyntheticApplicationIT {
                 hakukohdeOid, hakuOid,
                 tarjoajaOid,
                 ImmutableList.of(new SyntheticApplication.Hakemus(hakijaOid, "Etu", "Suku","","", hetu, email, null,
-                  "fi", "040123456", "Tie 2", "00100", "HELSINKI", "FIN", "FIN", "091", null)));
+                  "fi", "040123456", "Tie 2", "00100", "HELSINKI", "FIN", "FIN", "091", null, null)));
         return applicationResource.putSyntheticApplication(firstInput);
     }
 

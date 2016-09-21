@@ -156,7 +156,6 @@ public final class OppijaConstants {
     public static final String PERUSOPETUS_KIELI = "perusopetuksen_kieli";
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
     public static final String KYMPPI_PAATTOTODISTUSVUOSI = "KYMPPI_PAATTOTODISTUSVUOSI";
-    public static final String POHJAKOULUTUSMAA_TOINEN_ASTE = "pohjakoulutusmaa_toinen_aste";
     public static final String TOISEN_ASTEEN_SUORITUS = "toisen_asteen_suoritus";
     public static final String TOISEN_ASTEEN_SUORITUSMAA = "toisen_asteen_suoritusmaa";
 
