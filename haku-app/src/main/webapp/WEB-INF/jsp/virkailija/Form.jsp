@@ -196,7 +196,7 @@
 
                     <td>
                         Hakijan tiedot <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank">suoritusrekisteriss&auml;</a></br>
-                        Hakijan tiedot <a href="/authentication-henkiloui/html/index.html#/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank">henkil&ouml;palvelussa</a>
+                        Hakijan tiedot <a href="/authentication-henkiloui/html/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank">henkil&ouml;palvelussa</a>
                     </td>
 
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
