@@ -33,4 +33,26 @@ $(document).ready(function() {
         }
         $('#valintaContent').data("url", null);
     });
+    $('#kelpoisuusliitteetTab').click(function() {
+        var url = $('#kelpoisuusLiitteetContent').data("url");
+        if(url) {
+            var load = function reload () {
+                $('#kelpoisuusLiitteetContent').load(url, function( response, status, xhr ) {
+                    $('#kelpoisuusLiitteetContentLoaderIcon').hide();
+                    if ( status == "error" ) {
+                        $('#kelpoisuusLiitteetContent')
+                        var retry = $("<a href='#'>Välilehden lataus epäonnistui. Yritä välilehden hakua uudelleen.</a>").click(function(e) {
+                            $('#kelpoisuusLiitteetContent').html("");
+                            $('#kelpoisuusLiitteetContentLoaderIcon').show();
+                            reload();
+                        });
+                        $('#kelpoisuusLiitteetContent').html("");
+                        $('#kelpoisuusLiitteetContent').append(retry);
+                    }
+                });
+            }
+            load();
+        }
+        $('#kelpoisuusLiitteetContent').data("url", null);
+    });
 });
