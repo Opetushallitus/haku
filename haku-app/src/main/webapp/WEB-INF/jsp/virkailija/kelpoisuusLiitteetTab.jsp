@@ -21,9 +21,6 @@
 <% pageContext.setAttribute("illegalUnicode1", "\u2028"); %>
 <% pageContext.setAttribute("illegalUnicode2", "\u2029"); %>
 
-<script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
-<script src="${contextPath}/resources/javascript/underscore.string.min.js" type="text/javascript"></script>
-
 <jsp:include page="../error/conflict.jsp"/>
 
 <div class="grid16-16 inline-block hidden" id="error-kelpoisuus-liitteet">
