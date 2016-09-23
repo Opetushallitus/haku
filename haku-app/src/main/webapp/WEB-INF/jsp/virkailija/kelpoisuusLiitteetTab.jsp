@@ -139,21 +139,3 @@
     </script>
 </c:forEach>
 
-<script>
-    $(document).ready(function() {
-        kjal.populateForm();
-        /**
-         * kelpoisuus ja liitteet välilehden tallennuksen jälkeen
-         * asetataan kelpoisuus ja liitteet välilehti takaisin aktiiviseksi
-         */
-        if (window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ) {
-            var navY = window.location.href.split('#')[2];
-            window.location.href = window.location.href.split('#')[0]+'#';
-            $('#kelpoisuusliitteetTab').click();
-            window.setTimeout(function (){scrollTo(0,navY);},10);
-        }
-    });
-</script>
-
-
-
