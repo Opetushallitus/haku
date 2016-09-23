@@ -1,8 +1,21 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="virkailija" tagdir="/WEB-INF/tags/virkailija" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<fmt:setBundle basename="messages" scope="application"/>
+<c:set var="preview" value="${it.preview}" scope="request"/>
+<c:set var="form" value="${it.form}" scope="request"/>
+<c:set var="oid" value="${it.oid}" scope="request"/>
+<c:set var="application" value="${it.application}" scope="request"/>
+<c:set var="applicationSystem" value="${it.applicationSystem}" scope="request"/>
+<c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="overridden" value="${it.application.overriddenAnswers}" scope="request" />
+<c:set var="applicationMeta" value="${it.application.meta}" scope="request" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <% pageContext.setAttribute("newLineEscaped", "\\n"); %>
 <% pageContext.setAttribute("illegalUnicode1", "\u2028"); %>
