@@ -1,3 +1,6 @@
+var hakutoiveet = [],
+  hakutoiveetCache = [];
+
 var config = {
     hakukelpoinen: "ELIGIBLE",
     eiHakukelpoinen: "INELIGIBLE",

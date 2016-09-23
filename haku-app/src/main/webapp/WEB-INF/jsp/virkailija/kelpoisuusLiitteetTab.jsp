@@ -34,11 +34,6 @@
        onclick="kjal.tallennaKelpoisuusJaLiitteet('${application.oid}', '${application.eligibilitiesAndAttachmentsUpdated}')" value="Tallenna" disabled />
 
 <h3 id="kun">Kk-haut: Kelpoisuus ja liitteet</h3>
-<script type="text/javascript">
-    var hakutoiveet = [],
-        hakutoiveetCache = [];
-
-</script>
 <hr>
 <c:forEach var="hakukohde" items="${it.hakukohteet}">
     <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" novalidate="novalidate" class="block" >
