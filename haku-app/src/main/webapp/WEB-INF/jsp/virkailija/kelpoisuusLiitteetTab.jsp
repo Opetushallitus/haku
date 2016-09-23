@@ -1,15 +1,25 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="virkailija" tagdir="/WEB-INF/tags/virkailija" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<fmt:setBundle basename="messages" scope="application"/>
+<c:set var="preview" value="${it.preview}" scope="request"/>
+<c:set var="form" value="${it.form}" scope="request"/>
+<c:set var="oid" value="${it.oid}" scope="request"/>
+<c:set var="application" value="${it.application}" scope="request"/>
+<c:set var="applicationSystem" value="${it.applicationSystem}" scope="request"/>
+<c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="overridden" value="${it.application.overriddenAnswers}" scope="request" />
+<c:set var="applicationMeta" value="${it.application.meta}" scope="request" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <% pageContext.setAttribute("newLineEscaped", "\\n"); %>
 <% pageContext.setAttribute("illegalUnicode1", "\u2028"); %>
 <% pageContext.setAttribute("illegalUnicode2", "\u2029"); %>
-
-<script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
-<script src="${contextPath}/resources/javascript/underscore.string.min.js" type="text/javascript"></script>
 
 <jsp:include page="../error/conflict.jsp"/>
 
@@ -21,11 +31,6 @@
        onclick="kjal.tallennaKelpoisuusJaLiitteet('${application.oid}', '${application.eligibilitiesAndAttachmentsUpdated}')" value="Tallenna" disabled />
 
 <h3 id="kun">Kk-haut: Kelpoisuus ja liitteet</h3>
-<script type="text/javascript">
-    var hakutoiveet = [],
-        hakutoiveetCache = [];
-
-</script>
 <hr>
 <c:forEach var="hakukohde" items="${it.hakukohteet}">
     <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" novalidate="novalidate" class="block" >
@@ -133,6 +138,4 @@
 
     </script>
 </c:forEach>
-
-
 

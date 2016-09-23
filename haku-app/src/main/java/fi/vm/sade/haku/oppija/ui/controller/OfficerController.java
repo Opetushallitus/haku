@@ -73,6 +73,7 @@ public class OfficerController {
     public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus";
     public static final String DEFAULT_VIEW = "/virkailija/Form";
     public static final String VALINTA_TAB_VIEW = "/virkailija/valintaTab";
+    public static final String KELPOISUUS_JA_LIITTEET_TAB_VIEW = "/virkailija/kelpoisuusLiitteetTab";
     public static final String OID_PATH_PARAM = "oid";
     public static final String ORGANIZATION_OID_PATH_PARAM = "orgOid";
     public static final String VERBOSE_HELP_VIEW = "/help";
@@ -151,6 +152,14 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.getValintaTab(oid);
         AUDIT.log(builder().hakemusOid(oid).setOperaatio(HakuOperation.VIEW_APPLICATION).build());
         return new Viewable(VALINTA_TAB_VIEW, modelResponse.getModel());
+    }
+    @GET
+    @Path("/hakemus/{oid}/kelpoisuus_ja_liitteet")
+    public Viewable kelpoisuusJaLiitteetTab(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+        LOGGER.debug("get application  {}", oid);
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", true);
+        AUDIT.log(builder().hakemusOid(oid).setOperaatio(HakuOperation.VIEW_APPLICATION).build());
+        return new Viewable(KELPOISUUS_JA_LIITTEET_TAB_VIEW, modelResponse.getModel());
     }
     @GET
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")

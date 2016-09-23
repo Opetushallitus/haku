@@ -56,6 +56,8 @@
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
+    <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/underscore.string.min.js" type="text/javascript"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
     <haku:ie9StyleFix/>
@@ -234,17 +236,15 @@
 
                 <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
                          style="display: none">
-                    <div id="valintaContent" data-url="${pageContext.request.contextPath}/virkailija/hakemus/${application.oid}/valinta">
-
-                    </div>
+                    <div id="valintaContent" data-url="${pageContext.request.contextPath}/virkailija/hakemus/${application.oid}/valinta"></div>
                     <img id="valintaContentLoaderIcon" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif" />
                 </section>
 
                 <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
                 <section id="kelpoisuusliitteet" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet"
                          style="display: none">
-
-                    <jsp:include page="kelpoisuusLiitteetTab.jsp"/>
+                    <div id="kelpoisuusLiitteetContent" data-url="${pageContext.request.contextPath}/virkailija/hakemus/${application.oid}/kelpoisuus_ja_liitteet"></div>
+                    <img id="kelpoisuusLiitteetContentLoaderIcon" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif" />
                 </section>
                 </c:if>
 
