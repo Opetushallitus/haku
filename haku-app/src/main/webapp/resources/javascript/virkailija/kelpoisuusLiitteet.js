@@ -550,9 +550,12 @@ var kjal = {
             dataType: "json",
             cache: false,
             success: function () {
+                /*
                 var navToY = kjal.documentYposition();
                 window.location.href = window.url("haku-app.application", applicationOid) + '#liitteetkelpoisuusTab#'+navToY;
                 window.location.reload(true);
+                */
+                loadKelpoisuusJaLiitteetContent();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 kjal.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', jqXHR, textStatus, errorThrown);
