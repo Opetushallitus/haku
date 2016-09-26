@@ -3,9 +3,12 @@ var loadKelpoisuusJaLiitteetContent = function() {
     var url = $('#kelpoisuusLiitteetContent').data("url");
     var isLoading = $('#kelpoisuusLiitteetContent').data("loading");
     if(isLoading) {
+        console.log("already loading tab..");
+    } else {
         var load = function reload () {
             $('#kelpoisuusLiitteetContent').load(url, function( response, status, xhr ) {
                 $('#kelpoisuusLiitteetContentLoaderIcon').hide();
+                $('#kelpoisuusLiitteetContent').data("loading", false);
                 if ( status == "error" ) {
                     $('#kelpoisuusLiitteetContent')
                     var retry = $("<a href='#'>Välilehden lataus epäonnistui. Yritä välilehden hakua uudelleen.</a>").click(function(e) {
@@ -31,8 +34,8 @@ var loadKelpoisuusJaLiitteetContent = function() {
             });
         }
         load();
+        $('#kelpoisuusLiitteetContent').data("loading", true);
     }
-    $('#kelpoisuusLiitteetContent').data("loading", true);
 }
 
 $(document).ready(function() {
