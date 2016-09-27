@@ -17,8 +17,13 @@ lomake = initSelectors({
     lahiosoite: "input#lahiosoite",
     postinumero: "input#Postinumero",
     kotikunta: "select#kotikunta",
+    kansalaisuus: "select#kansalaisuus",
+    aidinkieli: "select#aidinkieli",
     kaksoiskansalaisuus: function(onKaksoiskansalaisuus) {
         return "input#onkosinullakaksoiskansallisuus_"+onKaksoiskansalaisuus;
+    },
+    suomalainenHetu: function(onKaksoiskansalaisuus) {
+        return "input#onkoSinullaSuomalainenHetu_"+onKaksoiskansalaisuus;
     },
     koulusivistyskieli: "select#koulusivistyskieli",
 

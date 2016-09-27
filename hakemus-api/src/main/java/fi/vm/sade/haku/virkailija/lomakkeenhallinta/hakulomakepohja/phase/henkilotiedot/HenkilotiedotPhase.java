@@ -86,7 +86,7 @@ public final class HenkilotiedotPhase {
 
         Element kansalaisuus = new DropdownSelectBuilder("kansalaisuus")
                 .addOptions(formParameters.getKoodistoService().getNationalities())
-                .defaultOption("FIN")
+                .emptyOptionDefault()
                 .requiredInline()
                 .formParams(formParameters).build();
         henkilotiedotTeema.addChild(kansalaisuus);
@@ -105,6 +105,7 @@ public final class HenkilotiedotPhase {
 
         Element kaksoiskansalaisuus = new DropdownSelectBuilder("kaksoiskansalaisuus")
                 .addOptions(formParameters.getKoodistoService().getNationalities())
+                .emptyOptionDefault()
                 .requiredInline()
                 .formParams(formParameters).build();
 
@@ -234,7 +235,7 @@ public final class HenkilotiedotPhase {
 
         // Asuinmaa, osoite
         Element asuinmaa = Dropdown(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY)
-                .defaultOption(OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN)
+                .emptyOptionDefault()
                 .addOptions(formParameters.getKoodistoService().getCountries())
                 .requiredInline()
                 .formParams(formParameters).build();
@@ -275,8 +276,7 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(asuinmaa);
 
         henkilotiedotTeema.addChild(Dropdown(OppijaConstants.ELEMENT_ID_LANGUAGE)
-                .defaultValueAttribute("fi_vm_sade_oppija_language")
-                .emptyOption()
+                .emptyOptionDefault()
                 .addOptions(formParameters.getKoodistoService().getLanguages())
                 .requiredInline()
                 .formParams(formParameters).build());

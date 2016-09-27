@@ -1195,7 +1195,7 @@ public final class KoulutustaustaPhase {
 
             Element tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
             tuoreYoTodistus.addChild(new DropdownSelectBuilder(ELEMENT_ID_SENDING_SCHOOL)
-                    .defaultValueAttribute("")
+                    .emptyOptionDefault()
                     .addOption(
                             addSpaceAtTheBeginning(formParameters.getI18nText("form.koulutustausta.lukio.valitse.oppilaitos")), "")
                     .addOptions(koodistoService.getLukioKoulukoodit())
@@ -1264,8 +1264,6 @@ public final class KoulutustaustaPhase {
         return Dropdown(id + postfix)
                 .emptyOptionDefault()
                 .addOptions(maat)
-                .keepFirst("", EDUCATION_COUNTRY_OTHER)
-                .defaultOption("")
                 .labelKey(id)
                 .requiredInline()
                 .formParams(formParameters).build();

@@ -22,6 +22,11 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
         return this;
     }
 
+    public OptionQuestionBuilder emptyOptionDefault() {
+        this.defaultOption = String.valueOf(OptionBuilder.EmptyOption());
+        return this;
+    }
+
     public OptionQuestionBuilder addOption(String value, FormParameters formParameters) {
         options.add((Option) new OptionBuilder(id + "." + value)
                 .setValue(value)
@@ -57,5 +62,4 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
         this.keepFirst = values;
         return this;
     }
-
 }
