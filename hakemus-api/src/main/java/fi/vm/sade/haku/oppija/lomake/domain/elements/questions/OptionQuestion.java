@@ -109,6 +109,8 @@ public abstract class OptionQuestion extends Question {
                                     }
                                 }
                             }
+                            if(o1Trans.isEmpty() || o1Trans.equals(Option.EMPTY_VALUE_PLACEHOLDER)) return Integer.MIN_VALUE;
+                            else if (o2Trans.isEmpty() || o2Trans.equals(Option.EMPTY_VALUE_PLACEHOLDER)) return Integer.MAX_VALUE;
                             return o1Trans.compareTo(o2Trans);
                         }
                     });
