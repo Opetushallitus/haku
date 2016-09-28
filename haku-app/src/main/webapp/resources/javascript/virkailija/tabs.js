@@ -8,8 +8,6 @@ var loadKelpoisuusJaLiitteetContent = function() {
         var load = function reload () {
             $('#kelpoisuusLiitteetContent').html("");
             $('#kelpoisuusLiitteetContentLoaderIcon').show();
-            console.log('--:--' + hakutoiveet);
-            console.log('--:--' + hakutoiveetCache);
             hakutoiveet = [];
             hakutoiveetCache = [];
             $('#kelpoisuusLiitteetContent').load(url, function( response, status, xhr ) {
