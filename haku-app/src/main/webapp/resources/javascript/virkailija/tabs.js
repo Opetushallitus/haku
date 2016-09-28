@@ -6,14 +6,18 @@ var loadKelpoisuusJaLiitteetContent = function() {
         console.log("already loading tab..");
     } else {
         var load = function reload () {
+            $('#kelpoisuusLiitteetContent').html("");
+            $('#kelpoisuusLiitteetContentLoaderIcon').show();
+            console.log('--:--' + hakutoiveet);
+            console.log('--:--' + hakutoiveetCache);
+            hakutoiveet = [];
+            hakutoiveetCache = [];
             $('#kelpoisuusLiitteetContent').load(url, function( response, status, xhr ) {
                 $('#kelpoisuusLiitteetContentLoaderIcon').hide();
                 $('#kelpoisuusLiitteetContent').data("loading", false);
                 if ( status == "error" ) {
                     $('#kelpoisuusLiitteetContent')
                     var retry = $("<a href='#'>Välilehden lataus epäonnistui. Yritä välilehden hakua uudelleen.</a>").click(function(e) {
-                        $('#kelpoisuusLiitteetContent').html("");
-                        $('#kelpoisuusLiitteetContentLoaderIcon').show();
                         reload();
                     });
                     $('#kelpoisuusLiitteetContent').html("");
