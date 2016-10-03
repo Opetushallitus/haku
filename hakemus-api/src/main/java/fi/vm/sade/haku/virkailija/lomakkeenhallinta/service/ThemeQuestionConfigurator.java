@@ -204,11 +204,11 @@ public final class ThemeQuestionConfigurator {
     private Element generateTitleGroupForApplicationOption(final String optionId) {
         LOGGER.debug("Generating Titled group for application option {}", optionId);
         final HakukohdeV1RDTO hakukohde = hakukohdeService.findByOid(optionId);
-        final Map<String, String> applicationOptionName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getHakukohteenNimet()));
-        final Map<String, String> providerName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getTarjoajaNimet()));
+        final I18nText applicationOptionName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getHakukohteenNimet()));
+        final I18nText providerName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getTarjoajaNimet()));
         final Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId())
-          .i18nText(new I18nText(providerName))
-          .help(new I18nText(applicationOptionName)).build();
+          .i18nText(providerName)
+          .help(applicationOptionName).build();
         return group;
     }
 

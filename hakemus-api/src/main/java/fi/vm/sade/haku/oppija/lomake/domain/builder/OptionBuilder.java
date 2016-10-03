@@ -32,7 +32,7 @@ public class OptionBuilder extends QuestionBuilder {
 
     public static Option EmptyOption() {
         return (Option) Option(ElementUtil.randomId())
-                .setValue("")
-                .i18nText(ElementUtil.createI18NAsIs("")).build();
+                .setValue(Option.EMPTY_VALUE_PLACEHOLDER)
+                .i18nText(ElementUtil.createI18NAsIs(Option.EMPTY_VALUE_PLACEHOLDER)).build();
     }
 }

@@ -60,7 +60,7 @@ public class GroupPrioritisationValidator extends GroupRestrictionValidator {
 
     private void addErrors(ApplicationOptionInfo higher, ApplicationOptionInfo lower, Map<String, I18nText> errors) {
         Map<String, String> errorMessages = new HashMap<>();
-        for(String lang: errorMessage.getTranslations().keySet()) {
+        for(String lang: errorMessage.getAvailableLanguages()) {
             errorMessages.put(lang, errorMessage.getText(lang).replace(REPLACE_KORKEAMPI, higher.ao.getName()).replace(REPLACE_ALEMPI, lower.ao.getName()));
         }
         errors.put(higher.aoInputId, new I18nText(errorMessages));

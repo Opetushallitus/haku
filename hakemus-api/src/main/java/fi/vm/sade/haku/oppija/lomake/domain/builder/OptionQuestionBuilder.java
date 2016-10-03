@@ -1,10 +1,12 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class OptionQuestionBuilder extends QuestionBuilder {
@@ -19,6 +21,11 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
 
     public OptionQuestionBuilder emptyOption() {
         options.add(OptionBuilder.EmptyOption());
+        return this;
+    }
+
+    public OptionQuestionBuilder emptyOptionDefault() {
+        this.defaultOption = String.valueOf(OptionBuilder.EmptyOption());
         return this;
     }
 
@@ -57,5 +64,4 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
         this.keepFirst = values;
         return this;
     }
-
 }

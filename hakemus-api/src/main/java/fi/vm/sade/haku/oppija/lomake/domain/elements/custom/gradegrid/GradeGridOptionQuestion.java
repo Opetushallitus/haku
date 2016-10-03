@@ -59,8 +59,7 @@ public class GradeGridOptionQuestion extends Element {
     private void initSortedOptions() {
         optionsSortedByText = new HashMap<String, List<Option>>();
         for (Option option : options) {
-            Set<String> langs = option.getI18nText().getTranslations().keySet();
-            for (String lang : langs) {
+            for (String lang : option.getI18nText().getAvailableLanguages()) {
                 List<Option> optionListForLang = optionsSortedByText.get(lang);
                 if (optionListForLang == null) {
                     optionListForLang = new ArrayList<Option>(options.size());

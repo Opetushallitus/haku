@@ -101,7 +101,8 @@ partials = {
                 lomake.sukunimi, "Testikäs",
                 lomake.etunimet, "Asia Kas",
                 lomake.kutsumanimi, "Asia",
-                lomake.hetu, hetuToUSe),
+                lomake.hetu, hetuToUSe,
+                lomake.kansalaisuus, "FIN"),
             wait.until(function() {
                 return S("input#sukupuoli").length > 0;
             }),
@@ -114,7 +115,8 @@ partials = {
                 lomake.asuinmaa, 'FIN',
                 lomake.lahiosoite, "Testikatu 4",
                 lomake.postinumero, "00100",
-                lomake.kotikunta, "janakkala"))
+                lomake.kotikunta, "janakkala",
+                lomake.aidinkieli, 'FI'))
     },
     valitseKoulutusVetovalikosta: function(prioriteetti, koulunNimi, koulutuksenNimi) {
         return seq(

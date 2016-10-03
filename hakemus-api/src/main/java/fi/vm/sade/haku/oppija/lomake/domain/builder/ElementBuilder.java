@@ -196,14 +196,7 @@ public abstract class ElementBuilder {
     }
 
     protected I18nText emptyToNull(final I18nText i18nText) {
-        if (i18nText != null) {
-            Map<String, String> translations = i18nText.getTranslations();
-            if (translations != null && !translations.isEmpty()) {
-                return i18nText;
-            }
-        }
-
-        return null;
+        return i18nText == null || i18nText.isEmpty() ? null : i18nText;
     }
 
     protected I18nText ensureTranslations(final I18nText i18nText){

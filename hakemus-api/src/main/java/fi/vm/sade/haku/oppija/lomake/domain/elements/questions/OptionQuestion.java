@@ -82,8 +82,7 @@ public abstract class OptionQuestion extends Question {
                 return;
             Map<String, List<Option>> tempOptionsSortedByText = new HashMap<>();
             for (Option option : options) {
-                Set<String> langs = option.getI18nText().getTranslations().keySet();
-                for (String lang : langs) {
+                for (String lang : option.getI18nText().getAvailableLanguages()) {
                     List<Option> optionListForLang = tempOptionsSortedByText.get(lang);
                     if (optionListForLang == null) {
                         optionListForLang = new ArrayList<Option>(options.size());
@@ -110,6 +109,8 @@ public abstract class OptionQuestion extends Question {
                                     }
                                 }
                             }
+                            if(o1Trans.isEmpty() || o1Trans.equals(Option.EMPTY_VALUE_PLACEHOLDER)) return Integer.MIN_VALUE;
+                            else if (o2Trans.isEmpty() || o2Trans.equals(Option.EMPTY_VALUE_PLACEHOLDER)) return Integer.MAX_VALUE;
                             return o1Trans.compareTo(o2Trans);
                         }
                     });

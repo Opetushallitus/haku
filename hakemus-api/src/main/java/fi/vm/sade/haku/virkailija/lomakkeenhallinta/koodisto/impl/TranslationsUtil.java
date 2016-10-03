@@ -33,53 +33,23 @@ import java.util.Set;
 
 public final class TranslationsUtil {
 
-    final static List<String> langs = new ArrayList<String>(3);
     final static String LANG_CODE_PREFIX = "kieli_";
-
-    static {
-        langs.add(KieliType.FI.value().toLowerCase());
-        langs.add(KieliType.SV.value().toLowerCase());
-        langs.add(KieliType.EN.value().toLowerCase());
-    }
 
     private TranslationsUtil() { // NOSONAR
     }
 
-    public static Map<String, String> createTranslationsMap(final KoodiType koodiType) {
+    public static I18nText createTranslationsMap(final KoodiType koodiType) {
         final List<KoodiMetadataType> metadata = koodiType.getMetadata();
         final Map<String, String> translations = Maps.newHashMapWithExpectedSize(metadata.size());
         for (KoodiMetadataType koodiMetadataType : metadata) {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
         }
-        return createTranslationsMap(translations);
+        return ensureDefaultLanguageTranslations(translations);
     }
-
-    public static Map<String, String> createTranslationsMap(final Map<String, String> partialTranslations) {
-        final HashMap<String, String> translations = new HashMap<String, String>(partialTranslations);
-        for (String lang : langs) {
-            if (translations.get(lang) == null) {
-                for (String tryLang : langs) {
-                    if (translations.get(tryLang) != null) {
-                        translations.put(lang, translations.get(tryLang));
-                        break;
-                    }
-                }
-            }
-        }
-
-        return translations;
+    public static I18nText createTranslationsMap(final Map<String, String> translations) {
+        return ensureDefaultLanguageTranslations(translations);
     }
-
-    public static Map<String, String> filterCodePrefix(final Map<String, String> translations) {
-        final HashMap<String, String> filteredTranslations = new HashMap<String, String>(translations.size());
-        for (String key: translations.keySet()){
-            String newKey = key.replace(LANG_CODE_PREFIX, "");
-            filteredTranslations.put(newKey, translations.get(key));
-
-        }
-        return filteredTranslations;
-    }
-
+    /*
     public static Map<String, String> ensureDefaultLanguageTranslations(final Map<String, String> translations) {
         final HashMap<String, String> ensuredTranslations = new HashMap<String, String>(translations);
         for (String langKey : langs) {
@@ -97,8 +67,20 @@ public final class TranslationsUtil {
         }
         return ensuredTranslations;
     }
+    */
+    public static Map<String, String> filterCodePrefix(final Map<String, String> translations) {
+        final HashMap<String, String> filteredTranslations = new HashMap<String, String>(translations.size());
+        for (String key: translations.keySet()){
+            String newKey = key.replace(LANG_CODE_PREFIX, "");
+            filteredTranslations.put(newKey, translations.get(key));
 
+        }
+        return filteredTranslations;
+    }
+    public static I18nText ensureDefaultLanguageTranslations(final Map<String, String> translations) {
+        return I18nText.copyWithDefaultTranslations(new I18nText(translations));
+    }
     public static I18nText ensureDefaultLanguageTranslations(final I18nText translations) {
-        return new I18nText(ensureDefaultLanguageTranslations(translations.getTranslations()));
+        return I18nText.copyWithDefaultTranslations(translations);
     }
 }

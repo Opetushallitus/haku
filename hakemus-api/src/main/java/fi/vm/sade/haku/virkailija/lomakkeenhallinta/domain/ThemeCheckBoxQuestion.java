@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
+import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
@@ -81,13 +82,13 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
     private I18nText buildExcelColumnLabel(I18nText optionText, FormParameters formParameters) {
         I18nText parentText = getMessageText();
-        Set<String> langs = new HashSet<String>(parentText.getTranslations().keySet());
-        langs.addAll(optionText.getTranslations().keySet());
-        Map<String, String> translations = new HashMap<String, String>(langs.size());
-        for (String lang : langs) {
-            translations.put(lang, safeToString(parentText.getTranslations().get(lang))
+        ImmutableSet<String> allAvailableLanguages = ImmutableSet.<String>builder().addAll(optionText.getAvailableLanguages())
+                .addAll(parentText.getAvailableLanguages()).build();
+        Map<String, String> translations = new HashMap<>(allAvailableLanguages.size());
+        for (String lang : allAvailableLanguages) {
+            translations.put(lang, safeToString(parentText.getTextOrNull(lang))
                             + ":"
-                            + safeToString(optionText.getTranslations().get(lang)));
+                            + safeToString(optionText.getTextOrNull(lang)));
         }
         return new I18nText(translations);
     }
