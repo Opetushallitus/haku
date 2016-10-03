@@ -133,6 +133,11 @@ public class FormParameters {
         return OppijaConstants.HAKUTAPA_ERILLISHAKU.equals(applicationSystem.getHakutapa());
     }
 
+    public boolean isToisenAsteenErillishaku() {
+        return OppijaConstants.HAKUTAPA_ERILLISHAKU.equals(applicationSystem.getHakutapa())
+                && OppijaConstants.TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(applicationSystem.getKohdejoukkoUri());
+    }
+
     public boolean askOldEducationInfo() {
         if(isHigherEd() && isErillishaku()) {
             Ohjausparametri kysyVanhaaKoulutusta = ohjausparametritService.fetchOhjausparametritForHaku(applicationSystem.getId()).getPH_KVT();
