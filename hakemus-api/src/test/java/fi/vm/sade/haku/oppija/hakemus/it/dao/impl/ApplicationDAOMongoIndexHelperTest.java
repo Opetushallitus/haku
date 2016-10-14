@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class ApplicationDAOMongoIndexHelperTest {
                         QueryBuilder.start(META_ALL_ORGANIZATIONS).in(Collections.singletonList("1.2.3")).get()
                 ).get();
 
-        assertEquals(INDEX_RECEIVED_UPDATED, ApplicationDAOMongoIndexHelper.addIndexHint(query));
+        assertEquals(INDEX_RECEIVED_UPDATED, ApplicationDAOMongoIndexHelper.addIndexHint(query, new BasicDBObject()));
     }
 
 }

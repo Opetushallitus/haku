@@ -30,6 +30,7 @@ public final class ApplicationDAOMongoConstants {
     static final String INDEX_STATE_ASID_ORG_OID = "index_state_asid_org_oid";
     static final String INDEX_STATE_ORG_OID = "index_state_org_oid";
     static final String INDEX_ASID_ORG_OID = "index_asid_org_oid";
+    static final String INDEX_FULLNAME_ASID_ORG = "index_fullname_asid_org";
     static final String INDEX_ORG_OID = "index_org_oid";
     static final String INDEX_PAYMENT_DUE_DATE = "index_payment_due_date";
     static final String INDEX_RECEIVED_UPDATED = "index_received_updated";

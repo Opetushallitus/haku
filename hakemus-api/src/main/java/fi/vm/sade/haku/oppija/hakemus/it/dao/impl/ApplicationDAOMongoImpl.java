@@ -276,7 +276,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         int searchHits = -1;
 
         if (ensureIndex) {
-            final String hint = addIndexHint(query);
+            final String hint = addIndexHint(query, sortBy);
             if (null != hint)
                 dbCursor.hint(hint);
         }

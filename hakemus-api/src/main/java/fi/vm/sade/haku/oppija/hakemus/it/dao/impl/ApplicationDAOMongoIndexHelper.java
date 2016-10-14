@@ -17,17 +17,19 @@ final class ApplicationDAOMongoIndexHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoIndexHelper.class);
 
     private final DBObject query;
+    private final DBObject sortBy;
     private final Set<String> indexFields;
     private final Set<String> checkedFields;
     private final String indexCandidate;
 
-    static String addIndexHint(final DBObject query) {
-        final ApplicationDAOMongoIndexHelper indexHelper = new ApplicationDAOMongoIndexHelper(query);
+    static String addIndexHint(final DBObject query, final DBObject sortBy) {
+        final ApplicationDAOMongoIndexHelper indexHelper = new ApplicationDAOMongoIndexHelper(query, sortBy);
         return indexHelper.getHint();
     }
 
-    private ApplicationDAOMongoIndexHelper(final DBObject query) {
+    private ApplicationDAOMongoIndexHelper(final DBObject query, final DBObject sortBy) {
         this.query = query;
+        this.sortBy = sortBy;
         this.indexFields = findIndexFields(query);
         this.checkedFields = Sets.newHashSetWithExpectedSize(indexFields.size());
         indexCandidate = initIndexCanditate();
@@ -59,7 +61,11 @@ final class ApplicationDAOMongoIndexHelper {
                 }
             } else {
                 if (hasApplicationSystemId()) {
-                    return INDEX_ASID_ORG_OID;
+                    if(hasSortByFullName()) {
+                        return INDEX_FULLNAME_ASID_ORG;
+                    } else {
+                        return INDEX_ASID_ORG_OID;
+                    }
                 } else if (hasUpdatedOrReceived()) {
                     return INDEX_RECEIVED_UPDATED;
                 } else {
@@ -88,7 +94,9 @@ final class ApplicationDAOMongoIndexHelper {
     }
 
     // index key checkers
-
+    private boolean hasSortByFullName() {
+        return sortBy.get("fullName") != null;
+    }
     private boolean hasApplicationState() {
         return checkKey(FIELD_APPLICATION_STATE);
     }
