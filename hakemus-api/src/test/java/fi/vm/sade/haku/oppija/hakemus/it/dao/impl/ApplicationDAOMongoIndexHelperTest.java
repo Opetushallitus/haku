@@ -24,5 +24,15 @@ public class ApplicationDAOMongoIndexHelperTest {
 
         assertEquals(INDEX_RECEIVED_UPDATED, ApplicationDAOMongoIndexHelper.addIndexHint(query, new BasicDBObject()));
     }
+    @Test
+    public void shouldSortByFullName() {
+        final DBObject query = QueryBuilder.start()
+                .and(
+                        QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(Collections.singletonList("1.2.3")).get(),
+                        QueryBuilder.start(META_ALL_ORGANIZATIONS).in(Collections.singletonList("1.2.3")).get()
+                ).get();
+
+        assertEquals(INDEX_FULLNAME_ASID_ORG, ApplicationDAOMongoIndexHelper.addIndexHint(query, new BasicDBObject("fullName","1")));
+    }
 
 }
