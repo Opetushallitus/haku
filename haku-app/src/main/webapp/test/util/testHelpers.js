@@ -213,12 +213,16 @@ function testFrame() {
     return $("#testframe").get(0).contentWindow
 }
 
+function testDocumentReady() {
+    return testFrame().document.readyState === 'complete'
+}
+
 function openPage(path, predicate) {
-    if (!predicate) {
-        predicate = function () {
-            return testFrame().jQuery && testFrame().document.readyState === 'complete'
-        }
-    }
+    var documentReadyPredicate = predicate ? function() {
+        return testDocumentReady() && predicate();
+    } : function() {
+        return testDocumentReady() && testFrame().jQuery;
+    };
     return seq(
         function() {
             var pathStr;
@@ -231,7 +235,7 @@ function openPage(path, predicate) {
             var newTestFrame = $('<iframe/>').attr({src: pathStr, width: 1024, height: 800, id: "testframe"});
             $("#testframe").replaceWith(newTestFrame);
         },
-        wait.until(predicate, testTimeoutPageLoad),
+        wait.until(documentReadyPredicate, testTimeoutPageLoad),
         function () {
             window.uiError = null;
             testFrame().onerror = function (err) {
