@@ -95,4 +95,8 @@ public class Pistetieto {
         }
         return pisteetValue;
     }
+
+    public String getPisteetToDisplay() {
+        return pisteetToDisplay;
+    }
 }
