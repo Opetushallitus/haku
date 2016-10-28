@@ -6,6 +6,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
 import fi.vm.sade.haku.virkailija.valinta.dto.PistetietoDTO;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +18,10 @@ public class Pistetieto {
     private Osallistuminen osallistuminen;
     private I18nText osallistuminenText;
     private String pisteet;
+    private String pisteetToDisplay;
     
     private static final Map<Osallistuminen, I18nText> osallistuminenTranslations;
+    private static final Map<String, String> pisteetOverriddenDisplayValues = new HashMap<>();
 
     static {
         osallistuminenTranslations = new HashMap<Osallistuminen, I18nText>(3);
@@ -28,6 +31,9 @@ public class Pistetieto {
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiOsallistu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         osallistuminenTranslations.put(Osallistuminen.VIRHE,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.virhe", OppijaConstants.MESSAGES_BUNDLE_NAME));
+
+        pisteetOverriddenDisplayValues.put("true", "Hyväksytty");
+        pisteetOverriddenDisplayValues.put("false", "Hylätty");
     }
 
     public Pistetieto() {
@@ -38,6 +44,7 @@ public class Pistetieto {
         this.id = pistetietoDTO.getTunniste();
         this.pisteet = pistetietoDTO.getLaskennallinenArvo();
         this.osallistuminenText = ElementUtil.createI18NAsIs(pistetietoDTO.getOsallistuminen());
+        this.pisteetToDisplay = renderPisteet(this.pisteet);
     }
 
     public String getId() {
@@ -79,6 +86,13 @@ public class Pistetieto {
 
     public void setPisteet(String pisteet) {
         this.pisteet = pisteet;
+        this.pisteetToDisplay = renderPisteet(this.pisteet);
     }
 
+    private static String renderPisteet(String pisteetValue) {
+        if (pisteetOverriddenDisplayValues.containsKey(pisteetValue)) {
+            return pisteetOverriddenDisplayValues.get(pisteetValue);
+        }
+        return pisteetValue;
+    }
 }
