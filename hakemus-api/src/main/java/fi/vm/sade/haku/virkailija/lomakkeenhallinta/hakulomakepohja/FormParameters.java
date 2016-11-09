@@ -103,6 +103,14 @@ public class FormParameters {
         return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
 
+    public boolean isToisenAsteenYhteishaku(){
+        return OppijaConstants.TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(applicationSystem.getKohdejoukkoUri()) && isYhteishaku();
+    }
+
+    public boolean isErityisopetuksenaJarjestettavaAmmatillinen(){
+        return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+    }
+
     public boolean isHuoltajanTiedotKysyttava() {
         return isHuoltajanTiedotKysyttava(applicationSystem);
     }
@@ -131,6 +139,10 @@ public class FormParameters {
 
     public boolean isErillishaku() {
         return OppijaConstants.HAKUTAPA_ERILLISHAKU.equals(applicationSystem.getHakutapa());
+    }
+
+    public boolean isYhteishaku() {
+        return OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa());
     }
 
     public boolean isToisenAsteenErillishaku() {

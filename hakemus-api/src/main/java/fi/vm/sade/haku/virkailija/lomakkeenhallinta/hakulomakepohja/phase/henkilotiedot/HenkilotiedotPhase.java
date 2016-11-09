@@ -75,6 +75,31 @@ public final class HenkilotiedotPhase {
             return henkilotiedotTeema;
         }
 
+        ElementBuilder ssnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
+                .formParams(formParameters);
+        ssnEmailBuilder.validator(lowercaseEmailValidator());
+        if (formParameters.isUniqueApplicantRequired()) {
+            ssnEmailBuilder.validator(new EmailUniqueValidator());
+        }
+        if (formParameters.isEmailRequired()) {
+            ssnEmailBuilder.required();
+        }
+
+        ElementBuilder nossnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
+                .formParams(formParameters);
+        nossnEmailBuilder.validator(lowercaseEmailValidator());
+        if (formParameters.isUniqueApplicantRequired()) {
+            nossnEmailBuilder.validator(new EmailUniqueValidator());
+        }
+        if (formParameters.isEmailRequired()) {
+            nossnEmailBuilder.required();
+        }
+
+        // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
+        if(formParameters.isToisenAsteenYhteishaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
+            nossnEmailBuilder.required();
+        }
+
         henkilotiedotTeema.addChild(
                 createNameQuestionBuilder(ELEMENT_ID_LAST_NAME, 30).formParams(formParameters).build(),
                 createNameQuestionBuilder(ELEMENT_ID_FIRST_NAMES, 30).formParams(formParameters).build(),
@@ -112,6 +137,11 @@ public final class HenkilotiedotPhase {
         kysytaankoKaksoiskansallisuusSaanto.addChild(kaksoiskansalaisuus);
 
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
+
+        Element suomalainenElem = Rule(suomalainen).build(); // elementti lisätty jotta saadaan email näkyviin perustap.
+        suomalainenElem.addChild(ssnEmailBuilder.build());
+
+        henkilotiedotTeema.addChild(suomalainenElem);
 
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
@@ -177,26 +207,21 @@ public final class HenkilotiedotPhase {
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
+        Element hetuSaanto = Rule(new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(KYLLA))).build();
+
         Element eiHetuaSaanto = Rule(new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(EI))).build();
         eiHetuaSaanto.addChild(
                 sukupuoli,
                 syntymaaika,
                 TextQuestion("syntymapaikka").size(30).requiredInline().formParams(formParameters).build(),
                 TextQuestion("kansallinenIdTunnus").inline().size(30).formParams(formParameters).build(),
-                TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build());
+                TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build(),
+                nossnEmailBuilder.build());
+
+        hetuSaanto.addChild(ssnEmailBuilder.build());
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
-
-        ElementBuilder emailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
-                            .formParams(formParameters);
-        emailBuilder.validator(lowercaseEmailValidator());
-        if (formParameters.isUniqueApplicantRequired()) {
-            emailBuilder.validator(new EmailUniqueValidator());
-        }
-        if (formParameters.isEmailRequired()) {
-            emailBuilder.required();
-        }
-        henkilotiedotTeema.addChild(emailBuilder.build());
+        kysytaankoHetuSaanto.addChild(hetuSaanto);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
