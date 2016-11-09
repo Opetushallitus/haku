@@ -103,8 +103,8 @@ public class FormParameters {
         return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
 
-    public boolean isToisenAsteenYhteishaku(){
-        return OppijaConstants.TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(applicationSystem.getKohdejoukkoUri()) && isYhteishaku();
+    public boolean isToisenAsteenHaku(){
+        return OppijaConstants.TOISEN_ASTEEN_HAKUJEN_KOHDEJOUKOT.contains(applicationSystem.getKohdejoukkoUri());
     }
 
     public boolean isErityisopetuksenaJarjestettavaAmmatillinen(){
