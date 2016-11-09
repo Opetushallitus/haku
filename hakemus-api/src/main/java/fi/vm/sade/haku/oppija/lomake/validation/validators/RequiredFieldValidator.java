@@ -95,7 +95,7 @@ public class RequiredFieldValidator extends FieldValidator {
 
     private boolean hasValue(final ValidationInput validationInput, final String id) {
         final String value = Optional.ofNullable(id).map(validationInput::getValueByKey).orElse(validationInput.getValue());
-        final String nonBrakingSpace = "\u00a0";
-        return !StringUtils.isBlank(StringUtils.trimToEmpty(value).replace(nonBrakingSpace, ""));
+        final String nonBreakingSpace = "\u00a0";
+        return !StringUtils.isBlank(StringUtils.trimToEmpty(value).replace(nonBreakingSpace, ""));
     }
 }
