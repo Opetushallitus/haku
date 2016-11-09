@@ -26,6 +26,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class RequiredFieldValidator extends FieldValidator {
 
@@ -93,12 +94,8 @@ public class RequiredFieldValidator extends FieldValidator {
     }
 
     private boolean hasValue(final ValidationInput validationInput, final String id) {
-        String value;
-        if (id != null) {
-            value = validationInput.getValueByKey(id);
-        } else {
-            value = validationInput.getValue();
-        }
-        return !StringUtils.isBlank(value);
+        final String value = Optional.ofNullable(id).map(validationInput::getValueByKey).orElse(validationInput.getValue());
+        final String nonBrakingSpace = "\u00a0";
+        return !StringUtils.isBlank(StringUtils.trimToEmpty(value).replace(nonBrakingSpace, ""));
     }
 }
