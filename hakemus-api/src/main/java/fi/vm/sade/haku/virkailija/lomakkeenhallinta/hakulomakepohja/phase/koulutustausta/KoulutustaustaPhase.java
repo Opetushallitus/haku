@@ -874,9 +874,11 @@ public final class KoulutustaustaPhase {
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
-
+        Element oppilaitos = TextQuestion("pohjakoulutus_yo_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
+                .formParams(formParameters).build();
         kansainvalinenSuomessaYoMore.addChild(vuosi, yoTutkintoKansainvalinenSuomessa);
         kansainvalinenSuomessaYo.addChild(kansainvalinenSuomessaYoMore);
+        kansainvalinenSuomessaYo.addChild(oppilaitos);
         return kansainvalinenSuomessaYo;
     }
 
@@ -896,11 +898,12 @@ public final class KoulutustaustaPhase {
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
-
+        Element oppilaitos = TextQuestion("pohjakoulutus_yo_ulkomainen_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
+                .formParams(formParameters).build();
         Element ulkomainenYoMissa = buildSuoritusmaa(formParameters, maat, "pohjakoulutus_yo_ulkomainen_maa", "");
         Element ulkomainenYoMuuMissaRule = buildMuuSuoritusmaa(formParameters, "pohjakoulutus_yo_ulkomainen_maa", "");
 
-        ulkomainenYoMore.addChild(vuosi, yoTutkintoUlkomainen, ulkomainenYoMissa, ulkomainenYoMuuMissaRule);
+        ulkomainenYoMore.addChild(vuosi, yoTutkintoUlkomainen, oppilaitos, ulkomainenYoMissa, ulkomainenYoMuuMissaRule);
         ulkomainenYo.addChild(ulkomainenYoMore);
         return ulkomainenYo;
     }
