@@ -311,7 +311,9 @@ public final class KoulutustaustaPhase {
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
                 .required().formParams(formParameters).build();
 
-        int maxTutkintoCount = formParameters.getTutkintoCountMax();
+        final int maxTutkintoCount = formParameters.getTutkintoCountMax();
+        final int maxAvoinTutkintoCount =
+        "1.2.246.562.29.59856749474".equals(formParameters.getApplicationSystem().getId()) ? 6 : maxTutkintoCount;
 
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset),
@@ -322,7 +324,7 @@ public final class KoulutustaustaPhase {
                 buildYoUlkomainen(formParameters, maat),
                 buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, maxTutkintoCount),
                 buildUlkomainenTutkinto(formParameters, maat, maxTutkintoCount),
-                buildAvoin(formParameters, maxTutkintoCount),
+                buildAvoin(formParameters, maxAvoinTutkintoCount),
                 buildMuu(formParameters, maxTutkintoCount));
 
         if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
