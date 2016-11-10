@@ -312,8 +312,7 @@ public final class KoulutustaustaPhase {
                 .required().formParams(formParameters).build();
 
         final int maxTutkintoCount = formParameters.getTutkintoCountMax();
-        final int maxAvoinTutkintoCount =
-        "1.2.246.562.29.59856749474".equals(formParameters.getApplicationSystem().getId()) ? 6 : maxTutkintoCount;
+        final int maxAvoinTutkintoCount = 6;
 
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset),
