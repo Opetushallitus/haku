@@ -49,7 +49,6 @@
     <h4>Liitepyynnöt</h4>
     #parse("email/email_attachment_requests.vm")
     
-    <p>Anna palautetta Opintopolusta vastaamalla <a href="https://www.webropolsurveys.com/S/33E0BEC144FBF3FB.par"target="_blank">kyselyyn</a>.</p>
     
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
