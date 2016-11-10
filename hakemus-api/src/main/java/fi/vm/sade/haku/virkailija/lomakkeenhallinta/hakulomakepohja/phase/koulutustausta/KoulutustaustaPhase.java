@@ -874,7 +874,7 @@ public final class KoulutustaustaPhase {
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_yo_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
+        Element oppilaitos = TextQuestion("pohjakoulutus_yo_oppilaitos").excelColumnLabel("pohjakoulutus.oppilaitos")
                 .requiredInline().formParams(formParameters).build();
         kansainvalinenSuomessaYoMore.addChild(vuosi, yoTutkintoKansainvalinenSuomessa, oppilaitos);
         kansainvalinenSuomessaYo.addChild(kansainvalinenSuomessaYoMore);
@@ -897,7 +897,7 @@ public final class KoulutustaustaPhase {
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_yo_ulkomainen_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
+        Element oppilaitos = TextQuestion("pohjakoulutus_yo_ulkomainen_oppilaitos").excelColumnLabel("pohjakoulutus.oppilaitos")
                 .requiredInline().formParams(formParameters).build();
         Element ulkomainenYoMissa = buildSuoritusmaa(formParameters, maat, "pohjakoulutus_yo_ulkomainen_maa", "");
         Element ulkomainenYoMuuMissaRule = buildMuuSuoritusmaa(formParameters, "pohjakoulutus_yo_ulkomainen_maa", "");
