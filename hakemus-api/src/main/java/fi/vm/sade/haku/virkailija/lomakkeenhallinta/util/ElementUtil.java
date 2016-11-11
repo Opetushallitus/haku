@@ -173,6 +173,11 @@ public final class ElementUtil {
         }
     }
 
+    public static void addEqualFieldValidator(final Element elementEqual, final FormParameters formParameters) {
+        elementEqual.setValidator(new EqualFieldValidator("email", "yleinen.pakollinen"));
+    }
+
+
     public static void setVerboseHelp(final Element element, final String helpId, final FormParameters formParameters) {
         if (element instanceof Titled) {
             ((Titled) element).setVerboseHelp(formParameters.getI18nText(helpId));

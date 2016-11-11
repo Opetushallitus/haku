@@ -95,6 +95,12 @@ public final class HenkilotiedotPhase {
             nossnEmailBuilder.required();
         }
 
+        ElementBuilder doubleEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL_DOUBLE).inline().size(50).pattern(EMAIL_REGEX)
+                .formParams(formParameters);
+        doubleEmailBuilder.validator(lowercaseEmailValidator());
+        doubleEmailBuilder.validator(new EqualFieldValidator(OppijaConstants.ELEMENT_ID_EMAIL, "form.sahkoposti.virhe"));
+        doubleEmailBuilder.required();
+
         // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
         if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
             nossnEmailBuilder.required();
@@ -140,6 +146,9 @@ public final class HenkilotiedotPhase {
 
         Element suomalainenElem = Rule(suomalainen).build(); // elementti lisätty jotta saadaan email näkyviin perustap.
         suomalainenElem.addChild(ssnEmailBuilder.build());
+        if(formParameters.isHigherEd()) {
+            suomalainenElem.addChild(doubleEmailBuilder.build());
+        }
 
         henkilotiedotTeema.addChild(suomalainenElem);
 
@@ -219,6 +228,10 @@ public final class HenkilotiedotPhase {
                 nossnEmailBuilder.build());
 
         hetuSaanto.addChild(ssnEmailBuilder.build());
+        if(formParameters.isHigherEd()) {
+            eiHetuaSaanto.addChild(doubleEmailBuilder.build());
+            hetuSaanto.addChild(doubleEmailBuilder.build());
+        }
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
         kysytaankoHetuSaanto.addChild(hetuSaanto);
@@ -341,6 +354,7 @@ public final class HenkilotiedotPhase {
     private static Validator lowercaseEmailValidator() {
         return new EmailInLowercaseValidator();
     }
+
 
     private static ElementBuilder createNameQuestionBuilder(final String id, final int size) {
         return TextQuestion(id)
