@@ -32,7 +32,6 @@ public class EqualFieldValidator extends FieldValidator {
         if(otherValue.equalsIgnoreCase(thisValue)){
             return validValidationResult;
         }
-        System.out.println("INVALID!");
         return getInvalidValidationResult(validationInput);
     }
 }
