@@ -60,6 +60,7 @@ public final class OppijaConstants {
     public static final Set<String> HENKILOTUNNUS_BASED_ELEMENT_IDS = Collections.unmodifiableSet(Sets.newHashSet(SocialSecurityNumber.HENKILOTUNNUS_HASH, ELEMENT_ID_DATE_OF_BIRTH, ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER));
 
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
+    public static final String ELEMENT_ID_EMAIL_DOUBLE = "SähköpostiUudelleen";
     public static final String ELEMENT_ID_HUOLTAJANSAHKOPOSTI = "huoltajansahkoposti";
     public static final String ELEMENT_ID_COUNTRY_OF_RESIDENCY = "asuinmaa";
     public static final String ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN = "FIN";
