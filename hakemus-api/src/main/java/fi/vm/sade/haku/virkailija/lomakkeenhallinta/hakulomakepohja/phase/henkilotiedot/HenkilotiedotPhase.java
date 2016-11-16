@@ -149,7 +149,7 @@ public final class HenkilotiedotPhase {
 
         Element suomalainenElem = Rule(suomalainen).build(); // elementti lisätty jotta saadaan email näkyviin perustap.
         suomalainenElem.addChild(ssnEmailBuilder.build());
-        if(formParameters.isHigherEd()) {
+        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
             suomalainenElem.addChild(doubleEmailBuilder.build());
         }
 
@@ -231,7 +231,7 @@ public final class HenkilotiedotPhase {
                 nossnEmailBuilder.build());
 
         hetuSaanto.addChild(ssnEmailBuilder.build());
-        if(formParameters.isHigherEd()) {
+        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
             hetuSaanto.addChild(doubleEmailBuilder.build());
         }
