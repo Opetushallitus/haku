@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
@@ -30,6 +31,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NickNameQuestionBuilder.NickNameQuestion;
@@ -329,6 +332,16 @@ public final class HenkilotiedotPhase {
                             .formParams(formParameters)
                             .build()
             );
+        }
+
+        if(formParameters.isSahkoinenViestintaLupa() && formParameters.isHigherEd()) {
+            Element sahkoinenViestintaGrp = Checkbox("lupatiedot-sahkoinen-asiointi")
+                    .i18nText(formParameters.getI18nText("lupatiedot.sahkoinen.asiointi"))
+                    .help(formParameters.getI18nText("lupatiedot.sahkoinen.asiointi.help"))
+                    .required()
+                    .formParams(formParameters).build();
+
+            henkilotiedotTeema.addChild(sahkoinenViestintaGrp);
         }
 
         henkilotiedot.addChild(henkilotiedotTeema);

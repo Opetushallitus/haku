@@ -77,6 +77,7 @@ public class LisatiedotPhase {
 
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
+
         if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
             lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
         }
@@ -124,7 +125,7 @@ public class LisatiedotPhase {
 
         lupatiedotTheme.addChild(lupatietoGrp);
 
-        if(formParameters.isSahkoinenViestintaLupa()) {
+        if(formParameters.isSahkoinenViestintaLupa() && !formParameters.isHigherEd()) {
             Element sahkoinenViestintaGrp = RadioBuilder.Radio("lupatiedot-sahkoinen-viestinta")
                     .addOptions(ImmutableList.of(
                             new Option(formParameters.getI18nText("lupatiedot.sahkoinen.suostun"), KYLLA),
