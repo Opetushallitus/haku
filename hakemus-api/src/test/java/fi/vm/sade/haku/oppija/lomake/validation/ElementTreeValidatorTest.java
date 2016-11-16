@@ -137,12 +137,12 @@ public class ElementTreeValidatorTest {
 
     @Test
     public void testValidateAsuinmaaSV() throws Exception {
-        testAsuinmaa("SWE", 3);
+        testAsuinmaa("SWE", 4);
     }
 
     @Test
     public void testValidateAsuinmaaFI() throws Exception {
-        testAsuinmaa("FIN", 3);
+        testAsuinmaa("FIN", 4);
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
