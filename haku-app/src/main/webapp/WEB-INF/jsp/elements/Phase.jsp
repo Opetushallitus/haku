@@ -67,7 +67,7 @@
                     return true;
                 })
             });
-            $('#S\u00E4hk\u00F6posti').bind("copy",function(e) { e.preventDefault(); });
+            $('#Sähköposti').bind("copy",function(e) { e.preventDefault(); });
         });
     </script>
     <title>
