@@ -19,19 +19,14 @@
   --%>
 <c:choose>
     <c:when test="${print}">
-        <tr>
-            <td><haku:i18nText value="${element.i18nText}" escape="false"/></td>
-            <td>
-                <c:choose>
-                    <c:when test="${(answers[element.id] eq element.value)}">
-                        <fmt:message key="lomake.tulostus.kylla"/>
-                    </c:when>
-                    <c:otherwise>
-                        <fmt:message key="lomake.tulostus.ei"/>
-                    </c:otherwise>
-                </c:choose>
-            </td>
-        </tr>
+        <c:choose>
+            <c:when test="${(answers[element.id] eq element.value)}">
+            <tr>
+                <td><haku:i18nText value="${element.i18nText}" escape="false"/></td>
+                <td><fmt:message key="lomake.tulostus.kylla"/></td>
+            </tr>
+            </c:when>
+        </c:choose>
     </c:when>
     <c:otherwise>
         <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
