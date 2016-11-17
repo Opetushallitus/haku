@@ -32,8 +32,9 @@ public class Pistetieto {
         osallistuminenTranslations.put(Osallistuminen.VIRHE,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.virhe", OppijaConstants.MESSAGES_BUNDLE_NAME));
 
-        pisteetOverriddenDisplayValues.put("true", "Hyväksytty");
-        pisteetOverriddenDisplayValues.put("false", "Hylätty");
+        pisteetOverriddenDisplayValues.put("hyvaksytty", "Hyväksytty");
+        pisteetOverriddenDisplayValues.put("hylatty", "Hylätty");
+        pisteetOverriddenDisplayValues.put("ei_osallistunut", "Ei osallistunut");
     }
 
     public Pistetieto() {
