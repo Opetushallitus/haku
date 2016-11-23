@@ -6,7 +6,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
 import fi.vm.sade.haku.virkailija.valinta.dto.PistetietoDTO;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +21,7 @@ public class Pistetieto {
     
     private static final Map<Osallistuminen, I18nText> osallistuminenTranslations;
     private static final Map<String, String> pisteetOverriddenDisplayValues = new HashMap<>();
+    private static final Map<String, String> nameOverriddenDisplayValues = new HashMap<>();
 
     static {
         osallistuminenTranslations = new HashMap<Osallistuminen, I18nText>(3);
@@ -34,6 +34,9 @@ public class Pistetieto {
 
         pisteetOverriddenDisplayValues.put("true", "Hyväksytty");
         pisteetOverriddenDisplayValues.put("false", "Hylätty");
+
+        nameOverriddenDisplayValues.put("kielikoe_fi", "Ammatillisen koulutuksen valtakunnallinen kielikoe");
+        nameOverriddenDisplayValues.put("kielikoe_sv", "Ammatillisen koulutuksen valtakunnallinen kielikoe");
     }
 
     public Pistetieto() {
@@ -60,7 +63,11 @@ public class Pistetieto {
     }
 
     public void setNimi(I18nText nimi) {
-        this.nimi = nimi;
+        if (nameOverriddenDisplayValues.containsKey(id)) {
+            this.nimi = ElementUtil.createI18NAsIs(nameOverriddenDisplayValues.get(id));
+        } else {
+            this.nimi = nimi;
+        }
     }
 
     public I18nText getOsallistuminenText() {
