@@ -216,7 +216,6 @@ var preferenceRow = {
             lang: sortabletable_settings.uiLang
         };
         if(lopOid !== undefined && lopOid !== ""){
-            console.log(lopOid);
             $.getJSON(window.url("koulutusinformaatio-app.lop", lopOid, lopParams), function(data) {
                 $(field).attr("value", data.name);
             });
