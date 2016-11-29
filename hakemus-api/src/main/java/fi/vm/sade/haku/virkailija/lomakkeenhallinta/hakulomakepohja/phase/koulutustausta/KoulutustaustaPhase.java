@@ -208,7 +208,7 @@ public final class KoulutustaustaPhase {
                 .inline()
                 .build();
         elements.add(koulutusala);
-        for (Option koulutusalaOption : koulutusala.getOptions()) {
+        for (Option koulutusalaOption : koulutusalat) {
             String koulutusalaKoodi = koulutusalaOption.getValue();
             Element opintoalaRule = createVarEqualsToValueRule("amk_ope_koulutusala", koulutusalaKoodi);
             OptionQuestionBuilder opintoalaBuilder = Dropdown("amk_ope_opintoala")
