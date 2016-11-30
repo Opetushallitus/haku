@@ -88,7 +88,7 @@ public final class HenkilotiedotPhase {
         ElementBuilder nossnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
                 .formParams(formParameters);
         nossnEmailBuilder.validator(lowercaseEmailValidator());
-        if (formParameters.isUniqueApplicantRequired()) {
+        if (formParameters.isUniqueApplicantRequired() && !formParameters.isDemoMode()) {
             nossnEmailBuilder.validator(new EmailUniqueValidator());
         }
         if (formParameters.isEmailRequired()) {
