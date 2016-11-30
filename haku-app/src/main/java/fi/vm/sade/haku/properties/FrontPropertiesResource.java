@@ -18,6 +18,6 @@ public class FrontPropertiesResource {
     @GET
     @Produces("application/javascript; charset=UTF-8")
     public String frontProperties() {
-        return "window.urls.override=" + urlConfiguration.frontPropertiesToJson();
+        return "window.urls.addOverrides(" + urlConfiguration.frontPropertiesToJson()+")";
     }
 }

@@ -1,4 +1,4 @@
-window.urls.properties = {
+window.urls.addProperties({
   "koulutusinformaatio-app.ao.search": "/ao/search/$1/$2",
   "koulutusinformaatio-app.lop.search": "/lop/search/$1",
   "tarjonta-service.v1.hakukohde.search": "/tarjonta-service/rest/v1/hakukohde/search",
@@ -14,4 +14,4 @@ window.urls.properties = {
   "haku-app.hakemus.note.users": "/haku-app/virkailija/hakemus/note/users/",
   "haku-app.processAttachmentsAndEligibility": "/haku-app/virkailija/hakemus/$1/processAttachmentsAndEligibility",
   "haku-app.applications.single": "/haku-app/applications/$1"
-}
+})
