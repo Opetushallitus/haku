@@ -148,12 +148,6 @@ public final class HenkilotiedotPhase {
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
         Element suomalainenElem = Rule(suomalainen).build(); // elementti lisätty jotta saadaan email näkyviin perustap.
-        suomalainenElem.addChild(ssnEmailBuilder.build());
-        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
-            suomalainenElem.addChild(doubleEmailBuilder.build());
-        }
-
-        henkilotiedotTeema.addChild(suomalainenElem);
 
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
@@ -238,6 +232,13 @@ public final class HenkilotiedotPhase {
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
         kysytaankoHetuSaanto.addChild(hetuSaanto);
+
+        suomalainenElem.addChild(ssnEmailBuilder.build());
+        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
+            suomalainenElem.addChild(doubleEmailBuilder.build());
+        }
+
+        kysytaankoHetuSaanto.addChild(suomalainenElem);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
@@ -338,7 +339,7 @@ public final class HenkilotiedotPhase {
             Element sahkoinenViestintaGrp = Checkbox("lupatiedot-sahkoinen-asiointi")
                     .i18nText(formParameters.getI18nText("lupatiedot.sahkoinen.asiointi"))
                     .help(formParameters.getI18nText("lupatiedot.sahkoinen.asiointi.help"))
-                    .required()
+                    .validator(new RequiredFieldValidator("lupatiedot.sahkoinen.asiointi.virhe"))
                     .formParams(formParameters).build();
 
             henkilotiedotTeema.addChild(sahkoinenViestintaGrp);
