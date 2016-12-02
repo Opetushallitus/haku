@@ -17,8 +17,11 @@ public class Pistetieto {
     private Osallistuminen osallistuminen;
     private I18nText osallistuminenText;
     private String pisteet;
+    private String pisteetToDisplay;
     
     private static final Map<Osallistuminen, I18nText> osallistuminenTranslations;
+    private static final Map<String, String> pisteetOverriddenDisplayValues = new HashMap<>();
+    private static final Map<String, String> nameOverriddenDisplayValues = new HashMap<>();
 
     static {
         osallistuminenTranslations = new HashMap<Osallistuminen, I18nText>(3);
@@ -28,6 +31,12 @@ public class Pistetieto {
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiOsallistu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         osallistuminenTranslations.put(Osallistuminen.VIRHE,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.virhe", OppijaConstants.MESSAGES_BUNDLE_NAME));
+
+        pisteetOverriddenDisplayValues.put("true", "Hyväksytty");
+        pisteetOverriddenDisplayValues.put("false", "Hylätty");
+
+        nameOverriddenDisplayValues.put("kielikoe_fi", "Ammatillisen koulutuksen valtakunnallinen kielikoe");
+        nameOverriddenDisplayValues.put("kielikoe_sv", "Ammatillisen koulutuksen valtakunnallinen kielikoe");
     }
 
     public Pistetieto() {
@@ -38,6 +47,7 @@ public class Pistetieto {
         this.id = pistetietoDTO.getTunniste();
         this.pisteet = pistetietoDTO.getLaskennallinenArvo();
         this.osallistuminenText = ElementUtil.createI18NAsIs(pistetietoDTO.getOsallistuminen());
+        this.pisteetToDisplay = renderPisteet(this.pisteet);
     }
 
     public String getId() {
@@ -53,7 +63,11 @@ public class Pistetieto {
     }
 
     public void setNimi(I18nText nimi) {
-        this.nimi = nimi;
+        if (nameOverriddenDisplayValues.containsKey(id)) {
+            this.nimi = ElementUtil.createI18NAsIs(nameOverriddenDisplayValues.get(id));
+        } else {
+            this.nimi = nimi;
+        }
     }
 
     public I18nText getOsallistuminenText() {
@@ -79,6 +93,17 @@ public class Pistetieto {
 
     public void setPisteet(String pisteet) {
         this.pisteet = pisteet;
+        this.pisteetToDisplay = renderPisteet(this.pisteet);
     }
 
+    private static String renderPisteet(String pisteetValue) {
+        if (pisteetOverriddenDisplayValues.containsKey(pisteetValue)) {
+            return pisteetOverriddenDisplayValues.get(pisteetValue);
+        }
+        return pisteetValue;
+    }
+
+    public String getPisteetToDisplay() {
+        return pisteetToDisplay;
+    }
 }

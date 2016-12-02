@@ -47,7 +47,7 @@
                 <tr>
                     <td><haku:i18nText value="${test.nimi}"/></td>
                     <td><haku:i18nText value="${test.osallistuminenText}" /></td>
-                    <td><c:out value="${test.pisteet}"/></td>
+                    <td><c:out value="${test.pisteetToDisplay}"/></td>
                 </tr>
             </c:forEach>
             </tbody>
