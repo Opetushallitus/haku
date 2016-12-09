@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
 import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -87,60 +86,10 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     @Override
-    public List<ArvosanaDTO> getArvosanat(String suoritusId) {
-        String response;
-        try {
-            response = getCachingRestClient().getAsString(urlConfiguration.url("suoritusrekisteri.arvosanatBySuoritusId", suoritusId));
-        } catch (IOException e) {
-            throw new ResourceNotFoundException("Fetching grades failed: ", e);
-        }
-        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        List<ArvosanaDTO> arvosanat = new ArrayList<>(elements.size());
-        for (JsonElement elem : elements) {
-            JsonObject obj = elem.getAsJsonObject();
-            ArvosanaDTO arvosana = arvosanaGson.fromJson(obj, ArvosanaDTO.class);
-            arvosanat.add(arvosana);
-        }
-        return arvosanat;
-    }
-
-    @Override
-    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid) {
-        return getSuoritukset(personOid, null, null);
-    }
-
-    @Override
     public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid) {
-        return getSuoritukset(personOid, komoOid, null);
-    }
-
-    @Override
-    public List<String> getChanges(String komoOid, Date since) {
         String response;
         try {
-            InputStream is = getCachingRestClient().get(buildSuoritusUrl(null, komoOid, since));
-            response = IOUtils.toString(is);
-        } catch (IOException e) {
-            log.error("Fetching suoritukset failed: {}", e);
-            throw new ResourceNotFoundException("Fetching suoritukset failed", e);
-        }
-
-        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        Set<String> changedPersons = new LinkedHashSet<>(elements.size());
-        for (JsonElement elem : elements) {
-            SuoritusDTO suoritus = suoritusGson.fromJson(elem, SuoritusDTO.class);
-            changedPersons.add(suoritus.getHenkiloOid());
-        }
-        List<String> changes = new ArrayList<>(changedPersons.size());
-        changes.addAll(changedPersons);
-        return changes;
-    }
-
-    @Override
-    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since) {
-        String response;
-        try {
-            InputStream is = getCachingRestClient().get(buildSuoritusUrl(personOid, komoOid, since));
+            InputStream is = getCachingRestClient().get(buildSuoritusUrl(personOid, komoOid, null));
             response = IOUtils.toString(is);
         } catch (IOException e) {
             log.error("Fetching suoritukset failed: {}", e);
@@ -170,6 +119,28 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         }
 
         return suoritukset;
+    }
+
+    @Override
+    public List<String> getChanges(String komoOid, Date since) {
+        String response;
+        try {
+            InputStream is = getCachingRestClient().get(buildSuoritusUrl(null, komoOid, since));
+            response = IOUtils.toString(is);
+        } catch (IOException e) {
+            log.error("Fetching suoritukset failed: {}", e);
+            throw new ResourceNotFoundException("Fetching suoritukset failed", e);
+        }
+
+        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
+        Set<String> changedPersons = new LinkedHashSet<>(elements.size());
+        for (JsonElement elem : elements) {
+            SuoritusDTO suoritus = suoritusGson.fromJson(elem, SuoritusDTO.class);
+            changedPersons.add(suoritus.getHenkiloOid());
+        }
+        List<String> changes = new ArrayList<>(changedPersons.size());
+        changes.addAll(changedPersons);
+        return changes;
     }
 
     private String buildSuoritusUrl(String personOid, String komoOid, Date since) {

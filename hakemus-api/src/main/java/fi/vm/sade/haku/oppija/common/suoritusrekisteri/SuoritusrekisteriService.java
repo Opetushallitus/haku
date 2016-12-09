@@ -27,16 +27,7 @@ public interface SuoritusrekisteriService {
     public static String YO_TUTKINTO_KOMO = "1.2.246.562.5.2013061010184237348007";
 
 
-    /**
-     * Palauttaa henkilön suoritukset mappina komoOid - suoritus.
-     * @param personOid
-     * @return suoritukset mappina komoOid - suoritus
-     */
-    Map<String, List<SuoritusDTO>> getSuoritukset(String personOid);
-
     List<OpiskelijaDTO> getOpiskelijatiedot(String personOid);
-
-    List<ArvosanaDTO> getArvosanat(String suoritusId);
 
     /**
      * Palautta henkilöt, joiden suorituksissa on muutoksia annetun ajan jälkeen.
@@ -48,6 +39,4 @@ public interface SuoritusrekisteriService {
     List<String> getChanges(String komoOid, Date since);
 
     Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid);
-
-    Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since);
 }

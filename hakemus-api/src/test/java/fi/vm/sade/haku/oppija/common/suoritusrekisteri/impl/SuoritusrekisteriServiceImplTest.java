@@ -54,7 +54,7 @@ public class SuoritusrekisteriServiceImplTest {
         when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        Map<String, List<SuoritusDTO>> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        Map<String, List<SuoritusDTO>> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171", null);
         assertEquals(1, suoritusDTOs.size());
         SuoritusDTO suoritus = suoritusDTOs.get("1.2.246.562.13.62959769647").get(0);
         assertEquals(suoritus.getKomo(), "1.2.246.562.13.62959769647");
@@ -69,7 +69,7 @@ public class SuoritusrekisteriServiceImplTest {
         when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        Map<String, List<SuoritusDTO>> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        Map<String, List<SuoritusDTO>> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171", null);
         assertEquals(2, suoritusDTOs.size());
         SuoritusDTO suoritus = suoritusDTOs.get("1.2.246.562.13.62959769647").get(0);
         assertEquals(suoritus.getKomo(), "1.2.246.562.13.62959769647");
@@ -89,7 +89,7 @@ public class SuoritusrekisteriServiceImplTest {
         when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        Map<String, List<SuoritusDTO>> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        Map<String, List<SuoritusDTO>> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171", null);
 
     }
 

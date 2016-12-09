@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -15,8 +14,7 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
 
     private static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
-    @Override
-    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid) {
+    private Map<String, List<SuoritusDTO>> getSuoritukset(String personOid) {
         Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
         final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "myontaja", "KESKEN",
@@ -35,22 +33,12 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     }
 
     @Override
-    public List<ArvosanaDTO> getArvosanat(String suoritusId) {
-        return new ArrayList<>();
-    }
-
-    @Override
     public List<String> getChanges(String komoOid, Date since) {
         return null;
     }
 
     @Override
     public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid) {
-        return getSuoritukset(personOid);
-    }
-
-    @Override
-    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since) {
         return getSuoritukset(personOid);
     }
 
