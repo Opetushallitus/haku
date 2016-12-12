@@ -27,6 +27,7 @@ public class HAK153IT extends DummyModelBaseItTest {
     public void testSoraAndUrheilijanLisakysymys() {
         navigateToFirstPhase();
         fillOut(defaultValues.henkilotiedot);
+
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         fillOut(defaultValues.koulutustausta_pk);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);

@@ -8,6 +8,7 @@ import static com.google.common.base.Strings.nullToEmpty;
 
 public class Regexp extends Variable {
     private final String pattern;
+    public boolean stripNewLines = false;
 
     public Regexp(final String value, final String pattern) {
         super(value);
@@ -17,6 +18,9 @@ public class Regexp extends Variable {
 
     @Override
     public boolean evaluate(Map<String, String> context) {
+        if(stripNewLines){
+            return nullToEmpty(getValue(context)).replaceAll("\\r|\\n", "").matches(pattern);
+        }
         return nullToEmpty(getValue(context)).matches(pattern);
     }
 }

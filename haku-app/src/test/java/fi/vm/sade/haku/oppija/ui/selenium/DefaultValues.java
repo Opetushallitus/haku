@@ -33,6 +33,7 @@ public final class DefaultValues {
         henkilotiedot.put("Henkilotunnus", "010100A939R");
         henkilotiedot.put("onkosinullakaksoiskansallisuus", "false");
         henkilotiedot.put("Sähköposti", "aku.ankka@ankkalinna.al");
+        henkilotiedot.put("SähköpostiUudelleen", "aku.ankka@ankkalinna.al");
         henkilotiedot.put("matkapuhelinnumero1", "0501000100");
         henkilotiedot.put("aidinkieli", "FI");
         henkilotiedot.put("asuinmaa", "FIN");
