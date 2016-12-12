@@ -82,6 +82,15 @@ public class RegexFieldValidatorTest {
     }
 
     @Test
+    public void testValidateNewlines() throws Exception {
+        values.put(FIELD_NAME,  "hsdjkhf dskhfkjs\r\njfdsgjhf gdshjg\r\n".replaceAll("\\r|\\n", ""));
+
+        RegexFieldValidator validator = createValidator(".+");
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertFalse(validationResult.hasErrors());
+    }
+
+    @Test
     public void testValidatePattern() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE);
         RegexFieldValidator validator = createValidator(PATTERN);

@@ -87,7 +87,7 @@ public class ThemeTextQuestion extends ThemeQuestion {
 
     @Override
     protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
-        Regexp expr = new Regexp(this.getId().toString(), ".+");
+        Regexp expr = new Regexp(this.getId().toString().replaceAll("\\r|\\n", ""), ".+");
         return expr;
     }
 
