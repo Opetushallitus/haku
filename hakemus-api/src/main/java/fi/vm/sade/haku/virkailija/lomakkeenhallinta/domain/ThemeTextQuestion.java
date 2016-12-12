@@ -87,8 +87,9 @@ public class ThemeTextQuestion extends ThemeQuestion {
 
     @Override
     protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
-        Regexp expr = new Regexp(this.getId().toString(), ".+");
-        return expr;
+        Regexp re = new Regexp(this.getId().toString(), ".+");
+        re.stripNewLines = true;
+        return re;
     }
 
     public Boolean getDecimal() {

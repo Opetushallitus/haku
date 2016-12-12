@@ -40,7 +40,9 @@ public class ThemeRichText extends ThemeQuestion {
 
     @Override
     protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
-        return new Regexp(this.getId().toString(), ".+");
+        Regexp re = new Regexp(this.getId().toString(), ".+");
+        re.stripNewLines = true;
+        return re;
     }
 
 }

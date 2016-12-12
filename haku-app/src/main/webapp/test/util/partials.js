@@ -112,6 +112,7 @@ partials = {
             },
             input(
                 lomake.Sähköposti, emailToUSe,
+                lomake.SähköpostiUudelleen, emailToUSe,
                 lomake.asuinmaa, 'FIN',
                 lomake.lahiosoite, "Testikatu 4",
                 lomake.postinumero, "00100",
