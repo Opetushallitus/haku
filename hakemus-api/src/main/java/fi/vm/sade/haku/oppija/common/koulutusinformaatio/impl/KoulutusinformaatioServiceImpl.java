@@ -44,9 +44,7 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
             if (StringUtils.isEmpty(lang)) {
                 lang = "fi";
 			}
-			String url = urlConfiguration.url("koulutusinformaatio-app.ao", oid);
-            url += "?lang="+lang+"&uiLang="+lang;
-            WebResource asWebResource = clientWithJacksonSerializer.resource(url);
+            WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio-app.ao", oid)).queryParam("lang", lang).queryParam("uiLang", lang);
 			LOGGER.debug(asWebResource.getUriBuilder().build().toString());
 			return asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {});
 		}
