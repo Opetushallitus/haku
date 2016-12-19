@@ -43,6 +43,7 @@ public final class DefaultValues {
 
         kkHenkilotiedot.putAll(henkilotiedot);
         kkHenkilotiedot.put("koulusivistyskieli", "FI");
+        kkHenkilotiedot.put("lupatiedot-sahkoinen-asiointi", "true");
 
         koulutustausta_lk.put("POHJAKOULUTUS", "9");
         koulutustausta_lk.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
