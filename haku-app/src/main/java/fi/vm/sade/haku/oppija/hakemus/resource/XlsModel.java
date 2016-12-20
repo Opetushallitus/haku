@@ -48,6 +48,7 @@ public class XlsModel {
 
     private static final String ELIGIBILITY_STATUS = "eligibility_status";
     private static final String INELIGIBLE_REASON = "ineligible_reason";
+    private static final String ELIGIBILITY_MAKSUVELVOLLISUUS = "eligibility_maksuvelvollisuus";
     private static final String ELIGIBILITY_SOURCE = "eligibility_source";
 
     public XlsModel(final ApplicationOption ao,
@@ -109,6 +110,11 @@ public class XlsModel {
                         (String) application.get("oid"),
                         additionalQuestions.get(ELIGIBILITY_SOURCE),
                         getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.getSource().toString(), "hakukelpoisuus_lahde_")
+                );
+                table.put(
+                        (String) application.get("oid"),
+                        additionalQuestions.get(ELIGIBILITY_MAKSUVELVOLLISUUS),
+                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.getMaksuvelvollisuus().toString(), "maksuvelvollisuus_")
                 );
             }
 
@@ -353,6 +359,7 @@ public class XlsModel {
         elements.put(ELIGIBILITY_STATUS, TextQuestion("hakukelpoisuus").i18nText(i18nBundle.get("hakukelpoisuus")).build());
         elements.put(INELIGIBLE_REASON, TextQuestion("hakukelpoisuus_hylkaamisen_peruste").i18nText(i18nBundle.get("hakukelpoisuus_hylkaamisen_peruste")).build());
         elements.put(ELIGIBILITY_SOURCE, TextQuestion("hakukelpoisuus_lahde").i18nText(i18nBundle.get("hakukelpoisuus_lahde")).build());
+        elements.put(ELIGIBILITY_MAKSUVELVOLLISUUS, TextQuestion("maksuvelvollisuus").i18nText(i18nBundle.get("maksuvelvollisuus")).build());
 
         return elements;
     }

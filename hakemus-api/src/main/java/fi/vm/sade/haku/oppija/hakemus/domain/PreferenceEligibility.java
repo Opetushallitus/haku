@@ -102,7 +102,7 @@ public class PreferenceEligibility implements Serializable {
     }
 
     public Maksuvelvollisuus getMaksuvelvollisuus() {
-        return maksuvelvollisuus;
+        return maksuvelvollisuus != null ? maksuvelvollisuus : Maksuvelvollisuus.NOT_CHECKED;
     }
     public void setMaksuvelvollisuus(Maksuvelvollisuus maksuvelvollisuus) {
         this.maksuvelvollisuus = maksuvelvollisuus;
