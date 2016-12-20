@@ -12,10 +12,19 @@ public class AttachmentsAndEligibilityDTO {
     // preference id
     private String aoId;
     private String status;
+    private String maksuvelvollisuus;
     private String source;
     private String rejectionBasis;
     private Boolean preferencesChecked;
     private List<AttachmentDTO> attachments = new ArrayList<AttachmentDTO>();
+
+    public String getMaksuvelvollisuus() {
+        return maksuvelvollisuus;
+    }
+
+    public void setMaksuvelvollisuus(String maksuvelvollisuus) {
+        this.maksuvelvollisuus = maksuvelvollisuus;
+    }
 
     public String getAoId() {
         return aoId;
@@ -71,6 +80,7 @@ public class AttachmentsAndEligibilityDTO {
           "aoId='" + aoId + '\'' +
           ", status='" + status + '\'' +
           ", source='" + source + '\'' +
+          ", maksuvelvollisuus='" + maksuvelvollisuus + '\'' +
           ", rejectionBasis='" + rejectionBasis + '\'' +
           ", preferencesChecked=" + preferencesChecked +
           ", attachments= [" + StringUtils.join(attachments, ",") + "]" +
