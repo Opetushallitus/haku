@@ -98,6 +98,7 @@
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
                 kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
+                kelpoisuus_liitteet.maksuvelvollisuus = "<c:out value="${kelpoisuus.maksuvelvollisuus}"/>";
                 kelpoisuus_liitteet.rejectionBasis = _.str.unescapeHTML("<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" />");
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
                     if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>") {
