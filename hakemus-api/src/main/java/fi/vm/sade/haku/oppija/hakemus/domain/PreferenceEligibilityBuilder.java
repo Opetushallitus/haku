@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 public class PreferenceEligibilityBuilder {
     private String aoId;
+    private PreferenceEligibility.Maksuvelvollisuus maksuvelvollisuus = PreferenceEligibility.Maksuvelvollisuus.NOT_CHECKED;
     private PreferenceEligibility.Status status = PreferenceEligibility.Status.NOT_CHECKED;
     private PreferenceEligibility.Source source = PreferenceEligibility.Source.UNKNOWN;
     private String rejectionBasis;
@@ -31,6 +32,6 @@ public class PreferenceEligibilityBuilder {
     }
 
     public PreferenceEligibility build() {
-        return new PreferenceEligibility(aoId, status, source, rejectionBasis);
+        return new PreferenceEligibility(aoId, status, source, rejectionBasis, maksuvelvollisuus);
     }
 }

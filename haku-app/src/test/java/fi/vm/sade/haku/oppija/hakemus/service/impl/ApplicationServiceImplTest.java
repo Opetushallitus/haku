@@ -680,11 +680,11 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
         application.setApplicationSystemId("hakuOid");
         application.setPreferenceEligibilities(new ArrayList<PreferenceEligibility>() {{
-            add(new PreferenceEligibility("automaticallyEligibile1", NOT_CHECKED, null, null));
-            add(new PreferenceEligibility("automaticallyEligibile2", ELIGIBLE, null, null));
-            add(new PreferenceEligibility("automaticallyEligibile3", INELIGIBLE, null, null));
-            add(new PreferenceEligibility("automaticallyEligibile4", AUTOMATICALLY_CHECKED_ELIGIBLE, null, null));
-            add(new PreferenceEligibility("manuallyEligibile", NOT_CHECKED, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile1", NOT_CHECKED, null, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile2", ELIGIBLE, null, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile3", INELIGIBLE, null, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile4", AUTOMATICALLY_CHECKED_ELIGIBLE, null, null, null));
+            add(new PreferenceEligibility("manuallyEligibile", NOT_CHECKED, null, null, null));
         }});
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,

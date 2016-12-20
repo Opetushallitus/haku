@@ -51,6 +51,19 @@ public class PreferenceEligibility implements Serializable {
         }
     }
 
+    public static String getMaksuvelvollisuusMessage(Maksuvelvollisuus maksuvelvollisuus) {
+        switch (maksuvelvollisuus) {
+            case NOT_CHECKED:
+                return "Ei tarkistettu";
+            case REQUIRED:
+                return "Maksuvelvollinen";
+            case NOT_REQUIRED:
+                return "Ei maksuvelvollinen";
+            default:
+                return null == maksuvelvollisuus ? "" : "Tuntematon maksuvelvollisuus: " + maksuvelvollisuus.toString();
+        }
+    }
+
     public static String getSourceMessage(Source source) {
         switch (source) {
             case LEARNING_PROVIDER:
@@ -79,10 +92,12 @@ public class PreferenceEligibility implements Serializable {
     public PreferenceEligibility(@JsonProperty(value = "aoId") final String aoId,
       @JsonProperty(value = "status") final Status status,
       @JsonProperty(value = "source") final Source source,
-      @JsonProperty(value = "rejectionBasis") final String rejectionBasis) {
+      @JsonProperty(value = "rejectionBasis") final String rejectionBasis,
+      @JsonProperty(value = "maksuvelvollisuus") final Maksuvelvollisuus maksuvelvollisuus) {
         this.aoId = aoId;
         this.status = status;
         this.source = source;
+        this.maksuvelvollisuus = maksuvelvollisuus;
         this.rejectionBasis = rejectionBasis;
     }
 
