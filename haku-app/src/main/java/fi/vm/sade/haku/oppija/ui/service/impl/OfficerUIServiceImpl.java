@@ -887,10 +887,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                                 PreferenceChecked preferenceChecked,
                                                 String officerOid) {
         PreferenceEligibility.Status newStatus = PreferenceEligibility.Status.valueOf(dto.getStatus());
+        PreferenceEligibility.Maksuvelvollisuus newMaksuvelvollisuus = PreferenceEligibility.Maksuvelvollisuus.valueOf(dto.getMaksuvelvollisuus());
         PreferenceEligibility.Source newSource = PreferenceEligibility.Source.valueOf(dto.getSource());
         String newRejectionBasis = dto.getRejectionBasis();
         Boolean newChecked = dto.getPreferencesChecked();
-        
+        boolean updateMaksuvelvollisuus = newMaksuvelvollisuus != preferenceEligibility.getMaksuvelvollisuus();
+        if (updateMaksuvelvollisuus) {
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("maksuvelvollisuus", newMaksuvelvollisuus, preferenceEligibility.getMaksuvelvollisuus())
+                    .build());
+            preferenceEligibility.setMaksuvelvollisuus(newMaksuvelvollisuus);
+        }
+
         boolean updateStatus = newStatus != preferenceEligibility.getStatus();
         if (updateStatus) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)

@@ -10,6 +10,12 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class PreferenceEligibility implements Serializable {
+    public static enum Maksuvelvollisuus {
+        NOT_CHECKED,
+        REQUIRED,
+        NOT_REQUIRED
+    }
+
     public static enum Status {
         NOT_CHECKED,
         ELIGIBLE,
@@ -67,6 +73,7 @@ public class PreferenceEligibility implements Serializable {
     private final String aoId;
     private Status status;
     private Source source;
+    private Maksuvelvollisuus maksuvelvollisuus;
     private String rejectionBasis;
 
     public PreferenceEligibility(@JsonProperty(value = "aoId") final String aoId,
@@ -79,6 +86,12 @@ public class PreferenceEligibility implements Serializable {
         this.rejectionBasis = rejectionBasis;
     }
 
+    public Maksuvelvollisuus getMaksuvelvollisuus() {
+        return maksuvelvollisuus;
+    }
+    public void setMaksuvelvollisuus(Maksuvelvollisuus maksuvelvollisuus) {
+        this.maksuvelvollisuus = maksuvelvollisuus;
+    }
     public String getAoId() {
         return aoId;
     }
