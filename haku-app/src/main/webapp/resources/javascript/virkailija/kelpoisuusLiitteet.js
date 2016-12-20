@@ -125,6 +125,7 @@ var kjal = {
         for (var ht in hakutoiveet) {
             this.LOGS('########## hakutoive ######## array index:', ht);
             var ind = parseInt(ht) +1;
+            $('#liitteet-table-' + ind + ' #maksuvelvollisuus-select').val(hakutoiveet[ht].maksuvelvollisuus);
             $('#liitteet-table-' + ind + ' #hakukelpoisuus-select').val(hakutoiveet[ht].status);
             this.LOGS('hakutoiveen tila: ',  hakutoiveet[ht].status);
             if(hakutoiveet[ht].source !== config.tietolahdeUnknown ) {
