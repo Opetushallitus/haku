@@ -47,6 +47,7 @@ var preferenceRow = {
                 response($.map(data, resultToResponse));
             });
     },
+
     populateSelectInput: function(orgId, selectInputId, isInit, providerInputId) {
         $.getJSON(window.url("koulutusinformaatio-app.ao.search", sortabletable_settings.applicationSystemId, orgId, {
                 baseEducation: sortabletable_settings.baseEducation,
@@ -165,8 +166,7 @@ var preferenceRow = {
                 var id = selectInputId.substring(0, idx);
                 var opetuspiste = $("#" + id + "-Opetuspiste").val();
                 var hakukohde = $("#" + id + "-Koulutus").val();
-                $('#'+id+'-reset').attr('aria-label',
-                       $('#'+id+'-reset').data('label') + ': ' + opetuspiste + ", " + hakukohde);
+                $('#'+id+'-reset').attr('aria-label', $('#'+id+'-reset').data('label') + ': ' + opetuspiste + ", " + hakukohde);
 
             });
     },
@@ -211,6 +211,17 @@ var preferenceRow = {
         $("#" + childLONamesId).html('');
     },
 
+    translateLop: function(lopOid, field) {
+        var lopParams = {
+            lang: sortabletable_settings.uiLang
+        };
+        if(lopOid !== undefined && lopOid !== ""){
+            $.getJSON(window.url("koulutusinformaatio-app.lop", lopOid, lopParams), function(data) {
+                $(field).attr("value", data.name);
+            });
+        }
+    },
+
     init : function () {
         $('button.reset').unbind();
         $('button.reset').click(function (event) {
@@ -253,6 +264,10 @@ var preferenceRow = {
             $lopInputs.each(function(index) {
                 var selectInputId = $(this).data('selectinputid');
                 var $hiddenInput = $("#" + this.id + "-id");
+
+                // translate prefilled lops
+                preferenceRow.translateLop($hiddenInput.attr("value"), $lopInputs[index]);
+
                 $(this).autocomplete({
                     minLength: 1,
                     source: function(request, response) {
@@ -264,8 +279,7 @@ var preferenceRow = {
                         preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
                         var idx = selectInputId.indexOf('-');
                         var id = selectInputId.substring(0, idx);
-                        $('#'+id+'-reset').attr('aria-label',
-                            $('#'+id+'-reset').data('label') + ': ' + ui.item.label)
+                        $('#'+id+'-reset').attr('aria-label', $('#'+id+'-reset').data('label') + ': ' + ui.item.label);
                         $(this).prop("readonly", true);
                     },
                     change: function(ev, ui) {

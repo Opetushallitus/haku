@@ -311,7 +311,8 @@ public final class KoulutustaustaPhase {
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
                 .required().formParams(formParameters).build();
 
-        int maxTutkintoCount = formParameters.getTutkintoCountMax();
+        final int maxTutkintoCount = formParameters.getTutkintoCountMax();
+        final int maxAvoinTutkintoCount = 6;
 
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset),
@@ -322,7 +323,7 @@ public final class KoulutustaustaPhase {
                 buildYoUlkomainen(formParameters, maat),
                 buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, maxTutkintoCount),
                 buildUlkomainenTutkinto(formParameters, maat, maxTutkintoCount),
-                buildAvoin(formParameters, maxTutkintoCount),
+                buildAvoin(formParameters, maxAvoinTutkintoCount),
                 buildMuu(formParameters, maxTutkintoCount));
 
         if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
@@ -874,8 +875,9 @@ public final class KoulutustaustaPhase {
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
-
-        kansainvalinenSuomessaYoMore.addChild(vuosi, yoTutkintoKansainvalinenSuomessa);
+        Element oppilaitos = TextQuestion("pohjakoulutus_yo_oppilaitos").excelColumnLabel("pohjakoulutus.oppilaitos")
+                .requiredInline().formParams(formParameters).build();
+        kansainvalinenSuomessaYoMore.addChild(vuosi, yoTutkintoKansainvalinenSuomessa, oppilaitos);
         kansainvalinenSuomessaYo.addChild(kansainvalinenSuomessaYoMore);
         return kansainvalinenSuomessaYo;
     }
@@ -896,11 +898,12 @@ public final class KoulutustaustaPhase {
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
-
+        Element oppilaitos = TextQuestion("pohjakoulutus_yo_ulkomainen_oppilaitos").excelColumnLabel("pohjakoulutus.oppilaitos")
+                .requiredInline().formParams(formParameters).build();
         Element ulkomainenYoMissa = buildSuoritusmaa(formParameters, maat, "pohjakoulutus_yo_ulkomainen_maa", "");
         Element ulkomainenYoMuuMissaRule = buildMuuSuoritusmaa(formParameters, "pohjakoulutus_yo_ulkomainen_maa", "");
 
-        ulkomainenYoMore.addChild(vuosi, yoTutkintoUlkomainen, ulkomainenYoMissa, ulkomainenYoMuuMissaRule);
+        ulkomainenYoMore.addChild(vuosi, yoTutkintoUlkomainen, oppilaitos, ulkomainenYoMissa, ulkomainenYoMuuMissaRule);
         ulkomainenYo.addChild(ulkomainenYoMore);
         return ulkomainenYo;
     }

@@ -41,11 +41,10 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 		if (Strings.isNullOrEmpty(oid)) {
 			return null;
 		} else {
-			WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio-app.ao", oid));
-			if (!StringUtils.isEmpty(lang)) {
-				asWebResource.queryParam("uiLang", lang);
-				asWebResource.queryParam("lang", lang);
+            if (StringUtils.isEmpty(lang)) {
+                lang = "fi";
 			}
+            WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio-app.ao", oid)).queryParam("lang", lang).queryParam("uiLang", lang);
 			LOGGER.debug(asWebResource.getUriBuilder().build().toString());
 			return asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {});
 		}

@@ -67,6 +67,10 @@
                     return true;
                 })
             });
+            $("#henkilotiedot_teema").on("click", function(event){
+                $('#Sähköposti').bind("copy", function(e) { e.preventDefault(); });
+            });
+
         });
     </script>
     <title>

@@ -52,6 +52,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("onkosinullakaksoiskansallisuus", "false");
         setValue("Henkilotunnus", "010100A939R");
         setValue("Sähköposti", " aku.ankka@ankkalinna.al    "); // OVT-5952 spaces
+        setValue("SähköpostiUudelleen", " aku.ankka@ankkalinna.al    ");
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
 
@@ -78,7 +79,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById("Postinumero");
         setValue("lahiosoite", "Katu 1");
         setValue("Postinumero", "00100");
-
         nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         testHAK123AandHAK124();
@@ -92,6 +92,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         typeWithoutTab("preference1-Opetuspiste", "sturen");
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
         click(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']"));
+
 
         prevPhase(OppijaConstants.PHASE_EDUCATION);
 

@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
@@ -30,6 +31,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NickNameQuestionBuilder.NickNameQuestion;
@@ -95,6 +98,12 @@ public final class HenkilotiedotPhase {
             nossnEmailBuilder.required();
         }
 
+        ElementBuilder doubleEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL_DOUBLE).inline().size(50).pattern(EMAIL_REGEX)
+                .formParams(formParameters);
+        doubleEmailBuilder.validator(lowercaseEmailValidator());
+        doubleEmailBuilder.validator(new EqualFieldValidator(OppijaConstants.ELEMENT_ID_EMAIL, "form.sahkoposti.virhe"));
+        doubleEmailBuilder.required();
+
         // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
         if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
             nossnEmailBuilder.required();
@@ -139,9 +148,6 @@ public final class HenkilotiedotPhase {
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
         Element suomalainenElem = Rule(suomalainen).build(); // elementti lisätty jotta saadaan email näkyviin perustap.
-        suomalainenElem.addChild(ssnEmailBuilder.build());
-
-        henkilotiedotTeema.addChild(suomalainenElem);
 
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
@@ -219,9 +225,20 @@ public final class HenkilotiedotPhase {
                 nossnEmailBuilder.build());
 
         hetuSaanto.addChild(ssnEmailBuilder.build());
+        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
+            eiHetuaSaanto.addChild(doubleEmailBuilder.build());
+            hetuSaanto.addChild(doubleEmailBuilder.build());
+        }
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
         kysytaankoHetuSaanto.addChild(hetuSaanto);
+
+        suomalainenElem.addChild(ssnEmailBuilder.build());
+        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
+            suomalainenElem.addChild(doubleEmailBuilder.build());
+        }
+
+        kysytaankoHetuSaanto.addChild(suomalainenElem);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
@@ -318,6 +335,16 @@ public final class HenkilotiedotPhase {
             );
         }
 
+        if(formParameters.isSahkoinenViestintaLupa() && formParameters.isHigherEd()) {
+            Element sahkoinenViestintaGrp = Checkbox("lupatiedot-sahkoinen-asiointi")
+                    .i18nText(formParameters.getI18nText("lupatiedot.sahkoinen.asiointi"))
+                    .help(formParameters.getI18nText("lupatiedot.sahkoinen.asiointi.help"))
+                    .validator(new RequiredFieldValidator("lupatiedot.sahkoinen.asiointi.virhe"))
+                    .formParams(formParameters).build();
+
+            henkilotiedotTeema.addChild(sahkoinenViestintaGrp);
+        }
+
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isHuoltajanTiedotKysyttava()) {
             henkilotiedotTeema.addChild(
@@ -341,6 +368,7 @@ public final class HenkilotiedotPhase {
     private static Validator lowercaseEmailValidator() {
         return new EmailInLowercaseValidator();
     }
+
 
     private static ElementBuilder createNameQuestionBuilder(final String id, final int size) {
         return TextQuestion(id)
