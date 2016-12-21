@@ -43,6 +43,7 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
     public DBObjectToApplicationFunction(@Qualifier("aesEncrypter") EncrypterService encrypterService) {
         this.encrypterService = encrypterService;
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.objectMapper.enable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
     }
 
