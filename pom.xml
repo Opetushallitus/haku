@@ -53,6 +53,9 @@
         <repository>
             <id>oph-sade-artifactory-snapshots</id>
             <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
