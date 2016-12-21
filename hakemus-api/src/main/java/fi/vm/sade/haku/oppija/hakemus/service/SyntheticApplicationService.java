@@ -5,7 +5,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
@@ -19,6 +21,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
@@ -141,6 +144,7 @@ public class SyntheticApplicationService {
     }
 
     private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
+
         Application app = new Application();
         app.setOid(applicationOidService.generateNewOid());
         app.setApplicationSystemId(stub.hakuOid);
@@ -163,7 +167,20 @@ public class SyntheticApplicationService {
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
         hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
         app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
+        app.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(
+                app.getPreferenceEligibilities(), asList(stub.hakukohdeOid)));
+        app.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(
+                app.getPreferencesChecked(), asList(stub.hakukohdeOid)));
+
+        app.getPreferenceEligibilities().forEach(e -> {
+            if(stub.hakukohdeOid.equals(e.getAoId())) {
+                e.setMaksuvelvollisuus(getMaksuvelvollisuusFromHakemus(hakemus));
+            }
+        });
         return app;
+    }
+    private PreferenceEligibility.Maksuvelvollisuus getMaksuvelvollisuusFromHakemus(SyntheticApplication.Hakemus hakemus) {
+        return hakemus.maksuvelvollisuus != null ? PreferenceEligibility.Maksuvelvollisuus.valueOf(hakemus.maksuvelvollisuus) : PreferenceEligibility.Maksuvelvollisuus.NOT_CHECKED;
     }
 
     private Application updateApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus, Application current) {
@@ -179,6 +196,16 @@ public class SyntheticApplicationService {
         current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, koulutustausta);
 
         addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
+        List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(current);
+        current.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(
+                current.getPreferenceEligibilities(), preferenceAoIds));
+        current.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(
+                current.getPreferencesChecked(), preferenceAoIds));
+        current.getPreferenceEligibilities().forEach(e -> {
+            if(stub.hakukohdeOid.equals(e.getAoId())) {
+                e.setMaksuvelvollisuus(getMaksuvelvollisuusFromHakemus(hakemus));
+            }
+        });
         return current;
     }
 
