@@ -184,7 +184,7 @@ public class SyntheticApplicationIT {
                 hakukohdeOid, hakuOid,
                 tarjoajaOid,
                 ImmutableList.of(new SyntheticApplication.Hakemus(hakijaOid, "Etu", "Suku","","", hetu, email, null,
-                  "fi", "040123456", "Tie 2", "00100", "HELSINKI", "FIN", "FIN", "091", null, null)));
+                  "fi", "040123456", "Tie 2", "00100", "HELSINKI", "FIN", "FIN", "091", null, null, null)));
         return applicationResource.putSyntheticApplication(firstInput);
     }
 
