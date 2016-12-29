@@ -925,7 +925,8 @@ $(document).ready(function () {
                 var url = urlsWithoutEmptyQSParams.url("tarjonta-service.v1.hakukohde.search", {
                     hakuOid : asid,
                     searchTerms: req.term,
-                    organisationOid : $('#lopoid').val()
+                    organisationOid : $('#lopoid').val(),
+                    tila: "JULKAISTU"
                 });
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
