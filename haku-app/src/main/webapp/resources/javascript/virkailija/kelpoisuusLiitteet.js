@@ -59,12 +59,25 @@ var kjal = {
                         + "</td>"
                         + "</tr>";
 
-                        if (liitteet !== undefined) {
-                           $form +="<tr>"
-                                + "<td id=\"liitteidenmaara\" style=\"font-weight: bold\">Liitteiden määrä " + liitteet.length + " kpl </td>"
-                                + "<td colspan=\"2\"></td>"
-                            + "</tr>";
-                        }
+            if (liitteet !== undefined) {
+               $form +="<tr>"
+                    + "<td id=\"liitteidenmaara\" style=\"font-weight: bold\">Liitteiden määrä " + liitteet.length + " kpl </td>"
+                    + "<td colspan=\"2\"></td>"
+                + "</tr>";
+            }
+
+            $form +="<tr>"
+              + "<td id=\"maksuvelvollisuus\" style=\"font-weight: bold\">Maksuvelvollisuus</td>"
+              + "<td>"
+              + "<select class=\"width-12-11\" id=\"maksuvelvollisuus-select\" onchange=\"kjal.maksuvelvollisuus(" + ind + ", false)\">"
+              + "<option value=\"NOT_CHECKED\">Ei tarkistettu</option>"
+              + "<option value=\"REQUIRED\">Maksuvelvollinen</option>"
+              + "<option value=\"NOT_REQUIRED\">Ei maksuvelvollinen</option>"
+              + "</select>"
+              + "</td>"
+              + "<td>"
+              + "</td>"
+              + "</tr>";
 
 
 
@@ -112,6 +125,7 @@ var kjal = {
         for (var ht in hakutoiveet) {
             this.LOGS('########## hakutoive ######## array index:', ht);
             var ind = parseInt(ht) +1;
+            $('#liitteet-table-' + ind + ' #maksuvelvollisuus-select').val(hakutoiveet[ht].maksuvelvollisuus);
             $('#liitteet-table-' + ind + ' #hakukelpoisuus-select').val(hakutoiveet[ht].status);
             this.LOGS('hakutoiveen tila: ',  hakutoiveet[ht].status);
             if(hakutoiveet[ht].source !== config.tietolahdeUnknown ) {
@@ -189,6 +203,14 @@ var kjal = {
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
         }
         this.LOGS('hakuKelpoisuus()', ' out -> tila: ', hakutoiveet[indx-1].status);
+        this.tarkistaHakutoiveValmis(indx);
+    },
+    maksuvelvollisuus: function (indx, onload) {
+        this.LOGS('maksuvelvollisuus()', ' -> in tila: ',hakutoiveet[indx-1].maksuvelvollisuus);
+        if(!onload){
+            hakutoiveet[indx-1].maksuvelvollisuus = $('#liitteet-table-' + indx + ' #maksuvelvollisuus-select').val();
+        }
+        this.LOGS('maksuvelvollisuus()', ' out -> tila: ', hakutoiveet[indx-1].maksuvelvollisuus);
         this.tarkistaHakutoiveValmis(indx);
     },
     /**

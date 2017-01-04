@@ -10,6 +10,12 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class PreferenceEligibility implements Serializable {
+    public static enum Maksuvelvollisuus {
+        NOT_CHECKED,
+        REQUIRED,
+        NOT_REQUIRED
+    }
+
     public static enum Status {
         NOT_CHECKED,
         ELIGIBLE,
@@ -45,6 +51,19 @@ public class PreferenceEligibility implements Serializable {
         }
     }
 
+    public static String getMaksuvelvollisuusMessage(Maksuvelvollisuus maksuvelvollisuus) {
+        switch (maksuvelvollisuus) {
+            case NOT_CHECKED:
+                return "Ei tarkistettu";
+            case REQUIRED:
+                return "Maksuvelvollinen";
+            case NOT_REQUIRED:
+                return "Ei maksuvelvollinen";
+            default:
+                return null == maksuvelvollisuus ? "" : "Tuntematon maksuvelvollisuus: " + maksuvelvollisuus.toString();
+        }
+    }
+
     public static String getSourceMessage(Source source) {
         switch (source) {
             case LEARNING_PROVIDER:
@@ -67,18 +86,27 @@ public class PreferenceEligibility implements Serializable {
     private final String aoId;
     private Status status;
     private Source source;
+    private Maksuvelvollisuus maksuvelvollisuus;
     private String rejectionBasis;
 
     public PreferenceEligibility(@JsonProperty(value = "aoId") final String aoId,
       @JsonProperty(value = "status") final Status status,
       @JsonProperty(value = "source") final Source source,
-      @JsonProperty(value = "rejectionBasis") final String rejectionBasis) {
+      @JsonProperty(value = "rejectionBasis") final String rejectionBasis,
+      @JsonProperty(value = "maksuvelvollisuus") final Maksuvelvollisuus maksuvelvollisuus) {
         this.aoId = aoId;
         this.status = status;
         this.source = source;
+        this.maksuvelvollisuus = maksuvelvollisuus;
         this.rejectionBasis = rejectionBasis;
     }
 
+    public Maksuvelvollisuus getMaksuvelvollisuus() {
+        return maksuvelvollisuus != null ? maksuvelvollisuus : Maksuvelvollisuus.NOT_CHECKED;
+    }
+    public void setMaksuvelvollisuus(Maksuvelvollisuus maksuvelvollisuus) {
+        this.maksuvelvollisuus = maksuvelvollisuus;
+    }
     public String getAoId() {
         return aoId;
     }

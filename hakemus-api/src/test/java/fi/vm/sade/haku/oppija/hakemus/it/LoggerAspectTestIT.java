@@ -74,8 +74,8 @@ public class LoggerAspectTestIT extends IntegrationTestSupport {
         final Application newApplication = application.clone();
 
         List<PreferenceEligibility> newEligibilities = new LinkedList<>();
-        newEligibilities.add(new PreferenceEligibility("1.2.246.562.5.14273398983", PreferenceEligibility.Status.NOT_CHECKED, PreferenceEligibility.Source.UNKNOWN, null));
-        newEligibilities.add(new PreferenceEligibility("1.2.246.562.5.41197971199", PreferenceEligibility.Status.ELIGIBLE, PreferenceEligibility.Source.UNKNOWN, null));
+        newEligibilities.add(new PreferenceEligibility("1.2.246.562.5.14273398983", PreferenceEligibility.Status.NOT_CHECKED, PreferenceEligibility.Source.UNKNOWN, null, null));
+        newEligibilities.add(new PreferenceEligibility("1.2.246.562.5.41197971199", PreferenceEligibility.Status.ELIGIBLE, PreferenceEligibility.Source.UNKNOWN, null, null));
         newApplication.setPreferenceEligibilities(newEligibilities);
         final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(newApplication, application, "junit", "Post Processing");
         LOGGER_ASPECT.logUpdateApplicationInPostProcessing(application, changes, "LoggerAspectTest");
