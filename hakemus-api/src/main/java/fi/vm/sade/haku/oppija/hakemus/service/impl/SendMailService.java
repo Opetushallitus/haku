@@ -134,7 +134,7 @@ public class SendMailService {
 
             String huoltajaEmail = application.getHuoltajaEmail();
             if (!isEmpty(huoltajaEmail) && isHuoltajanTiedotKysyttava(applicationSystemService.getApplicationSystem(application.getApplicationSystemId()))) {
-                sendEmail(application, huoltajaEmail, MODIFIED_HUOLTAJA, true);
+                sendEmail(application, huoltajaEmail, MODIFIED_HUOLTAJA, false);
             }
         }
     }
