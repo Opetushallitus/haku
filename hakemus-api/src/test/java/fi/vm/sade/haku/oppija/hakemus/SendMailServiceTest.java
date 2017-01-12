@@ -113,7 +113,7 @@ public class SendMailServiceTest {
         EmailData sentMail = emailServiceMockImpl.getLastSentMail();
         assertNotNull(Iterables.find(sentMail.getRecipient(), new Predicate<EmailRecipient>() {
             public boolean apply(EmailRecipient recipient) {
-                return recipient.getEmail().equals(emailAddress);
+                return recipient.getEmail().equals(emailAddress) || recipient.getEmail().equals(emailAddressGuardian);
             }
         }));
 
