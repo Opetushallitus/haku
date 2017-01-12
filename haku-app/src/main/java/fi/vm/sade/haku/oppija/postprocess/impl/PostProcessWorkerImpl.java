@@ -114,6 +114,15 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
                     sendMailService.sendReceivedEmail(application);
                 } catch (EmailException e) {
                     LOGGER.error("Send mail failed for application:" + application.getOid(), e);
+                    if(original.isSubmitted()) {
+                        LOGGER.error("Restoring submitted state to application {}! Sending email failed!", application.getOid());
+                        application.setState(Application.State.SUBMITTED);
+                        application.addNote(new ApplicationNote("Hakemuksen tila palautettu lähetetyksi, koska sähköpostin lähetys jälkikäsittelyssä epäonnistui!", new Date(), SYSTEM_USER));
+                        this.applicationDAO.update(queryApplication, application);
+                        loggerAspect.logUpdateApplicationInPostProcessing(application,
+                                addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing"),
+                                "Hakemuksen tila palautettu lähetetyksi");
+                    }
                     throw e;
                 }
             }
