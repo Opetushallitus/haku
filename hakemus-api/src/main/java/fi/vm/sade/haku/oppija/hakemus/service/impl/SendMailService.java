@@ -95,6 +95,9 @@ public class SendMailService {
         templateMap.put(new TemplateKey(FI, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
         templateMap.put(new TemplateKey(SV, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
         templateMap.put(new TemplateKey(EN, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(FI, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
         templateMap.put(new TemplateKey(FI, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
         templateMap.put(new TemplateKey(SV, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
         templateMap.put(new TemplateKey(EN, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
@@ -113,7 +116,11 @@ public class SendMailService {
         if (!demoMode) {
             String email = application.getEmail();
             if (!isEmpty(email)) {
-                sendEmail(application, email, RECEIVED);
+                sendEmail(application, email, RECEIVED, false);
+            }
+            String huoltajaEmail = application.getHuoltajaEmail();
+            if (!isEmpty(huoltajaEmail) && isHuoltajanTiedotKysyttava(applicationSystemService.getApplicationSystem(application.getApplicationSystemId()))) {
+                sendEmail(application, huoltajaEmail, RECEIVED_HUOLTAJA, true);
             }
         }
     }
@@ -122,17 +129,17 @@ public class SendMailService {
         if (!demoMode) {
             String email = application.getEmail();
             if (!isEmpty(email)) {
-                sendEmail(application, email, MODIFIED);
+                sendEmail(application, email, MODIFIED, false);
             }
 
             String huoltajaEmail = application.getHuoltajaEmail();
             if (!isEmpty(huoltajaEmail) && isHuoltajanTiedotKysyttava(applicationSystemService.getApplicationSystem(application.getApplicationSystemId()))) {
-                sendEmail(application, huoltajaEmail, MODIFIED_HUOLTAJA);
+                sendEmail(application, huoltajaEmail, MODIFIED_HUOLTAJA, true);
             }
         }
     }
 
-    private void sendEmail(final Application application, final String emailAddress, final TemplateType type) throws EmailException {
+    private void sendEmail(final Application application, final String emailAddress, final TemplateType type, final boolean forceNoSecureLink) throws EmailException {
         final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
         Locale locale = getLocale(application);
@@ -144,7 +151,7 @@ public class SendMailService {
         tmpl.merge(ctx, sw);
         final String emailTemplate = sw.toString();
 
-        if (doesNotUseSecurelink(as)) {
+        if (forceNoSecureLink || doesNotUseSecurelink(as)) {
             sendNonSecurelinkEmail(emailAddress, emailSubject, emailTemplate);
         } else {
             sendSecurelinkEmail(application, as, emailAddress, emailSubject, emailTemplate, LanguageCodeISO6391.valueOf(locale.getLanguage()));
@@ -356,6 +363,7 @@ public class SendMailService {
 
     protected enum TemplateType {
         RECEIVED("email.application.received.title"),
+        RECEIVED_HUOLTAJA("email.application.receivedhuoltaja.title"),
         MODIFIED("email.application.modified.title"),
         MODIFIED_HUOLTAJA("email.application.modifiedhuoltaja.title");
 
