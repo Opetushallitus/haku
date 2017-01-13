@@ -195,8 +195,8 @@ public final class KielitaitokysymyksetTheme {
         Element naytetaankoTeema = Rule(naytetaankoKielitaitoteema).build();
         Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
 
-        Expr yleinenTaiValtionhallinnonKielitutkinto = new Or(new Equals(new Variable(yleinen_kielitutkinto_fi), new Value("true")),
-                new Equals(new Variable(valtionhallinnon_kielitutkinto_fi), new Value("true")));
+        Expr yleinenTaiValtionhallinnonKielitutkinto = new Or(new Equals(new Variable(yleinen_kielitutkinto_fi), Value.TRUE),
+                new Equals(new Variable(valtionhallinnon_kielitutkinto_fi), Value.TRUE));
         Element naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana = Rule(yleinenTaiValtionhallinnonKielitutkinto).build();
         naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana.addChild(
                 new Notification("pyynto_toimittaa_kopio_todistuksesta_oppilaitokseen_hakuaikana_notification", formParameters.getI18nText("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"), Notification.NotificationType.INFO)
