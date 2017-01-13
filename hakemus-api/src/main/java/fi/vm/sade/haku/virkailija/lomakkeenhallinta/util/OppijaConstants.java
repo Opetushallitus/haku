@@ -107,6 +107,9 @@ public final class OppijaConstants {
     public static final String PHASE_MISC = "lisatiedot";
     public static final String PHASE_PREVIEW = "esikatselu";
 
+    public static final String YLEINEN_KIELITUTKINTO_FI = "yleinen_kielitutkinto_fi";
+    public static final String VALTIONHALLINNON_KIELITUTKINTO_FI = "valtionhallinnon_kielitutkinto_fi";
+
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
 
     public static final String SUKUPUOLI_MIES = "1";
