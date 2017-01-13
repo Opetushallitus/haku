@@ -94,6 +94,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     public Person addPerson(Person person) {
         String hetu = person.getSocialSecurityNumber();
+        boolean hasHetu = isNotBlank(hetu);
         String personOid = person.getPersonOid();
         String email = person.getEmail();
         Optional<Person> newPerson = Optional.absent();
@@ -102,11 +103,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             newPerson = Optional.fromNullable(getHenkilo(personOid));
         }
 
-        if (!newPerson.isPresent() && isNotBlank(hetu)) {
+        if (!newPerson.isPresent() && hasHetu) {
             newPerson = Optional.fromNullable(fetchPerson(hetu));
         }
 
-        if (!newPerson.isPresent() && isNotBlank(email)) {
+        if (!newPerson.isPresent() && isNotBlank(email) && !hasHetu) {
             newPerson = Optional.fromNullable(fetchPersonByStudentToken(email));
         }
 
