@@ -48,6 +48,8 @@ public final class KielitaitokysymyksetTheme {
             OppijaConstants.KESKEYTYNYT,
             OppijaConstants.ULKOMAINEN_TUTKINTO
     };
+    private static final String yleinen_kielitutkinto_fi = "yleinen_kielitutkinto_fi";
+    private static final String valtionhallinnon_kielitutkinto_fi = "valtionhallinnon_kielitutkinto_fi";
 
     private KielitaitokysymyksetTheme() {
     }
@@ -90,8 +92,7 @@ public final class KielitaitokysymyksetTheme {
 
         Element kysytaankoArvosanaPkFi = Rule(tuoreTodistusPK).build();
         kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", formParameters));
-        String yleinen_kielitutkinto_fi = "yleinen_kielitutkinto_fi";
-        String valtionhallinnon_kielitutkinto_fi = "valtionhallinnon_kielitutkinto_fi";
+
         naytetaankoSuomiPK.addChild(kysytaankoArvosanaPkFi,
                 createKielitutkinto(yleinen_kielitutkinto_fi, formParameters),
                 createKielitutkinto(valtionhallinnon_kielitutkinto_fi, formParameters));
@@ -195,18 +196,22 @@ public final class KielitaitokysymyksetTheme {
         Element naytetaankoTeema = Rule(naytetaankoKielitaitoteema).build();
         Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
 
+        kielitaitokysymyksetTheme.addChild(naytetaankoSuomiPK, naytetaankoRuotsiPK, naytetaankoSuomiYO, naytetaankoRuotsiYO,
+                naytetaankoSuomiKeskUlk, naytetaankoRuotsiKeskUlk, naytetaankoSaamePK, naytetaankoSaameYO, naytetaankoSaameKeskUlk,
+                naytetaankoViittomaPK, naytetaankoViittomaYO, naytetaankoViittomaKeskUlk, createNaytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana(formParameters));
+        naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
+
+        return naytetaankoTeema;
+    }
+
+    private static Element createNaytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana(final FormParameters formParameters) {
         Expr yleinenTaiValtionhallinnonKielitutkinto = new Or(new Equals(new Variable(yleinen_kielitutkinto_fi), Value.TRUE),
                 new Equals(new Variable(valtionhallinnon_kielitutkinto_fi), Value.TRUE));
         Element naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana = Rule(yleinenTaiValtionhallinnonKielitutkinto).build();
         naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana.addChild(
                 new Notification("pyynto_toimittaa_kopio_todistuksesta_oppilaitokseen_hakuaikana_notification", formParameters.getI18nText("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"), Notification.NotificationType.INFO)
         );
-        kielitaitokysymyksetTheme.addChild(naytetaankoSuomiPK, naytetaankoRuotsiPK, naytetaankoSuomiYO, naytetaankoRuotsiYO,
-                naytetaankoSuomiKeskUlk, naytetaankoRuotsiKeskUlk, naytetaankoSaamePK, naytetaankoSaameYO, naytetaankoSaameKeskUlk,
-                naytetaankoViittomaPK, naytetaankoViittomaYO, naytetaankoViittomaKeskUlk, naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana);
-        naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
-
-        return naytetaankoTeema;
+        return naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana;
     }
 
     public static Expr createPohjakoilutusUlkomainenTaiKeskeyttanyt() {
@@ -252,7 +257,7 @@ public final class KielitaitokysymyksetTheme {
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
         naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
-        kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi);
+        kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi, createNaytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana(formParameters));
         return naytetaankoTeema;
     }
 
