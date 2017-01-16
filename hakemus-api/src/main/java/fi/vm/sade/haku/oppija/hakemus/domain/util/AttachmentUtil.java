@@ -258,14 +258,14 @@ public class AttachmentUtil {
             for (final String firstVocationalAoOid : ApplicationUtil.getVocationalAttachmentAOIds(application)) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(firstVocationalAoOid, lang);
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-                .setName(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"))
-                        .setDeliveryNote(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"))
+                .setName(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.nimi"))
+                        .setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE))
                         .setAddress(getAddress(ao));
-                Date deadline = null;
+                Date deadline = ao.getAttachmentDeliveryDeadline();
                 if (deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
                 }
-                attachmentBuilder.setDescription(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"));
+                attachmentBuilder.setDescription(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.syy"));
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
                         .setPreferenceAoId(firstVocationalAoOid)
                         .setApplicationAttachment(attachmentBuilder.build())
