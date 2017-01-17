@@ -226,7 +226,9 @@ public final class HenkilotiedotPhase {
 
         hetuSaanto.addChild(ssnEmailBuilder.build());
         if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
-            eiHetuaSaanto.addChild(doubleEmailBuilder.build());
+            Element naytaAinoastaanJosEmailSyottoAloitettu = Rule(new Not(new IsEmpty(new Variable(OppijaConstants.ELEMENT_ID_EMAIL)))).build();
+            naytaAinoastaanJosEmailSyottoAloitettu.addChild(doubleEmailBuilder.build());
+            eiHetuaSaanto.addChild(naytaAinoastaanJosEmailSyottoAloitettu);
             hetuSaanto.addChild(doubleEmailBuilder.build());
         }
 
