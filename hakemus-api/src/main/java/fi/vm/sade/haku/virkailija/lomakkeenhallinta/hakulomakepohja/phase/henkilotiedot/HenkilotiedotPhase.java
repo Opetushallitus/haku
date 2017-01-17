@@ -225,17 +225,21 @@ public final class HenkilotiedotPhase {
                 nossnEmailBuilder.build());
 
         hetuSaanto.addChild(ssnEmailBuilder.build());
-        suomalainenElem.addChild(ssnEmailBuilder.build());
         if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
-            eiHetuaSaanto.addChild(doubleEmailBuilder.build());
             Element naytaAinoastaanJosEmailSyottoAloitettu = Rule(new Not(new IsEmpty(new Variable(OppijaConstants.ELEMENT_ID_EMAIL)))).build();
             naytaAinoastaanJosEmailSyottoAloitettu.addChild(doubleEmailBuilder.build());
-            hetuSaanto.addChild(naytaAinoastaanJosEmailSyottoAloitettu);
-            suomalainenElem.addChild(doubleEmailBuilder.build());
+            eiHetuaSaanto.addChild(naytaAinoastaanJosEmailSyottoAloitettu);
+            hetuSaanto.addChild(doubleEmailBuilder.build());
         }
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
         kysytaankoHetuSaanto.addChild(hetuSaanto);
+
+        suomalainenElem.addChild(ssnEmailBuilder.build());
+        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
+            suomalainenElem.addChild(doubleEmailBuilder.build());
+        }
+
         kysytaankoHetuSaanto.addChild(suomalainenElem);
 
         // Matkapuhelinnumerot
