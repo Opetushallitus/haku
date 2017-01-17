@@ -204,8 +204,10 @@ public final class HenkilotiedotPhase {
                 syntymaaika,
                 TextQuestion("syntymapaikka").size(30).requiredInline().formParams(formParameters).build(),
                 TextQuestion("kansallinenIdTunnus").inline().size(30).formParams(formParameters).build(),
-                TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build(),
-                noSsnEmailBuilder.build());
+                TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build()
+                );
+        eiSuomalainen.addChild(eiHetuaSaanto);
+        eiHetuaSaanto.addChild(noSsnEmailBuilder.build());
 
         final boolean verifyEmailTwice = formParameters.isHigherEd() || formParameters.isToisenAsteenHaku();
         if(verifyEmailTwice) {
@@ -217,8 +219,6 @@ public final class HenkilotiedotPhase {
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
             kunHetuKysytaan.addChild(doubleEmailBuilder.build());
         }
-
-        onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
