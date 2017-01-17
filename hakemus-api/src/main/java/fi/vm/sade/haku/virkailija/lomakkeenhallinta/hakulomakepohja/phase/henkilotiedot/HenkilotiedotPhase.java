@@ -62,6 +62,7 @@ public final class HenkilotiedotPhase {
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
     public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
+    public static final String EMPTY = "^$";
 
     private HenkilotiedotPhase() {
     }
@@ -125,9 +126,6 @@ public final class HenkilotiedotPhase {
         kysytaankoKaksoiskansallisuusSaanto.addChild(kaksoiskansalaisuus);
 
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
-
-
-
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
         Element onkoSuomalainenKysymys = Radio(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER)
@@ -217,7 +215,14 @@ public final class HenkilotiedotPhase {
                     .validator(new EqualFieldValidator(OppijaConstants.ELEMENT_ID_EMAIL, "form.sahkoposti.virhe"))
                     .required();
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
-            kunHetuKysytaan.addChild(doubleEmailBuilder.build());
+            final boolean emailIsNotRequired = !formParameters.isEmailRequired();
+            if(emailIsNotRequired) {
+                Element emailIsEmpty = Rule(new Not(new Regexp(OppijaConstants.ELEMENT_ID_EMAIL, EMPTY))).build();
+                emailIsEmpty.addChild(doubleEmailBuilder.build());
+                kunHetuKysytaan.addChild(emailIsEmpty);
+            } else {
+                kunHetuKysytaan.addChild(doubleEmailBuilder.build());
+            }
         }
 
         // Matkapuhelinnumerot
