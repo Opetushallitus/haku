@@ -88,14 +88,14 @@ public final class HenkilotiedotPhase {
             ssnEmailBuilder.required();
         }
 
-        ElementBuilder nossnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
+        ElementBuilder noSsnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
                 .formParams(formParameters);
-        nossnEmailBuilder.validator(lowercaseEmailValidator());
+        noSsnEmailBuilder.validator(lowercaseEmailValidator());
         if (formParameters.isUniqueApplicantRequired() && !formParameters.isDemoMode()) {
-            nossnEmailBuilder.validator(new EmailUniqueValidator());
+            noSsnEmailBuilder.validator(new EmailUniqueValidator());
         }
         if (formParameters.isEmailRequired()) {
-            nossnEmailBuilder.required();
+            noSsnEmailBuilder.required();
         }
 
         ElementBuilder doubleEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL_DOUBLE).inline().size(50).pattern(EMAIL_REGEX)
@@ -106,7 +106,7 @@ public final class HenkilotiedotPhase {
 
         // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
         if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
-            nossnEmailBuilder.required();
+            noSsnEmailBuilder.required();
         }
 
         henkilotiedotTeema.addChild(
@@ -222,7 +222,7 @@ public final class HenkilotiedotPhase {
                 TextQuestion("syntymapaikka").size(30).requiredInline().formParams(formParameters).build(),
                 TextQuestion("kansallinenIdTunnus").inline().size(30).formParams(formParameters).build(),
                 TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build(),
-                nossnEmailBuilder.build());
+                noSsnEmailBuilder.build());
 
         hetuSaanto.addChild(ssnEmailBuilder.build());
         if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
