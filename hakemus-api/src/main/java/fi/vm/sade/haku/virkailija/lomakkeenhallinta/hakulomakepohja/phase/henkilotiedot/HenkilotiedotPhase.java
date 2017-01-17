@@ -191,6 +191,7 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(kunHetuKysytaan);
         kunHetuKysytaan.addChild(socialSecurityNumber, hetuMies, hetuNainen);
         ElementBuilder ssnEmailBuilder = createEmailBuilder(formParameters);
+        kunHetuKysytaan.addChild(ssnEmailBuilder.build());
         ElementBuilder noSsnEmailBuilder = createEmailBuilder(formParameters);
         // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
         if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
@@ -206,8 +207,6 @@ public final class HenkilotiedotPhase {
                 TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build(),
                 noSsnEmailBuilder.build());
 
-        Element hetuSaanto = Rule(new Or(onSuomalainenHetu,suomalainen)).build();
-        hetuSaanto.addChild(ssnEmailBuilder.build());
         final boolean verifyEmailTwice = formParameters.isHigherEd() || formParameters.isToisenAsteenHaku();
         if(verifyEmailTwice) {
             ElementBuilder doubleEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL_DOUBLE).inline().size(50).pattern(EMAIL_REGEX)
@@ -216,11 +215,10 @@ public final class HenkilotiedotPhase {
                     .validator(new EqualFieldValidator(OppijaConstants.ELEMENT_ID_EMAIL, "form.sahkoposti.virhe"))
                     .required();
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
-            hetuSaanto.addChild(doubleEmailBuilder.build());
+            kunHetuKysytaan.addChild(doubleEmailBuilder.build());
         }
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
-        kunHetuKysytaan.addChild(hetuSaanto);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
