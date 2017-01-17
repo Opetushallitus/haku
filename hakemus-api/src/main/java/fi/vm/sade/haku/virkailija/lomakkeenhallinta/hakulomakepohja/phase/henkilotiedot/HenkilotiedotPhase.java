@@ -217,7 +217,7 @@ public final class HenkilotiedotPhase {
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
             final boolean emailIsNotRequired = !formParameters.isEmailRequired();
             if(emailIsNotRequired) {
-                Element emailIsEmpty = Rule(new Not(new Regexp(OppijaConstants.ELEMENT_ID_EMAIL, EMPTY))).build();
+                Element emailIsEmpty = Rule(new Not(new Equals(new Variable(OppijaConstants.ELEMENT_ID_EMAIL), new Value("")))).build();
                 emailIsEmpty.addChild(doubleEmailBuilder.build());
                 kunHetuKysytaan.addChild(emailIsEmpty);
             } else {
