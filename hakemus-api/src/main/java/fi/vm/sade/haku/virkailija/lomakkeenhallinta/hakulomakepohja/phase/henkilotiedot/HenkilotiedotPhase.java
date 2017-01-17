@@ -65,7 +65,17 @@ public final class HenkilotiedotPhase {
 
     private HenkilotiedotPhase() {
     }
-
+    private static ElementBuilder createEmailBuilder(final FormParameters formParameters) {
+        ElementBuilder emailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
+                .formParams(formParameters).validator(lowercaseEmailValidator());
+        if (formParameters.isUniqueApplicantRequired() && !formParameters.isDemoMode()) {
+            emailBuilder.validator(new EmailUniqueValidator());
+        }
+        if (formParameters.isEmailRequired()) {
+            emailBuilder.required();
+        }
+        return emailBuilder;
+    }
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
@@ -76,37 +86,6 @@ public final class HenkilotiedotPhase {
         // Just skip there rest
         if (formParameters.isOnlyThemeGenerationForFormEditor()) {
             return henkilotiedotTeema;
-        }
-
-        ElementBuilder ssnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
-                .formParams(formParameters);
-        ssnEmailBuilder.validator(lowercaseEmailValidator());
-        if (formParameters.isUniqueApplicantRequired()) {
-            ssnEmailBuilder.validator(new EmailUniqueValidator());
-        }
-        if (formParameters.isEmailRequired()) {
-            ssnEmailBuilder.required();
-        }
-
-        ElementBuilder noSsnEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
-                .formParams(formParameters);
-        noSsnEmailBuilder.validator(lowercaseEmailValidator());
-        if (formParameters.isUniqueApplicantRequired() && !formParameters.isDemoMode()) {
-            noSsnEmailBuilder.validator(new EmailUniqueValidator());
-        }
-        if (formParameters.isEmailRequired()) {
-            noSsnEmailBuilder.required();
-        }
-
-        ElementBuilder doubleEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL_DOUBLE).inline().size(50).pattern(EMAIL_REGEX)
-                .formParams(formParameters);
-        doubleEmailBuilder.validator(lowercaseEmailValidator());
-        doubleEmailBuilder.validator(new EqualFieldValidator(OppijaConstants.ELEMENT_ID_EMAIL, "form.sahkoposti.virhe"));
-        doubleEmailBuilder.required();
-
-        // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
-        if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
-            noSsnEmailBuilder.required();
         }
 
         henkilotiedotTeema.addChild(
@@ -147,7 +126,7 @@ public final class HenkilotiedotPhase {
 
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
-        Element suomalainenElem = Rule(suomalainen).build(); // elementti lisätty jotta saadaan email näkyviin perustap.
+
 
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
@@ -163,10 +142,6 @@ public final class HenkilotiedotPhase {
         Expr onSuomalainenHetu = new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(KYLLA));
 
         Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
-        Element kysytaankoHetuSaanto = Rule(kysytaankoHetu).build();
-
-        henkilotiedotTeema.addChild(kysytaankoHetuSaanto);
-
         List<Option> genders = formParameters.getKoodistoService().getGenders();
         Radio sukupuoli = (Radio) Radio(OppijaConstants.ELEMENT_ID_SEX)
                 .addOptions(genders)
@@ -205,7 +180,6 @@ public final class HenkilotiedotPhase {
         Element hetuMies = Rule(new Regexp(socialSecurityNumber.getId(), MALE_HETU_PATTERN))
                 .addChild(new HiddenValue(sukupuoli.getId(), male.getValue()))
                 .build();
-        kysytaankoHetuSaanto.addChild(socialSecurityNumber, hetuMies, hetuNainen);
 
         Element syntymaaika = Date(ELEMENT_ID_DATE_OF_BIRTH).formParams(formParameters).build();
         syntymaaika.setValidator(new PastDateValidator("henkilotiedot.syntymaaika.tulevaisuudessa"));
@@ -213,7 +187,15 @@ public final class HenkilotiedotPhase {
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
-        Element hetuSaanto = Rule(new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(KYLLA))).build();
+        Element kunHetuKysytaan = Rule(kysytaankoHetu).build();
+        henkilotiedotTeema.addChild(kunHetuKysytaan);
+        kunHetuKysytaan.addChild(socialSecurityNumber, hetuMies, hetuNainen);
+        ElementBuilder ssnEmailBuilder = createEmailBuilder(formParameters);
+        ElementBuilder noSsnEmailBuilder = createEmailBuilder(formParameters);
+        // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
+        if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
+            noSsnEmailBuilder.required();
+        }
 
         Element eiHetuaSaanto = Rule(new Equals(new Variable(ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER), new Value(EI))).build();
         eiHetuaSaanto.addChild(
@@ -224,21 +206,21 @@ public final class HenkilotiedotPhase {
                 TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build(),
                 noSsnEmailBuilder.build());
 
+        Element hetuSaanto = Rule(new Or(onSuomalainenHetu,suomalainen)).build();
         hetuSaanto.addChild(ssnEmailBuilder.build());
-        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
+        final boolean verifyEmailTwice = formParameters.isHigherEd() || formParameters.isToisenAsteenHaku();
+        if(verifyEmailTwice) {
+            ElementBuilder doubleEmailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL_DOUBLE).inline().size(50).pattern(EMAIL_REGEX)
+                    .formParams(formParameters)
+                    .validator(lowercaseEmailValidator())
+                    .validator(new EqualFieldValidator(OppijaConstants.ELEMENT_ID_EMAIL, "form.sahkoposti.virhe"))
+                    .required();
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
             hetuSaanto.addChild(doubleEmailBuilder.build());
         }
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
-        kysytaankoHetuSaanto.addChild(hetuSaanto);
-
-        suomalainenElem.addChild(ssnEmailBuilder.build());
-        if(formParameters.isHigherEd() || formParameters.isToisenAsteenHaku()) {
-            suomalainenElem.addChild(doubleEmailBuilder.build());
-        }
-
-        kysytaankoHetuSaanto.addChild(suomalainenElem);
+        kunHetuKysytaan.addChild(hetuSaanto);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
