@@ -62,7 +62,6 @@ public final class HenkilotiedotPhase {
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
     public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
-    public static final String EMPTY = "^$";
 
     private HenkilotiedotPhase() {
     }
@@ -217,9 +216,9 @@ public final class HenkilotiedotPhase {
             eiHetuaSaanto.addChild(doubleEmailBuilder.build());
             final boolean emailIsNotRequired = !formParameters.isEmailRequired();
             if(emailIsNotRequired) {
-                Element emailIsEmpty = Rule(new Not(new Equals(new Variable(OppijaConstants.ELEMENT_ID_EMAIL), new Value("")))).build();
-                emailIsEmpty.addChild(doubleEmailBuilder.build());
-                kunHetuKysytaan.addChild(emailIsEmpty);
+                Element someEmail = Rule(new Regexp(OppijaConstants.ELEMENT_ID_EMAIL,"^.{1,}$")).build();
+                someEmail.addChild(doubleEmailBuilder.build());
+                kunHetuKysytaan.addChild(someEmail);
             } else {
                 kunHetuKysytaan.addChild(doubleEmailBuilder.build());
             }
