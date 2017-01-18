@@ -17,13 +17,6 @@
     <p>
         Hakemus on vastaanotettu.
     <p/>
-    <p>
-        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti ja haluat tehdä muutoksia hakemukseesi, voit tehdä
-muutoksia hakuaikana Oma Opintopolku -palvelussa.
-    <p/>
-    <p>
-        Oma Opintopolku -palvelussa voit myös päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
-    </p>
     <h4>Hakutoiveet</h4>
     <p>
         #foreach ($preference in $preferences)
