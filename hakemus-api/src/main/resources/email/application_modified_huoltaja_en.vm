@@ -25,6 +25,9 @@
         #end
     </p>
 
+    <h4>Attachment requests</h4>
+    #parse("email/email_attachment_requests.vm")
+
     <p>This is an automatically generated email, please do not reply.</p>
 </div>
 </body>
