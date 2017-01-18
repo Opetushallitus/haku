@@ -95,9 +95,9 @@ public class SendMailService {
         templateMap.put(new TemplateKey(FI, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
         templateMap.put(new TemplateKey(SV, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
         templateMap.put(new TemplateKey(EN, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
-        templateMap.put(new TemplateKey(FI, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
-        templateMap.put(new TemplateKey(SV, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
-        templateMap.put(new TemplateKey(EN, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(FI, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_huoltaja_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_huoltaja_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, SECONDARY, RECEIVED_HUOLTAJA), velocityEngine.getTemplate("email/application_received_huoltaja_en.vm", "UTF-8"));
         templateMap.put(new TemplateKey(FI, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
         templateMap.put(new TemplateKey(SV, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
         templateMap.put(new TemplateKey(EN, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));

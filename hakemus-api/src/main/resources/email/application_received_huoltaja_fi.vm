@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body style="#include("email/email_body_css.vm")">
+<div>
+    <p>
+        Haku: $applicationSystemId <br />
+        Hakija: $applicant <br />
+        Hakemusnumero: $applicationId <br />
+        Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+    </p>
+
+    <p>
+        Hakemus on vastaanotettu.
+    <p/>
+    <p>
+        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti ja haluat tehdä muutoksia hakemukseesi, voit tehdä
+muutoksia hakuaikana Oma Opintopolku -palvelussa.
+    <p/>
+    <p>
+        Oma Opintopolku -palvelussa voit myös päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
+    </p>
+    <h4>Hakutoiveet</h4>
+    <p>
+        #foreach ($preference in $preferences)
+            $preference <br />
+        #end
+    </p>
+
+    <h4>Liitepyynnöt</h4>
+    #parse("email/email_attachment_requests.vm")
+
+    #if ($discretionary)
+        <p>
+            Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa liitteet oppilaitokseen hakuajan päättymiseen mennessä.
+        </p>
+    #end
+
+    #if ($athlete)
+        <p>
+            Haet urheilijana ammatilliseen koulutukseen tai lukioon. Muistathan toimittaa urheilijan lisätietolomakkeen hakemaasi oppilaitokseen. Lisätietolomakkeen ja lisätietoja löydät osoitteesta:<br /><br />
+
+            <a href="http://www.sport.fi/system/resources/W1siZiIsIjIwMTUvMTAvMjQvMTNfMzdfMTVfMzQ2X1VyaGVpbHVvcHBpbGFpdG9zdGVuX2hha3Vsb21ha2VfMjAxNi5wZGYiXV0/Urheiluoppilaitosten%20hakulomake%202016.pdf">
+                http\://www.sport.fi/urheiluoppilaitoshaku (pdf)
+
+            </a>
+        </p>
+    #end
+
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+        <p>
+            Hait musiikki-, tanssi- tai liikunta-alan koulutukseen. Muista tarkistaa oppilaitoksen
+            nettisivuilta, pitääkö sinun täyttää myös oppilaitoksen oma lisätietolomake. Lomakkeen
+            voit tulostaa oppilaitoksen nettisivuilta, ja se on lähetettävä hakuaikana oppilaitokseen.
+        </p>
+    #end
+        
+    <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
+</div>
+</body>
+</html>

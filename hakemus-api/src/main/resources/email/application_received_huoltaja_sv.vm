@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body style="#include("email/email_body_css.vm")">
+<div>
+    <p>
+        Ansökan: $applicationSystemId <br />
+        Sökande: $applicant <br />
+        Ansökans nummer: $applicationId <br />
+        Ansökans datum och lagringstid: $applicationDate
+    </p>
+
+    <p>
+        Ansökan har mottagits.
+    <p/>
+    <p>
+        Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort och du vill göra ändringar i din ansökan, kan du göra ändringarna under ansökningstiden i Min Studieinfo-tjänsten.
+    <p/>
+    <p>
+        I Min Studieinfo-tjänsten kan du också uppdatera dina kontaktuppgifter, se ditt antagningsresultat och ta emot studieplats.
+    </p>
+
+
+    <h4>Ansökningsönskemål</h4>
+    <p>
+        #foreach ($preference in $preferences)
+            $preference <br />
+        #end
+    </p>
+
+    <h4>Bilagor</h4>
+    #parse("email/email_attachment_requests.vm")
+
+    #if ($discretionary)
+        <p>
+            Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
+            Du bör skicka bilagor till läroanstalten under ansökningstiden.
+        </p>
+    #end
+
+    #if ($athlete)
+        <p>
+            Du har sökt som idrottare. Kom ihåg att returnera tilläggsblanketten för idrottare direkt till läroanstalten. Tilläggsblanketten och tilläggsupgifter hittar du adressen<br /><br />
+
+            <a href="http://www.sport.fi/system/resources/W1siZiIsIjIwMTYvMDIvMTgvMTNfMTRfMzFfNjAxX0Fuc19rbmluZ3NibGFua2V0dF8yMDE2LnBkZiJdXQ/Ansökningsblankett_2016.pdf ">
+                http\://www.sport.fi/urheiluoppilaitoshaku (pdf-fil)
+            </a>
+        </p>
+    #end
+
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+        <p>
+            Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
+            på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
+            även krävs att du fyller i läroanstaltens egen tilläggsblankett.
+        </p>
+    #end
+
+    <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
+</div>
+</body>
+</html>
