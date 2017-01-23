@@ -113,12 +113,12 @@ public class SendMailServiceTest {
         EmailData sentMail = emailServiceMockImpl.getLastSentMail();
         assertNotNull(Iterables.find(sentMail.getRecipient(), new Predicate<EmailRecipient>() {
             public boolean apply(EmailRecipient recipient) {
-                return recipient.getEmail().equals(emailAddress);
+                return recipient.getEmail().equals(emailAddress) || recipient.getEmail().equals(emailAddressGuardian);
             }
         }));
 
         String body = sentMail.getEmail().getBody();
-        assertTrue(body.contains("Oma Opintopolku -palvelussa"));
+        assertTrue(body.contains("on vastaanotettu."));
         assertFalse(body.contains("seuraavan linkin kautta"));
     }
 

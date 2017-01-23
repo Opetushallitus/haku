@@ -11,14 +11,14 @@
         Application: $applicationSystemId <br />
         Applicant: $applicant <br />
         Application number: $applicationId <br />
-        Date and time of submission: $applicationDate
+        Submitted: $applicationDate
     </p>
 
     <p>
-        Changes to the application made by the applicant have been saved $modifiedDate.
+        Application has been received.
     </p>
 
-    <h4>Study programme choices</h4>
+    <h4>Application options</h4>
     <p>
         #foreach ($preference in $preferences)
             $preference <br />
@@ -27,6 +27,15 @@
 
     <h4>Attachment requests</h4>
     #parse("email/email_attachment_requests.vm")
+
+    #if ($discretionary)
+    #end
+
+    #if ($athlete)
+    #end
+
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+    #end
 
     <p>This is an automatically generated email, please do not reply.</p>
 </div>

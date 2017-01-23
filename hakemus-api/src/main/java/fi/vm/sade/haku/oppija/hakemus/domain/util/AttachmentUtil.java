@@ -109,6 +109,7 @@ public class AttachmentUtil {
         }
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        attachments = addToimitaKopioSuorittamastasiKielitutkinnostaEnsimmaiseenAmmatillisenKoulutuksenHakutoiveeseenHakuajanLoppuunMennessaAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle, koulutusinformaatioService, lang);
 
         return attachments;
@@ -238,6 +239,38 @@ public class AttachmentUtil {
                             .setApplicationAttachment(attachmentBuilder.build())
                             .build());
                 }
+            }
+        }
+        return attachments;
+    }
+
+    private static List<ApplicationAttachmentRequest> addToimitaKopioSuorittamastasiKielitutkinnostaEnsimmaiseenAmmatillisenKoulutuksenHakutoiveeseenHakuajanLoppuunMennessaAttachments(
+            final List<ApplicationAttachmentRequest> attachments,
+            final Application application,
+            final KoulutusinformaatioService koulutusinformaatioService,
+            final String lang,
+            final I18nBundle i18nBundle) {
+        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+        final boolean yleinenKielitutkinto =Boolean.parseBoolean(answers.get(OppijaConstants.YLEINEN_KIELITUTKINTO_FI));
+        final boolean valtionhallinnonKielitutkinto = Boolean.parseBoolean(answers.get(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO_FI));
+        final boolean eitherYleinenOrValtionhallinnonKielitutkinto = yleinenKielitutkinto || valtionhallinnonKielitutkinto;
+        if(eitherYleinenOrValtionhallinnonKielitutkinto) {
+            for (final String firstVocationalAoOid : ApplicationUtil.getVocationalAttachmentAOIds(application)) {
+                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(firstVocationalAoOid, lang);
+                ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
+                .setName(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.nimi"))
+                        .setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE))
+                        .setAddress(getAddress(ao));
+                Date deadline = ao.getAttachmentDeliveryDeadline();
+                if (deadline == null) {
+                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
+                }
+                attachmentBuilder.setDescription(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.syy"));
+                attachments.add(ApplicationAttachmentRequestBuilder.start()
+                        .setPreferenceAoId(firstVocationalAoOid)
+                        .setApplicationAttachment(attachmentBuilder.build())
+                        .build());
+                break;
             }
         }
         return attachments;

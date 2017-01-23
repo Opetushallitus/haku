@@ -25,6 +25,9 @@
         #end
     </p>
 
+    <h4>Bilagor</h4>
+    #parse("email/email_attachment_requests.vm")
+
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
 </body>
