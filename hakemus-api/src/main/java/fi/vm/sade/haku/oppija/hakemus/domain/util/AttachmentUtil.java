@@ -255,10 +255,12 @@ public class AttachmentUtil {
         final boolean valtionhallinnonKielitutkinto = Boolean.parseBoolean(answers.get(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO_FI));
         final boolean eitherYleinenOrValtionhallinnonKielitutkinto = yleinenKielitutkinto || valtionhallinnonKielitutkinto;
         if(eitherYleinenOrValtionhallinnonKielitutkinto) {
-            for (final String firstVocationalAoOid : ApplicationUtil.getVocationalAttachmentAOIds(application)) {
+            Iterator<String> vocationalAoOids = ApplicationUtil.getVocationalAttachmentAOIds(application).iterator();
+            if(vocationalAoOids.hasNext()) {
+                final String firstVocationalAoOid = vocationalAoOids.next();
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(firstVocationalAoOid, lang);
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-                .setName(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.nimi"))
+                        .setName(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.nimi"))
                         .setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE))
                         .setAddress(getAddress(ao));
                 Date deadline = ao.getAttachmentDeliveryDeadline();
@@ -270,7 +272,6 @@ public class AttachmentUtil {
                         .setPreferenceAoId(firstVocationalAoOid)
                         .setApplicationAttachment(attachmentBuilder.build())
                         .build());
-                break;
             }
         }
         return attachments;
