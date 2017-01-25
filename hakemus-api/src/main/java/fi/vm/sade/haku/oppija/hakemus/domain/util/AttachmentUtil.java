@@ -245,7 +245,22 @@ public class AttachmentUtil {
         }
         return attachments;
     }
-
+    private static List<String> resolveKielitutkintoKeys() {
+        List<String> keys = new ArrayList<>();
+        for(String lang : OppijaConstants.LANGUAGES) {
+            keys.add(String.format(OppijaConstants.YLEINEN_KIELITUTKINTO, lang));
+            keys.add(String.format(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO, lang));
+        }
+        return keys;
+    }
+    private static boolean anyKeyTrue(List<String> keys, Map<String, String> answers) {
+        for(String key: keys) {
+            if(Boolean.parseBoolean(answers.get(key))) {
+                return true;
+            }
+        }
+        return false;
+    }
     private static List<ApplicationAttachmentRequest> addToimitaKopioSuorittamastasiKielitutkinnostaEnsimmaiseenAmmatillisenKoulutuksenHakutoiveeseenHakuajanLoppuunMennessaAttachments(
             final List<ApplicationAttachmentRequest> attachments,
             final Application application,
@@ -253,9 +268,7 @@ public class AttachmentUtil {
             final String lang,
             final I18nBundle i18nBundle) {
         Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-        Stream<String> kaikkiTarkistettavatAvaimet = OppijaConstants.LANGUAGES.stream().flatMap(l ->
-                Stream.of(String.format(OppijaConstants.YLEINEN_KIELITUTKINTO, l), String.format(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO, l)));
-        boolean eitherYleinenOrValtionhallinnonKielitutkinto = kaikkiTarkistettavatAvaimet.map(answers::get).anyMatch(Boolean::parseBoolean);
+        boolean eitherYleinenOrValtionhallinnonKielitutkinto = anyKeyTrue(resolveKielitutkintoKeys(), answers);
         if(eitherYleinenOrValtionhallinnonKielitutkinto) {
             Iterator<String> vocationalAoOids = ApplicationUtil.getVocationalAttachmentAOIds(application).iterator();
             if(vocationalAoOids.hasNext()) {
