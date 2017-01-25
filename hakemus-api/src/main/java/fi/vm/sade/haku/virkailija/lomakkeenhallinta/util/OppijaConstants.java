@@ -18,10 +18,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds information that is needed about the form or application structure.
@@ -107,8 +104,9 @@ public final class OppijaConstants {
     public static final String PHASE_MISC = "lisatiedot";
     public static final String PHASE_PREVIEW = "esikatselu";
 
-    public static final String YLEINEN_KIELITUTKINTO_FI = "yleinen_kielitutkinto_fi";
-    public static final String VALTIONHALLINNON_KIELITUTKINTO_FI = "valtionhallinnon_kielitutkinto_fi";
+    public static final List<String> LANGUAGES = Arrays.asList("fi","sv");
+    public static final String YLEINEN_KIELITUTKINTO = "yleinen_kielitutkinto_%s";
+    public static final String VALTIONHALLINNON_KIELITUTKINTO = "valtionhallinnon_kielitutkinto_%s";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
 

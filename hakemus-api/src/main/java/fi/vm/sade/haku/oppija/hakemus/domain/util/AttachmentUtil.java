@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -251,9 +253,9 @@ public class AttachmentUtil {
             final String lang,
             final I18nBundle i18nBundle) {
         Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-        final boolean yleinenKielitutkinto =Boolean.parseBoolean(answers.get(OppijaConstants.YLEINEN_KIELITUTKINTO_FI));
-        final boolean valtionhallinnonKielitutkinto = Boolean.parseBoolean(answers.get(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO_FI));
-        final boolean eitherYleinenOrValtionhallinnonKielitutkinto = yleinenKielitutkinto || valtionhallinnonKielitutkinto;
+        Stream<String> kaikkiTarkistettavatAvaimet = OppijaConstants.LANGUAGES.stream().flatMap(l ->
+                Stream.of(String.format(OppijaConstants.YLEINEN_KIELITUTKINTO, l), String.format(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO, l)));
+        boolean eitherYleinenOrValtionhallinnonKielitutkinto = kaikkiTarkistettavatAvaimet.map(answers::get).anyMatch(Boolean::parseBoolean);
         if(eitherYleinenOrValtionhallinnonKielitutkinto) {
             Iterator<String> vocationalAoOids = ApplicationUtil.getVocationalAttachmentAOIds(application).iterator();
             if(vocationalAoOids.hasNext()) {
