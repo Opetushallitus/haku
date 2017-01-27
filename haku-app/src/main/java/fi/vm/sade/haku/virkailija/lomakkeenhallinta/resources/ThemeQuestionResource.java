@@ -133,7 +133,7 @@ public class ThemeQuestionResource {
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
-        if(!allowModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
+        if(!allowDeleteApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
             throw new JSONException(FORBIDDEN, "theme question delete is not allowed", null);
         }
         if (themeQuestionHasActiveOrLockedChildren(themeQuestionId)) {
@@ -182,7 +182,7 @@ public class ThemeQuestionResource {
 
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
 
-        if(!allowModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
+        if(!allowInsertOrModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
             throw new JSONException(FORBIDDEN, "theme question modify is not allowed", null);
         }
 
@@ -241,7 +241,7 @@ public class ThemeQuestionResource {
         if (! themeId.equals(tqThemeId)) {
             throw new JSONException(BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
         }
-        if(!allowInsertApplicationSystemThemeQuestions(applicationSystemId)) {
+        if(!allowInsertOrModifyApplicationSystemThemeQuestions(applicationSystemId)) {
             throw new JSONException(FORBIDDEN, "theme question insert is not allowed", null);
         }
         //Check if parent exists
@@ -467,18 +467,18 @@ public class ThemeQuestionResource {
         return ok(questionMap).build();
     }
 
-    private boolean allowModifyApplicationSystemThemeQuestions(String applicationSystemId) {
+    private boolean allowInsertOrModifyApplicationSystemThemeQuestions(String applicationSystemId) {
         ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
         if(isYhteishaku(applicationSystem.getHakutapa())) {
-            return isRekisterinpitaja() || isBeforeFirstHakuaika(applicationSystem.getApplicationPeriods());
+            return isRekisterinpitaja() || !isHakuaikaGoing(applicationSystem.getApplicationPeriods());
         }
         return true;
     }
 
-    private boolean allowInsertApplicationSystemThemeQuestions(String applicationSystemId) {
+    private boolean allowDeleteApplicationSystemThemeQuestions(String applicationSystemId) {
         ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
         if(isYhteishaku(applicationSystem.getHakutapa())) {
-            return isRekisterinpitaja() || !isHakuaikaGoing(applicationSystem.getApplicationPeriods());
+            return isRekisterinpitaja() || isBeforeFirstHakuaika(applicationSystem.getApplicationPeriods());
         }
         return true;
     }
