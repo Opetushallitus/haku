@@ -2,9 +2,9 @@
 <table style="border-spacing: 0; border-collapse: collapse; text-align: left;">
     <thead>
     <tr style="border-bottom: 1px solid #e6e6e6;">
-        <th style="padding-bottom: 6px;">$lomakeTulostusLiite</th>
-        <th style="padding-bottom: 6px; width: 250px;">$lomakeTulostusLiiteToimitusosoite</th>
-        <th style="padding-bottom: 6px; width: 250px;">$lomakeTulostusLiiteDeadline</th>
+        <th style="text-align:left; padding-bottom: 6px;">$lomakeTulostusLiite</th>
+        <th style="text-align:left; padding-bottom: 6px; width: 250px;">$lomakeTulostusLiiteToimitusosoite</th>
+        <th style="text-align:left; padding-bottom: 6px; width: 250px;">$lomakeTulostusLiiteDeadline</th>
     </tr>
     </thead>
     <tbody style="vertical-align: top;">
