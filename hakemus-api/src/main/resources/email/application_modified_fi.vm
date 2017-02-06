@@ -33,7 +33,9 @@
         #end
     </p>
 
+    #if (!$attachmentRequests.isEmpty())
     <h4>Liitepyynnöt</h4>
+    #end
     #parse("email/email_attachment_requests.vm")
     
     #if ($discretionary)

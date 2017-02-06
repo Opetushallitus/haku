@@ -46,7 +46,9 @@
         #end
     </p>
 
+    #if (!$attachmentRequests.isEmpty())
     <h4>Liitepyynnöt</h4>
+    #end
     #parse("email/email_attachment_requests.vm")
     
     <p>Anna palautetta Opintopolusta vastaamalla <a href="https://www.webropolsurveys.com/S/6CDDDD89A9BAE40C.par"target="_blank">kyselyyn</a>.</p>
