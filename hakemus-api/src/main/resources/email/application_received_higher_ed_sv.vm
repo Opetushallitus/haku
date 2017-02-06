@@ -48,7 +48,9 @@
         #end
     </p>
 
+    #if (!$attachmentRequests.isEmpty())
     <h4>Bilagor</h4>
+    #end
     #parse("email/email_attachment_requests.vm")
     
     <p>Ge feedback om Studieinfo genom att svara på <a href="https://www.webropolsurveys.com/S/0A7F038BACEFF33F.par"target="_blank">frågeformuläret</a>.</p> 
