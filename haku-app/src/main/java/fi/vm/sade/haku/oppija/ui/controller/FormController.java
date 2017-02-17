@@ -275,6 +275,11 @@ public class FormController {
         LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
+        fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
+        AUDIT.log(builder().hakemusOid(application.getOid())
+                .message(String.format("Submitted phase %s", phaseId))
+                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
+                .addAll(applicationToMap(application)).build());
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
