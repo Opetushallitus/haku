@@ -18,13 +18,11 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
-import fi.vm.sade.haku.oppija.ui.common.UriUtil;
+import fi.vm.sade.haku.oppija.ui.common.*;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -44,15 +42,19 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static com.google.common.base.Objects.firstNonNull;
+import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.*;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 
 @Component
 @Path("lomake")
@@ -232,11 +234,33 @@ public class FormController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Response submitApplication(@Context HttpServletRequest request,
                                       @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
-        LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
-        Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
-        ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, modelResponse.getApplication().getOid());
-        return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
+        try {
+            LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
+            Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
+            ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
+            final String oid = modelResponse.getApplication().getOid();
+            RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
+            AUDIT.log(builder().hakemusOid(oid)
+                    .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
+                    .addAll(applicationToMap(modelResponse.getApplication())).build());
+            return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
+        } catch(Throwable t) {
+            fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
+            AUDIT.log(builder().hakemusOid(application.getOid())
+                    .message("Failed: " + t.getMessage())
+                    .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
+                    .addAll(applicationToMap(application)).build());
+            throw t;
+        }
+    }
+
+    private Map<String,String> applicationToMap(fi.vm.sade.haku.oppija.hakemus.domain.Application a) {
+        try {
+            return convert(a, APPLICATION_BLACKLISTED_FIELDS);
+        } catch(Exception e) {
+            LOGGER.error("Failed to map application", e);
+            return emptyMap();
+        }
     }
 
     @POST
