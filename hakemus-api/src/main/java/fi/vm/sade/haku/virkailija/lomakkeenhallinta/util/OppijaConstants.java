@@ -20,6 +20,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber
 
 import java.util.*;
 
+import static java.util.Arrays.asList;
+
 /**
  * Holds information that is needed about the form or application structure.
  *
@@ -198,5 +200,8 @@ public final class OppijaConstants {
     public static final String OPPILAITOS_TUNTEMATON = "1.2.246.562.10.57118763579";
     public static final String ROOT_ORGANIZATION_OID = "1.2.246.562.10.00000000001";
 
+    public static final Set<String> APPLICATION_BLACKLISTED_FIELDS = new HashSet<>(asList(new String[]{
+            "vastauksetMerged", "overriddenAnswers"
+    }));
 
 }

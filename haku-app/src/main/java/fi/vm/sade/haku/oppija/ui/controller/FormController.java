@@ -18,13 +18,12 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
-import fi.vm.sade.haku.oppija.ui.common.UriUtil;
+import fi.vm.sade.haku.oppija.ui.common.*;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -44,15 +43,18 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static com.google.common.base.Objects.firstNonNull;
+import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.*;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
+import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static fi.vm.sade.haku.OppijaAuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 
 @Component
 @Path("lomake")
@@ -226,17 +228,51 @@ public class FormController {
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
+    private LogMessage.LogMessageBuilder withIpAndSession(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
+        String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddressProxy != null) {
+            builder.add("ip", ipAddressProxy);
+        }
+        String sessionId = request.getRequestedSessionId();
+        if (sessionId != null) {
+            builder.sessionId(sessionId);
+        }
+        return builder;
+    }
+
+    private LogMessage.LogMessageBuilder entry(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
+        return builder().hakemusOid(app.getOid())
+                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
+                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION);
+    }
 
     @POST
     @Path("/{applicationSystemId}/esikatselu")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Response submitApplication(@Context HttpServletRequest request,
                                       @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
-        LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
-        Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
-        ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, modelResponse.getApplication().getOid());
-        return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
+        try {
+            LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
+            Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
+            ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
+            final String oid = modelResponse.getApplication().getOid();
+            RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
+            AUDIT.log(withIpAndSession(entry(modelResponse.getApplication()),request).build());
+            return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
+        } catch(Throwable t) {
+            fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
+            AUDIT.log(withIpAndSession(entry(application).message("Failed: " + t.getMessage()),request).build());
+            throw t;
+        }
+    }
+
+    private Map<String,String> applicationToMap(fi.vm.sade.haku.oppija.hakemus.domain.Application a) {
+        try {
+            return convert(a, APPLICATION_BLACKLISTED_FIELDS);
+        } catch(Exception e) {
+            LOGGER.error("Failed to map application", e);
+            return emptyMap();
+        }
     }
 
     @POST
@@ -251,6 +287,8 @@ public class FormController {
         LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
+        fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
+        AUDIT.log(withIpAndSession(entry(application).message(String.format("Submitted phase %s", phaseId)),request).build());
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
