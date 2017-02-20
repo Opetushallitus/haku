@@ -228,10 +228,14 @@ public class FormController {
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
-    private LogMessage.LogMessageBuilder withIp(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
+    private LogMessage.LogMessageBuilder withIpAndSession(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
         String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
-        if(ipAddressProxy != null) {
+        if (ipAddressProxy != null) {
             builder.add("ip", ipAddressProxy);
+        }
+        String sessionId = request.getRequestedSessionId();
+        if (sessionId != null) {
+            builder.sessionId(sessionId);
         }
         return builder;
     }
@@ -253,11 +257,11 @@ public class FormController {
             ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
             final String oid = modelResponse.getApplication().getOid();
             RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
-            AUDIT.log(withIp(entry(modelResponse.getApplication()),request).build());
+            AUDIT.log(withIpAndSession(entry(modelResponse.getApplication()),request).build());
             return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
         } catch(Throwable t) {
             fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
-            AUDIT.log(withIp(entry(application).message("Failed: " + t.getMessage()),request).build());
+            AUDIT.log(withIpAndSession(entry(application).message("Failed: " + t.getMessage()),request).build());
             throw t;
         }
     }
@@ -284,7 +288,7 @@ public class FormController {
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
         fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
-        AUDIT.log(withIp(entry(application).message(String.format("Submitted phase %s", phaseId)),request).build());
+        AUDIT.log(withIpAndSession(entry(application).message(String.format("Submitted phase %s", phaseId)),request).build());
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
