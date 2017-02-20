@@ -238,8 +238,8 @@ public class FormController {
 
     private LogMessage.LogMessageBuilder entry(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
         return builder().hakemusOid(app.getOid())
-                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
-                .addAll(applicationToMap(app));
+                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
+                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION);
     }
 
     @POST
