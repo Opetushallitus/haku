@@ -229,13 +229,9 @@ public class FormController {
     }
 
     private LogMessage.LogMessageBuilder withIp(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
-        String ipAddress = request.getRemoteAddr();
-        if(ipAddress != null) {
-            builder.add("ip", ipAddress);
-        }
         String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
         if(ipAddressProxy != null) {
-            builder.add("ip-proxy", ipAddressProxy);
+            builder.add("ip", ipAddressProxy);
         }
         return builder;
     }
