@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.ui.controller;
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -50,10 +51,9 @@ import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.*;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.OppijaAuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 
 @Component
@@ -228,6 +228,23 @@ public class FormController {
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
+    private LogMessage.LogMessageBuilder withIp(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
+        String ipAddress = request.getRemoteAddr();
+        if(ipAddress != null) {
+            builder.add("ip", ipAddress);
+        }
+        String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
+        if(ipAddressProxy != null) {
+            builder.add("ip-proxy", ipAddressProxy);
+        }
+        return builder;
+    }
+
+    private LogMessage.LogMessageBuilder entry(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
+        return builder().hakemusOid(app.getOid())
+                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
+                .addAll(applicationToMap(app));
+    }
 
     @POST
     @Path("/{applicationSystemId}/esikatselu")
@@ -240,16 +257,11 @@ public class FormController {
             ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
             final String oid = modelResponse.getApplication().getOid();
             RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
-            AUDIT.log(builder().hakemusOid(oid)
-                    .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
-                    .addAll(applicationToMap(modelResponse.getApplication())).build());
+            AUDIT.log(withIp(entry(modelResponse.getApplication()),request).build());
             return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
         } catch(Throwable t) {
             fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
-            AUDIT.log(builder().hakemusOid(application.getOid())
-                    .message("Failed: " + t.getMessage())
-                    .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
-                    .addAll(applicationToMap(application)).build());
+            AUDIT.log(withIp(entry(application).message("Failed: " + t.getMessage()),request).build());
             throw t;
         }
     }
@@ -276,10 +288,7 @@ public class FormController {
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
         fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
-        AUDIT.log(builder().hakemusOid(application.getOid())
-                .message(String.format("Submitted phase %s", phaseId))
-                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
-                .addAll(applicationToMap(application)).build());
+        AUDIT.log(withIp(entry(application).message(String.format("Submitted phase %s", phaseId)),request).build());
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
