@@ -54,7 +54,6 @@ public final class KoulutustaustaPhase {
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
 
     public static final int TEXT_AREA_COLS = 60;
-    public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-5])$";
     public static final String UNKNOWN_OID = "0.0.0.0.0.0";
 
     private KoulutustaustaPhase() {
@@ -1143,16 +1142,13 @@ public final class KoulutustaustaPhase {
         Element pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
-        Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
-        Expr kymppiVuosiSyotetty = new Regexp(kymppiPaatosQuestion.getId(), PAATTOTODISTUSVUOSI_PATTERN);
-
-        Expr recentVuosi = new And(
-                ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), String.valueOf(hakukausiVuosi - 2)),
-                vuosiSyotetty);
-        Expr recentKymppiVuosi = new And(
-                ExprUtil.lessThanRule(kymppiPaatosQuestion.getId(), String.valueOf(hakukausiVuosi - 2)),
-                kymppiVuosiSyotetty);
-        Element paattotodistusvuosiPeruskouluRule = Rule("paattotodistuvuosiPkRule", new Or(recentVuosi, recentKymppiVuosi)).build();
+        Element paattotodistusvuosiPeruskouluRule = Rule(
+                "paattotodistuvuosiPkRule",
+                new Or(
+                        ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), String.valueOf(hakukausiVuosi - 2)),
+                        ExprUtil.lessThanRule(kymppiPaatosQuestion.getId(), String.valueOf(hakukausiVuosi - 2))
+                )
+        ).build();
 
         Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
                 .addOptions(ImmutableList.of(
@@ -1166,12 +1162,7 @@ public final class KoulutustaustaPhase {
         if (HAKUKAUSI_SYKSY.equals(hakukausi)) {
             kysytaankoKoulutuspaikka = new Equals(new Value("true"), new Value("true"));
         } else {
-            kysytaankoKoulutuspaikka = new And(
-                    new Not(
-                            new Equals(
-                                    new Variable(paattotodistusvuosiPeruskoulu.getId()),
-                                    new Value(hakukausiVuosiStr))),
-                    vuosiSyotetty);
+            kysytaankoKoulutuspaikka = ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), hakukausiVuosiStr);
         }
 
         Element onkoTodistusSaatuKuluneenaVuonna = Rule(kysytaankoKoulutuspaikka).build();
