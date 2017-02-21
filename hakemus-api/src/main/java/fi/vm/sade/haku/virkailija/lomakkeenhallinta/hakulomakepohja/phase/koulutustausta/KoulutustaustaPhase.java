@@ -1160,7 +1160,7 @@ public final class KoulutustaustaPhase {
         Expr kysytaankoKoulutuspaikka;
         String hakukausi = formParameters.getApplicationSystem().getHakukausiUri();
         if (HAKUKAUSI_SYKSY.equals(hakukausi)) {
-            kysytaankoKoulutuspaikka = new Equals(new Value("true"), new Value("true"));
+            kysytaankoKoulutuspaikka = Value.TRUE;
         } else {
             kysytaankoKoulutuspaikka = ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), hakukausiVuosiStr);
         }
