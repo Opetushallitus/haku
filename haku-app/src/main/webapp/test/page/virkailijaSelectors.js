@@ -16,6 +16,7 @@ virkailija = initSelectors({
     hakukausiVuosi: "#hakukausiVuosi",
     searchSelectHaku: "select#application-system",
     searchHarkinnanvaraiset: "#discretionary-only",
+    searchModifiedApplications: "#modified-applications-only",
     searchMaksuntilaSelect: "#payment-state-select",
     searchMaksuntila: "#payment-state",
     searchMaksuntilaSelected: "#payment-state option:selected",

@@ -109,6 +109,12 @@
                             <label for="discretionary-only"><fmt:message
                                     key="virkailija.hakemus.vain.harkinnanvaraiset"/></label>
                         </div>
+                        <div class="field-search-containerbox">
+                            <input type="checkbox" id="modified-applications" />
+                            <label for="modified-applications"><fmt:message
+                                key="virkailija.hakemus.vain.muokatut"/>
+                            </label>
+                        </div>
                     </td>
                     <td>
                         <div id="preference-eligibility-select">

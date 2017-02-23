@@ -502,6 +502,7 @@ $(document).ready(function () {
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
                 $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
+                $('#modified-applications').prop('checked', obj.modifiedApplicationsOnly);
                 $('#lop-title').text(obj.lopTitle ? obj.lopTitle.replace('ThisIsStupidButNecessary', '&') : undefined);
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
@@ -536,6 +537,7 @@ $(document).ready(function () {
                     obj['orgSearchExpanded'] = true;
                 }
                 obj['discretionaryOnly'] = $('#discretionary-only').prop('checked');
+                obj['modifiedApplicationsOnly'] = $('#modified-applications').prop('checked');
                 obj['checkAllApplications'] = $('#check-all-applications').prop('checked');
                 obj['primaryPreferenceOnly'] = $('#primary-preference-only').prop('checked');
                 obj['start'] = start;
@@ -681,6 +683,7 @@ $(document).ready(function () {
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
             $('#discretionary-only').attr('disabled', 'disabled');
+            $('#modified-applications').attr('checked', false);
             $('#primary-preference-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
             disableExcel();
