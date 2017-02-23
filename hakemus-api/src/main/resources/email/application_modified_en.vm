@@ -34,7 +34,9 @@
         #end
     </p>
 
+    #if (!$attachmentRequests.isEmpty())
     <h4>Attachment requests</h4>
+    #end
     #parse("email/email_attachment_requests.vm")
 
     <p>This is an automatically generated email, please do not reply.</p>

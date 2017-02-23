@@ -25,7 +25,9 @@
         #end
     </p>
 
+    #if (!$attachmentRequests.isEmpty())
     <h4>Bilagor</h4>
+    #end
     #parse("email/email_attachment_requests.vm")
 
     #if ($discretionary)

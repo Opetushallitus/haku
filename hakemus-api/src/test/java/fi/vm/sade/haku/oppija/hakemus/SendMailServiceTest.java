@@ -79,6 +79,7 @@ public class SendMailServiceTest {
         assertEquals(guardianEmailBody.metadata.hakemusOid, applicationOid);
         assertEquals(guardianEmailBody.metadata.hakemusOid, applicationOid);
         assertTrue(guardianEmailBody.subject.contains("huoltaja"));
+        assertFalse(guardianEmailBody.template.contains("Liitepyynnöt"));
         assertTrue(guardianEmailBody.template.contains(dateTimeFormatter(SendMailService.FI).format(receivedDate)));
     }
 
