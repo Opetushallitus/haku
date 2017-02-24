@@ -217,7 +217,7 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         final Boolean modifiedApplicationsOnly = applicationQueryParameters.getModifiedApplicationsOnly();
-        if (modifiedApplicationsOnly != null) {
+        if (modifiedApplicationsOnly != null && modifiedApplicationsOnly) {
             filters.add(
                 start(FIELD_HISTORY).elemMatch(
                     start(FIELD_CHANGES).elemMatch(
