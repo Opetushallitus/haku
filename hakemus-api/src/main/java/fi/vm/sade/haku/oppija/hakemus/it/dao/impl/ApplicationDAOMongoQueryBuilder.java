@@ -216,6 +216,17 @@ final class ApplicationDAOMongoQueryBuilder {
             );
         }
 
+        final Boolean modifiedApplicationsOnly = applicationQueryParameters.getModifiedApplicationsOnly();
+        if (modifiedApplicationsOnly != null) {
+            filters.add(
+                start(FIELD_HISTORY).elemMatch(
+                    start(FIELD_CHANGES).elemMatch(
+                        start(FIELD_CHANGE_FIELD).regex(Pattern.compile("^preference\\d+-\\w+.*")).get()
+                    ).get()
+                ).get()
+            );
+        }
+
         final List<String> oids = applicationQueryParameters.getOids();
         if(oids != null && !oids.isEmpty()) {
             filters.add(start(FIELD_APPLICATION_OID).in(oids).get());

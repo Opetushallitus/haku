@@ -98,4 +98,9 @@ public final class ApplicationDAOMongoConstants {
     static final String FIELD_PREFERENCE_ELIGIBILITIES = "preferenceEligibilities";
     static final String FIELD_STATUS = "status";
     static final String FIELD_PREFERENCE_ELIGIBILITY_AO_OID = "aoId";
+
+    // Change history
+    static final String FIELD_HISTORY = "history";
+    static final String FIELD_CHANGES = "changes";
+    static final String FIELD_CHANGE_FIELD = "field";
 }

@@ -74,7 +74,8 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 "",
                 null,
                 0,
-                50
+                50,
+                null
         );
     }
 
@@ -259,6 +260,15 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 .addAoOid("1.2.246.562.20.91374364379").build();
         ApplicationSearchResultDTO applications = applicationService.findApplications(params);
         assertEquals(3, applications.getTotalCount());
+    }
+
+    @Test
+    public void testModifiedApplicationsOnlyFilter() {
+        ApplicationQueryParameters params = new ApplicationQueryParametersBuilder()
+            .setModifiedApplicationsOnly(true)
+            .build();
+        ApplicationSearchResultDTO applications = applicationService.findApplications(params);
+        assertEquals(8, applications.getTotalCount());
     }
 
     private String getHenkilotunnus(Collection<Map<String, Object>> applications) {

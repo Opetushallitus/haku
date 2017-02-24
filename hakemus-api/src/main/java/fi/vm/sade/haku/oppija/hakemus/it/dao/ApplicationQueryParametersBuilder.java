@@ -29,6 +29,7 @@ public class ApplicationQueryParametersBuilder {
     private String groupOid;
     private Set<String> baseEducation = new HashSet<>();
     private String organizationFilter;
+    private Boolean modifiedApplicationsOnly;
 
     public ApplicationQueryParametersBuilder setStates(List<String> state) {
         this.state = state;
@@ -166,7 +167,7 @@ public class ApplicationQueryParametersBuilder {
         return new ApplicationQueryParameters(
                 searchTerms, state, paymentState, preferenceChecked, preferenceEligibility, asIds, aoId, lopOid, aoOids,
                 oids, personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
-                sendingClass, updatedAfter, start, rows, orderBy, orderDir, organizationFilter
+                sendingClass, updatedAfter, start, rows, orderBy, orderDir, organizationFilter, modifiedApplicationsOnly
         );
     }
 
@@ -187,6 +188,11 @@ public class ApplicationQueryParametersBuilder {
 
     public ApplicationQueryParametersBuilder setPreferenceEligibility(String preferenceEligibility) {
         this.preferenceEligibility = preferenceEligibility;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setModifiedApplicationsOnly(Boolean modifiedApplicationsOnly) {
+        this.modifiedApplicationsOnly = modifiedApplicationsOnly;
         return this;
     }
 }
