@@ -221,7 +221,7 @@ final class ApplicationDAOMongoQueryBuilder {
             filters.add(
                 start(FIELD_HISTORY).elemMatch(
                     start(FIELD_CHANGES).elemMatch(
-                        start(FIELD_CHANGE_FIELD).regex(Pattern.compile("^preference\\d+-\\w+.*")).get()
+                        start(FIELD_CHANGE_FIELD).regex(Pattern.compile("^preference\\d+-Opetuspiste")).get()
                     ).get()
                 ).get()
             );
