@@ -17,15 +17,28 @@ log4j.appender.FILE.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss.SSSX} %-5p
 log4j.appender.FILE.MaxFileSize=10MB
 log4j.appender.FILE.MaxBackupIndex=20
 # Audit output
-log4j.additivity.fi.vm.sade.auditlog.Audit=false
-log4j.logger.fi.vm.sade.auditlog.Audit=INFO, AUDIT
-log4j.appender.AUDIT=org.apache.log4j.FileAppender
-log4j.appender.AUDIT.immediateFlush=true
-log4j.appender.AUDIT.File=${user.home}/tomcat/logs/auditlog_haku.log
-log4j.appender.AUDIT.Append=true
-log4j.appender.AUDIT.layout=org.apache.log4j.PatternLayout
-log4j.appender.AUDIT.layout.ConversionPattern=%m%n
-log4j.appender.AUDIT.encoding=UTF-8
+log4j.additivity.fi.vm.sade.haku.AuditHelper=false
+log4j.logger.fi.vm.sade.haku.AuditHelper=INFO, AUDIT_VIRKAILIJA
+
+log4j.additivity.fi.vm.sade.haku.OppijaAuditHelper=false
+log4j.logger.fi.vm.sade.haku.OppijaAuditHelper=INFO, AUDIT_OPPIJA
+
+log4j.appender.AUDIT_VIRKAILIJA=org.apache.log4j.FileAppender
+log4j.appender.AUDIT_VIRKAILIJA.immediateFlush=true
+log4j.appender.AUDIT_VIRKAILIJA.File=${user.home}/tomcat/logs/auditlog_haku_virkailija.log
+log4j.appender.AUDIT_VIRKAILIJA.Append=true
+log4j.appender.AUDIT_VIRKAILIJA.layout=org.apache.log4j.PatternLayout
+log4j.appender.AUDIT_VIRKAILIJA.layout.ConversionPattern=%m%n
+log4j.appender.AUDIT_VIRKAILIJA.encoding=UTF-8
+
+log4j.appender.AUDIT_OPPIJA=org.apache.log4j.FileAppender
+log4j.appender.AUDIT_OPPIJA.immediateFlush=true
+log4j.appender.AUDIT_OPPIJA.File=${user.home}/tomcat/logs/auditlog_haku_oppija.log
+log4j.appender.AUDIT_OPPIJA.Append=true
+log4j.appender.AUDIT_OPPIJA.layout=org.apache.log4j.PatternLayout
+log4j.appender.AUDIT_OPPIJA.layout.ConversionPattern=%m%n
+log4j.appender.AUDIT_OPPIJA.encoding=UTF-8
+
 {% endraw %}
 log4j.logger.fi.vm.sade.haku=INFO
 log4j.logger.fi.vm.sade.haku.oppija.postprocess.impl.PostProcessWorkerImpl=ERROR
