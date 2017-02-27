@@ -246,7 +246,7 @@ public class ApplicationSystem implements Serializable {
     }
 
     public int getMaxApplicationOptions() {
-        return maxApplicationOptions;
+        return 0; //maxApplicationOptions;
     }
 
     public List<String> getAllowedLanguages() {
