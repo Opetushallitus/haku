@@ -30,6 +30,7 @@
 
 
     <beans profile="default">
+        <bean id="OppijaAuditHelper" class="fi.vm.sade.haku.OppijaAuditHelper"/>
         <bean id="AuditHelper" class="fi.vm.sade.haku.AuditHelper"/>
         <context:property-placeholder
                 location="file:///${user.home:''}/oph-configuration/haku.properties,
