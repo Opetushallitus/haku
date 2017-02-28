@@ -46,6 +46,7 @@ public class ApplicationQueryParameters {
     private final int orderDir;
     private final String searchTerms;
     private final String organizationFilter;
+    private final Boolean modifiedApplicationsOnly;
 
     public ApplicationQueryParameters(final String searchTerms, final List<String> state, final String paymentState,
                                       final Boolean preferenceChecked, final String preferenceEligibility,
@@ -55,7 +56,7 @@ public class ApplicationQueryParameters {
                                       final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
                                       final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir,
-                                      final String organizationFilter) {
+                                      final String organizationFilter, final Boolean modifiedApplicationsOnly) {
         this.searchTerms = searchTerms;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
@@ -79,6 +80,7 @@ public class ApplicationQueryParameters {
         this.orderBy = orderBy;
         this.orderDir = orderDir;
         this.organizationFilter = organizationFilter;
+        this.modifiedApplicationsOnly = modifiedApplicationsOnly;
     }
 
     private List<String> nonEmptyStrings(List<String> xs) {
@@ -174,5 +176,9 @@ public class ApplicationQueryParameters {
 
     public String getOrganizationFilter() {
         return organizationFilter;
+    }
+
+    public Boolean getModifiedApplicationsOnly() {
+        return modifiedApplicationsOnly;
     }
 }

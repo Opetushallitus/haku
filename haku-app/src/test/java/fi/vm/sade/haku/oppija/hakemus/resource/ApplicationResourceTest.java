@@ -217,7 +217,7 @@ public class ApplicationResourceTest {
         ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService, null, null, i18nBundleService);
         resource.findApplications("query", null, null, null, null, "aoId", "groupOid", "baseEducation", "lopOid", "", "", "", "aoId",
                 false, false, "sendingSchool",
-                "class", new DateParam("201403041506"), 0, 20);
+                "class", new DateParam("201403041506"), 0, 20, null);
         assertEquals("query", myApplicationService.applicationQueryParameters.getSearchTerms());
         ApplicationQueryParameters param = myApplicationService.applicationQueryParameters;
         assertEquals(1, param.getOrderDir());
@@ -227,21 +227,21 @@ public class ApplicationResourceTest {
 
         resource.findApplications("query", null, null, null, null, "aoId", "groupOid", "baseEducation", "lopOid", "asId", "", "", "aoId",
                 false, false, "sendingSchool",
-                "class", new DateParam("201403041506"), 0, 20);
+                "class", new DateParam("201403041506"), 0, 20, null);
         param = myApplicationService.applicationQueryParameters;
         assertEquals(1, param.getAsIds().size());
         assertEquals("asId", param.getAsIds().get(0));
 
         resource.findApplications("query", null, null, null, null, "aoId", "groupOid", "baseEducation", "lopOid", "asId", "semester",
                 "year", "aoId", false, false, "sendingSchool",
-                "class", new DateParam("201403041506"), 0, 20);
+                "class", new DateParam("201403041506"), 0, 20, null);
         param = myApplicationService.applicationQueryParameters;
         assertEquals(1, param.getAsIds().size());
         assertEquals("asId", param.getAsIds().get(0));
 
         resource.findApplications("query", null, null, null, null, "aoId", "groupOid", "baseEducation", "lopOid", "", "semester",
                 "year", "aoId", false, false, "sendingSchool",
-                "class", new DateParam("201403041506"), 0, 20);
+                "class", new DateParam("201403041506"), 0, 20, null);
         param = myApplicationService.applicationQueryParameters;
         assertEquals(3, param.getAsIds().size());
         assertEquals("asId1", param.getAsIds().get(0));
@@ -250,13 +250,13 @@ public class ApplicationResourceTest {
 
         resource.findApplications("query", null, "NOTIFIED", null, null, "aoId", "groupOid", "baseEducation", "lopOid", "", "semester",
                 "year", "aoId", false, false, "sendingSchool",
-                "class", new DateParam("201403041506"), 0, 20);
+                "class", new DateParam("201403041506"), 0, 20, null);
         param = myApplicationService.applicationQueryParameters;
         assertEquals("NOTIFIED", param.getPaymentState());
 
         resource.findApplications("query", null, "NOTIFIED", "ELIGIBLE", null, "aoId", "groupOid", "baseEducation", "lopOid", "", "semester",
                 "year", "aoId", false, false, "sendingSchool",
-                "class", new DateParam("201403041506"), 0, 20);
+                "class", new DateParam("201403041506"), 0, 20, null);
         param = myApplicationService.applicationQueryParameters;
         assertEquals("ELIGIBLE", param.getPreferenceEligibility());
     }

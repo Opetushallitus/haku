@@ -435,11 +435,12 @@ public class ApplicationResource {
                                                        @ApiParam(value="Lähtöluokka") @QueryParam("sendingClass") String sendingClass,
                                                        @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                       @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+                                                       @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows,
+                                                       @ApiParam(value="Näytetäänkö vain hakemukset, joiden hakutoiveita on muokattu") @QueryParam("modifiedApplicationsOnly") Boolean modifiedApplicationsOnly) {
 
         return findApplicationsOrdered("fullName", "asc", query, state, paymentState, preferenceEligibility, preferenceChecked, aoid, groupOid, Sets.newHashSet(baseEducation), lopoid, asId,
                 asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
-                sendingClass, updatedAfter, start, rows);
+                sendingClass, updatedAfter, start, rows, modifiedApplicationsOnly);
     }
 
     @GET
@@ -469,7 +470,8 @@ public class ApplicationResource {
                                                               @ApiParam(value="Lähtöluokka") @QueryParam("sendingClass") String sendingClass,
                                                               @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
                                                               @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                              @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+                                                              @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows,
+                                                              @ApiParam(value="Näytetäänkö vain hakemukset, joiden hakutoiveita on muokattu") @QueryParam("modifiedApplicationsOnly") Boolean modifiedApplicationsOnly) {
         List<String> asIds = new ArrayList<>();
         if (isNotEmpty(asId)) {
             asIds.add(asId);
@@ -504,6 +506,7 @@ public class ApplicationResource {
                 .setRows(rows)
                 .setOrderBy(orderBy)
                 .setOrderDir("desc".equals(orderDir) ? -1 : 1)
+                .setModifiedApplicationsOnly(modifiedApplicationsOnly)
                 .build();
         return applicationService.findApplications(queryParams);
     }
