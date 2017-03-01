@@ -264,7 +264,8 @@ public final class KielitaitokysymyksetTheme {
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
         naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
-        kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi, createNaytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana(formParameters));
+        kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi);
+        kielitaitokysymyksetTheme.addChild(createNaytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana(formParameters));
         return naytetaankoTeema;
     }
 
