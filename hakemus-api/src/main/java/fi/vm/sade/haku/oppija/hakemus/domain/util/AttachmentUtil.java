@@ -245,21 +245,28 @@ public class AttachmentUtil {
         }
         return attachments;
     }
-    private static List<String> resolveKielitutkintoKeys() {
+    private static List<String> resolveKielitutkintoKeys(final String lang) {
         List<String> keys = new ArrayList<>();
-        for(String lang : OppijaConstants.LANGUAGES) {
-            keys.add(String.format(OppijaConstants.YLEINEN_KIELITUTKINTO, lang));
-            keys.add(String.format(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO, lang));
-        }
+        keys.add(String.format(OppijaConstants.YLEINEN_KIELITUTKINTO, lang));
+        keys.add(String.format(OppijaConstants.VALTIONHALLINNON_KIELITUTKINTO, lang));
         return keys;
     }
-    private static boolean anyKeyTrue(List<String> keys, Map<String, String> answers) {
-        for(String key: keys) {
+
+    /**
+     * @return lang
+     */
+    private static String anyKeyTrue(Map<String, String> answers) {
+        for(String key: resolveKielitutkintoKeys("fi")) {
             if(Boolean.parseBoolean(answers.get(key))) {
-                return true;
+                return "fi";
             }
         }
-        return false;
+        for(String key: resolveKielitutkintoKeys("sv")) {
+            if(Boolean.parseBoolean(answers.get(key))) {
+                return "sv";
+            }
+        }
+        return null;
     }
     private static List<ApplicationAttachmentRequest> addToimitaKopioSuorittamastasiKielitutkinnostaEnsimmaiseenAmmatillisenKoulutuksenHakutoiveeseenHakuajanLoppuunMennessaAttachments(
             final List<ApplicationAttachmentRequest> attachments,
@@ -268,7 +275,8 @@ public class AttachmentUtil {
             final String lang,
             final I18nBundle i18nBundle) {
         Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-        boolean eitherYleinenOrValtionhallinnonKielitutkinto = anyKeyTrue(resolveKielitutkintoKeys(), answers);
+        final String langOfKeyTrue = anyKeyTrue(answers);
+        boolean eitherYleinenOrValtionhallinnonKielitutkinto = langOfKeyTrue != null;
         if(eitherYleinenOrValtionhallinnonKielitutkinto) {
             Iterator<String> vocationalAoOids = ApplicationUtil.getVocationalAttachmentAOIds(application).iterator();
             if(vocationalAoOids.hasNext()) {
@@ -282,7 +290,7 @@ public class AttachmentUtil {
                 if (deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
                 }
-                attachmentBuilder.setDescription(i18nBundle.get("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.syy"));
+                attachmentBuilder.setDescription(i18nBundle.get(String.format("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.syy.%s", langOfKeyTrue)));
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
                         .setPreferenceAoId(firstVocationalAoOid)
                         .setApplicationAttachment(attachmentBuilder.build())
