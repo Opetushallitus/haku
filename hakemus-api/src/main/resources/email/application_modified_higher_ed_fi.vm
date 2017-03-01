@@ -37,6 +37,8 @@
     #end
     #parse("email/email_attachment_requests.vm")
     
+    <p>Anna palautetta Opintopolusta vastaamalla <a href="https://www.webropolsurveys.com/S/6CDDDD89A9BAE40C.par"target="_blank">kyselyyn</a>.</p>
+    
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
 </body>
