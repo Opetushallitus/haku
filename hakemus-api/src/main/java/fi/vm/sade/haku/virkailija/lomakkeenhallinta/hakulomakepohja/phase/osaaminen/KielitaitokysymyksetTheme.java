@@ -213,7 +213,9 @@ public final class KielitaitokysymyksetTheme {
                     new Equals(new Variable(valtionhallinnon_kielitutkinto), Value.TRUE));
             Element naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana = Rule(yleinenTaiValtionhallinnonKielitutkinto).build();
             naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana.addChild(
-                    new Notification("pyynto_toimittaa_kopio_todistuksesta_oppilaitokseen_hakuaikana_notification", formParameters.getI18nText("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"), Notification.NotificationType.INFO)
+                    new Notification(
+                            String.format("pyynto_toimittaa_kopio_todistuksesta_oppilaitokseen_hakuaikana_notification_%s",kieli),
+                            formParameters.getI18nText("form.pyynto.toimittaa.kopio.todistuksesta.oppilaitokseen.hakuaikana"), Notification.NotificationType.INFO)
             );
             elements.add(naytetaankoPyyntoToimittaaKopioTodistuksestaOppilaitokseenHakuaikana);
         }
