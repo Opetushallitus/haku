@@ -1,1 +1,237 @@
-{"_id":{"$oid":"56bc8ec2e4b0441501355753"},"applicationSystemId":"1.2.246.562.29.14662042044","answers":{"henkilotiedot":{"huoltajannimi":"","onkosinullakaksoiskansallisuus":"false","kansalaisuus":"FIN","asuinmaa":"FIN","Sukunimi":"Testaaja","matkapuhelinnumero1":"","huoltajansahkoposti":"","Postinumero":"00100","sukupuoli":"1","lahiosoite":"wewee","turvakielto":"false","Sähköposti":"testi@example.com","Kutsumanimi":"Teppo","Etunimet":"Teppo","kotikunta":"005","onkoSinullaSuomalainenHetu":"false","aidinkieli":"FI","huoltajanpuhelinnumero":"","syntymaaika":"11.02.1996"},"lisatiedot":{"asiointikieli":"suomi"},"hakutoiveet":{"preference4-Koulutus-id-aoIdentifier":"","preference3-Koulutus-id-ao-groups":"","preference1-Koulutus-id-ao-groups":"","preference4-Koulutus-id-educationcode":"","preference1-Opetuspiste":"Alajärven lukio","preference4-Opetuspiste-id":"","preference3-Koulutus-id-athlete":"","preference4-Koulutus-requiredBaseEducations":"","preference5-Opetuspiste-id":"","preference2-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-athlete":"","preference2-Koulutus-id-aoIdentifier":"","preference2-Koulutus-id-attachments":"","preference3-Opetuspiste-id":"","preference4-Koulutus-id-attachmentgroups":"","preference2-Koulutus-id-ao-groups":"","preference1-Koulutus-educationDegree":"koulutusasteoph2002_31","preference5-Koulutus-educationDegree":"","preference2-Koulutus-id-sora":"","preference4-Koulutus-id-vocational":"","preference3-Koulutus-id":"","preference5-Koulutus-id-lang":"","preference1-Opetuspiste-id":"1.2.246.562.10.50460470417","preference1-Koulutus-id-sora":"false","preference2-Koulutus-educationDegree":"","preference4-Koulutus-id-discretionary":"","preference5-Koulutus-id-sora":"","preference1-Koulutus-id-aoIdentifier":"000","preference1-Koulutus-id-educationcode":"koulutus_301101","preference5-Koulutus-id-ao-groups":"","preference3-Koulutus-id-attachmentgroups":"","preference5-Koulutus-id-athlete":"","preference2-Koulutus-id":"","preference5-Koulutus-id-attachments":"","preference3-Koulutus-id-vocational":"","preference2-Koulutus-id-discretionary":"","preference1-Koulutus-id-vocational":"false","preference2-Koulutus-requiredBaseEducations":"","preference4-Koulutus-educationDegree":"","preference1-Koulutus-id-athlete":"false","preference4-Koulutus-id-kaksoistutkinto":"","preference5-Koulutus-id-kaksoistutkinto":"","preference5-Koulutus-id":"","preference2-Opetuspiste":"","preference5-Koulutus-id-discretionary":"","preference2-Koulutus-id-athlete":"","preference1-Koulutus-id-attachments":"false","preference3-Koulutus-educationDegree":"","preference5-Opetuspiste":"","preference2-Koulutus-id-kaksoistutkinto":"","preference5-Koulutus-id-educationcode":"","preference3-Koulutus-id-kaksoistutkinto":"","preference1-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-sora":"","preference5-Koulutus-id-vocational":"","preference5-Koulutus-requiredBaseEducations":"","preference3-Koulutus-id-lang":"","preference2-Opetuspiste-id":"","preference1-Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_5,3,2,6,1,7,0","preference3-Opetuspiste":"","preference4-Koulutus-id-lang":"","preference5-Koulutus-id-attachmentgroups":"","preferencesVisible":"5","preference2-Koulutus-id-vocational":"","preference1-Koulutus-id":"1.2.246.562.20.26705556103","preference3-Koulutus-id-attachments":"","preference3-Koulutus-id-sora":"","preference4-Koulutus-id":"","preference3-Koulutus-requiredBaseEducations":"","preference4-Koulutus-id-attachments":"","preference2-Koulutus-id-lang":"","preference4-Opetuspiste":"","preference1-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus":"Lukio","preference3-Koulutus-id-educationcode":"","preference3-Koulutus-id-discretionary":"","preference1-Koulutus-id-discretionary":"false","preference3-Koulutus-id-aoIdentifier":"","preference5-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-lang":"FI","preference4-Koulutus-id-ao-groups":"","preference2-Koulutus-id-educationcode":""},"koulutustausta":{"PK_PAATTOTODISTUSVUOSI":"2016","POHJAKOULUTUS":"1","perusopetuksen_kieli":"FI"},"osaaminen":{}},"oid":"1.2.246.562.11.00004883579","state":"ACTIVE","studentIdentificationDone":false,"personOid":"1.2.246.562.24.14229104472","lastAutomatedProcessingTime":1455198192369,"automatedProcessingFailCount":2,"automatedProcessingFailRetryTime":1455198192368,"received":1455197890330,"updated":1455198192369,"redoPostProcess":"DONE","fullName":"testaaja teppo","searchNames":["teppo","testaaja"],"meta":{"filingLanguage":"fi","sessionId":"anonymousUser"},"authorizationMeta":{"opoAllowed":true,"aoOrganizations":{"1":["1.2.246.562.10.50460470417","1.2.246.562.10.40384720658","1.2.246.562.10.00000000001","1.2.246.562.10.54943480589"]},"allAoOrganizations":["1.2.246.562.10.50460470417","1.2.246.562.10.40384720658","1.2.246.562.10.00000000001","1.2.246.562.10.54943480589"],"applicationPreferences":[{"ordinal":1,"preferenceData":{"Koulutus-id-vocational":"false","Koulutus-id-aoIdentifier":"000","Opetuspiste":"Alajärven lukio","Koulutus-id-athlete":"false","Koulutus-id":"1.2.246.562.20.26705556103","Koulutus-id-sora":"false","Koulutus-id-attachments":"false","Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_5,3,2,6,1,7,0","Koulutus-educationDegree":"koulutusasteoph2002_31","Koulutus-id-kaksoistutkinto":"false","Opetuspiste-id":"1.2.246.562.10.50460470417","Koulutus-id-educationcode":"koulutus_301101","Koulutus":"Lukio","Koulutus-id-lang":"FI","Koulutus-id-discretionary":"false"}}]},"overriddenAnswers":{"sukupuoli":"1","turvakielto":"(null)","Kutsumanimi":"Teppo","Etunimet":"Teppo","Sukunimi":"Testaaja","onkoSinullaSuomalainenHetu":"(null)","Henkilotunnus":"(hidden)","aidinkieli":"FI","syntymaaika":"11.02.1996"},"notes":[{"type":"ApplicationNote","noteText":"Hakemus vastaanotettu","added":1455197890330,"user":"anonymousUser"}],"history":[{"type":"Change","modified":1455197891443,"modifier":"järjestelmä","reason":"Post Processing","changes":[{"field":"state","old value":"SUBMITTED","new value":"ACTIVE"},{"field":"turvakielto","new value":"false"},{"field":"onkoSinullaSuomalainenHetu","new value":"false"}]}],"version":1,"modelVersion":7,"preferenceEligibilities":[{"aoId":"1.2.246.562.20.26705556103","status":"NOT_CHECKED","source":"UNKNOWN"}],"preferencesChecked":[{"preferenceAoOid":"1.2.246.562.20.26705556103","checked":false}]}
+{
+    "_id": {
+        "$oid": "56bc8ec2e4b0441501355753"
+    },
+    "applicationSystemId": "1.2.246.562.29.14662042044",
+    "answers": {
+        "henkilotiedot": {
+            "huoltajannimi": "",
+            "onkosinullakaksoiskansallisuus": "false",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
+            "Sukunimi": "Testaaja",
+            "matkapuhelinnumero1": "",
+            "huoltajansahkoposti": "",
+            "Postinumero": "00100",
+            "sukupuoli": "1",
+            "lahiosoite": "wewee",
+            "turvakielto": "false",
+            "Sähköposti": "testi@example.com",
+            "Kutsumanimi": "Teppo",
+            "Etunimet": "Teppo",
+            "kotikunta": "005",
+            "onkoSinullaSuomalainenHetu": "false",
+            "aidinkieli": "FI",
+            "huoltajanpuhelinnumero": "",
+            "syntymaaika": "11.02.1996"
+        },
+        "lisatiedot": {
+            "asiointikieli": "suomi"
+        },
+        "hakutoiveet": {
+            "preference4-Koulutus-id-aoIdentifier": "",
+            "preference3-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-id-ao-groups": "",
+            "preference4-Koulutus-id-educationcode": "",
+            "preference1-Opetuspiste": "Alajärven lukio",
+            "preference4-Opetuspiste-id": "",
+            "preference3-Koulutus-id-athlete": "",
+            "preference4-Koulutus-requiredBaseEducations": "",
+            "preference5-Opetuspiste-id": "",
+            "preference2-Koulutus-id-attachmentgroups": "",
+            "preference4-Koulutus-id-athlete": "",
+            "preference2-Koulutus-id-aoIdentifier": "",
+            "preference2-Koulutus-id-attachments": "",
+            "preference3-Opetuspiste-id": "",
+            "preference4-Koulutus-id-attachmentgroups": "",
+            "preference2-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_31",
+            "preference5-Koulutus-educationDegree": "",
+            "preference2-Koulutus-id-sora": "",
+            "preference4-Koulutus-id-vocational": "",
+            "preference3-Koulutus-id": "",
+            "preference5-Koulutus-id-lang": "",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.50460470417",
+            "preference1-Koulutus-id-sora": "false",
+            "preference2-Koulutus-educationDegree": "",
+            "preference4-Koulutus-id-discretionary": "",
+            "preference5-Koulutus-id-sora": "",
+            "preference1-Koulutus-id-aoIdentifier": "000",
+            "preference1-Koulutus-id-educationcode": "koulutus_301101",
+            "preference5-Koulutus-id-ao-groups": "",
+            "preference3-Koulutus-id-attachmentgroups": "",
+            "preference5-Koulutus-id-athlete": "",
+            "preference2-Koulutus-id": "",
+            "preference5-Koulutus-id-attachments": "",
+            "preference3-Koulutus-id-vocational": "",
+            "preference2-Koulutus-id-discretionary": "",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference2-Koulutus-requiredBaseEducations": "",
+            "preference4-Koulutus-educationDegree": "",
+            "preference1-Koulutus-id-athlete": "false",
+            "preference4-Koulutus-id-kaksoistutkinto": "",
+            "preference5-Koulutus-id-kaksoistutkinto": "",
+            "preference5-Koulutus-id": "",
+            "preference2-Opetuspiste": "",
+            "preference5-Koulutus-id-discretionary": "",
+            "preference2-Koulutus-id-athlete": "",
+            "preference1-Koulutus-id-attachments": "false",
+            "preference3-Koulutus-educationDegree": "",
+            "preference5-Opetuspiste": "",
+            "preference2-Koulutus-id-kaksoistutkinto": "",
+            "preference5-Koulutus-id-educationcode": "",
+            "preference3-Koulutus-id-kaksoistutkinto": "",
+            "preference1-Koulutus-id-attachmentgroups": "",
+            "preference4-Koulutus-id-sora": "",
+            "preference5-Koulutus-id-vocational": "",
+            "preference5-Koulutus-requiredBaseEducations": "",
+            "preference3-Koulutus-id-lang": "",
+            "preference2-Opetuspiste-id": "",
+            "preference1-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_5,3,2,6,1,7,0",
+            "preference3-Opetuspiste": "",
+            "preference4-Koulutus-id-lang": "",
+            "preference5-Koulutus-id-attachmentgroups": "",
+            "preferencesVisible": "5",
+            "preference2-Koulutus-id-vocational": "",
+            "preference1-Koulutus-id": "1.2.246.562.20.26705556103",
+            "preference3-Koulutus-id-attachments": "",
+            "preference3-Koulutus-id-sora": "",
+            "preference4-Koulutus-id": "",
+            "preference3-Koulutus-requiredBaseEducations": "",
+            "preference4-Koulutus-id-attachments": "",
+            "preference2-Koulutus-id-lang": "",
+            "preference4-Opetuspiste": "",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus": "Lukio",
+            "preference3-Koulutus-id-educationcode": "",
+            "preference3-Koulutus-id-discretionary": "",
+            "preference1-Koulutus-id-discretionary": "false",
+            "preference3-Koulutus-id-aoIdentifier": "",
+            "preference5-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference4-Koulutus-id-ao-groups": "",
+            "preference2-Koulutus-id-educationcode": ""
+        },
+        "koulutustausta": {
+            "PK_PAATTOTODISTUSVUOSI": "2016",
+            "POHJAKOULUTUS": "1",
+            "perusopetuksen_kieli": "FI"
+        },
+        "osaaminen": {}
+    },
+    "oid": "1.2.246.562.11.00004883579",
+    "state": "ACTIVE",
+    "studentIdentificationDone": false,
+    "personOid": "1.2.246.562.24.14229104472",
+    "lastAutomatedProcessingTime": 1455198192369,
+    "automatedProcessingFailCount": 2,
+    "automatedProcessingFailRetryTime": 1455198192368,
+    "received": 1455197890330,
+    "updated": 1455198192369,
+    "redoPostProcess": "DONE",
+    "fullName": "testaaja teppo",
+    "searchNames": [
+        "teppo",
+        "testaaja"
+    ],
+    "meta": {
+        "filingLanguage": "fi",
+        "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+        "opoAllowed": true,
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.50460470417",
+                "1.2.246.562.10.40384720658",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.54943480589"
+            ]
+        },
+        "allAoOrganizations": [
+            "1.2.246.562.10.50460470417",
+            "1.2.246.562.10.40384720658",
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.54943480589"
+        ],
+        "applicationPreferences": [
+            {
+                "ordinal": 1,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "false",
+                    "Koulutus-id-aoIdentifier": "000",
+                    "Opetuspiste": "Alajärven lukio",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id": "1.2.246.562.20.26705556103",
+                    "Koulutus-id-sora": "false",
+                    "Koulutus-id-attachments": "false",
+                    "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_5,3,2,6,1,7,0",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_31",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Opetuspiste-id": "1.2.246.562.10.50460470417",
+                    "Koulutus-id-educationcode": "koulutus_301101",
+                    "Koulutus": "Lukio",
+                    "Koulutus-id-lang": "FI",
+                    "Koulutus-id-discretionary": "false"
+                }
+            }
+        ]
+    },
+    "overriddenAnswers": {
+        "sukupuoli": "1",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Teppo",
+        "Etunimet": "Teppo",
+        "Sukunimi": "Testaaja",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "(hidden)",
+        "aidinkieli": "FI",
+        "syntymaaika": "11.02.1996"
+    },
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1455197890330,
+            "user": "anonymousUser"
+        }
+    ],
+    "history": [
+        {
+            "type": "Change",
+            "modified": 1455197891443,
+            "modifier": "järjestelmä",
+            "reason": "Post Processing",
+            "changes": [
+                {
+                    "field": "state",
+                    "old value": "SUBMITTED",
+                    "new value": "ACTIVE"
+                },
+                {
+                    "field": "turvakielto",
+                    "new value": "false"
+                },
+                {
+                    "field": "onkoSinullaSuomalainenHetu",
+                    "new value": "false"
+                }
+            ]
+        }
+    ],
+    "version": 1,
+    "modelVersion": 7,
+    "preferenceEligibilities": [
+        {
+            "aoId": "1.2.246.562.20.26705556103",
+            "status": "NOT_CHECKED",
+            "source": "UNKNOWN"
+        }
+    ],
+    "preferencesChecked": [
+        {
+            "preferenceAoOid": "1.2.246.562.20.26705556103",
+            "checked": false
+        }
+    ]
+}

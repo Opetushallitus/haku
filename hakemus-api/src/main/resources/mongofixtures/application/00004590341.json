@@ -1,459 +1,459 @@
 {
-  "_id": {
-    "$oid": "569cb23fe4b0a275cfd9e5da"
-  },
-  "applicationSystemId": "1.2.246.562.29.62858726037",
-  "answers": {
-    "henkilotiedot": {
-      "onkosinullakaksoiskansallisuus": "false",
-      "kansalaisuus": "FIN",
-      "asuinmaa": "FIN",
-      "matkapuhelinnumero1": "",
-      "Sukunimi": "thorkildsen",
-      "Postinumero": "00820",
-      "lahiosoite": "Lumikintie 6 A 43",
-      "sukupuoli": "1",
-      "turvakielto": "false",
-      "Sähköposti": "foo@example.com",
-      "Kutsumanimi": "thor",
-      "Etunimet": "thor",
-      "kotikunta": "091",
-      "onkoSinullaSuomalainenHetu": "false",
-      "aidinkieli": "FI",
-      "syntymaaika": "01.01.1901"
+    "_id": {
+        "$oid": "569cb23fe4b0a275cfd9e5da"
     },
-    "lisatiedot": {
-      "lupaSahkoisesti": "true",
-      "lupaJulkaisu": "true",
-      "asiointikieli": "suomi",
-      "lupaSms": "true",
-      "5641f6a2e4b0055cd4baad3a": "",
-      "lupaMarkkinointi": "true"
+    "applicationSystemId": "1.2.246.562.29.62858726037",
+    "answers": {
+        "henkilotiedot": {
+            "onkosinullakaksoiskansallisuus": "false",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
+            "matkapuhelinnumero1": "",
+            "Sukunimi": "thorkildsen",
+            "Postinumero": "00820",
+            "lahiosoite": "Lumikintie 6 A 43",
+            "sukupuoli": "1",
+            "turvakielto": "false",
+            "Sähköposti": "foo@example.com",
+            "Kutsumanimi": "thor",
+            "Etunimet": "thor",
+            "kotikunta": "091",
+            "onkoSinullaSuomalainenHetu": "false",
+            "aidinkieli": "FI",
+            "syntymaaika": "01.01.1901"
+        },
+        "lisatiedot": {
+            "lupaSahkoisesti": "true",
+            "lupaJulkaisu": "true",
+            "asiointikieli": "suomi",
+            "lupaSms": "true",
+            "5641f6a2e4b0055cd4baad3a": "",
+            "lupaMarkkinointi": "true"
+        },
+        "hakutoiveet": {
+            "56419b65e4b0055cd4baa1ad": "option_0",
+            "564b37c8e4b014757569975e": "option_0",
+            "preference2-Opetuspiste": "Tampereen ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+            "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.14677291980,1.2.246.562.28.98599985483",
+            "preference1-Opetuspiste": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+            "preference2-Koulutus-id-athlete": "false",
+            "preference1-Koulutus-id-attachments": "true",
+            "preference2-Koulutus-id-kaksoistutkinto": "false",
+            "preference2-Koulutus-id-attachmentgroups": "1.2.246.562.28.14677291980",
+            "preference1-Koulutus-id-attachmentgroups": "1.2.246.562.28.14677291980",
+            "56419c17e4b0055cd4baa1b0": "option_0",
+            "preference2-Koulutus-id-aoIdentifier": "",
+            "preference2-Koulutus-id-attachments": "true",
+            "preference2-Koulutus": "Ammatillinen erityisopettajankoulutus",
+            "564b374fe4b014757569975b-option_0": "true",
+            "preference2-Opetuspiste-id": "1.2.246.562.10.667617328010",
+            "preference1-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_103,pohjakoulutusvaatimuskorkeakoulut_101,pohjakoulutusvaatimuskorkeakoulut_102,pohjakoulutusvaatimuskorkeakoulut_119",
+            "preference2-Koulutus-id-ao-groups": "1.2.246.562.28.98599985483,1.2.246.562.28.14677291980",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_90",
+            "preferencesVisible": "2",
+            "preference2-Koulutus-id-sora": "false",
+            "preference2-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-id": "1.2.246.562.20.93395603447",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.21540239577",
+            "preference1-Koulutus-id-sora": "false",
+            "preference2-Koulutus-educationDegree": "koulutusasteoph2002_90",
+            "preference2-Koulutus-id-lang": "FI",
+            "564b380de4b014757569975f": "option_0",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus": "Ammatillinen erityisopettajankoulutus",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-educationcode": "koulutus_000002",
+            "56419bade4b0055cd4baa1ae": "option_0",
+            "preference2-Koulutus-id": "1.2.246.562.20.42476855715",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference2-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_103,pohjakoulutusvaatimuskorkeakoulut_101,pohjakoulutusvaatimuskorkeakoulut_102,pohjakoulutusvaatimuskorkeakoulut_119",
+            "preference2-Koulutus-id-educationcode": "koulutus_000002",
+            "preference1-Koulutus-id-athlete": "false"
+        },
+        "koulutustausta": {
+            "amk_ope_koulutusala": "1",
+            "pedagogiset_opinnot_oppilaitos": "Äystävän korkeakoulu",
+            "pedagogiset_opinnot_suoritusvuosi": "2005",
+            "amk_ope_opintoala": "199",
+            "amk_ope_tutkinto": "Luokanopettaja",
+            "pedagogiset_opinnot": "true",
+            "amk_ope_tutkinnontaso": "amk",
+            "amk_ope_tutkinto_vuosi": "2000"
+        },
+        "osaaminen": {
+            "5641f193e4b0055cd4baad20": "option_2",
+            "5641f267e4b0055cd4baad22": "option_2",
+            "5641f4c2e4b0055cd4baad30": "option_1",
+            "5641ec44e4b0055cd4baacf2": "option_1",
+            "5641f008e4b0055cd4baacfa": "option_1",
+            "5641f53ee4b0055cd4baad34": "option_1",
+            "5641f416e4b0055cd4baad2a": "option_1",
+            "5641f5b3e4b0055cd4baad36": "option_1",
+            "5641ef74e4b0055cd4baacf8": "option_1",
+            "5641f31ce4b0055cd4baad27": "option_3"
+        }
     },
-    "hakutoiveet": {
-      "56419b65e4b0055cd4baa1ad": "option_0",
-      "564b37c8e4b014757569975e": "option_0",
-      "preference2-Opetuspiste": "Tampereen ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-      "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.14677291980,1.2.246.562.28.98599985483",
-      "preference1-Opetuspiste": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-      "preference2-Koulutus-id-athlete": "false",
-      "preference1-Koulutus-id-attachments": "true",
-      "preference2-Koulutus-id-kaksoistutkinto": "false",
-      "preference2-Koulutus-id-attachmentgroups": "1.2.246.562.28.14677291980",
-      "preference1-Koulutus-id-attachmentgroups": "1.2.246.562.28.14677291980",
-      "56419c17e4b0055cd4baa1b0": "option_0",
-      "preference2-Koulutus-id-aoIdentifier": "",
-      "preference2-Koulutus-id-attachments": "true",
-      "preference2-Koulutus": "Ammatillinen erityisopettajankoulutus",
-      "564b374fe4b014757569975b-option_0": "true",
-      "preference2-Opetuspiste-id": "1.2.246.562.10.667617328010",
-      "preference1-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_103,pohjakoulutusvaatimuskorkeakoulut_101,pohjakoulutusvaatimuskorkeakoulut_102,pohjakoulutusvaatimuskorkeakoulut_119",
-      "preference2-Koulutus-id-ao-groups": "1.2.246.562.28.98599985483,1.2.246.562.28.14677291980",
-      "preference1-Koulutus-educationDegree": "koulutusasteoph2002_90",
-      "preferencesVisible": "2",
-      "preference2-Koulutus-id-sora": "false",
-      "preference2-Koulutus-id-vocational": "false",
-      "preference1-Koulutus-id": "1.2.246.562.20.93395603447",
-      "preference1-Opetuspiste-id": "1.2.246.562.10.21540239577",
-      "preference1-Koulutus-id-sora": "false",
-      "preference2-Koulutus-educationDegree": "koulutusasteoph2002_90",
-      "preference2-Koulutus-id-lang": "FI",
-      "564b380de4b014757569975f": "option_0",
-      "preference1-Koulutus-id-kaksoistutkinto": "false",
-      "preference1-Koulutus": "Ammatillinen erityisopettajankoulutus",
-      "preference1-Koulutus-id-aoIdentifier": "",
-      "preference1-Koulutus-id-educationcode": "koulutus_000002",
-      "56419bade4b0055cd4baa1ae": "option_0",
-      "preference2-Koulutus-id": "1.2.246.562.20.42476855715",
-      "preference1-Koulutus-id-vocational": "false",
-      "preference1-Koulutus-id-lang": "FI",
-      "preference2-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_103,pohjakoulutusvaatimuskorkeakoulut_101,pohjakoulutusvaatimuskorkeakoulut_102,pohjakoulutusvaatimuskorkeakoulut_119",
-      "preference2-Koulutus-id-educationcode": "koulutus_000002",
-      "preference1-Koulutus-id-athlete": "false"
-    },
-    "koulutustausta": {
-      "amk_ope_koulutusala": "1",
-      "pedagogiset_opinnot_oppilaitos": "Äystävän korkeakoulu",
-      "pedagogiset_opinnot_suoritusvuosi": "2005",
-      "amk_ope_opintoala": "199",
-      "amk_ope_tutkinto": "Luokanopettaja",
-      "pedagogiset_opinnot": "true",
-      "amk_ope_tutkinnontaso": "amk",
-      "amk_ope_tutkinto_vuosi": "2000"
-    },
-    "osaaminen": {
-      "5641f193e4b0055cd4baad20": "option_2",
-      "5641f267e4b0055cd4baad22": "option_2",
-      "5641f4c2e4b0055cd4baad30": "option_1",
-      "5641ec44e4b0055cd4baacf2": "option_1",
-      "5641f008e4b0055cd4baacfa": "option_1",
-      "5641f53ee4b0055cd4baad34": "option_1",
-      "5641f416e4b0055cd4baad2a": "option_1",
-      "5641f5b3e4b0055cd4baad36": "option_1",
-      "5641ef74e4b0055cd4baacf8": "option_1",
-      "5641f31ce4b0055cd4baad27": "option_3"
-    }
-  },
-  "oid": "1.2.246.562.11.00004590341",
-  "state": "ACTIVE",
-  "studentIdentificationDone": false,
-  "personOid": "1.2.246.562.24.14229104472",
-  "lastAutomatedProcessingTime": 1453110739947,
-  "automatedProcessingFailCount": 2,
-  "automatedProcessingFailRetryTime": 1453110739947,
-  "received": 1453109823304,
-  "updated": 1453110739947,
-  "redoPostProcess": "DONE",
-  "fullName": "thorkildsen thor",
-  "searchNames": [
-    "thorkildsen",
-    "timo",
-    "thor",
-    "rantalaiho",
-    "heikki"
-  ],
-  "meta": {
-    "filingLanguage": "fi",
-    "sessionId": "anonymousUser"
-  },
-  "authorizationMeta": {
-    "opoAllowed": false,
-    "aoOrganizations": {
-      "1": [
-        "1.2.246.562.10.57572539237",
-        "1.2.246.562.10.00000000001",
-        "1.2.246.562.10.21540239577",
-        "1.2.246.562.10.38382525541"
-      ]
-    },
-    "allAoOrganizations": [
-      "1.2.246.562.10.57572539237",
-      "1.2.246.562.10.00000000001",
-      "1.2.246.562.10.21540239577",
-      "1.2.246.562.10.38382525541"
+    "oid": "1.2.246.562.11.00004590341",
+    "state": "ACTIVE",
+    "studentIdentificationDone": false,
+    "personOid": "1.2.246.562.24.14229104472",
+    "lastAutomatedProcessingTime": 1453110739947,
+    "automatedProcessingFailCount": 2,
+    "automatedProcessingFailRetryTime": 1453110739947,
+    "received": 1453109823304,
+    "updated": 1453110739947,
+    "redoPostProcess": "DONE",
+    "fullName": "thorkildsen thor",
+    "searchNames": [
+        "thorkildsen",
+        "timo",
+        "thor",
+        "rantalaiho",
+        "heikki"
     ],
-    "applicationPreferences": [
-      {
-        "ordinal": 1,
-        "preferenceData": {
-          "Koulutus-id-vocational": "false",
-          "Koulutus-id-attachmentgroups": "1.2.246.562.28.14677291980",
-          "Koulutus-id-athlete": "false",
-          "Koulutus-id-ao-groups": "1.2.246.562.28.14677291980,1.2.246.562.28.98599985483",
-          "Opetuspiste": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-          "Koulutus-id": "1.2.246.562.20.93395603447",
-          "Koulutus-id-attachments": "true",
-          "Koulutus-id-sora": "false",
-          "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_103,pohjakoulutusvaatimuskorkeakoulut_101,pohjakoulutusvaatimuskorkeakoulut_102,pohjakoulutusvaatimuskorkeakoulut_119",
-          "Koulutus-educationDegree": "koulutusasteoph2002_90",
-          "Koulutus-id-kaksoistutkinto": "false",
-          "Opetuspiste-id": "1.2.246.562.10.21540239577",
-          "Koulutus-id-educationcode": "koulutus_000002",
-          "Koulutus": "Ammatillinen erityisopettajankoulutus",
-          "Koulutus-id-lang": "FI"
+    "meta": {
+        "filingLanguage": "fi",
+        "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+        "opoAllowed": false,
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.57572539237",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.21540239577",
+                "1.2.246.562.10.38382525541"
+            ]
+        },
+        "allAoOrganizations": [
+            "1.2.246.562.10.57572539237",
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.21540239577",
+            "1.2.246.562.10.38382525541"
+        ],
+        "applicationPreferences": [
+            {
+                "ordinal": 1,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "false",
+                    "Koulutus-id-attachmentgroups": "1.2.246.562.28.14677291980",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id-ao-groups": "1.2.246.562.28.14677291980,1.2.246.562.28.98599985483",
+                    "Opetuspiste": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+                    "Koulutus-id": "1.2.246.562.20.93395603447",
+                    "Koulutus-id-attachments": "true",
+                    "Koulutus-id-sora": "false",
+                    "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_103,pohjakoulutusvaatimuskorkeakoulut_101,pohjakoulutusvaatimuskorkeakoulut_102,pohjakoulutusvaatimuskorkeakoulut_119",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_90",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Opetuspiste-id": "1.2.246.562.10.21540239577",
+                    "Koulutus-id-educationcode": "koulutus_000002",
+                    "Koulutus": "Ammatillinen erityisopettajankoulutus",
+                    "Koulutus-id-lang": "FI"
+                }
+            }
+        ]
+    },
+    "overriddenAnswers": {
+        "sukupuoli": "1",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Timo",
+        "Etunimet": "Timo Heikki",
+        "Sukunimi": "Rantalaiho",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "(hidden)",
+        "aidinkieli": "FI",
+        "syntymaaika": "01.01.1901"
+    },
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1453109823304,
+            "user": "anonymousUser"
         }
-      }
+    ],
+    "history": [
+        {
+            "type": "Change",
+            "modified": 1453109825489,
+            "modifier": "järjestelmä",
+            "reason": "Post Processing",
+            "changes": [
+                {
+                    "field": "Kutsumanimi",
+                    "old value": "Timo",
+                    "new value": "thor"
+                },
+                {
+                    "field": "Etunimet",
+                    "old value": "Timo Heikki",
+                    "new value": "thor"
+                },
+                {
+                    "field": "Sukunimi",
+                    "old value": "Rantalaiho",
+                    "new value": "thorkildsen"
+                },
+                {
+                    "field": "turvakielto",
+                    "new value": "false"
+                },
+                {
+                    "field": "onkoSinullaSuomalainenHetu",
+                    "new value": "false"
+                }
+            ]
+        }
+    ],
+    "version": 1,
+    "modelVersion": 7,
+    "preferenceEligibilities": [
+        {
+            "aoId": "1.2.246.562.20.93395603447",
+            "status": "NOT_CHECKED",
+            "source": "UNKNOWN"
+        }
+    ],
+    "attachmentRequests": [
+        {
+            "id": "form.valmis.amkope.tutkintotodistus_group_1.2.246.562.28.14677291980",
+            "preferenceAoGroupId": "1.2.246.562.28.14677291980",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä",
+                        "sv": "[sv] Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä",
+                        "en": "Attachment 1. Degree with which you apply: Copy of your degree certificate and if necessary, copy of the recognition"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+                        "sv": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+                        "en": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu"
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "form.valmis.amkope.pedagogiset_opinnot_group_1.2.246.562.28.14677291980",
+            "preferenceAoGroupId": "1.2.246.562.28.14677291980",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi",
+                        "sv": "[sv] Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi",
+                        "en": "[en] Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+                        "sv": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
+                        "en": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu"
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "be6a412c-99a6-4eb0-b5c5-12485e80c58c",
+            "preferenceAoGroupId": "1.2.246.562.28.98599985483",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "header": {
+                    "translations": {
+                        "fi": "Liite 5. Muu erityisopetuksen koulutus",
+                        "sv": "Liite 5. Muu erityisopetuksen koulutus",
+                        "en": "Liite 5. Muu erityisopetuksen koulutus"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Kopio todistuksesta tai opintosuoritusote\n\nTodistuksesta tulee ilmetä suoritetut opinnot, niiden sisältö, suoritusvuosi, laajuus sekä oppilaitos.\nJos todistuksessa ei ole mainittu koulutuksen laajuutta, pyydä koulutuksen järjestäjältä erillinen arvio suorittamiesi opintojen laajuudesta.",
+                        "sv": "Kopio todistuksesta tai opintosuoritusote\n\nTodistuksesta tulee ilmetä suoritetut opinnot, niiden sisältö, suoritusvuosi, laajuus sekä oppilaitos.\nJos todistuksessa ei ole mainittu koulutuksen laajuutta, pyydä koulutuksen järjestäjältä erillinen arvio suorittamiesi opintojen laajuudesta.",
+                        "en": "Kopio todistuksesta tai opintosuoritusote\n\nTodistuksesta tulee ilmetä suoritetut opinnot, niiden sisältö, suoritusvuosi, laajuus sekä oppilaitos.\nJos todistuksessa ei ole mainittu koulutuksen laajuutta, pyydä koulutuksen järjestäjältä erillinen arvio suorittamiesi opintojen laajuudesta."
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "9b2698e9-f0d3-43c8-b125-2162caca7d23",
+            "preferenceAoGroupId": "1.2.246.562.28.98599985483",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "header": {
+                    "translations": {
+                        "fi": "Liite 7. Opetuskokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
+                        "sv": "Liite 7. Opetuskokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
+                        "en": "Liite 7. Opetuskokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
+                        "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
+                        "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna."
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "ab3a5c12-00aa-4012-ab9b-2e113c28e7ee",
+            "preferenceAoGroupId": "1.2.246.562.28.98599985483",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "header": {
+                    "translations": {
+                        "fi": "Liite 8. Opetuskokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
+                        "sv": "Liite 8. Opetuskokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
+                        "en": "Liite 8. Opetuskokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
+                        "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
+                        "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna."
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "2d54188f-a51c-40d1-a5d3-ca103ca4eb9e",
+            "preferenceAoGroupId": "1.2.246.562.28.98599985483",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "header": {
+                    "translations": {
+                        "fi": "Liite 9. Erityisopetuksen kokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
+                        "sv": "Liite 9. Erityisopetuksen kokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
+                        "en": "Liite 9. Erityisopetuksen kokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
+                        "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
+                        "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna."
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "bfb2dbcf-7141-4faa-a338-ccc25146dc17",
+            "preferenceAoGroupId": "1.2.246.562.28.98599985483",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "header": {
+                    "translations": {
+                        "fi": "Liite 10. Erityisopetuksen kokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
+                        "sv": "Liite 10. Erityisopetuksen kokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
+                        "en": "Liite 10. Erityisopetuksen kokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
+                        "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
+                        "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna."
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "c13e4fe1-153e-4db9-aa09-4cc46f7b9a1a",
+            "preferenceAoGroupId": "1.2.246.562.28.98599985483",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "header": {
+                    "translations": {
+                        "fi": "Liite 11. Työelämäkokemus erityistä tukea tarvitsevien parissa",
+                        "sv": "Liite 11. Työelämäkokemus erityistä tukea tarvitsevien parissa",
+                        "en": "Liite 11. Työelämäkokemus erityistä tukea tarvitsevien parissa"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, työtehtävät ja työsuhteen kesto.",
+                        "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, työtehtävät ja työsuhteen kesto.",
+                        "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, työtehtävät ja työsuhteen kesto."
+                    }
+                },
+                "deadline": 1454504400000,
+                "address": {
+                    "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
+                    "streetAddress": "Piippukatu 11",
+                    "postalCode": "40100",
+                    "postOffice": "JYVÄSKYLÄ"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        }
+    ],
+    "preferencesChecked": [
+        {
+            "preferenceAoOid": "1.2.246.562.20.93395603447",
+            "checked": false
+        }
     ]
-  },
-  "overriddenAnswers": {
-    "sukupuoli": "1",
-    "turvakielto": "(null)",
-    "Kutsumanimi": "Timo",
-    "Etunimet": "Timo Heikki",
-    "Sukunimi": "Rantalaiho",
-    "onkoSinullaSuomalainenHetu": "(null)",
-    "Henkilotunnus": "(hidden)",
-    "aidinkieli": "FI",
-    "syntymaaika": "01.01.1901"
-  },
-  "notes": [
-    {
-      "type": "ApplicationNote",
-      "noteText": "Hakemus vastaanotettu",
-      "added": 1453109823304,
-      "user": "anonymousUser"
-    }
-  ],
-  "history": [
-    {
-      "type": "Change",
-      "modified": 1453109825489,
-      "modifier": "järjestelmä",
-      "reason": "Post Processing",
-      "changes": [
-        {
-          "field": "Kutsumanimi",
-          "old value": "Timo",
-          "new value": "thor"
-        },
-        {
-          "field": "Etunimet",
-          "old value": "Timo Heikki",
-          "new value": "thor"
-        },
-        {
-          "field": "Sukunimi",
-          "old value": "Rantalaiho",
-          "new value": "thorkildsen"
-        },
-        {
-          "field": "turvakielto",
-          "new value": "false"
-        },
-        {
-          "field": "onkoSinullaSuomalainenHetu",
-          "new value": "false"
-        }
-      ]
-    }
-  ],
-  "version": 1,
-  "modelVersion": 7,
-  "preferenceEligibilities": [
-    {
-      "aoId": "1.2.246.562.20.93395603447",
-      "status": "NOT_CHECKED",
-      "source": "UNKNOWN"
-    }
-  ],
-  "attachmentRequests": [
-    {
-      "id": "form.valmis.amkope.tutkintotodistus_group_1.2.246.562.28.14677291980",
-      "preferenceAoGroupId": "1.2.246.562.28.14677291980",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "name": {
-          "translations": {
-            "fi": "Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä",
-            "sv": "[sv] Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä",
-            "en": "Attachment 1. Degree with which you apply: Copy of your degree certificate and if necessary, copy of the recognition"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-            "sv": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-            "en": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu"
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "form.valmis.amkope.pedagogiset_opinnot_group_1.2.246.562.28.14677291980",
-      "preferenceAoGroupId": "1.2.246.562.28.14677291980",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "name": {
-          "translations": {
-            "fi": "Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi",
-            "sv": "[sv] Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi",
-            "en": "[en] Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-            "sv": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu",
-            "en": "Jyväskylän ammattikorkeakoulu, Ammatillinen opettajakorkeakoulu"
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "be6a412c-99a6-4eb0-b5c5-12485e80c58c",
-      "preferenceAoGroupId": "1.2.246.562.28.98599985483",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "header": {
-          "translations": {
-            "fi": "Liite 5. Muu erityisopetuksen koulutus",
-            "sv": "Liite 5. Muu erityisopetuksen koulutus",
-            "en": "Liite 5. Muu erityisopetuksen koulutus"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Kopio todistuksesta tai opintosuoritusote\n\nTodistuksesta tulee ilmetä suoritetut opinnot, niiden sisältö, suoritusvuosi, laajuus sekä oppilaitos.\nJos todistuksessa ei ole mainittu koulutuksen laajuutta, pyydä koulutuksen järjestäjältä erillinen arvio suorittamiesi opintojen laajuudesta.",
-            "sv": "Kopio todistuksesta tai opintosuoritusote\n\nTodistuksesta tulee ilmetä suoritetut opinnot, niiden sisältö, suoritusvuosi, laajuus sekä oppilaitos.\nJos todistuksessa ei ole mainittu koulutuksen laajuutta, pyydä koulutuksen järjestäjältä erillinen arvio suorittamiesi opintojen laajuudesta.",
-            "en": "Kopio todistuksesta tai opintosuoritusote\n\nTodistuksesta tulee ilmetä suoritetut opinnot, niiden sisältö, suoritusvuosi, laajuus sekä oppilaitos.\nJos todistuksessa ei ole mainittu koulutuksen laajuutta, pyydä koulutuksen järjestäjältä erillinen arvio suorittamiesi opintojen laajuudesta."
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "9b2698e9-f0d3-43c8-b125-2162caca7d23",
-      "preferenceAoGroupId": "1.2.246.562.28.98599985483",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "header": {
-          "translations": {
-            "fi": "Liite 7. Opetuskokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
-            "sv": "Liite 7. Opetuskokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
-            "en": "Liite 7. Opetuskokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
-            "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
-            "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna."
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "ab3a5c12-00aa-4012-ab9b-2e113c28e7ee",
-      "preferenceAoGroupId": "1.2.246.562.28.98599985483",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "header": {
-          "translations": {
-            "fi": "Liite 8. Opetuskokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
-            "sv": "Liite 8. Opetuskokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
-            "en": "Liite 8. Opetuskokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
-            "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna.",
-            "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, opetustehtävä ja työsuhteen kesto.\nTodistuksesta tulee ilmetä opetustunnit ajanjaksoon sidottuna."
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "2d54188f-a51c-40d1-a5d3-ca103ca4eb9e",
-      "preferenceAoGroupId": "1.2.246.562.28.98599985483",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "header": {
-          "translations": {
-            "fi": "Liite 9. Erityisopetuksen kokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
-            "sv": "Liite 9. Erityisopetuksen kokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta",
-            "en": "Liite 9. Erityisopetuksen kokemus ammatillisesta oppilaitoksesta ja/tai ammattikorkeakoulusta"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
-            "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
-            "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna."
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "bfb2dbcf-7141-4faa-a338-ccc25146dc17",
-      "preferenceAoGroupId": "1.2.246.562.28.98599985483",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "header": {
-          "translations": {
-            "fi": "Liite 10. Erityisopetuksen kokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
-            "sv": "Liite 10. Erityisopetuksen kokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta",
-            "en": "Liite 10. Erityisopetuksen kokemus peruskoulusta, lukiosta, vapaasta sivistystyöstä ja/tai muusta koulutusorganisaatiosta"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
-            "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna.",
-            "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, erityisopetuksen tehtävät ja työsuhteen kesto.\nErityisopetuksen tehtävät tulee kuvata yksityiskohtaisesti.\nTodistuksesta tulee ilmetä erityisopetuksen tehtävät ajanjaksoon sidottuna."
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    },
-    {
-      "id": "c13e4fe1-153e-4db9-aa09-4cc46f7b9a1a",
-      "preferenceAoGroupId": "1.2.246.562.28.98599985483",
-      "processingStatus": "NOT_CHECKED",
-      "applicationAttachment": {
-        "header": {
-          "translations": {
-            "fi": "Liite 11. Työelämäkokemus erityistä tukea tarvitsevien parissa",
-            "sv": "Liite 11. Työelämäkokemus erityistä tukea tarvitsevien parissa",
-            "en": "Liite 11. Työelämäkokemus erityistä tukea tarvitsevien parissa"
-          }
-        },
-        "description": {
-          "translations": {
-            "fi": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, työtehtävät ja työsuhteen kesto.",
-            "sv": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, työtehtävät ja työsuhteen kesto.",
-            "en": "Kopio työtodistuksesta\n\nTodistuksesta tulee ilmetä työnantaja, työtehtävät ja työsuhteen kesto."
-          }
-        },
-        "deadline": 1454504400000,
-        "address": {
-          "recipient": "Jamk, Ammatillinen opettajakorkeakoulu",
-          "streetAddress": "Piippukatu 11",
-          "postalCode": "40100",
-          "postOffice": "JYVÄSKYLÄ"
-        }
-      },
-      "receptionStatus": "NOT_RECEIVED"
-    }
-  ],
-  "preferencesChecked": [
-    {
-      "preferenceAoOid": "1.2.246.562.20.93395603447",
-      "checked": false
-    }
-  ]
 }

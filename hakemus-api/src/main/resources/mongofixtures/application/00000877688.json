@@ -1,6 +1,5 @@
 {
-    "_id":
-    {
+    "_id": {
         "$oid": "53e4885ce4b0d272fdc5d799"
     },
     "type": "Application",
@@ -23,7 +22,7 @@
             "kotikunta": "020",
             "aidinkieli": "FI",
             "syntymaaika": "01.01.1901",
-            "koulusivistyskieli":"FI"
+            "koulusivistyskieli": "FI"
         },
         "lisatiedot": {
             "asiointikieli": "suomi"
@@ -91,7 +90,11 @@
     "updated": 1410516893464,
     "redoPostProcess": "DONE",
     "fullName": "testaaja teppo",
-    "searchNames": ["teppo", "testaaja", "timo"],
+    "searchNames": [
+        "teppo",
+        "testaaja",
+        "timo"
+    ],
     "meta": {
         "sessionId": "anonymousUser"
     },

@@ -1,1 +1,409 @@
-{"_id":{"$oid":"54e0e423e4b084788a512504"},"answers":{"hakutoiveet":{"preference1-yoLiite":"true","preference3-Koulutus-id":"","preference1-Koulutus-id":"1.2.246.562.20.15434493704","preference1-Koulutus-id-ao-groups":"1.2.246.562.28.64169684181","preference1-Opetuspiste-id":"1.2.246.562.10.71851186834","preference1-Opetuspiste":"Tampereen yliopisto, Johtamiskorkeakoulu","preference1-Koulutus-id-sora":"false","preference1-Koulutus-id-attachments":"true","preference1-Koulutus":"Markkinointi, kauppatieteiden maisterikoulutus","preference1-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus-id-attachmentgroups":"","preference1-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-educationcode":"koulutus_732101","preference3-Opetuspiste-id":"","preference2-Opetuspiste-id":"","preference2-Koulutus-id":"","preference1-Koulutus-id-lang":"FI","preference1-Koulutus-id-vocational":"false","preference1-Koulutus-educationDegree":"koulutusasteoph2002_72","preference1-Koulutus-id-athlete":"false"},"henkilotiedot":{"Etunimet":"Karoliina VIII","Henkilotunnus_plain":"110361-9895","Kutsumanimi":"Karoliina","Postinumero":"00240","Sähköposti":"hakija-357120@oph.fi","SUKUPUOLI":"1","Sukunimi":"Suomijärvi","aidinkieli":"FI","asuinmaa":"FIN","kansalaisuus":"FIN","kansallinenIdTunnus":"","kotikunta":"091","koulusivistyskieli":"FI","lahiosoite":"Ketunperänpolku 166","matkapuhelinnumero1":"050 71696841","onkoSinullaSuomalainenHetu":"false","onkosinullakaksoiskansallisuus":"false","passinnumero":"","sukupuoli":"2","syntymaaika":"11.03.1961","turvakielto":"false"},"koulutustausta":{"pohjakoulutus_yo_tutkinto":"fi","pohjakoulutus_yo_vuosi":"2010","pohjakoulutus_yo":"true","pohjakoulutus_kk_pvm":"06.02.2015","pohjakoulutus_kk_taso":"1","suoritusoikeus_tai_aiempi_tutkinto":"true","pohjakoulutus_kk":"true","pohjakoulutus_kk_nimike":"Tradenomi","pohjakoulutus_kk_oppilaitos":"Haaga-Helia ammattikorkeakoulu"},"lisatiedot":{"lupaJulkaisu":"true","asiointikieli":"suomi","lupaSms":"true","lupaMarkkinointi":"true"},"osaaminen":{"54c7a6c0e4b03c06d74fc5b9":"option_1","54c7a717e4b03c06d74fc5bc":"option_1","54c7a79be4b03c06d74fc5be":"option_1"}},"applicationSystemId":"1.2.246.562.29.10152859822","attachmentRequests":[{"id":"f9d8cb14-f002-47da-9847-d40e55af42c6","preferenceAoId":"1.2.246.562.20.15434493704","processingStatus":"NOT_CHECKED","applicationAttachment":{"name":{"translations":{"fi":"Perustelukirje (Markkinointi, Kauppatieteiden maisterikoulutus)","sv":"Perustelukirje (Markkinointi, Kauppatieteiden maisterikoulutus)","en":"Perustelukirje (Markkinointi, Kauppatieteiden maisterikoulutus)"}},"description":{"translations":{"fi":"<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>","sv":"<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>","en":"<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>"}},"deadline":1425646843348,"address":{"recipient":"Hakijapalvelut","streetAddress":"Hakijapalvelut","postalCode":"33014","postOffice":"TAMPEREEN  YLIOPISTO"}},"receptionStatus":"NOT_RECEIVED"},{"id":"6d0efb33-8660-4862-a488-11fbecc24b47","preferenceAoId":"1.2.246.562.20.15434493704","processingStatus":"NOT_CHECKED","applicationAttachment":{"name":{"translations":{"fi":"Virallinen opintorekisteriote (tai kopio virallisesta)","sv":"Virallinen opintorekisteriote (tai kopio virallisesta)","en":"Virallinen opintorekisteriote (tai kopio virallisesta)"}},"description":{"translations":{"fi":"","sv":"","en":""}},"deadline":1425646801023,"address":{"recipient":"Hakijapalvelut","streetAddress":"Hakijapalvelut","postalCode":"33014","postOffice":"TAMPEREEN  YLIOPISTO"}},"receptionStatus":"NOT_RECEIVED"},{"id":"235b5e80-ca4c-4580-a02f-4dc51c91c86a","preferenceAoId":"1.2.246.562.20.15434493704","processingStatus":"NOT_CHECKED","applicationAttachment":{"name":{"translations":{"fi":"Tulostettu kopio hakulomakkeesta","sv":"Tulostettu kopio hakulomakkeesta","en":"Tulostettu kopio hakulomakkeesta"}},"description":{"translations":{"fi":"","sv":"","en":""}},"deadline":1425646827473,"address":{"recipient":"Hakijapalvelut","streetAddress":"Hakijapalvelut","postalCode":"33014","postOffice":"TAMPEREEN  YLIOPISTO"}},"receptionStatus":"NOT_RECEIVED"},{"id":"form.valmis.todistus.kk_applicationOption_1.2.246.562.20.15434493704","preferenceAoId":"1.2.246.562.20.15434493704","processingStatus":"NOT_CHECKED","applicationAttachment":{"name":{"translations":{"fi":"Todistuskopio korkeakoulututkinnosta","sv":"Betygskopia av din högskoleexamen","en":"Copy of your higher education degree certificate"}},"description":{"translations":{"fi":"Tampereen yliopisto, Johtamiskorkeakoulu","sv":"Tampereen yliopisto, Johtamiskorkeakoulu","en":"Tampereen yliopisto, Johtamiskorkeakoulu"}},"deliveryNote":{"translations":{"fi":"Tarkista palautuspäivämäärä suoraan korkeakoulusta.","sv":"Kontrollera inlämningsdatum direkt från högskolan.","en":"Check the delivery deadline from the higher education institution."}},"address":{"recipient":"Hakijapalvelut","streetAddress":"Hakijapalvelut","postalCode":"33014","postOffice":"TAMPEREEN  YLIOPISTO"}},"receptionStatus":"NOT_RECEIVED"}],"authorizationMeta":{"opoAllowed":false,"aoOrganizations":{"1":["1.2.246.562.10.00000000001","1.2.246.562.10.20465608279","1.2.246.562.10.72255864398","1.2.246.562.10.71851186834"]},"allAoOrganizations":["1.2.246.562.10.00000000001","1.2.246.562.10.72255864398","1.2.246.562.10.20465608279","1.2.246.562.10.71851186834"],"applicationPreferences":[{"ordinal":1,"preferenceData":{"Koulutus-id-vocational":"false","yoLiite":"true","Koulutus-id-athlete":"false","Koulutus-id":"1.2.246.562.20.15434493704","Koulutus-id-ao-groups":"1.2.246.562.28.64169684181","Opetuspiste":"Tampereen yliopisto, Johtamiskorkeakoulu","Koulutus-id-sora":"false","Koulutus-id-attachments":"true","Koulutus-educationDegree":"koulutusasteoph2002_72","Koulutus-id-kaksoistutkinto":"false","Opetuspiste-id":"1.2.246.562.10.71851186834","Koulutus-id-educationcode":"koulutus_732101","Koulutus":"Markkinointi, kauppatieteiden maisterikoulutus","Koulutus-id-lang":"FI"}}]},"fullName":"suomijärvi karoliina viii","history":[{"type":"Change","modified":1428566595142,"modifier":"oppija 1.2.246.562.24.62990791810","reason":"Muokkaus omatsivut -palvelussa","changes":[{"field":"preference3-Koulutus-id-attachments","old value":""},{"field":"preference2-Opetuspiste","old value":""},{"field":"preference3-Koulutus-id-ao-groups","old value":""},{"field":"preference3-Koulutus-id-sora","old value":""},{"field":"preference2-Koulutus-id-athlete","old value":"false"},{"field":"preference2-Koulutus-educationDegree","old value":""},{"field":"preference3-Koulutus-educationDegree","old value":""},{"field":"preference3-Koulutus-id-athlete","old value":""},{"field":"preference2-Koulutus-id-lang","old value":""},{"field":"preference2-Koulutus-id-kaksoistutkinto","old value":"false"},{"field":"preference3-Koulutus-id-kaksoistutkinto","old value":""},{"field":"preference3-Koulutus-id-educationcode","old value":""},{"field":"preference2-Koulutus-id-attachmentgroups","old value":""},{"field":"preference2-Koulutus-id-aoIdentifier","old value":""},{"field":"preference2-Koulutus-id-attachments","old value":""},{"field":"preference2-Koulutus","old value":" "},{"field":"preference3-Koulutus-id-aoIdentifier","old value":""},{"field":"preference3-Koulutus-id-attachmentgroups","old value":""},{"field":"preference3-Koulutus-id-lang","old value":""},{"field":"preference3-Koulutus-id-vocational","old value":""},{"field":"preference2-Koulutus-id-ao-groups","old value":""},{"field":"preference3-Opetuspiste","old value":""},{"field":"preference2-Koulutus-id-educationcode","old value":"false"},{"field":"preference2-Koulutus-id-vocational","old value":"false"},{"field":"preference2-Koulutus-id-sora","old value":"false"},{"field":"preferencesVisible","old value":"3"}]}],"lastAutomatedProcessingTime":1427185732758,"meta":{"filingLanguage":"fi","sessionId":"anonymousUser"},"modelVersion":7,"notes":[{"type":"ApplicationNote","noteText":"Hakija päivittänyt vaiheita ","added":1428566595143,"user":"1.2.246.562.24.62990791810"},{"type":"ApplicationNote","noteText":"Hakemus vastaanotettu","added":1424024611630,"user":"anonymousUser"}],"oid":"1.2.246.562.11.00001583209","overriddenAnswers":{"sukupuoli":"2","turvakielto":"(null)","Kutsumanimi":"Miira","Etunimet":"Miira Rebekka","Sukunimi":"Leinonen","onkoSinullaSuomalainenHetu":"(null)","Henkilotunnus":"(hidden)","syntymaaika":"28.09.1991","aidinkieli":"FI"},"personOid":"1.2.246.562.24.62990791810","preferenceEligibilities":[{"aoId":"1.2.246.562.20.15434493704","status":"ELIGIBLE","source":"UNKNOWN"}],"preferencesChecked":[{"preferenceAoOid":"1.2.246.562.20.15434493704","checked":true,"checkedByOfficerOid":"1.2.246.562.24.68998443384"}],"received":1424024611630,"searchNames":["suomijärvi","karoliina","viii"],"state":"ACTIVE","studentOid":"1.2.246.562.24.62990791810","updated":1428566595143,"version":1}
+{
+    "_id": {
+        "$oid": "54e0e423e4b084788a512504"
+    },
+    "answers": {
+        "hakutoiveet": {
+            "preference1-yoLiite": "true",
+            "preference3-Koulutus-id": "",
+            "preference1-Koulutus-id": "1.2.246.562.20.15434493704",
+            "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.64169684181",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.71851186834",
+            "preference1-Opetuspiste": "Tampereen yliopisto, Johtamiskorkeakoulu",
+            "preference1-Koulutus-id-sora": "false",
+            "preference1-Koulutus-id-attachments": "true",
+            "preference1-Koulutus": "Markkinointi, kauppatieteiden maisterikoulutus",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus-id-attachmentgroups": "",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-educationcode": "koulutus_732101",
+            "preference3-Opetuspiste-id": "",
+            "preference2-Opetuspiste-id": "",
+            "preference2-Koulutus-id": "",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "preference1-Koulutus-id-athlete": "false"
+        },
+        "henkilotiedot": {
+            "Etunimet": "Karoliina VIII",
+            "Henkilotunnus_plain": "110361-9895",
+            "Kutsumanimi": "Karoliina",
+            "Postinumero": "00240",
+            "Sähköposti": "hakija-357120@oph.fi",
+            "SUKUPUOLI": "1",
+            "Sukunimi": "Suomijärvi",
+            "aidinkieli": "FI",
+            "asuinmaa": "FIN",
+            "kansalaisuus": "FIN",
+            "kansallinenIdTunnus": "",
+            "kotikunta": "091",
+            "koulusivistyskieli": "FI",
+            "lahiosoite": "Ketunperänpolku 166",
+            "matkapuhelinnumero1": "050 71696841",
+            "onkoSinullaSuomalainenHetu": "false",
+            "onkosinullakaksoiskansallisuus": "false",
+            "passinnumero": "",
+            "sukupuoli": "2",
+            "syntymaaika": "11.03.1961",
+            "turvakielto": "false"
+        },
+        "koulutustausta": {
+            "pohjakoulutus_yo_tutkinto": "fi",
+            "pohjakoulutus_yo_vuosi": "2010",
+            "pohjakoulutus_yo": "true",
+            "pohjakoulutus_kk_pvm": "06.02.2015",
+            "pohjakoulutus_kk_taso": "1",
+            "suoritusoikeus_tai_aiempi_tutkinto": "true",
+            "pohjakoulutus_kk": "true",
+            "pohjakoulutus_kk_nimike": "Tradenomi",
+            "pohjakoulutus_kk_oppilaitos": "Haaga-Helia ammattikorkeakoulu"
+        },
+        "lisatiedot": {
+            "lupaJulkaisu": "true",
+            "asiointikieli": "suomi",
+            "lupaSms": "true",
+            "lupaMarkkinointi": "true"
+        },
+        "osaaminen": {
+            "54c7a6c0e4b03c06d74fc5b9": "option_1",
+            "54c7a717e4b03c06d74fc5bc": "option_1",
+            "54c7a79be4b03c06d74fc5be": "option_1"
+        }
+    },
+    "applicationSystemId": "1.2.246.562.29.10152859822",
+    "attachmentRequests": [
+        {
+            "id": "f9d8cb14-f002-47da-9847-d40e55af42c6",
+            "preferenceAoId": "1.2.246.562.20.15434493704",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Perustelukirje (Markkinointi, Kauppatieteiden maisterikoulutus)",
+                        "sv": "Perustelukirje (Markkinointi, Kauppatieteiden maisterikoulutus)",
+                        "en": "Perustelukirje (Markkinointi, Kauppatieteiden maisterikoulutus)"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>",
+                        "sv": "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>",
+                        "en": "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>"
+                    }
+                },
+                "deadline": 1425646843348,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "6d0efb33-8660-4862-a488-11fbecc24b47",
+            "preferenceAoId": "1.2.246.562.20.15434493704",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Virallinen opintorekisteriote (tai kopio virallisesta)",
+                        "sv": "Virallinen opintorekisteriote (tai kopio virallisesta)",
+                        "en": "Virallinen opintorekisteriote (tai kopio virallisesta)"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "",
+                        "sv": "",
+                        "en": ""
+                    }
+                },
+                "deadline": 1425646801023,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "235b5e80-ca4c-4580-a02f-4dc51c91c86a",
+            "preferenceAoId": "1.2.246.562.20.15434493704",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tulostettu kopio hakulomakkeesta",
+                        "sv": "Tulostettu kopio hakulomakkeesta",
+                        "en": "Tulostettu kopio hakulomakkeesta"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "",
+                        "sv": "",
+                        "en": ""
+                    }
+                },
+                "deadline": 1425646827473,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "form.valmis.todistus.kk_applicationOption_1.2.246.562.20.15434493704",
+            "preferenceAoId": "1.2.246.562.20.15434493704",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Todistuskopio korkeakoulututkinnosta",
+                        "sv": "Betygskopia av din högskoleexamen",
+                        "en": "Copy of your higher education degree certificate"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Johtamiskorkeakoulu",
+                        "sv": "Tampereen yliopisto, Johtamiskorkeakoulu",
+                        "en": "Tampereen yliopisto, Johtamiskorkeakoulu"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan korkeakoulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från högskolan.",
+                        "en": "Check the delivery deadline from the higher education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        }
+    ],
+    "authorizationMeta": {
+        "opoAllowed": false,
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.20465608279",
+                "1.2.246.562.10.72255864398",
+                "1.2.246.562.10.71851186834"
+            ]
+        },
+        "allAoOrganizations": [
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.72255864398",
+            "1.2.246.562.10.20465608279",
+            "1.2.246.562.10.71851186834"
+        ],
+        "applicationPreferences": [
+            {
+                "ordinal": 1,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "false",
+                    "yoLiite": "true",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id": "1.2.246.562.20.15434493704",
+                    "Koulutus-id-ao-groups": "1.2.246.562.28.64169684181",
+                    "Opetuspiste": "Tampereen yliopisto, Johtamiskorkeakoulu",
+                    "Koulutus-id-sora": "false",
+                    "Koulutus-id-attachments": "true",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_72",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Opetuspiste-id": "1.2.246.562.10.71851186834",
+                    "Koulutus-id-educationcode": "koulutus_732101",
+                    "Koulutus": "Markkinointi, kauppatieteiden maisterikoulutus",
+                    "Koulutus-id-lang": "FI"
+                }
+            }
+        ]
+    },
+    "fullName": "suomijärvi karoliina viii",
+    "history": [
+        {
+            "type": "Change",
+            "modified": 1428566595142,
+            "modifier": "oppija 1.2.246.562.24.62990791810",
+            "reason": "Muokkaus omatsivut -palvelussa",
+            "changes": [
+                {
+                    "field": "preference3-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-sora",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-athlete",
+                    "old value": "false"
+                },
+                {
+                    "field": "preference2-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-athlete",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-kaksoistutkinto",
+                    "old value": "false"
+                },
+                {
+                    "field": "preference3-Koulutus-id-kaksoistutkinto",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-educationcode",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus",
+                    "old value": " "
+                },
+                {
+                    "field": "preference3-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-vocational",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-educationcode",
+                    "old value": "false"
+                },
+                {
+                    "field": "preference2-Koulutus-id-vocational",
+                    "old value": "false"
+                },
+                {
+                    "field": "preference2-Koulutus-id-sora",
+                    "old value": "false"
+                },
+                {
+                    "field": "preferencesVisible",
+                    "old value": "3"
+                }
+            ]
+        }
+    ],
+    "lastAutomatedProcessingTime": 1427185732758,
+    "meta": {
+        "filingLanguage": "fi",
+        "sessionId": "anonymousUser"
+    },
+    "modelVersion": 7,
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakija päivittänyt vaiheita ",
+            "added": 1428566595143,
+            "user": "1.2.246.562.24.62990791810"
+        },
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1424024611630,
+            "user": "anonymousUser"
+        }
+    ],
+    "oid": "1.2.246.562.11.00001583209",
+    "overriddenAnswers": {
+        "sukupuoli": "2",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Miira",
+        "Etunimet": "Miira Rebekka",
+        "Sukunimi": "Leinonen",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "(hidden)",
+        "syntymaaika": "28.09.1991",
+        "aidinkieli": "FI"
+    },
+    "personOid": "1.2.246.562.24.62990791810",
+    "preferenceEligibilities": [
+        {
+            "aoId": "1.2.246.562.20.15434493704",
+            "status": "ELIGIBLE",
+            "source": "UNKNOWN"
+        }
+    ],
+    "preferencesChecked": [
+        {
+            "preferenceAoOid": "1.2.246.562.20.15434493704",
+            "checked": true,
+            "checkedByOfficerOid": "1.2.246.562.24.68998443384"
+        }
+    ],
+    "received": 1424024611630,
+    "searchNames": [
+        "suomijärvi",
+        "karoliina",
+        "viii"
+    ],
+    "state": "ACTIVE",
+    "studentOid": "1.2.246.562.24.62990791810",
+    "updated": 1428566595143,
+    "version": 1
+}

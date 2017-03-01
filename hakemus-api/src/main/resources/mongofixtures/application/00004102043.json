@@ -1,534 +1,534 @@
 {
-  "_id": {
-    "$oid": "55ed6167e4b0b61c0c06f30a"
-  },
-  "answers": {
-    "hakutoiveet": {
-      "5576d7cae4b0b711f6a2eb85": "option_1",
-      "55c3378fe4b01658161a6ffe": "option_1",
-      "preference1-Koulutus": "Ensihoitaja, (AMK), ensihoito, päivätoteutus",
-      "preference1-Koulutus-educationDegree": "koulutusasteoph2002_62",
-      "preference1-Koulutus-id": "1.2.246.562.20.14048800487",
-      "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.24712637358",
-      "preference1-Koulutus-id-aoIdentifier": "",
-      "preference1-Koulutus-id-athlete": "false",
-      "preference1-Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
-      "preference1-Koulutus-id-attachments": "true",
-      "preference1-Koulutus-id-educationcode": "koulutus_671116",
-      "preference1-Koulutus-id-kaksoistutkinto": "false",
-      "preference1-Koulutus-id-lang": "FI",
-      "preference1-Koulutus-id-sora": "false",
-      "preference1-Koulutus-id-vocational": "false",
-      "preference1-Opetuspiste": "Metropolia Ammattikorkeakoulu",
-      "preference1-Opetuspiste-id": "1.2.246.562.10.67476956288",
-      "preference2-Koulutus-id": "",
-      "preference2-Opetuspiste-id": "",
-      "preference3-Koulutus-id": "",
-      "preference3-Opetuspiste-id": "",
-      "preference4-Koulutus-id": "",
-      "preference4-Opetuspiste-id": "",
-      "preference5-Koulutus-id": "",
-      "preference5-Opetuspiste-id": "",
-      "preference6-Koulutus-id": "",
-      "preference6-Opetuspiste-id": ""
+    "_id": {
+        "$oid": "55ed6167e4b0b61c0c06f30a"
     },
-    "henkilotiedot": {
-      "Etunimet": "Jani",
-      "Kutsumanimi": "Jani",
-      "Postinumero": "00100",
-      "Sukunimi": "Jani",
-      "Sähköposti": "test@example.com",
-      "aidinkieli": "FI",
-      "asuinmaa": "FIN",
-      "kansalaisuus": "FIN",
-      "kotikunta": "020",
-      "koulusivistyskieli": "FI",
-      "lahiosoite": "Tie 1",
-      "matkapuhelinnumero1": "",
-      "onkoSinullaSuomalainenHetu": "false",
-      "onkosinullakaksoiskansallisuus": "false",
-      "sukupuoli": "1",
-      "syntymaaika": "01.09.1995",
-      "turvakielto": "false"
-    },
-    "koulutustausta": {
-      "pohjakoulutus_am_nimike2": "399999",
-      "pohjakoulutus_am_laajuus_yksikko": "4",
-      "pohjakoulutus_ulk_vuosi": "1980",
-      "pohjakoulutus_am_nayttotutkintona2": "false",
-      "pohjakoulutus_am_oppilaitos": "1.2.246.562.10.49368088263",
-      "pohjakoulutus_am_nayttotutkintona": "false",
-      "pohjakoulutus_am_nimike": "561100",
-      "pohjakoulutus_am_nimike_muu2": "Oppipoika",
-      "pohjakoulutus_am_vuosi2": "1980",
-      "pohjakoulutus_yo_tutkinto": "fi",
-      "pohjakoulutus_yo_vuosi": "1980",
-      "pohjakoulutus_ulk": "true",
-      "pohjakoulutus_yo": "true",
-      "pohjakoulutus_am_laajuus2": "120",
-      "pohjakoulutus_ulk_suoritusmaa": "XXX",
-      "pohjakoulutus_am_laajuus_yksikko2": "4",
-      "pohjakoulutus_am_oppilaitos2": "1.2.246.562.10.57118763579",
-      "pohjakoulutus_ulk_suoritusmaa_muu": "Finlandia",
-      "pohjakoulutus_ulk_oppilaitos": "ergh",
-      "pohjakoulutus_am_vuosi": "1980",
-      "pohjakoulutus_ulk_nimike": "weg",
-      "pohjakoulutus_am_oppilaitos_muu2": "Elämän koulu",
-      "pohjakoulutus_am_laajuus": "120",
-      "suoritusoikeus_tai_aiempi_tutkinto": "false",
-      "pohjakoulutus_am": "true"
-    },
-    "lisatiedot": {
-      "asiointikieli": "suomi"
-    },
-    "osaaminen": {
-      "arvosanaasteikko2": "1-3",
-      "arvosanaasteikko": "1-3",
-      "ei_ole_keskiarvoa_lukio": "true",
-      "keskiarvo": "1,23",
-      "keskiarvo2": "2,34"
-    }
-  },
-  "applicationSystemId": "1.2.246.562.29.10714450698",
-  "attachmentRequests": [
-    {
-      "applicationAttachment": {
-        "address": {
-          "postOffice": "METROPOLIA",
-          "postalCode": "00079",
-          "recipient": "Hakijapalvelut",
-          "streetAddress": "PL 4011"
+    "answers": {
+        "hakutoiveet": {
+            "5576d7cae4b0b711f6a2eb85": "option_1",
+            "55c3378fe4b01658161a6ffe": "option_1",
+            "preference1-Koulutus": "Ensihoitaja, (AMK), ensihoito, päivätoteutus",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_62",
+            "preference1-Koulutus-id": "1.2.246.562.20.14048800487",
+            "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.24712637358",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-athlete": "false",
+            "preference1-Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
+            "preference1-Koulutus-id-attachments": "true",
+            "preference1-Koulutus-id-educationcode": "koulutus_671116",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference1-Koulutus-id-sora": "false",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference1-Opetuspiste": "Metropolia Ammattikorkeakoulu",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.67476956288",
+            "preference2-Koulutus-id": "",
+            "preference2-Opetuspiste-id": "",
+            "preference3-Koulutus-id": "",
+            "preference3-Opetuspiste-id": "",
+            "preference4-Koulutus-id": "",
+            "preference4-Opetuspiste-id": "",
+            "preference5-Koulutus-id": "",
+            "preference5-Opetuspiste-id": "",
+            "preference6-Koulutus-id": "",
+            "preference6-Opetuspiste-id": ""
         },
-        "deadline": 1443528000000,
-        "deliveryNote": {
-          "translations": {
-            "en": "If you will complete your degree during the autumn application round, submit a copy of your qualification by 30 December 2015 at 3 PM at the latest.",
-            "fi": "Jos valmistut hakusyksynä, palauta todistusliitteet viimeistään 30.12.2015 klo 15:00.",
-            "sv": "Om du blir färdig under hösten för ansökan, lämna in betygskopian senast 30.12.2015 kl. 15:00."
-          }
+        "henkilotiedot": {
+            "Etunimet": "Jani",
+            "Kutsumanimi": "Jani",
+            "Postinumero": "00100",
+            "Sukunimi": "Jani",
+            "Sähköposti": "test@example.com",
+            "aidinkieli": "FI",
+            "asuinmaa": "FIN",
+            "kansalaisuus": "FIN",
+            "kotikunta": "020",
+            "koulusivistyskieli": "FI",
+            "lahiosoite": "Tie 1",
+            "matkapuhelinnumero1": "",
+            "onkoSinullaSuomalainenHetu": "false",
+            "onkosinullakaksoiskansallisuus": "false",
+            "sukupuoli": "1",
+            "syntymaaika": "01.09.1995",
+            "turvakielto": "false"
         },
-        "description": {
-          "translations": {
-            "en": "Metropolia Ammattikorkeakoulu",
-            "fi": "Metropolia Ammattikorkeakoulu",
-            "sv": "Metropolia Ammattikorkeakoulu"
-          }
+        "koulutustausta": {
+            "pohjakoulutus_am_nimike2": "399999",
+            "pohjakoulutus_am_laajuus_yksikko": "4",
+            "pohjakoulutus_ulk_vuosi": "1980",
+            "pohjakoulutus_am_nayttotutkintona2": "false",
+            "pohjakoulutus_am_oppilaitos": "1.2.246.562.10.49368088263",
+            "pohjakoulutus_am_nayttotutkintona": "false",
+            "pohjakoulutus_am_nimike": "561100",
+            "pohjakoulutus_am_nimike_muu2": "Oppipoika",
+            "pohjakoulutus_am_vuosi2": "1980",
+            "pohjakoulutus_yo_tutkinto": "fi",
+            "pohjakoulutus_yo_vuosi": "1980",
+            "pohjakoulutus_ulk": "true",
+            "pohjakoulutus_yo": "true",
+            "pohjakoulutus_am_laajuus2": "120",
+            "pohjakoulutus_ulk_suoritusmaa": "XXX",
+            "pohjakoulutus_am_laajuus_yksikko2": "4",
+            "pohjakoulutus_am_oppilaitos2": "1.2.246.562.10.57118763579",
+            "pohjakoulutus_ulk_suoritusmaa_muu": "Finlandia",
+            "pohjakoulutus_ulk_oppilaitos": "ergh",
+            "pohjakoulutus_am_vuosi": "1980",
+            "pohjakoulutus_ulk_nimike": "weg",
+            "pohjakoulutus_am_oppilaitos_muu2": "Elämän koulu",
+            "pohjakoulutus_am_laajuus": "120",
+            "suoritusoikeus_tai_aiempi_tutkinto": "false",
+            "pohjakoulutus_am": "true"
         },
-        "name": {
-          "translations": {
-            "en": "Copy of your matriculation examination certificate",
-            "fi": "Todistuskopio ylioppilastutkintotodistuksesta",
-            "sv": "Betygskopia av ditt studentexamensbetyg"
-          }
+        "lisatiedot": {
+            "asiointikieli": "suomi"
+        },
+        "osaaminen": {
+            "arvosanaasteikko2": "1-3",
+            "arvosanaasteikko": "1-3",
+            "ei_ole_keskiarvoa_lukio": "true",
+            "keskiarvo": "1,23",
+            "keskiarvo2": "2,34"
         }
-      },
-      "id": "form.valmis.todistus.yo_group_1.2.246.562.28.24712637358",
-      "preferenceAoGroupId": "1.2.246.562.28.24712637358",
-      "processingStatus": "NOT_CHECKED",
-      "receptionStatus": "NOT_RECEIVED"
     },
-    {
-      "applicationAttachment": {
-        "address": {
-          "postOffice": "METROPOLIA",
-          "postalCode": "00079",
-          "recipient": "Hakijapalvelut",
-          "streetAddress": "PL 4011"
+    "applicationSystemId": "1.2.246.562.29.10714450698",
+    "attachmentRequests": [
+        {
+            "applicationAttachment": {
+                "address": {
+                    "postOffice": "METROPOLIA",
+                    "postalCode": "00079",
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "PL 4011"
+                },
+                "deadline": 1443528000000,
+                "deliveryNote": {
+                    "translations": {
+                        "en": "If you will complete your degree during the autumn application round, submit a copy of your qualification by 30 December 2015 at 3 PM at the latest.",
+                        "fi": "Jos valmistut hakusyksynä, palauta todistusliitteet viimeistään 30.12.2015 klo 15:00.",
+                        "sv": "Om du blir färdig under hösten för ansökan, lämna in betygskopian senast 30.12.2015 kl. 15:00."
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en": "Metropolia Ammattikorkeakoulu",
+                        "fi": "Metropolia Ammattikorkeakoulu",
+                        "sv": "Metropolia Ammattikorkeakoulu"
+                    }
+                },
+                "name": {
+                    "translations": {
+                        "en": "Copy of your matriculation examination certificate",
+                        "fi": "Todistuskopio ylioppilastutkintotodistuksesta",
+                        "sv": "Betygskopia av ditt studentexamensbetyg"
+                    }
+                }
+            },
+            "id": "form.valmis.todistus.yo_group_1.2.246.562.28.24712637358",
+            "preferenceAoGroupId": "1.2.246.562.28.24712637358",
+            "processingStatus": "NOT_CHECKED",
+            "receptionStatus": "NOT_RECEIVED"
         },
-        "deadline": 1443528000000,
-        "deliveryNote": {
-          "translations": {
-            "en": "If you will complete your degree during the autumn application round, submit a copy of your qualification by 30 December 2015 at 3 PM at the latest.",
-            "fi": "Jos valmistut hakusyksynä, palauta todistusliitteet viimeistään 30.12.2015 klo 15:00.",
-            "sv": "Om du blir färdig under hösten för ansökan, lämna in betygskopian senast 30.12.2015 kl. 15:00."
-          }
-        },
-        "description": {
-          "translations": {
-            "en": "Metropolia Ammattikorkeakoulu",
-            "fi": "Metropolia Ammattikorkeakoulu",
-            "sv": "Metropolia Ammattikorkeakoulu"
-          }
-        },
-        "name": {
-          "translations": {
-            "en": "Copy of your foreign qualification certificate",
-            "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
-            "sv": "Betygskopia av din examen avlagd utomlands"
-          }
+        {
+            "applicationAttachment": {
+                "address": {
+                    "postOffice": "METROPOLIA",
+                    "postalCode": "00079",
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "PL 4011"
+                },
+                "deadline": 1443528000000,
+                "deliveryNote": {
+                    "translations": {
+                        "en": "If you will complete your degree during the autumn application round, submit a copy of your qualification by 30 December 2015 at 3 PM at the latest.",
+                        "fi": "Jos valmistut hakusyksynä, palauta todistusliitteet viimeistään 30.12.2015 klo 15:00.",
+                        "sv": "Om du blir färdig under hösten för ansökan, lämna in betygskopian senast 30.12.2015 kl. 15:00."
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "en": "Metropolia Ammattikorkeakoulu",
+                        "fi": "Metropolia Ammattikorkeakoulu",
+                        "sv": "Metropolia Ammattikorkeakoulu"
+                    }
+                },
+                "name": {
+                    "translations": {
+                        "en": "Copy of your foreign qualification certificate",
+                        "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+                        "sv": "Betygskopia av din examen avlagd utomlands"
+                    }
+                }
+            },
+            "id": "form.valmis.todistus.ulk_group_1.2.246.562.28.24712637358",
+            "preferenceAoGroupId": "1.2.246.562.28.24712637358",
+            "processingStatus": "NOT_CHECKED",
+            "receptionStatus": "NOT_RECEIVED"
         }
-      },
-      "id": "form.valmis.todistus.ulk_group_1.2.246.562.28.24712637358",
-      "preferenceAoGroupId": "1.2.246.562.28.24712637358",
-      "processingStatus": "NOT_CHECKED",
-      "receptionStatus": "NOT_RECEIVED"
-    }
-  ],
-  "authorizationMeta": {
-    "allAoOrganizations": [
-      "1.2.246.562.10.60198812368",
-      "1.2.246.562.10.00000000001",
-      "1.2.246.562.10.67476956288"
     ],
-    "aoOrganizations": {
-      "1": [
-        "1.2.246.562.10.60198812368",
-        "1.2.246.562.10.00000000001",
-        "1.2.246.562.10.67476956288"
-      ]
+    "authorizationMeta": {
+        "allAoOrganizations": [
+            "1.2.246.562.10.60198812368",
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.67476956288"
+        ],
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.60198812368",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.67476956288"
+            ]
+        },
+        "applicationPreferences": [
+            {
+                "ordinal": 1,
+                "preferenceData": {
+                    "Koulutus": "Ensihoitaja, (AMK), ensihoito, päivätoteutus",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_62",
+                    "Koulutus-id": "1.2.246.562.20.14048800487",
+                    "Koulutus-id-ao-groups": "1.2.246.562.28.24712637358",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
+                    "Koulutus-id-attachments": "true",
+                    "Koulutus-id-educationcode": "koulutus_671116",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Koulutus-id-lang": "FI",
+                    "Koulutus-id-sora": "false",
+                    "Koulutus-id-vocational": "false",
+                    "Opetuspiste": "Metropolia Ammattikorkeakoulu",
+                    "Opetuspiste-id": "1.2.246.562.10.67476956288"
+                }
+            }
+        ],
+        "opoAllowed": false
     },
-    "applicationPreferences": [
-      {
-        "ordinal": 1,
-        "preferenceData": {
-          "Koulutus": "Ensihoitaja, (AMK), ensihoito, päivätoteutus",
-          "Koulutus-educationDegree": "koulutusasteoph2002_62",
-          "Koulutus-id": "1.2.246.562.20.14048800487",
-          "Koulutus-id-ao-groups": "1.2.246.562.28.24712637358",
-          "Koulutus-id-athlete": "false",
-          "Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
-          "Koulutus-id-attachments": "true",
-          "Koulutus-id-educationcode": "koulutus_671116",
-          "Koulutus-id-kaksoistutkinto": "false",
-          "Koulutus-id-lang": "FI",
-          "Koulutus-id-sora": "false",
-          "Koulutus-id-vocational": "false",
-          "Opetuspiste": "Metropolia Ammattikorkeakoulu",
-          "Opetuspiste-id": "1.2.246.562.10.67476956288"
+    "fullName": "jani jani",
+    "history": [
+        {
+            "changes": [
+                {
+                    "field": "preference4-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-educationcode",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-athlete",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-athlete",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-vocational",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-educationcode",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-sora",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-vocational",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-sora",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-kaksoistutkinto",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-sora",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-athlete",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-vocational",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-athlete",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-kaksoistutkinto",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-kaksoistutkinto",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-athlete",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-educationDegree",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-kaksoistutkinto",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-educationcode",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-kaksoistutkinto",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-sora",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-vocational",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-attachmentgroups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-vocational",
+                    "old value": ""
+                },
+                {
+                    "field": "preferencesVisible",
+                    "old value": "6"
+                },
+                {
+                    "field": "preference3-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-sora",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-lang",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-attachments",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-educationcode",
+                    "old value": ""
+                },
+                {
+                    "field": "preference3-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference5-Koulutus-id-aoIdentifier",
+                    "old value": ""
+                },
+                {
+                    "field": "preference4-Koulutus-id-ao-groups",
+                    "old value": ""
+                },
+                {
+                    "field": "preference6-Opetuspiste",
+                    "old value": ""
+                },
+                {
+                    "field": "preference2-Koulutus-id-educationcode",
+                    "old value": ""
+                },
+                {
+                    "field": "Sähköposti",
+                    "new value": "test@example.com",
+                    "old value": ""
+                }
+            ],
+            "modified": 1441622886301,
+            "modifier": "oppija 1.2.246.562.24.34231229312",
+            "reason": "Muokkaus omatsivut -palvelussa",
+            "type": "Change"
+        },
+        {
+            "changes": [
+                {
+                    "field": "turvakielto",
+                    "new value": "false"
+                },
+                {
+                    "field": "onkoSinullaSuomalainenHetu",
+                    "new value": "false"
+                }
+            ],
+            "modified": 1441620330595,
+            "modifier": "järjestelmä",
+            "reason": "Post Processing",
+            "type": "Change"
         }
-      }
     ],
-    "opoAllowed": false
-  },
-  "fullName": "jani jani",
-  "history": [
-    {
-      "changes": [
-        {
-          "field": "preference4-Koulutus-id-aoIdentifier",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-ao-groups",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-educationcode",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-athlete",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-attachmentgroups",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-athlete",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-aoIdentifier",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-attachments",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-attachmentgroups",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-lang",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-vocational",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-ao-groups",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-educationcode",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-ao-groups",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-educationDegree",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-sora",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-vocational",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-lang",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-educationDegree",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-sora",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-kaksoistutkinto",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-ao-groups",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-attachmentgroups",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-sora",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-athlete",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-attachments",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-vocational",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-athlete",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-educationDegree",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-educationDegree",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-kaksoistutkinto",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-attachments",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-aoIdentifier",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-kaksoistutkinto",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Koulutus-id-attachmentgroups",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Opetuspiste",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-athlete",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-educationDegree",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Opetuspiste",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-kaksoistutkinto",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-educationcode",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-kaksoistutkinto",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-sora",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-vocational",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-lang",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Opetuspiste",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-lang",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-attachmentgroups",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-vocational",
-          "old value": ""
-        },
-        {
-          "field": "preferencesVisible",
-          "old value": "6"
-        },
-        {
-          "field": "preference3-Koulutus-id-attachments",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-sora",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-lang",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-attachments",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Opetuspiste",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-educationcode",
-          "old value": ""
-        },
-        {
-          "field": "preference3-Koulutus-id-aoIdentifier",
-          "old value": ""
-        },
-        {
-          "field": "preference5-Koulutus-id-aoIdentifier",
-          "old value": ""
-        },
-        {
-          "field": "preference4-Koulutus-id-ao-groups",
-          "old value": ""
-        },
-        {
-          "field": "preference6-Opetuspiste",
-          "old value": ""
-        },
-        {
-          "field": "preference2-Koulutus-id-educationcode",
-          "old value": ""
-        },
-        {
-          "field": "Sähköposti",
-          "new value": "test@example.com",
-          "old value": ""
-        }
-      ],
-      "modified": 1441622886301,
-      "modifier": "oppija 1.2.246.562.24.34231229312",
-      "reason": "Muokkaus omatsivut -palvelussa",
-      "type": "Change"
+    "lastAutomatedProcessingTime": 1441624366298,
+    "meta": {
+        "filingLanguage": "fi",
+        "sessionId": "anonymousUser"
     },
-    {
-      "changes": [
+    "modelVersion": 7,
+    "notes": [
         {
-          "field": "turvakielto",
-          "new value": "false"
+            "added": 1441622886313,
+            "noteText": "Hakija päivittänyt vaihetta 'henkilotiedot'",
+            "type": "ApplicationNote",
+            "user": "1.2.246.562.24.34231229312"
         },
         {
-          "field": "onkoSinullaSuomalainenHetu",
-          "new value": "false"
+            "added": 1441620327736,
+            "noteText": "Hakemus vastaanotettu",
+            "type": "ApplicationNote",
+            "user": "anonymousUser"
         }
-      ],
-      "modified": 1441620330595,
-      "modifier": "järjestelmä",
-      "reason": "Post Processing",
-      "type": "Change"
-    }
-  ],
-  "lastAutomatedProcessingTime": 1441624366298,
-  "meta": {
-    "filingLanguage": "fi",
-    "sessionId": "anonymousUser"
-  },
-  "modelVersion": 7,
-  "notes": [
-    {
-      "added": 1441622886313,
-      "noteText": "Hakija päivittänyt vaihetta 'henkilotiedot'",
-      "type": "ApplicationNote",
-      "user": "1.2.246.562.24.34231229312"
+    ],
+    "oid": "1.2.246.562.11.00004102043",
+    "overriddenAnswers": {
+        "Etunimet": "Jani",
+        "Henkilotunnus": "(hidden)",
+        "Kutsumanimi": "Jani",
+        "Sukunimi": "Jani",
+        "aidinkieli": "FI",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "sukupuoli": "1",
+        "syntymaaika": "01.09.1995",
+        "turvakielto": "(null)"
     },
-    {
-      "added": 1441620327736,
-      "noteText": "Hakemus vastaanotettu",
-      "type": "ApplicationNote",
-      "user": "anonymousUser"
-    }
-  ],
-  "oid": "1.2.246.562.11.00004102043",
-  "overriddenAnswers": {
-    "Etunimet": "Jani",
-    "Henkilotunnus": "(hidden)",
-    "Kutsumanimi": "Jani",
-    "Sukunimi": "Jani",
-    "aidinkieli": "FI",
-    "onkoSinullaSuomalainenHetu": "(null)",
-    "sukupuoli": "1",
-    "syntymaaika": "01.09.1995",
-    "turvakielto": "(null)"
-  },
-  "personOid": "1.2.246.562.24.14229104472",
-  "preferenceEligibilities": [
-    {
-      "aoId": "1.2.246.562.20.14048800487",
-      "source": "REGISTER",
-      "status": "NOT_CHECKED"
-    }
-  ],
-  "preferencesChecked": [
-    {
-      "checked": false,
-      "preferenceAoOid": "1.2.246.562.20.14048800487"
-    }
-  ],
-  "received": 1441620327736,
-  "redoPostProcess": "DONE",
-  "searchNames": [
-    "jani"
-  ],
-  "state": "ACTIVE",
-  "studentIdentificationDone": false,
-  "updated": 1441622886314,
-  "version": 2
+    "personOid": "1.2.246.562.24.14229104472",
+    "preferenceEligibilities": [
+        {
+            "aoId": "1.2.246.562.20.14048800487",
+            "source": "REGISTER",
+            "status": "NOT_CHECKED"
+        }
+    ],
+    "preferencesChecked": [
+        {
+            "checked": false,
+            "preferenceAoOid": "1.2.246.562.20.14048800487"
+        }
+    ],
+    "received": 1441620327736,
+    "redoPostProcess": "DONE",
+    "searchNames": [
+        "jani"
+    ],
+    "state": "ACTIVE",
+    "studentIdentificationDone": false,
+    "updated": 1441622886314,
+    "version": 2
 }

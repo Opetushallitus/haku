@@ -1,1 +1,336 @@
-{"_id":{"$oid":"56b9db4de4b08b37aefceaf7"},"applicationSystemId":"1.2.246.562.29.14662042044","answers":{"henkilotiedot":{"huoltajannimi":"","onkosinullakaksoiskansallisuus":"false","kansalaisuus":"FIN","asuinmaa":"FIN","Sukunimi":"Testaaja","matkapuhelinnumero1":"","huoltajansahkoposti":"","Postinumero":"00100","sukupuoli":"1","lahiosoite":"wewee","turvakielto":"false","Sähköposti":"","Kutsumanimi":"Teppo","Etunimet":"Teppo","kotikunta":"020","onkoSinullaSuomalainenHetu":"false","aidinkieli":"FI","huoltajanpuhelinnumero":"","syntymaaika":"09.02.1996"},"lisatiedot":{"lajiliitto2":"","pakollinen-liikunnan-numero":"9","lajiliitto1":"Tanssiliitto","valmentajan-puhelinnumero":"","seura":"","alue-piiri":"","asiointikieli":"suomi","TYOKOKEMUSKUUKAUDET":"","valmentajan-sähköpostiosoite":"","lajiliitto-maajoukkue":"","valmentajan-nimi":"","lukuaineiden-keskiarvo":"4","liikunnanopettajan-nimi":"Ope","saavutukset":"sm kolmonen 2015","Urheilulaji1":"Tanssi","Urheilulaji2":""},"hakutoiveet":{"preference4-Koulutus-id-aoIdentifier":"","preference3-Koulutus-id-ao-groups":"","preference1-Koulutus-id-ao-groups":"","preference4-Koulutus-id-educationcode":"","preference1-Opetuspiste":"Helsingin Diakoniaopisto","preference4-Opetuspiste-id":"","preference3-Koulutus-id-athlete":"false","preference4-Koulutus-requiredBaseEducations":"","preference5-Opetuspiste-id":"","preference2-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-athlete":"","preference2-Koulutus-id-aoIdentifier":"035","preference2-Koulutus-id-attachments":"false","preference2-Koulutus":"Tanssialan perustutkinto, pk","preference3-Opetuspiste-id":"1.2.246.562.10.67937704822","preference4-Koulutus-id-attachmentgroups":"","preference2-Koulutus-id-ao-groups":"","preference1-Koulutus-educationDegree":"koulutusasteoph2002_32","preference5-Koulutus-educationDegree":"","preference2-Koulutus-id-sora":"false","preference4-Koulutus-id-vocational":"","preference3-Koulutus-id":"1.2.246.562.20.37345403259","preference3_sora_terveys":"false","preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys":"true","preference1-Opetuspiste-id":"1.2.246.562.10.67937704822","preference3_sora_oikeudenMenetys":"false","preference5-Koulutus-id-lang":"","preference1-Koulutus-id-sora":"false","preference2-Koulutus-educationDegree":"koulutusasteoph2002_32","preference4-Koulutus-id-discretionary":"","preference5-Koulutus-id-sora":"","preference1-Koulutus-id-aoIdentifier":"475","preference1-Koulutus-id-educationcode":"koulutus_381113","preference5-Koulutus-id-ao-groups":"","preference3-Koulutus-id-attachmentgroups":"","preference5-Koulutus-id-athlete":"","preference2-Koulutus-id":"1.2.246.562.20.21468913773","preference5-Koulutus-id-attachments":"","preference2-Koulutus-id-discretionary":"false","preference1-Koulutus-id-vocational":"true","preference3-Koulutus-id-vocational":"true","preference3-discretionary":"false","preference2-Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0","preference4-Koulutus-educationDegree":"","preference1-Koulutus-id-athlete":"false","preference4-Koulutus-id-kaksoistutkinto":"","preference5-Koulutus-id-kaksoistutkinto":"","preference5-Koulutus-id":"","preference3_kaksoistutkinnon_lisakysymys":"false","preference2-Opetuspiste":"Lapin urheiluopisto","preference5-Koulutus-id-discretionary":"","preference2-Koulutus-id-athlete":"true","preference1-Koulutus-id-attachments":"false","preference3-Koulutus-educationDegree":"koulutusasteoph2002_32","preference5-Opetuspiste":"","preference2-Koulutus-id-kaksoistutkinto":"false","preference5-Koulutus-id-educationcode":"","preference3-Koulutus-id-kaksoistutkinto":"true","preference1-discretionary":"false","preference1-Koulutus-id-attachmentgroups":"","preference4-Koulutus-id-sora":"","preference5-Koulutus-id-vocational":"","preference5-Koulutus-requiredBaseEducations":"","preference3-Koulutus-id-lang":"FI","preference2-Opetuspiste-id":"1.2.246.562.10.14707331246","preference1-Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1#1,3,2,6,1,7,0","preference3-Opetuspiste":"Helsingin Diakoniaopisto","preference4-Koulutus-id-lang":"","preference5-Koulutus-id-attachmentgroups":"","preferencesVisible":"5","preference2-Koulutus-id-vocational":"true","preference1-Koulutus-id":"1.2.246.562.20.62802979328","preference3-Koulutus-id-attachments":"false","preference3-Koulutus-id-sora":"true","preference4-Koulutus-id":"","preference3-Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0","preference4-Koulutus-id-attachments":"","preference2-Koulutus-id-lang":"FI","preference4-Opetuspiste":"","preference1-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus":"Kotityö- ja puhdistuspalvelujen perustutkinto, pk","preference3-Koulutus-id-educationcode":"koulutus_371101","preference3-Koulutus-id-discretionary":"true","preference1-Koulutus-id-discretionary":"true","preference3-Koulutus":"Sosiaali- ja terveysalan perustutkinto, pk","preference3-Koulutus-id-aoIdentifier":"873","preference5-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-lang":"FI","preference4-Koulutus-id-ao-groups":"","preference2-Koulutus-id-educationcode":"koulutus_321501"},"koulutustausta":{"PK_PAATTOTODISTUSVUOSI":"2016","POHJAKOULUTUS":"1","perusopetuksen_kieli":"FI"},"osaaminen":{}},"oid":"1.2.246.562.11.00004883029","state":"ACTIVE","studentIdentificationDone":false,"personOid":"1.2.246.562.24.14229104472","lastAutomatedProcessingTime":1455027742243,"automatedProcessingFailCount":20,"automatedProcessingFailRetryTime":1455023688361,"received":1455020877192,"updated":1455023688362,"redoPostProcess":"DONE","fullName":"testaaja teppo","searchNames":["teppo","testaaja"],"meta":{"filingLanguage":"fi","sessionId":"anonymousUser"},"authorizationMeta":{"opoAllowed":true,"aoOrganizations":{"1":["1.2.246.562.10.00000000001","1.2.246.562.10.67937704822","1.2.246.562.10.42887513309"],"2":["1.2.246.562.10.36407262041","1.2.246.562.10.00000000001","1.2.246.562.10.14707331246","1.2.246.562.10.22909222972"],"3":["1.2.246.562.10.00000000001","1.2.246.562.10.67937704822","1.2.246.562.10.42887513309"]},"allAoOrganizations":["1.2.246.562.10.36407262041","1.2.246.562.10.00000000001","1.2.246.562.10.67937704822","1.2.246.562.10.14707331246","1.2.246.562.10.42887513309","1.2.246.562.10.22909222972"],"applicationPreferences":[{"ordinal":1,"preferenceData":{"Koulutus-id-vocational":"true","Koulutus-id-aoIdentifier":"475","Opetuspiste":"Helsingin Diakoniaopisto","Koulutus-id-athlete":"false","Koulutus-id":"1.2.246.562.20.62802979328","Koulutus-id-sora":"false","Koulutus-id-attachments":"false","Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1#1,3,2,6,1,7,0","Koulutus-id-kaksoistutkinto":"false","Koulutus-educationDegree":"koulutusasteoph2002_32","Opetuspiste-id":"1.2.246.562.10.67937704822","Koulutus-id-educationcode":"koulutus_381113","Koulutus":"Kotityö- ja puhdistuspalvelujen perustutkinto, pk","Koulutus-id-lang":"FI","discretionary":"false","Koulutus-id-discretionary":"true"}},{"ordinal":2,"preferenceData":{"Koulutus-id-vocational":"true","Koulutus-id-aoIdentifier":"035","Koulutus-id":"1.2.246.562.20.21468913773","Opetuspiste":"Lapin urheiluopisto","Koulutus-id-athlete":"true","Koulutus-id-attachments":"false","Koulutus-id-sora":"false","urheilijan_ammatillisen_koulutuksen_lisakysymys":"true","Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0","Koulutus-educationDegree":"koulutusasteoph2002_32","Koulutus-id-kaksoistutkinto":"false","Opetuspiste-id":"1.2.246.562.10.14707331246","Koulutus-id-educationcode":"koulutus_321501","Koulutus":"Tanssialan perustutkinto, pk","Koulutus-id-lang":"FI","Koulutus-id-discretionary":"false"}},{"ordinal":3,"preferenceData":{"Koulutus-id-vocational":"true","sora_oikeudenMenetys":"false","Koulutus-id-aoIdentifier":"873","Koulutus-id-athlete":"false","Koulutus-id":"1.2.246.562.20.37345403259","Opetuspiste":"Helsingin Diakoniaopisto","Koulutus-id-sora":"true","Koulutus-id-attachments":"false","sora_terveys":"false","kaksoistutkinnon_lisakysymys":"false","Koulutus-requiredBaseEducations":"pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0","Koulutus-educationDegree":"koulutusasteoph2002_32","Koulutus-id-kaksoistutkinto":"true","Opetuspiste-id":"1.2.246.562.10.67937704822","Koulutus-id-educationcode":"koulutus_371101","Koulutus":"Sosiaali- ja terveysalan perustutkinto, pk","discretionary":"false","Koulutus-id-lang":"FI","Koulutus-id-discretionary":"true"}}]},"overriddenAnswers":{"sukupuoli":"1","turvakielto":"(null)","Kutsumanimi":"Teppo","Etunimet":"Teppo","Sukunimi":"Testaaja","onkoSinullaSuomalainenHetu":"(null)","Henkilotunnus":"(hidden)","aidinkieli":"FI","syntymaaika":"09.02.1996"},"notes":[{"type":"ApplicationNote","noteText":"Hakemus vastaanotettu","added":1455020877192,"user":"anonymousUser"}],"history":[{"type":"Change","modified":1455020882428,"modifier":"järjestelmä","reason":"Post Processing","changes":[{"field":"state","old value":"SUBMITTED","new value":"ACTIVE"},{"field":"turvakielto","new value":"false"},{"field":"onkoSinullaSuomalainenHetu","new value":"false"}]}],"version":1,"modelVersion":7,"preferenceEligibilities":[{"aoId":"1.2.246.562.20.62802979328","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.21468913773","status":"NOT_CHECKED","source":"UNKNOWN"},{"aoId":"1.2.246.562.20.37345403259","status":"NOT_CHECKED","source":"UNKNOWN"}],"preferencesChecked":[{"preferenceAoOid":"1.2.246.562.20.62802979328","checked":false},{"preferenceAoOid":"1.2.246.562.20.21468913773","checked":false},{"preferenceAoOid":"1.2.246.562.20.37345403259","checked":false}]}
+{
+    "_id": {
+        "$oid": "56b9db4de4b08b37aefceaf7"
+    },
+    "applicationSystemId": "1.2.246.562.29.14662042044",
+    "answers": {
+        "henkilotiedot": {
+            "huoltajannimi": "",
+            "onkosinullakaksoiskansallisuus": "false",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
+            "Sukunimi": "Testaaja",
+            "matkapuhelinnumero1": "",
+            "huoltajansahkoposti": "",
+            "Postinumero": "00100",
+            "sukupuoli": "1",
+            "lahiosoite": "wewee",
+            "turvakielto": "false",
+            "Sähköposti": "",
+            "Kutsumanimi": "Teppo",
+            "Etunimet": "Teppo",
+            "kotikunta": "020",
+            "onkoSinullaSuomalainenHetu": "false",
+            "aidinkieli": "FI",
+            "huoltajanpuhelinnumero": "",
+            "syntymaaika": "09.02.1996"
+        },
+        "lisatiedot": {
+            "lajiliitto2": "",
+            "pakollinen-liikunnan-numero": "9",
+            "lajiliitto1": "Tanssiliitto",
+            "valmentajan-puhelinnumero": "",
+            "seura": "",
+            "alue-piiri": "",
+            "asiointikieli": "suomi",
+            "TYOKOKEMUSKUUKAUDET": "",
+            "valmentajan-sähköpostiosoite": "",
+            "lajiliitto-maajoukkue": "",
+            "valmentajan-nimi": "",
+            "lukuaineiden-keskiarvo": "4",
+            "liikunnanopettajan-nimi": "Ope",
+            "saavutukset": "sm kolmonen 2015",
+            "Urheilulaji1": "Tanssi",
+            "Urheilulaji2": ""
+        },
+        "hakutoiveet": {
+            "preference4-Koulutus-id-aoIdentifier": "",
+            "preference3-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-id-ao-groups": "",
+            "preference4-Koulutus-id-educationcode": "",
+            "preference1-Opetuspiste": "Helsingin Diakoniaopisto",
+            "preference4-Opetuspiste-id": "",
+            "preference3-Koulutus-id-athlete": "false",
+            "preference4-Koulutus-requiredBaseEducations": "",
+            "preference5-Opetuspiste-id": "",
+            "preference2-Koulutus-id-attachmentgroups": "",
+            "preference4-Koulutus-id-athlete": "",
+            "preference2-Koulutus-id-aoIdentifier": "035",
+            "preference2-Koulutus-id-attachments": "false",
+            "preference2-Koulutus": "Tanssialan perustutkinto, pk",
+            "preference3-Opetuspiste-id": "1.2.246.562.10.67937704822",
+            "preference4-Koulutus-id-attachmentgroups": "",
+            "preference2-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_32",
+            "preference5-Koulutus-educationDegree": "",
+            "preference2-Koulutus-id-sora": "false",
+            "preference4-Koulutus-id-vocational": "",
+            "preference3-Koulutus-id": "1.2.246.562.20.37345403259",
+            "preference3_sora_terveys": "false",
+            "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys": "true",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.67937704822",
+            "preference3_sora_oikeudenMenetys": "false",
+            "preference5-Koulutus-id-lang": "",
+            "preference1-Koulutus-id-sora": "false",
+            "preference2-Koulutus-educationDegree": "koulutusasteoph2002_32",
+            "preference4-Koulutus-id-discretionary": "",
+            "preference5-Koulutus-id-sora": "",
+            "preference1-Koulutus-id-aoIdentifier": "475",
+            "preference1-Koulutus-id-educationcode": "koulutus_381113",
+            "preference5-Koulutus-id-ao-groups": "",
+            "preference3-Koulutus-id-attachmentgroups": "",
+            "preference5-Koulutus-id-athlete": "",
+            "preference2-Koulutus-id": "1.2.246.562.20.21468913773",
+            "preference5-Koulutus-id-attachments": "",
+            "preference2-Koulutus-id-discretionary": "false",
+            "preference1-Koulutus-id-vocational": "true",
+            "preference3-Koulutus-id-vocational": "true",
+            "preference3-discretionary": "false",
+            "preference2-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0",
+            "preference4-Koulutus-educationDegree": "",
+            "preference1-Koulutus-id-athlete": "false",
+            "preference4-Koulutus-id-kaksoistutkinto": "",
+            "preference5-Koulutus-id-kaksoistutkinto": "",
+            "preference5-Koulutus-id": "",
+            "preference3_kaksoistutkinnon_lisakysymys": "false",
+            "preference2-Opetuspiste": "Lapin urheiluopisto",
+            "preference5-Koulutus-id-discretionary": "",
+            "preference2-Koulutus-id-athlete": "true",
+            "preference1-Koulutus-id-attachments": "false",
+            "preference3-Koulutus-educationDegree": "koulutusasteoph2002_32",
+            "preference5-Opetuspiste": "",
+            "preference2-Koulutus-id-kaksoistutkinto": "false",
+            "preference5-Koulutus-id-educationcode": "",
+            "preference3-Koulutus-id-kaksoistutkinto": "true",
+            "preference1-discretionary": "false",
+            "preference1-Koulutus-id-attachmentgroups": "",
+            "preference4-Koulutus-id-sora": "",
+            "preference5-Koulutus-id-vocational": "",
+            "preference5-Koulutus-requiredBaseEducations": "",
+            "preference3-Koulutus-id-lang": "FI",
+            "preference2-Opetuspiste-id": "1.2.246.562.10.14707331246",
+            "preference1-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1#1,3,2,6,1,7,0",
+            "preference3-Opetuspiste": "Helsingin Diakoniaopisto",
+            "preference4-Koulutus-id-lang": "",
+            "preference5-Koulutus-id-attachmentgroups": "",
+            "preferencesVisible": "5",
+            "preference2-Koulutus-id-vocational": "true",
+            "preference1-Koulutus-id": "1.2.246.562.20.62802979328",
+            "preference3-Koulutus-id-attachments": "false",
+            "preference3-Koulutus-id-sora": "true",
+            "preference4-Koulutus-id": "",
+            "preference3-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0",
+            "preference4-Koulutus-id-attachments": "",
+            "preference2-Koulutus-id-lang": "FI",
+            "preference4-Opetuspiste": "",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus": "Kotityö- ja puhdistuspalvelujen perustutkinto, pk",
+            "preference3-Koulutus-id-educationcode": "koulutus_371101",
+            "preference3-Koulutus-id-discretionary": "true",
+            "preference1-Koulutus-id-discretionary": "true",
+            "preference3-Koulutus": "Sosiaali- ja terveysalan perustutkinto, pk",
+            "preference3-Koulutus-id-aoIdentifier": "873",
+            "preference5-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference4-Koulutus-id-ao-groups": "",
+            "preference2-Koulutus-id-educationcode": "koulutus_321501"
+        },
+        "koulutustausta": {
+            "PK_PAATTOTODISTUSVUOSI": "2016",
+            "POHJAKOULUTUS": "1",
+            "perusopetuksen_kieli": "FI"
+        },
+        "osaaminen": {}
+    },
+    "oid": "1.2.246.562.11.00004883029",
+    "state": "ACTIVE",
+    "studentIdentificationDone": false,
+    "personOid": "1.2.246.562.24.14229104472",
+    "lastAutomatedProcessingTime": 1455027742243,
+    "automatedProcessingFailCount": 20,
+    "automatedProcessingFailRetryTime": 1455023688361,
+    "received": 1455020877192,
+    "updated": 1455023688362,
+    "redoPostProcess": "DONE",
+    "fullName": "testaaja teppo",
+    "searchNames": [
+        "teppo",
+        "testaaja"
+    ],
+    "meta": {
+        "filingLanguage": "fi",
+        "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+        "opoAllowed": true,
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.67937704822",
+                "1.2.246.562.10.42887513309"
+            ],
+            "2": [
+                "1.2.246.562.10.36407262041",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.14707331246",
+                "1.2.246.562.10.22909222972"
+            ],
+            "3": [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.67937704822",
+                "1.2.246.562.10.42887513309"
+            ]
+        },
+        "allAoOrganizations": [
+            "1.2.246.562.10.36407262041",
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.67937704822",
+            "1.2.246.562.10.14707331246",
+            "1.2.246.562.10.42887513309",
+            "1.2.246.562.10.22909222972"
+        ],
+        "applicationPreferences": [
+            {
+                "ordinal": 1,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "true",
+                    "Koulutus-id-aoIdentifier": "475",
+                    "Opetuspiste": "Helsingin Diakoniaopisto",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id": "1.2.246.562.20.62802979328",
+                    "Koulutus-id-sora": "false",
+                    "Koulutus-id-attachments": "false",
+                    "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1#1,3,2,6,1,7,0",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_32",
+                    "Opetuspiste-id": "1.2.246.562.10.67937704822",
+                    "Koulutus-id-educationcode": "koulutus_381113",
+                    "Koulutus": "Kotityö- ja puhdistuspalvelujen perustutkinto, pk",
+                    "Koulutus-id-lang": "FI",
+                    "discretionary": "false",
+                    "Koulutus-id-discretionary": "true"
+                }
+            },
+            {
+                "ordinal": 2,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "true",
+                    "Koulutus-id-aoIdentifier": "035",
+                    "Koulutus-id": "1.2.246.562.20.21468913773",
+                    "Opetuspiste": "Lapin urheiluopisto",
+                    "Koulutus-id-athlete": "true",
+                    "Koulutus-id-attachments": "false",
+                    "Koulutus-id-sora": "false",
+                    "urheilijan_ammatillisen_koulutuksen_lisakysymys": "true",
+                    "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_32",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Opetuspiste-id": "1.2.246.562.10.14707331246",
+                    "Koulutus-id-educationcode": "koulutus_321501",
+                    "Koulutus": "Tanssialan perustutkinto, pk",
+                    "Koulutus-id-lang": "FI",
+                    "Koulutus-id-discretionary": "false"
+                }
+            },
+            {
+                "ordinal": 3,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "true",
+                    "sora_oikeudenMenetys": "false",
+                    "Koulutus-id-aoIdentifier": "873",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id": "1.2.246.562.20.37345403259",
+                    "Opetuspiste": "Helsingin Diakoniaopisto",
+                    "Koulutus-id-sora": "true",
+                    "Koulutus-id-attachments": "false",
+                    "sora_terveys": "false",
+                    "kaksoistutkinnon_lisakysymys": "false",
+                    "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimustoinenaste_pk,hakukelpoisuusvaatimusta_1,3,2,6,1,7,0",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_32",
+                    "Koulutus-id-kaksoistutkinto": "true",
+                    "Opetuspiste-id": "1.2.246.562.10.67937704822",
+                    "Koulutus-id-educationcode": "koulutus_371101",
+                    "Koulutus": "Sosiaali- ja terveysalan perustutkinto, pk",
+                    "discretionary": "false",
+                    "Koulutus-id-lang": "FI",
+                    "Koulutus-id-discretionary": "true"
+                }
+            }
+        ]
+    },
+    "overriddenAnswers": {
+        "sukupuoli": "1",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Teppo",
+        "Etunimet": "Teppo",
+        "Sukunimi": "Testaaja",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "(hidden)",
+        "aidinkieli": "FI",
+        "syntymaaika": "09.02.1996"
+    },
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1455020877192,
+            "user": "anonymousUser"
+        }
+    ],
+    "history": [
+        {
+            "type": "Change",
+            "modified": 1455020882428,
+            "modifier": "järjestelmä",
+            "reason": "Post Processing",
+            "changes": [
+                {
+                    "field": "state",
+                    "old value": "SUBMITTED",
+                    "new value": "ACTIVE"
+                },
+                {
+                    "field": "turvakielto",
+                    "new value": "false"
+                },
+                {
+                    "field": "onkoSinullaSuomalainenHetu",
+                    "new value": "false"
+                }
+            ]
+        }
+    ],
+    "version": 1,
+    "modelVersion": 7,
+    "preferenceEligibilities": [
+        {
+            "aoId": "1.2.246.562.20.62802979328",
+            "status": "NOT_CHECKED",
+            "source": "UNKNOWN"
+        },
+        {
+            "aoId": "1.2.246.562.20.21468913773",
+            "status": "NOT_CHECKED",
+            "source": "UNKNOWN"
+        },
+        {
+            "aoId": "1.2.246.562.20.37345403259",
+            "status": "NOT_CHECKED",
+            "source": "UNKNOWN"
+        }
+    ],
+    "preferencesChecked": [
+        {
+            "preferenceAoOid": "1.2.246.562.20.62802979328",
+            "checked": false
+        },
+        {
+            "preferenceAoOid": "1.2.246.562.20.21468913773",
+            "checked": false
+        },
+        {
+            "preferenceAoOid": "1.2.246.562.20.37345403259",
+            "checked": false
+        }
+    ]
+}

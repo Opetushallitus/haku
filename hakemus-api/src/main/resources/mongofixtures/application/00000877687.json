@@ -1,6 +1,5 @@
 {
-    "_id":
-    {
+    "_id": {
         "$oid": "53e4885ce4b0d272fdc5d777"
     },
     "type": "Application",
@@ -23,10 +22,10 @@
             "kotikunta": "020",
             "aidinkieli": "FI",
             "syntymaaika": "01.01.1901",
-            "koulusivistyskieli":"FI"
+            "koulusivistyskieli": "FI"
         },
         "lisatiedot": {
-          "asiointikieli": "suomi"
+            "asiointikieli": "suomi"
         },
         "hakutoiveet": {
             "preference3-Koulutus-id-ao-groups": "",
@@ -75,14 +74,14 @@
             "preference1-Koulutus-id-lang": "FI",
             "preference2-Koulutus-id-educationcode": "koulutus_726502"
         },
-      "koulutustausta": {
-        "suoritusoikeus": "false",
-        "aiempitutkinto": "false",
-        "pohjakoulutus_yo_tutkinto": "fi",
-        "pohjakoulutus_yo_vuosi": "2014",
-        "pohjakoulutus_yo": "true"
-      },
-      "osaaminen": {}
+        "koulutustausta": {
+            "suoritusoikeus": "false",
+            "aiempitutkinto": "false",
+            "pohjakoulutus_yo_tutkinto": "fi",
+            "pohjakoulutus_yo_vuosi": "2014",
+            "pohjakoulutus_yo": "true"
+        },
+        "osaaminen": {}
     },
     "oid": "1.2.246.562.11.00000877687",
     "state": "ACTIVE",
@@ -93,7 +92,11 @@
     "updated": 1410516893464,
     "redoPostProcess": "DONE",
     "fullName": "testaaja teppo",
-    "searchNames": ["teppo", "testaaja", "timo"],
+    "searchNames": [
+        "teppo",
+        "testaaja",
+        "timo"
+    ],
     "meta": {
         "sessionId": "anonymousUser"
     },

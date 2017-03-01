@@ -1,549 +1,551 @@
 {
-  "_id" : {"$oid":"54ecb737e4b094ad12bbf946"},
-  "answers" : {
-    "hakutoiveet" : {
-      "preference2-Opetuspiste" : "",
-      "preference3-Koulutus-id-ao-groups" : "",
-      "preference1-Koulutus-id-ao-groups" : "1.2.246.562.28.62111289598,1.2.246.562.28.64169684181",
-      "preference2-Koulutus-id-athlete" : "",
-      "preference1-Opetuspiste" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-      "preference1-Koulutus-id-attachments" : "true",
-      "preference3-Koulutus-id-athlete" : "",
-      "preference3-Koulutus-educationDegree" : "",
-      "preference2-Koulutus-id-kaksoistutkinto" : "",
-      "preference3-Koulutus-id-kaksoistutkinto" : "",
-      "preference2-Koulutus-id-attachmentgroups" : "",
-      "preference1-Koulutus-id-attachmentgroups" : "",
-      "preference2-Koulutus-id-aoIdentifier" : "",
-      "preference2-Koulutus-id-attachments" : "",
-      "preference3-Opetuspiste-id" : "",
-      "preference3-Koulutus-id-lang" : "",
-      "preference2-Opetuspiste-id" : "",
-      "preference3-Opetuspiste" : "",
-      "preference2-Koulutus-id-ao-groups" : "",
-      "preference1-Koulutus-educationDegree" : "koulutusasteoph2002_72",
-      "preference2-Koulutus-id-vocational" : "",
-      "preferencesVisible" : "3",
-      "preference2-Koulutus-id-sora" : "",
-      "preference3-Koulutus-id" : "",
-      "preference1-Koulutus-id" : "1.2.246.562.20.19536363211",
-      "preference1-yoLiite" : "true",
-      "preference3-Koulutus-id-attachments" : "",
-      "preference1-Opetuspiste-id" : "1.2.246.562.10.15884705888",
-      "preference3-Koulutus-id-sora" : "",
-      "preference1-Koulutus-id-sora" : "false",
-      "preference2-Koulutus-educationDegree" : "",
-      "preference2-Koulutus-id-lang" : "",
-      "preference3-Koulutus-id-educationcode" : "",
-      "preference1-Koulutus" : "Ammattikasvatus, Kasvatuksen ja yhteiskunnan tutkimuksen maisterikoulutus",
-      "preference1-Koulutus-id-kaksoistutkinto" : "false",
-      "preference1-Koulutus-id-aoIdentifier" : "",
-      "preference1-Koulutus-id-educationcode" : "koulutus_712201",
-      "preference3-Koulutus-id-aoIdentifier" : "",
-      "preference3-Koulutus-id-attachmentgroups" : "",
-      "preference2-Koulutus-id" : "",
-      "preference3-Koulutus-id-vocational" : "",
-      "preference1-Koulutus-id-lang" : "FI",
-      "preference1-Koulutus-id-vocational" : "false",
-      "preference2-Koulutus-id-educationcode" : "",
-      "preference1-Koulutus-id-athlete" : "false"
+    "_id": {
+        "$oid": "54ecb737e4b094ad12bbf946"
     },
-    "henkilotiedot" : {
-      "Etunimet" : "Sophie Testi",
-      "Kutsumanimi" : "Sophie",
-      "Postinumero" : "37830",
-      "Sähköposti" : "hakija-4969393@oph.fi",
-      "SUKUPUOLI" : "2",
-      "Sukunimi" : "Anttila-Testi",
-      "aidinkieli" : "FI",
-      "asuinmaa" : "FIN",
-      "kansalaisuus" : "FIN",
-      "kansallinenIdTunnus" : "",
-      "kotikunta" : "020",
-      "koulusivistyskieli" : "FI",
-      "lahiosoite" : "Polvivaara 37",
-      "matkapuhelinnumero1" : "050 94077251",
-      "onkoSinullaSuomalainenHetu" : "false",
-      "onkosinullakaksoiskansallisuus" : "false",
-      "passinnumero" : "",
-      "sukupuoli" : "2",
-      "syntymaaika" : "03.12.1984",
-      "turvakielto" : "false"
-    },
-    "koulutustausta" : {
-      "pohjakoulutus_avoin_kokonaisuus2" : "Erityiskasvatuksen ammatilliset erikoistumisopinnot",
-      "pohjakoulutus_am_laajuus_yksikko" : "1",
-      "pohjakoulutus_muu_kuvaus2" : "Näyttötutkintomestarikoulutus, 25 op, HAMK",
-      "pohjakoulutus_amt" : "true",
-      "pohjakoulutus_amt_nimike" : "Puistopuutarhurin ammattitutkinto",
-      "pohjakoulutus_avoin_korkeakoulu" : "TYT",
-      "pohjakoulutus_muu" : "true",
-      "pohjakoulutus_am_oppilaitos" : "Tampereen kotitalousoppilaitos",
-      "pohjakoulutus_am_nimike" : "Siivousteknikko",
-      "pohjakoulutus_am_nayttotutkintona" : "false",
-      "pohjakoulutus_kk_oppilaitos" : "PIRAMK",
-      "pohjakoulutus_muu_vuosi" : "2007",
-      "pohjakoulutus_yo_vuosi" : "1988",
-      "pohjakoulutus_yo_tutkinto" : "fi",
-      "pohjakoulutus_muu_vuosi2" : "2014",
-      "pohjakoulutus_avoin_ala2" : "Erityiskasvatus",
-      "pohjakoulutus_muu_kuvaus" : "Ammatillinen opettajakoulutus, 60 op, HAMK.",
-      "pohjakoulutus_avoin" : "true",
-      "pohjakoulutus_yo" : "true",
-      "pohjakoulutus_amt_vuosi" : "2014",
-      "pohjakoulutus_avoin_kokonaisuus" : "perusopinnot",
-      "pohjakoulutus_kk" : "true",
-      "pohjakoulutus_avoin_laajuus" : "15 ov",
-      "pohjakoulutus_kk_pvm" : "13.06.2003",
-      "pohjakoulutus_kk_taso" : "1",
-      "pohjakoulutus_amt_vuosi2" : "2010",
-      "pohjakoulutus_kk_nimike" : "Restonomi AMK",
-      "pohjakoulutus_amt_oppilaitos" : "TREDU",
-      "pohjakoulutus_am_vuosi" : "1995",
-      "pohjakoulutus_amt_nimike2" : "Johtamisen erikoisammattitutkinto",
-      "pohjakoulutus_avoin_korkeakoulu2" : "TAMK",
-      "pohjakoulutus_am_laajuus" : "120",
-      "suoritusoikeus_tai_aiempi_tutkinto" : "false",
-      "pohjakoulutus_avoin_ala" : "Aikuiskasvatus ja kasvatustiede",
-      "pohjakoulutus_avoin_laajuus2" : "8 op",
-      "pohjakoulutus_am" : "true",
-      "pohjakoulutus_amt_oppilaitos2" : "TAKK"
-    },
-    "lisatiedot" : {
-      "lupaSahkoisesti" : "true",
-      "asiointikieli" : "suomi",
-      "lupaSms" : "true",
-      "lupaMarkkinointi" : "true"
-    },
-    "osaaminen" : {
-      "54c7a6c0e4b03c06d74fc5b9" : "option_1",
-      "54c7a7cae4b03c06d74fc5bf" : "15 ov",
-      "54c7a717e4b03c06d74fc5bc" : "option_1",
-      "54c7a79be4b03c06d74fc5be" : "option_0",
-      "54c77159e4b09feaf6e1ffa9" : "option_1"
-    }
-  },
-  "applicationSystemId" : "1.2.246.562.29.10152859822",
-  "attachmentRequests" : [
-    {
-      "id" : "e12d84f3-317e-4e40-b626-4d2000ff2d92",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Perustelukirje (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
-            "sv" : "Perustelukirje (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
-            "en" : "Perustelukirje (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)"
-          }
+    "answers": {
+        "hakutoiveet": {
+            "preference2-Opetuspiste": "",
+            "preference3-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.62111289598,1.2.246.562.28.64169684181",
+            "preference2-Koulutus-id-athlete": "",
+            "preference1-Opetuspiste": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+            "preference1-Koulutus-id-attachments": "true",
+            "preference3-Koulutus-id-athlete": "",
+            "preference3-Koulutus-educationDegree": "",
+            "preference2-Koulutus-id-kaksoistutkinto": "",
+            "preference3-Koulutus-id-kaksoistutkinto": "",
+            "preference2-Koulutus-id-attachmentgroups": "",
+            "preference1-Koulutus-id-attachmentgroups": "",
+            "preference2-Koulutus-id-aoIdentifier": "",
+            "preference2-Koulutus-id-attachments": "",
+            "preference3-Opetuspiste-id": "",
+            "preference3-Koulutus-id-lang": "",
+            "preference2-Opetuspiste-id": "",
+            "preference3-Opetuspiste": "",
+            "preference2-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "preference2-Koulutus-id-vocational": "",
+            "preferencesVisible": "3",
+            "preference2-Koulutus-id-sora": "",
+            "preference3-Koulutus-id": "",
+            "preference1-Koulutus-id": "1.2.246.562.20.19536363211",
+            "preference1-yoLiite": "true",
+            "preference3-Koulutus-id-attachments": "",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.15884705888",
+            "preference3-Koulutus-id-sora": "",
+            "preference1-Koulutus-id-sora": "false",
+            "preference2-Koulutus-educationDegree": "",
+            "preference2-Koulutus-id-lang": "",
+            "preference3-Koulutus-id-educationcode": "",
+            "preference1-Koulutus": "Ammattikasvatus, Kasvatuksen ja yhteiskunnan tutkimuksen maisterikoulutus",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-educationcode": "koulutus_712201",
+            "preference3-Koulutus-id-aoIdentifier": "",
+            "preference3-Koulutus-id-attachmentgroups": "",
+            "preference2-Koulutus-id": "",
+            "preference3-Koulutus-id-vocational": "",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference2-Koulutus-id-educationcode": "",
+            "preference1-Koulutus-id-athlete": "false"
         },
-        "description" : {
-          "translations" : {
-            "fi" : "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>",
-            "sv" : "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>",
-            "en" : "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>"
-          }
+        "henkilotiedot": {
+            "Etunimet": "Sophie Testi",
+            "Kutsumanimi": "Sophie",
+            "Postinumero": "37830",
+            "Sähköposti": "hakija-4969393@oph.fi",
+            "SUKUPUOLI": "2",
+            "Sukunimi": "Anttila-Testi",
+            "aidinkieli": "FI",
+            "asuinmaa": "FIN",
+            "kansalaisuus": "FIN",
+            "kansallinenIdTunnus": "",
+            "kotikunta": "020",
+            "koulusivistyskieli": "FI",
+            "lahiosoite": "Polvivaara 37",
+            "matkapuhelinnumero1": "050 94077251",
+            "onkoSinullaSuomalainenHetu": "false",
+            "onkosinullakaksoiskansallisuus": "false",
+            "passinnumero": "",
+            "sukupuoli": "2",
+            "syntymaaika": "03.12.1984",
+            "turvakielto": "false"
         },
-        "deadline" : 1425646811578,
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
+        "koulutustausta": {
+            "pohjakoulutus_avoin_kokonaisuus2": "Erityiskasvatuksen ammatilliset erikoistumisopinnot",
+            "pohjakoulutus_am_laajuus_yksikko": "1",
+            "pohjakoulutus_muu_kuvaus2": "Näyttötutkintomestarikoulutus, 25 op, HAMK",
+            "pohjakoulutus_amt": "true",
+            "pohjakoulutus_amt_nimike": "Puistopuutarhurin ammattitutkinto",
+            "pohjakoulutus_avoin_korkeakoulu": "TYT",
+            "pohjakoulutus_muu": "true",
+            "pohjakoulutus_am_oppilaitos": "Tampereen kotitalousoppilaitos",
+            "pohjakoulutus_am_nimike": "Siivousteknikko",
+            "pohjakoulutus_am_nayttotutkintona": "false",
+            "pohjakoulutus_kk_oppilaitos": "PIRAMK",
+            "pohjakoulutus_muu_vuosi": "2007",
+            "pohjakoulutus_yo_vuosi": "1988",
+            "pohjakoulutus_yo_tutkinto": "fi",
+            "pohjakoulutus_muu_vuosi2": "2014",
+            "pohjakoulutus_avoin_ala2": "Erityiskasvatus",
+            "pohjakoulutus_muu_kuvaus": "Ammatillinen opettajakoulutus, 60 op, HAMK.",
+            "pohjakoulutus_avoin": "true",
+            "pohjakoulutus_yo": "true",
+            "pohjakoulutus_amt_vuosi": "2014",
+            "pohjakoulutus_avoin_kokonaisuus": "perusopinnot",
+            "pohjakoulutus_kk": "true",
+            "pohjakoulutus_avoin_laajuus": "15 ov",
+            "pohjakoulutus_kk_pvm": "13.06.2003",
+            "pohjakoulutus_kk_taso": "1",
+            "pohjakoulutus_amt_vuosi2": "2010",
+            "pohjakoulutus_kk_nimike": "Restonomi AMK",
+            "pohjakoulutus_amt_oppilaitos": "TREDU",
+            "pohjakoulutus_am_vuosi": "1995",
+            "pohjakoulutus_amt_nimike2": "Johtamisen erikoisammattitutkinto",
+            "pohjakoulutus_avoin_korkeakoulu2": "TAMK",
+            "pohjakoulutus_am_laajuus": "120",
+            "suoritusoikeus_tai_aiempi_tutkinto": "false",
+            "pohjakoulutus_avoin_ala": "Aikuiskasvatus ja kasvatustiede",
+            "pohjakoulutus_avoin_laajuus2": "8 op",
+            "pohjakoulutus_am": "true",
+            "pohjakoulutus_amt_oppilaitos2": "TAKK"
+        },
+        "lisatiedot": {
+            "lupaSahkoisesti": "true",
+            "asiointikieli": "suomi",
+            "lupaSms": "true",
+            "lupaMarkkinointi": "true"
+        },
+        "osaaminen": {
+            "54c7a6c0e4b03c06d74fc5b9": "option_1",
+            "54c7a7cae4b03c06d74fc5bf": "15 ov",
+            "54c7a717e4b03c06d74fc5bc": "option_1",
+            "54c7a79be4b03c06d74fc5be": "option_0",
+            "54c77159e4b09feaf6e1ffa9": "option_1"
         }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
     },
-    {
-      "id" : "5fcd4e10-4e23-46ca-8411-6e0b1a4deaad",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Virallinen opintorekisteriote (tai kopio virallisesta)",
-            "sv" : "Virallinen opintorekisteriote (tai kopio virallisesta)",
-            "en" : "Virallinen opintorekisteriote (tai kopio virallisesta)"
-          }
+    "applicationSystemId": "1.2.246.562.29.10152859822",
+    "attachmentRequests": [
+        {
+            "id": "e12d84f3-317e-4e40-b626-4d2000ff2d92",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Perustelukirje (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
+                        "sv": "Perustelukirje (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
+                        "en": "Perustelukirje (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>",
+                        "sv": "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>",
+                        "en": "<p>Perustelukirje opinto-oikeuden hakemiseen. Ohje sivulla <a href=\"http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html\">http://www.uta.fi/opiskelijaksi/hakeminen/perustelukirje.html</a></p>"
+                    }
+                },
+                "deadline": 1425646811578,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
         },
-        "description" : {
-          "translations" : {
-            "fi" : "",
-            "sv" : "",
-            "en" : ""
-          }
+        {
+            "id": "5fcd4e10-4e23-46ca-8411-6e0b1a4deaad",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Virallinen opintorekisteriote (tai kopio virallisesta)",
+                        "sv": "Virallinen opintorekisteriote (tai kopio virallisesta)",
+                        "en": "Virallinen opintorekisteriote (tai kopio virallisesta)"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "",
+                        "sv": "",
+                        "en": ""
+                    }
+                },
+                "deadline": 1425646835578,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
         },
-        "deadline" : 1425646835578,
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
+        {
+            "id": "97e96728-8114-4e45-b5d2-c345f0eb5617",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Todistusjäljennökset olennaisesta työkokemuksesta (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
+                        "sv": "Todistusjäljennökset olennaisesta työkokemuksesta (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
+                        "en": "Todistusjäljennökset olennaisesta työkokemuksesta (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "",
+                        "sv": "",
+                        "en": ""
+                    }
+                },
+                "deadline": 1425646859411,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "6babce35-9d7b-4a05-ae6e-b536e06b7211",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tulostettu kopio hakulomakkeesta",
+                        "sv": "Tulostettu kopio hakulomakkeesta",
+                        "en": "Tulostettu kopio hakulomakkeesta"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "",
+                        "sv": "",
+                        "en": ""
+                    }
+                },
+                "deadline": 1425646853507,
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "0aac07a3-59ea-4282-b72d-0b4b656405fa",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "sv": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "en": "Tampereen yliopisto, Kasvatustieteiden yksikkö"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Todistuskopiot ammattitutkinnosta tai erikoisammattitutkinnosta",
+                        "sv": "Betygskopia av din yrkesexamen eller specialyrkesexamen",
+                        "en": "Copy of your further vocational qualification or specialist vocational qualification certificate"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan koulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från skolan.",
+                        "en": "Check the delivery deadline from the education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "ac06c9ec-ea04-4c8b-bd3f-a6b5ddf1fa36",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "sv": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "en": "Tampereen yliopisto, Kasvatustieteiden yksikkö"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Liitteet muusta korkeakoulukelpoisuudesta",
+                        "sv": "Bilagor för annan högskolebehörighet",
+                        "en": "Attachments stating your other eligibility for higher education"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan koulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från skolan.",
+                        "en": "Check the delivery deadline from the education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "adf117bf-d619-4f4d-8c66-38a399cc0931",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "sv": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "en": "Tampereen yliopisto, Kasvatustieteiden yksikkö"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Todistuskopio ammatillisesta perustutkinnosta",
+                        "sv": "Betygskopia av din yrkesinriktade grundexamen",
+                        "en": "Copy of your vocational upper secondary qualification certificate"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan koulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från skolan.",
+                        "en": "Check the delivery deadline from the education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "07513e68-5ef4-4d45-9b6b-e7f40db54c6a",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "sv": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "en": "Tampereen yliopisto, Kasvatustieteiden yksikkö"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Todistuskopio ylioppilastutkintotodistuksesta",
+                        "sv": "Betygskopia av ditt studentexamensbetyg",
+                        "en": "Copy of your matriculation examination certificate"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan koulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från skolan.",
+                        "en": "Check the delivery deadline from the education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "868daf53-ba0c-494d-a35a-7acffe9b547e",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "sv": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "en": "Tampereen yliopisto, Kasvatustieteiden yksikkö"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista",
+                        "sv": "Betygskopia eller ett utdrag av dina studieprestationer vid öppen högskola",
+                        "en": "Copy of certificate or transcript of open university or open polytechnic/UAS studies"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan koulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från skolan.",
+                        "en": "Check the delivery deadline from the education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
+        },
+        {
+            "id": "7aafc64a-42e6-401e-bbe2-313dd565aba5",
+            "preferenceAoId": "1.2.246.562.20.19536363211",
+            "processingStatus": "NOT_CHECKED",
+            "applicationAttachment": {
+                "name": {
+                    "translations": {
+                        "fi": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "sv": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                        "en": "Tampereen yliopisto, Kasvatustieteiden yksikkö"
+                    }
+                },
+                "description": {
+                    "translations": {
+                        "fi": "Todistuskopio korkeakoulututkinnosta",
+                        "sv": "Betygskopia av din högskoleexamen",
+                        "en": "Copy of your higher education degree certificate"
+                    }
+                },
+                "deliveryNote": {
+                    "translations": {
+                        "fi": "Tarkista palautuspäivämäärä suoraan koulusta.",
+                        "sv": "Kontrollera inlämningsdatum direkt från skolan.",
+                        "en": "Check the delivery deadline from the education institution."
+                    }
+                },
+                "address": {
+                    "recipient": "Hakijapalvelut",
+                    "streetAddress": "Hakijapalvelut",
+                    "postalCode": "33014",
+                    "postOffice": "TAMPEREEN  YLIOPISTO"
+                }
+            },
+            "receptionStatus": "NOT_RECEIVED"
         }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "97e96728-8114-4e45-b5d2-c345f0eb5617",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Todistusjäljennökset olennaisesta työkokemuksesta (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
-            "sv" : "Todistusjäljennökset olennaisesta työkokemuksesta (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)",
-            "en" : "Todistusjäljennökset olennaisesta työkokemuksesta (Ammattikasvatus, Kasvatuksen yhteiskunnan tutkimuksen maisterikoulutus)"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "",
-            "sv" : "",
-            "en" : ""
-          }
-        },
-        "deadline" : 1425646859411,
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "6babce35-9d7b-4a05-ae6e-b536e06b7211",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tulostettu kopio hakulomakkeesta",
-            "sv" : "Tulostettu kopio hakulomakkeesta",
-            "en" : "Tulostettu kopio hakulomakkeesta"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "",
-            "sv" : "",
-            "en" : ""
-          }
-        },
-        "deadline" : 1425646853507,
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "0aac07a3-59ea-4282-b72d-0b4b656405fa",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "sv" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "en" : "Tampereen yliopisto, Kasvatustieteiden yksikkö"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "Todistuskopiot ammattitutkinnosta tai erikoisammattitutkinnosta",
-            "sv" : "Betygskopia av din yrkesexamen eller specialyrkesexamen",
-            "en" : "Copy of your further vocational qualification or specialist vocational qualification certificate"
-          }
-        },
-        "deliveryNote" : {
-          "translations" : {
-            "fi" : "Tarkista palautuspäivämäärä suoraan koulusta.",
-            "sv" : "Kontrollera inlämningsdatum direkt från skolan.",
-            "en" : "Check the delivery deadline from the education institution."
-          }
-        },
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "ac06c9ec-ea04-4c8b-bd3f-a6b5ddf1fa36",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "sv" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "en" : "Tampereen yliopisto, Kasvatustieteiden yksikkö"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "Liitteet muusta korkeakoulukelpoisuudesta",
-            "sv" : "Bilagor för annan högskolebehörighet",
-            "en" : "Attachments stating your other eligibility for higher education"
-          }
-        },
-        "deliveryNote" : {
-          "translations" : {
-            "fi" : "Tarkista palautuspäivämäärä suoraan koulusta.",
-            "sv" : "Kontrollera inlämningsdatum direkt från skolan.",
-            "en" : "Check the delivery deadline from the education institution."
-          }
-        },
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "adf117bf-d619-4f4d-8c66-38a399cc0931",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "sv" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "en" : "Tampereen yliopisto, Kasvatustieteiden yksikkö"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "Todistuskopio ammatillisesta perustutkinnosta",
-            "sv" : "Betygskopia av din yrkesinriktade grundexamen",
-            "en" : "Copy of your vocational upper secondary qualification certificate"
-          }
-        },
-        "deliveryNote" : {
-          "translations" : {
-            "fi" : "Tarkista palautuspäivämäärä suoraan koulusta.",
-            "sv" : "Kontrollera inlämningsdatum direkt från skolan.",
-            "en" : "Check the delivery deadline from the education institution."
-          }
-        },
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "07513e68-5ef4-4d45-9b6b-e7f40db54c6a",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "sv" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "en" : "Tampereen yliopisto, Kasvatustieteiden yksikkö"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "Todistuskopio ylioppilastutkintotodistuksesta",
-            "sv" : "Betygskopia av ditt studentexamensbetyg",
-            "en" : "Copy of your matriculation examination certificate"
-          }
-        },
-        "deliveryNote" : {
-          "translations" : {
-            "fi" : "Tarkista palautuspäivämäärä suoraan koulusta.",
-            "sv" : "Kontrollera inlämningsdatum direkt från skolan.",
-            "en" : "Check the delivery deadline from the education institution."
-          }
-        },
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "868daf53-ba0c-494d-a35a-7acffe9b547e",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "sv" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "en" : "Tampereen yliopisto, Kasvatustieteiden yksikkö"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista",
-            "sv" : "Betygskopia eller ett utdrag av dina studieprestationer vid öppen högskola",
-            "en" : "Copy of certificate or transcript of open university or open polytechnic/UAS studies"
-          }
-        },
-        "deliveryNote" : {
-          "translations" : {
-            "fi" : "Tarkista palautuspäivämäärä suoraan koulusta.",
-            "sv" : "Kontrollera inlämningsdatum direkt från skolan.",
-            "en" : "Check the delivery deadline from the education institution."
-          }
-        },
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    },
-    {
-      "id" : "7aafc64a-42e6-401e-bbe2-313dd565aba5",
-      "preferenceAoId" : "1.2.246.562.20.19536363211",
-      "processingStatus" : "NOT_CHECKED",
-      "applicationAttachment" : {
-        "name" : {
-          "translations" : {
-            "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "sv" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-            "en" : "Tampereen yliopisto, Kasvatustieteiden yksikkö"
-          }
-        },
-        "description" : {
-          "translations" : {
-            "fi" : "Todistuskopio korkeakoulututkinnosta",
-            "sv" : "Betygskopia av din högskoleexamen",
-            "en" : "Copy of your higher education degree certificate"
-          }
-        },
-        "deliveryNote" : {
-          "translations" : {
-            "fi" : "Tarkista palautuspäivämäärä suoraan koulusta.",
-            "sv" : "Kontrollera inlämningsdatum direkt från skolan.",
-            "en" : "Check the delivery deadline from the education institution."
-          }
-        },
-        "address" : {
-          "recipient" : "Hakijapalvelut",
-          "streetAddress" : "Hakijapalvelut",
-          "postalCode" : "33014",
-          "postOffice" : "TAMPEREEN  YLIOPISTO"
-        }
-      },
-      "receptionStatus" : "NOT_RECEIVED"
-    }
-  ],
-  "authorizationMeta" : {
-    "opoAllowed" : false,
-    "aoOrganizations" : {
-      "1" : [
-        "1.2.246.562.10.00000000001",
-        "1.2.246.562.10.20465608279",
-        "1.2.246.562.10.72255864398",
-        "1.2.246.562.10.15884705888"
-      ]
-    },
-    "allAoOrganizations" : [
-      "1.2.246.562.10.00000000001",
-      "1.2.246.562.10.72255864398",
-      "1.2.246.562.10.20465608279",
-      "1.2.246.562.10.15884705888"
     ],
-    "applicationPreferences" : [
-      {
-        "ordinal" : 1,
-        "preferenceData" : {
-          "Koulutus-id-vocational" : "false",
-          "yoLiite" : "true",
-          "Koulutus-id-athlete" : "false",
-          "Koulutus-id-ao-groups" : "1.2.246.562.28.62111289598,1.2.246.562.28.64169684181",
-          "Opetuspiste" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
-          "Koulutus-id" : "1.2.246.562.20.19536363211",
-          "Koulutus-id-attachments" : "true",
-          "Koulutus-id-sora" : "false",
-          "Koulutus-educationDegree" : "koulutusasteoph2002_72",
-          "Koulutus-id-kaksoistutkinto" : "false",
-          "Opetuspiste-id" : "1.2.246.562.10.15884705888",
-          "Koulutus-id-educationcode" : "koulutus_712201",
-          "Koulutus" : "Ammattikasvatus, Kasvatuksen ja yhteiskunnan tutkimuksen maisterikoulutus",
-          "Koulutus-id-lang" : "FI"
-        }
-      }
-    ]
-  },
-  "fullName" : "anttila-testi sophie testi",
-  "lastAutomatedProcessingTime" : 1424957642640,
-  "meta" : {
-    "filingLanguage" : "fi",
-    "sessionId" : "anonymousUser"
-  },
-  "modelVersion" : 7,
-  "notes" : [
-    {
-      "type" : "ApplicationNote",
-      "noteText" : "Hakemus passivoitu: Hakemus passivoitu hakijan sähköposti-ilmoituksen (11.3) perusteella / SV",
-      "added" : 1426244328080,
-      "user" : "1.2.246.562.24.75628437462"
+    "authorizationMeta": {
+        "opoAllowed": false,
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.20465608279",
+                "1.2.246.562.10.72255864398",
+                "1.2.246.562.10.15884705888"
+            ]
+        },
+        "allAoOrganizations": [
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.72255864398",
+            "1.2.246.562.10.20465608279",
+            "1.2.246.562.10.15884705888"
+        ],
+        "applicationPreferences": [
+            {
+                "ordinal": 1,
+                "preferenceData": {
+                    "Koulutus-id-vocational": "false",
+                    "yoLiite": "true",
+                    "Koulutus-id-athlete": "false",
+                    "Koulutus-id-ao-groups": "1.2.246.562.28.62111289598,1.2.246.562.28.64169684181",
+                    "Opetuspiste": "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+                    "Koulutus-id": "1.2.246.562.20.19536363211",
+                    "Koulutus-id-attachments": "true",
+                    "Koulutus-id-sora": "false",
+                    "Koulutus-educationDegree": "koulutusasteoph2002_72",
+                    "Koulutus-id-kaksoistutkinto": "false",
+                    "Opetuspiste-id": "1.2.246.562.10.15884705888",
+                    "Koulutus-id-educationcode": "koulutus_712201",
+                    "Koulutus": "Ammattikasvatus, Kasvatuksen ja yhteiskunnan tutkimuksen maisterikoulutus",
+                    "Koulutus-id-lang": "FI"
+                }
+            }
+        ]
     },
-    {
-      "type" : "ApplicationNote",
-      "noteText" : "Hakemus vastaanotettu",
-      "added" : 1424799543446,
-      "user" : "anonymousUser"
-    }
-  ],
-  "oid" : "1.2.246.562.11.00001647608",
-  "overriddenAnswers" : {
-    "sukupuoli" : "2",
-    "turvakielto" : "(null)",
-    "Kutsumanimi" : "Asd",
-    "Etunimet" : "Asd Dsa",
-    "Sukunimi" : "Sad",
-    "onkoSinullaSuomalainenHetu" : "(null)",
-    "Henkilotunnus" : "(hidden)",
-    "syntymaaika" : "11.09.1986"
-  },
-  "personOid" : "1.2.246.562.24.40135708059",
-  "preferenceEligibilities" : [
-    {
-      "aoId" : "1.2.246.562.20.19536363211",
-      "status" : "NOT_CHECKED",
-      "source" : "UNKNOWN"
-    }
-  ],
-  "preferencesChecked" : [
-    {
-      "preferenceAoOid" : "1.2.246.562.20.19536363211",
-      "checked" : false
-    }
-  ],
-  "received" : 1424799543446,
-  "searchNames" : [
-    "anttila-testi",
-    "sophie",
-    "testi"
-  ],
-  "state" : "PASSIVE",
-  "studentIdentificationDone" : true,
-  "studentOid" : "1.2.246.562.24.40135708059",
-  "updated" : 1427831719743
+    "fullName": "anttila-testi sophie testi",
+    "lastAutomatedProcessingTime": 1424957642640,
+    "meta": {
+        "filingLanguage": "fi",
+        "sessionId": "anonymousUser"
+    },
+    "modelVersion": 7,
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus passivoitu: Hakemus passivoitu hakijan sähköposti-ilmoituksen (11.3) perusteella / SV",
+            "added": 1426244328080,
+            "user": "1.2.246.562.24.75628437462"
+        },
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1424799543446,
+            "user": "anonymousUser"
+        }
+    ],
+    "oid": "1.2.246.562.11.00001647608",
+    "overriddenAnswers": {
+        "sukupuoli": "2",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Asd",
+        "Etunimet": "Asd Dsa",
+        "Sukunimi": "Sad",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "(hidden)",
+        "syntymaaika": "11.09.1986"
+    },
+    "personOid": "1.2.246.562.24.40135708059",
+    "preferenceEligibilities": [
+        {
+            "aoId": "1.2.246.562.20.19536363211",
+            "status": "NOT_CHECKED",
+            "source": "UNKNOWN"
+        }
+    ],
+    "preferencesChecked": [
+        {
+            "preferenceAoOid": "1.2.246.562.20.19536363211",
+            "checked": false
+        }
+    ],
+    "received": 1424799543446,
+    "searchNames": [
+        "anttila-testi",
+        "sophie",
+        "testi"
+    ],
+    "state": "PASSIVE",
+    "studentIdentificationDone": true,
+    "studentOid": "1.2.246.562.24.40135708059",
+    "updated": 1427831719743
 }

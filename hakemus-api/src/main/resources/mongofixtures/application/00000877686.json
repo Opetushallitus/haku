@@ -1,1 +1,179 @@
-{"_id":{"$oid":"53e4885ce4b0d272fdc5d868"},"type":"Application","applicationSystemId":"1.2.246.562.29.173465377510","answers":{"henkilotiedot":{"preference3-yoLiite":"true","kansalaisuus":"FIN","asuinmaa":"FIN","Sukunimi":"Testaaja","preference4-yoLiite":"true","sukupuoli":"1","turvakielto":"false","Kutsumanimi":"Teppo","preference2-amkLiite":"true","preference1-amkLiite":"true","Etunimet":"Teppo","onkoSinullaSuomalainenHetu":"true","preference1-yoLiite":"true","preference3-amkLiite":"true","matkapuhelinnumero1":"","Postinumero":"00100","lahiosoite":"testikatu 1a1","preference2-yoLiite":"true","Sähköposti":"","kotikunta":"020","aidinkieli":"FI","syntymaaika":"01.01.1901"},"lisatiedot":{"preference2-yoLiite":"true","preference3-yoLiite":"true","preference1-yoLiite":"true","asiointikieli":"suomi","preference2-amkLiite":"true","preference1-amkLiite":"true","preference3-amkLiite":"true","preference4-yoLiite":"true"},"hakutoiveet":{"preference3-Koulutus-id-ao-groups":"1.2.246.562.28.90373737623","preference1-Opetuspiste":"Diakonia-ammattikorkeakoulu, Järvenpään toimipiste","preference3-Koulutus-id-athlete":"false","5406a5e2e4b0bf956c2e42d9":"option_0","preference2-Koulutus-id-aoIdentifier":"","preference2-Koulutus":"Fysiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri","preference3-Opetuspiste-id":"1.2.246.562.10.2014050812360137079853","preference2-Koulutus-id-ao-groups":"1.2.246.562.28.56164573357","preference1-Koulutus-educationDegree":"koulutusasteoph2002_62","preference2-Koulutus-id-sora":"false","preference3-Koulutus-id":"1.2.246.562.20.94964838901","preference1-Opetuspiste-id":"1.2.246.562.10.14842710486","preference2-Koulutus-educationDegree":"koulutusasteoph2002_72","preference1-Koulutus-id-sora":"false","preference1-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-educationcode":"koulutus_671201","preference3-Koulutus-id-attachmentgroups":"1.2.246.562.28.90373737623","53e47517e4b0d272fdc5d866":"5","preference2-Koulutus-id":"1.2.246.562.20.645785477510","preference3-Koulutus-id-vocational":"false","preference1-Koulutus-id-vocational":"false","preference1-Koulutus-id-athlete":"false","53e47429e4b0d272fdc5d865":"option_0","preference5-Koulutus-id":"","preference2-Opetuspiste":"Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta","preference2-Koulutus-id-athlete":"false","preference3-Koulutus-educationDegree":"koulutusasteoph2002_62","preference2-Koulutus-id-kaksoistutkinto":"false","preference3-Koulutus-id-kaksoistutkinto":"false","preference1-Koulutus-id-attachmentgroups":"1.2.246.562.28.90373737623","preference1-amkLiite":"","preference3-Koulutus-id-lang":"FI","preference2-Opetuspiste-id":"1.2.246.562.10.94639300915","preference3-Opetuspiste":"Metropolia AMK, Helsinki, Sofianlehdonkatu","preference1-Opetuspiste-id-parents":"","preference6-Koulutus-id":"","preference2-Koulutus-id-vocational":"false","54045cbfe4b076a70eb67c63-option_0":"true","preference1-Koulutus-id":"1.2.246.562.20.42250016427","preference3-Koulutus-id-attachments":"true","preference3-Koulutus-id-sora":"false","preference4-Koulutus-id":"","preference2-Koulutus-id-lang":"SV","preference1-Koulutus":"Sosionomi (AMK), monimuotototeutus","preference3-Koulutus-id-educationcode":"koulutus_671201","preference1-Koulutus-id-kaksoistutkinto":"false","preference3-Koulutus":"Sosionomi (AMK), sosiaaliala, päivätoteutus","preference3-Koulutus-id-aoIdentifier":"","preference1-Koulutus-id-lang":"FI","preference2-Koulutus-id-educationcode":"koulutus_742301"},"koulutustausta":{"preference3-yoLiite":"true","preference1-yoLiite":"true","preference3-amkLiite":"true","suoritusoikeus":"false","aiempitutkinto":"false","preference4-yoLiite":"true","pohjakoulutus_yo_tutkinto":"fi","preference2-yoLiite":"true","pohjakoulutus_yo_vuosi":"2014","preference2-amkLiite":"true","preference1-amkLiite":"true","pohjakoulutus_yo":"true"},"osaaminen":{"preference2-yoLiite":"true","preference3-yoLiite":"true","preference1-yoLiite":"true","preference2-amkLiite":"true","preference1-amkLiite":"true","preference3-amkLiite":"true","54043b87e4b0ec7e82139116":"fdsfdsfdsf","preference4-yoLiite":"true"}},"oid":"1.2.246.562.11.00000877686","state":"INCOMPLETE","studentIdentificationDone":false,"personOid":"1.2.246.562.24.14229104472","lastAutomatedProcessingTime":1408697524747,"received":1407486044009,"updated":1410516893464,"redoPostProcess":"DONE","fullName":"testaaja teppo","searchNames":["teppo","testaaja","timo"],"meta":{"sessionId":"anonymousUser"},"authorizationMeta":{"type":"AuthorizationMeta","opoAllowed":false,"aoOrganizations":{"1":["1.2.246.562.10.14842710486","1.2.246.562.10.00000000001","1.2.246.562.10.50822930082","1.2.246.562.10.64582714578"],"2":["1.2.246.562.10.00000000001","1.2.246.562.10.50822930082","1.2.246.562.10.64582714578","1.2.246.562.10.64213824028"]},"allAoOrganizations":["1.2.246.562.10.14842710486","1.2.246.562.10.00000000001","1.2.246.562.10.50822930082","1.2.246.562.10.64582714578","1.2.246.562.10.64213824028"]},"overriddenAnswers":{"sukupuoli":"1","turvakielto":"(null)","Kutsumanimi":"Timo","Etunimet":"Timo","Sukunimi":"Testaaja","onkoSinullaSuomalainenHetu":"(null)","Henkilotunnus":"010100A939R","syntymaaika":"01.01.1901"},"notes":[{"type":"ApplicationNote","noteText":"Hakemus vastaanotettu","added":1407486044009,"user":"anonymousUser"}]}
+{
+    "_id": {
+        "$oid": "53e4885ce4b0d272fdc5d868"
+    },
+    "type": "Application",
+    "applicationSystemId": "1.2.246.562.29.173465377510",
+    "answers": {
+        "henkilotiedot": {
+            "preference3-yoLiite": "true",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
+            "Sukunimi": "Testaaja",
+            "preference4-yoLiite": "true",
+            "sukupuoli": "1",
+            "turvakielto": "false",
+            "Kutsumanimi": "Teppo",
+            "preference2-amkLiite": "true",
+            "preference1-amkLiite": "true",
+            "Etunimet": "Teppo",
+            "onkoSinullaSuomalainenHetu": "true",
+            "preference1-yoLiite": "true",
+            "preference3-amkLiite": "true",
+            "matkapuhelinnumero1": "",
+            "Postinumero": "00100",
+            "lahiosoite": "testikatu 1a1",
+            "preference2-yoLiite": "true",
+            "Sähköposti": "",
+            "kotikunta": "020",
+            "aidinkieli": "FI",
+            "syntymaaika": "01.01.1901"
+        },
+        "lisatiedot": {
+            "preference2-yoLiite": "true",
+            "preference3-yoLiite": "true",
+            "preference1-yoLiite": "true",
+            "asiointikieli": "suomi",
+            "preference2-amkLiite": "true",
+            "preference1-amkLiite": "true",
+            "preference3-amkLiite": "true",
+            "preference4-yoLiite": "true"
+        },
+        "hakutoiveet": {
+            "preference3-Koulutus-id-ao-groups": "1.2.246.562.28.90373737623",
+            "preference1-Opetuspiste": "Diakonia-ammattikorkeakoulu, Järvenpään toimipiste",
+            "preference3-Koulutus-id-athlete": "false",
+            "5406a5e2e4b0bf956c2e42d9": "option_0",
+            "preference2-Koulutus-id-aoIdentifier": "",
+            "preference2-Koulutus": "Fysiikka (aineenopettaja), luonnontieteiden kandidaatti ja filosofian maisteri",
+            "preference3-Opetuspiste-id": "1.2.246.562.10.2014050812360137079853",
+            "preference2-Koulutus-id-ao-groups": "1.2.246.562.28.56164573357",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_62",
+            "preference2-Koulutus-id-sora": "false",
+            "preference3-Koulutus-id": "1.2.246.562.20.94964838901",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.14842710486",
+            "preference2-Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "preference1-Koulutus-id-sora": "false",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-educationcode": "koulutus_671201",
+            "preference3-Koulutus-id-attachmentgroups": "1.2.246.562.28.90373737623",
+            "53e47517e4b0d272fdc5d866": "5",
+            "preference2-Koulutus-id": "1.2.246.562.20.645785477510",
+            "preference3-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-id-athlete": "false",
+            "53e47429e4b0d272fdc5d865": "option_0",
+            "preference5-Koulutus-id": "",
+            "preference2-Opetuspiste": "Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta",
+            "preference2-Koulutus-id-athlete": "false",
+            "preference3-Koulutus-educationDegree": "koulutusasteoph2002_62",
+            "preference2-Koulutus-id-kaksoistutkinto": "false",
+            "preference3-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus-id-attachmentgroups": "1.2.246.562.28.90373737623",
+            "preference1-amkLiite": "",
+            "preference3-Koulutus-id-lang": "FI",
+            "preference2-Opetuspiste-id": "1.2.246.562.10.94639300915",
+            "preference3-Opetuspiste": "Metropolia AMK, Helsinki, Sofianlehdonkatu",
+            "preference1-Opetuspiste-id-parents": "",
+            "preference6-Koulutus-id": "",
+            "preference2-Koulutus-id-vocational": "false",
+            "54045cbfe4b076a70eb67c63-option_0": "true",
+            "preference1-Koulutus-id": "1.2.246.562.20.42250016427",
+            "preference3-Koulutus-id-attachments": "true",
+            "preference3-Koulutus-id-sora": "false",
+            "preference4-Koulutus-id": "",
+            "preference2-Koulutus-id-lang": "SV",
+            "preference1-Koulutus": "Sosionomi (AMK), monimuotototeutus",
+            "preference3-Koulutus-id-educationcode": "koulutus_671201",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference3-Koulutus": "Sosionomi (AMK), sosiaaliala, päivätoteutus",
+            "preference3-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference2-Koulutus-id-educationcode": "koulutus_742301"
+        },
+        "koulutustausta": {
+            "preference3-yoLiite": "true",
+            "preference1-yoLiite": "true",
+            "preference3-amkLiite": "true",
+            "suoritusoikeus": "false",
+            "aiempitutkinto": "false",
+            "preference4-yoLiite": "true",
+            "pohjakoulutus_yo_tutkinto": "fi",
+            "preference2-yoLiite": "true",
+            "pohjakoulutus_yo_vuosi": "2014",
+            "preference2-amkLiite": "true",
+            "preference1-amkLiite": "true",
+            "pohjakoulutus_yo": "true"
+        },
+        "osaaminen": {
+            "preference2-yoLiite": "true",
+            "preference3-yoLiite": "true",
+            "preference1-yoLiite": "true",
+            "preference2-amkLiite": "true",
+            "preference1-amkLiite": "true",
+            "preference3-amkLiite": "true",
+            "54043b87e4b0ec7e82139116": "fdsfdsfdsf",
+            "preference4-yoLiite": "true"
+        }
+    },
+    "oid": "1.2.246.562.11.00000877686",
+    "state": "INCOMPLETE",
+    "studentIdentificationDone": false,
+    "personOid": "1.2.246.562.24.14229104472",
+    "lastAutomatedProcessingTime": 1408697524747,
+    "received": 1407486044009,
+    "updated": 1410516893464,
+    "redoPostProcess": "DONE",
+    "fullName": "testaaja teppo",
+    "searchNames": [
+        "teppo",
+        "testaaja",
+        "timo"
+    ],
+    "meta": {
+        "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+        "type": "AuthorizationMeta",
+        "opoAllowed": false,
+        "aoOrganizations": {
+            "1": [
+                "1.2.246.562.10.14842710486",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.50822930082",
+                "1.2.246.562.10.64582714578"
+            ],
+            "2": [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.50822930082",
+                "1.2.246.562.10.64582714578",
+                "1.2.246.562.10.64213824028"
+            ]
+        },
+        "allAoOrganizations": [
+            "1.2.246.562.10.14842710486",
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.50822930082",
+            "1.2.246.562.10.64582714578",
+            "1.2.246.562.10.64213824028"
+        ]
+    },
+    "overriddenAnswers": {
+        "sukupuoli": "1",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Timo",
+        "Etunimet": "Timo",
+        "Sukunimi": "Testaaja",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "010100A939R",
+        "syntymaaika": "01.01.1901"
+    },
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1407486044009,
+            "user": "anonymousUser"
+        }
+    ]
+}
