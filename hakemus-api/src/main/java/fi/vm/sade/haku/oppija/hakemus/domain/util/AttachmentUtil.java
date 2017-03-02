@@ -278,7 +278,7 @@ public class AttachmentUtil {
         final String langOfKeyTrue = anyKeyTrue(answers);
         boolean eitherYleinenOrValtionhallinnonKielitutkinto = langOfKeyTrue != null;
         if(eitherYleinenOrValtionhallinnonKielitutkinto) {
-            Iterator<String> vocationalAoOids = ApplicationUtil.getVocationalAttachmentAOIds(application).iterator();
+            Iterator<String> vocationalAoOids = ApplicationUtil.getVocationalAttachmentAOIds(application, Optional.of(langOfKeyTrue)).iterator();
             if(vocationalAoOids.hasNext()) {
                 final String firstVocationalAoOid = vocationalAoOids.next();
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(firstVocationalAoOid, lang);
