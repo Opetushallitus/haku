@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
+import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -50,10 +51,10 @@ public final class ApplicationUtil {
     }
 
     public static List<String> getDiscretionaryAttachmentAOIds(final Application application) {
-        return getAttachmentAOIds(application, OppijaConstants.PREFERENCE_DISCRETIONARY);
+        return getAttachmentAOIds(application, OppijaConstants.PREFERENCE_DISCRETIONARY, Optional.empty());
     }
-    public static List<String> getVocationalAttachmentAOIds(final Application application) {
-        return getAttachmentAOIds(application, OppijaConstants.EDUCATION_VOCATIONAL);
+    public static List<String> getVocationalAttachmentAOIds(final Application application, final Optional<String> lang) {
+        return getAttachmentAOIds(application, OppijaConstants.EDUCATION_VOCATIONAL, lang);
     }
     public static Map<String, List<String>> getAmkOpeAttachments(final Application application) {
         Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
@@ -130,17 +131,20 @@ public final class ApplicationUtil {
         return Boolean.parseBoolean(answers.get(field));
     }
 
-    private static List<String> getAttachmentAOIds(Application application, String field) {
+    private static List<String> getAttachmentAOIds(Application application, String field, Optional<String> langFilter) {
         List<String> attachmentAOs = Lists.newArrayList();
         Map<String, String> answers = application.getVastauksetMerged();
         int i = 1;
         while (true) {
             String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
             if (answers.containsKey(aoKey)) {
-                String aoId = answers.get(aoKey);
-                String key = String.format(field, i);
-                if (isIdGivenAndKeyValueTrue(answers, aoId, key)) {
-                    attachmentAOs.add(aoId);
+                final boolean languageMatchOpt = !langFilter.isPresent() || languageMatches(langFilter.get(), answers, i);
+                if(languageMatchOpt) {
+                    String aoId = answers.get(aoKey);
+                    String key = String.format(field, i);
+                    if (isIdGivenAndKeyValueTrue(answers, aoId, key)) {
+                        attachmentAOs.add(aoId);
+                    }
                 }
             } else {
                 break;
@@ -148,6 +152,12 @@ public final class ApplicationUtil {
             ++i;
         }
         return attachmentAOs;
+    }
+
+    private static boolean languageMatches(String langFilter, Map<String, String> answers, int i) {
+        final String preferenceLang =
+                    StringUtils.upperCase(answers.get(String.format(OppijaConstants.EDUCATION_LANGUAGE, i)));
+        return langFilter.toUpperCase().equals(preferenceLang);
     }
 
     private static boolean isIdGivenAndKeyValueTrue(Map<String, String> answers, String id, String key) {
