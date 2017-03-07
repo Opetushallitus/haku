@@ -49,7 +49,7 @@ public class SeleniumContainer {
     public RemoteWebDriver getDriver() {
         if (webDriver == null) {
             if(Boolean.getBoolean("it.usePhantomJs")) {
-                PhantomJsDriverManager.getInstance().setup();
+                PhantomJsDriverManager.getInstance().setup("2.1.1");
                 this.webDriver = new PhantomJSDriver();
             } else {
                 ChromeDriverManager.getInstance().setup();
