@@ -448,6 +448,7 @@
         "dueDate": 1423573234873,
         "type": "Ennakkotehtävät",
         "descreption": "<p>Lue lisää valintaoppaasta.</p>",
+        "recipient": "Sibelius-Akatemian hakijapalvelut",
         "address": {
           "streetAddress": "Sibelius-Akatemian hakijapalvelut, PL 32",
           "streetAddress2": null,
@@ -972,6 +973,7 @@
         "dueDate": 1423573234873,
         "type": "Ennakkotehtävät",
         "descreption": "<p>Lue lisää valintaoppaasta.</p>",
+        "recipient": "Sibelius-Akatemian hakijapalvelut",
         "address": {
           "streetAddress": "Sibelius-Akatemian hakijapalvelut, PL 32",
           "streetAddress2": null,
