@@ -108,7 +108,10 @@ public final class ThemeQuestionConfigurator {
             try {
                 configuredOptions.add(configureThemeQuestionForOption(baseQuery, optionId, generateTitledGroup, preferenceElementId, groupOption));
             } catch (Exception exception) {
-                LOGGER.error("Failed to configure question for " + (groupOption ? "group " : "application option ") + optionId + " with base query: "+ baseQuery.toString(), exception);
+                final String message =
+                        "Failed to configure question for " + (groupOption ? "group " : "application option ") + optionId + " with base query: "+ baseQuery.toString();
+                LOGGER.error(message, exception);
+                throw new RuntimeException(message, exception);
             }
         }
         return configuredOptions;
