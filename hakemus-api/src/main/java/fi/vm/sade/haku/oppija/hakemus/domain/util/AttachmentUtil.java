@@ -201,15 +201,6 @@ public class AttachmentUtil {
                 continue;
             }
 
-            String name = null;
-            if (ao.getApplicationOffice() != null) {
-                name = ao.getApplicationOffice().getName();
-            } else if (ao.getProvider().getApplicationOffice() != null
-                    && ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
-                name = ao.getProvider().getApplicationOffice().getName();
-            } else {
-                name = ao.getProvider().getName();
-            }
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
                 if (attachmentDTO.isUsedInApplicationForm()) {
                     String descriptionText = attachmentDTO.getDescreption();
@@ -230,7 +221,7 @@ public class AttachmentUtil {
                             .setDescription(description)
                             .setDeadline(deadline)
                             .setEmailAddress(email)
-                            .setAddress(getAddress(name, attachmentDTO.getAddress()));
+                            .setAddress(getAddress(attachmentDTO.getRecipient(), attachmentDTO.getAddress()));
 
                     if (deadline == null) {
                         attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
