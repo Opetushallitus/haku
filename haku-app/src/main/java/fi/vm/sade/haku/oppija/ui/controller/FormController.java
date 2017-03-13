@@ -240,10 +240,16 @@ public class FormController {
         return builder;
     }
 
-    private LogMessage.LogMessageBuilder entry(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
-        return builder().hakemusOid(app.getOid())
+    private LogMessage.LogMessageBuilder entryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
+        return builder().hakemusOid(app.getOid()).hakuOid(app.getApplicationSystemId())
                 .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
                 .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION);
+    }
+
+    private LogMessage.LogMessageBuilder entrySavePhase(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
+        return builder().hakemusOid(app.getOid()).hakuOid(app.getApplicationSystemId())
+                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
+                .setOperaatio(HakuOperation.SAVE_PHASE_TO_SESSION);
     }
 
     @POST
@@ -257,11 +263,11 @@ public class FormController {
             ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
             final String oid = modelResponse.getApplication().getOid();
             RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
-            AUDIT.log(withIpAndSession(entry(modelResponse.getApplication()),request).build());
+            AUDIT.log(withIpAndSession(entryNewApplication(modelResponse.getApplication()).message("Submitted new application"),request).build());
             return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
         } catch(Throwable t) {
             fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
-            AUDIT.log(withIpAndSession(entry(application).message("Failed: " + t.getMessage()),request).build());
+            AUDIT.log(withIpAndSession(entryNewApplication(application).message("Failed: " + t.getMessage()),request).build());
             throw t;
         }
     }
@@ -288,7 +294,7 @@ public class FormController {
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
         fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
-        AUDIT.log(withIpAndSession(entry(application).message(String.format("Submitted phase %s", phaseId)),request).build());
+        AUDIT.log(withIpAndSession(entrySavePhase(application).message(String.format("Submitted phase %s", phaseId)),request).build());
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
