@@ -1,10 +1,12 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.api.client.util.Lists;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -63,6 +65,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -71,6 +74,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.google.api.client.util.Lists.*;
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.FluentIterable.*;
+import static com.google.common.collect.Maps.*;
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
@@ -664,32 +671,45 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
 
     @Override
-    public List<Map<String, Object>> getPreferences(String term) {
-        term = term.toLowerCase();
-        List<Map<String, Object>> matchingPreferences = new ArrayList<Map<String, Object>>(20);
-        Iterator<Option> prefIterator = Iterators.concat(
+    public List<Map<String, Object>> getPreferences(String termUnknownCase) {
+        final String term = termUnknownCase.toLowerCase();
+        Collection<Option> prefs = newArrayList(Iterators.concat(
                 koodistoService.getHakukohdekoodit().iterator(),
-                koodistoService.getAikuhakukohdekoodit().iterator());
-        while (prefIterator.hasNext() && matchingPreferences.size() <= 20) {
-            Option pref = prefIterator.next();
-            Map<String, String> translations = pref.getI18nText().getTranslations();
-            for (String tran : translations.values()) {
-                if (tran.toLowerCase().startsWith(term) || pref.getValue().equals(term)) {
-                    Map<String, Object> matchingPref = new HashMap<String, Object>(2);
-                    matchingPref.put("name", translations);
-                    matchingPref.put("dataId", pref.getValue());
-                    matchingPreferences.add(matchingPref);
-                    break;
-                }
-            }
-        }
-        Collections.sort(matchingPreferences, new Comparator<Map<String, Object>>() {
+                koodistoService.getAikuhakukohdekoodit().iterator()));
+
+        ImmutableList<Map.Entry<String, Option>> matches = from(prefs).transform(new Function<Option, Map.Entry<String, Option>>() {
+
+            @Nullable
             @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                return o1.get("name").toString().compareTo(o2.get("name").toString());
+            public Map.Entry<String, Option> apply(@Nullable Option option) {
+                Map<String, String> translations = option.getI18nText().getTranslations();
+                for (String tran : translations.values()) {
+                    final String t = tran.toLowerCase();
+                    if (t.startsWith(term)) {
+                        return immutableEntry(t, option);
+                    } else if (option.getValue().equals(term)) {
+                        return immutableEntry(option.getValue(), option);
+                    }
+                }
+                return null;
+            }
+        }).filter(notNull()).toSortedList(new Comparator<Map.Entry<String, Option>>() {
+            @Override
+            public int compare(Map.Entry<String, Option> o1, Map.Entry<String, Option> o2) {
+                return o1.getKey().compareTo(o2.getKey());
             }
         });
-        return matchingPreferences;
+
+        return from(matches).limit(20).transform(new Function<Map.Entry<String, Option>, Map<String, Object>>() {
+
+            @Nullable
+            @Override
+            public Map<String, Object> apply(@Nullable Map.Entry<String, Option> entry) {
+                Option option = entry.getValue();
+
+                return ImmutableMap.of("name", option.getI18nText().getTranslations(), "dataId", option.getValue());
+            }
+        }).toList();
     }
 
 
@@ -713,7 +733,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             Map<String, String> opt = new HashMap<String, String>();
             opt.put("value", ed);
 
-            Map<String, String> trans = Maps.newHashMap(createI18NText("pohjakoulutus_" + ed, FORM_COMMON_BUNDLE_NAME).getTranslations());
+            Map<String, String> trans = newHashMap(createI18NText("pohjakoulutus_" + ed, FORM_COMMON_BUNDLE_NAME).getTranslations());
             Map<String, String> transOverride = createI18NText("virkailija.hakemus.pohjakoulutus." + ed, MESSAGES_BUNDLE_NAME).getTranslations();
             trans.putAll(transOverride);
             for (String lang : new String[] {"fi", "sv", "en"}) {
