@@ -71,6 +71,8 @@ public interface KoodistoService {
 
     List<Option> getHakukohdekoodit();
 
+    List<Option> getAikuhakukohdekoodit();
+
     List<Option> getLaajuusYksikot();
 
     List<Option> getKorkeakouluTutkintotasot();

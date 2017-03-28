@@ -1,7 +1,9 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
@@ -659,12 +661,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return groups;
     }
 
+
+
     @Override
     public List<Map<String, Object>> getPreferences(String term) {
         term = term.toLowerCase();
-        List<Option> preferences = koodistoService.getHakukohdekoodit();
         List<Map<String, Object>> matchingPreferences = new ArrayList<Map<String, Object>>(20);
-        Iterator<Option> prefIterator = preferences.iterator();
+        Iterator<Option> prefIterator = Iterators.concat(
+                koodistoService.getHakukohdekoodit().iterator(),
+                koodistoService.getAikuhakukohdekoodit().iterator());
         while (prefIterator.hasNext() && matchingPreferences.size() <= 20) {
             Option pref = prefIterator.next();
             Map<String, String> translations = pref.getI18nText().getTranslations();
@@ -678,6 +683,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 }
             }
         }
+        Collections.sort(matchingPreferences, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                return o1.get("name").toString().compareTo(o2.get("name").toString());
+            }
+        });
         return matchingPreferences;
     }
 

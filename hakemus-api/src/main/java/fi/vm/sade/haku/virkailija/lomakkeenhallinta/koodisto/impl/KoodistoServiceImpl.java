@@ -58,6 +58,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GENDER = "sukupuoli";
     public static final String CODE_HAKUKAUSI = "kausi";
     private static final String CODE_HAKUKOHDE = "hakukohteet";
+    private static final String CODE_AIKUHAKUKOHDE = "aikuhakukohteet";
     private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
     private static final String CODE_LAAJUUSYKSIKKO = "opintojenlaajuusyksikko";
     private static final String CODE_TUTKINTOTYYPPI = "tutkintotyyppi";
@@ -385,6 +386,10 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getHakukohdekoodit() {
         return codesToOptions(CODE_HAKUKOHDE);
+    }
+
+    public List<Option> getAikuhakukohdekoodit() {
+        return codesToOptions(CODE_AIKUHAKUKOHDE);
     }
 
     @Override
