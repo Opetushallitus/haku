@@ -33,11 +33,13 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static java.util.Collections.*;
 
 @Service
 @Profile(value = {"dev", "it"})
@@ -367,6 +369,10 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getHakukohdekoodit() {
         return this.listOfHakukohdekoodit;
+    }
+
+    public List<Option> getAikuhakukohdekoodit() {
+        return emptyList();
     }
 
     @Override
