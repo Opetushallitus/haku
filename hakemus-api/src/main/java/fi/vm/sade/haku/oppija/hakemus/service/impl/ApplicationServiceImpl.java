@@ -916,13 +916,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
-            checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
-        }
-        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
 
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             Application applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
+            if (FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
+                boolean isDiscretionary = isDiscretionaryBecauseOfBaseEducation(applicationWithValintaData);
+                updateKoulutusDiscretionary(application.getOid(), hakutoiveetAnswers, isDiscretionary);
+            }
+            application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
             application = removeOrphanedAnswers(application, applicationWithValintaData);
             ValidationResult validationResult = validateApplication(applicationWithValintaData);
             if (validationResult.hasErrors()) {
@@ -931,7 +932,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                 application.activate();
             }
         }
+
         return application;
+    }
+
+    private boolean isDiscretionaryBecauseOfBaseEducation(Application application) {
+        final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
+        final boolean isDiscretionary = onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers);
+        return isDiscretionary;
     }
 
     private ValidationResult validateApplication(final Application application) {
@@ -942,20 +950,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
-        final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
-        if (onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers)) {
-            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
-        }
-    }
-
-    private void updateKoulutusToDiscretionary(String oid, Map<String, String> hakutoiveetAnswers) {
+    private void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionary) {
         for (int i = 1; i < 20; i++) {
           if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
-              final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
-              final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
-              updateAndLog(oid, hakutoiveetAnswers, discretionary, "true");
-              updateAndLog(oid, hakutoiveetAnswers, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
+              final String discretionaryKey = String.format(PREFERENCE_DISCRETIONARY, i);
+              final String discretionaryValue = isDiscretionary ? "true" : "false";
+              final String followUpKey = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+              final String followUpValue = isDiscretionary ? HakutoiveetPhase.TODISTUSTENPUUTTUMINEN : "";
+              updateAndLog(oid, hakutoiveetAnswers, discretionaryKey, discretionaryValue);
+              updateAndLog(oid, hakutoiveetAnswers, followUpKey, followUpValue);
           }
         }
     }
