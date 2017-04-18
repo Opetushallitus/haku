@@ -18,15 +18,13 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
@@ -46,6 +44,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -59,6 +58,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurit
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_PERSONAL;
 import static java.lang.String.format;
+import static java.util.Arrays.*;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -106,6 +106,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     protected String getCollectionName() {
         return "application";
+    }
+
+    public List<String> findMaksuvelvolliset(final String applicationSystemId, final String aoId) {
+        Iterable<DBObject> results = getCollection().aggregate(EligibilityRules.maksuvelvollisetQuery(applicationSystemId, aoId)).results();
+
+        return FluentIterable.from(results).transform(new Function<DBObject, String>() {
+            @Nullable
+            @Override
+            public String apply(@Nullable DBObject input) {
+                Object oid = input.get("oid");
+                return oid != null ? oid.toString() : null;
+            }
+        }).filter(Objects::nonNull).toList();
     }
 
     @Override
@@ -409,6 +422,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             applications.add(fromDBObject.apply(cursor.next()));
         }
         return applications;
+    }
+
+    public static class EligibilityRules {
+        public static List<DBObject> maksuvelvollisetQuery(String applicationSystemId, String aoId) {
+            return asList(
+                    new BasicDBObject("$match", new BasicDBObject("applicationSystemId", applicationSystemId)
+                            .append("state", new BasicDBObject(QueryOperators.IN, asList(Application.State.ACTIVE.name(), Application.State.INCOMPLETE.name())))
+                            .append("preferenceEligibilities.aoId", aoId)),
+                    new BasicDBObject("$project", new BasicDBObject("oid",1)
+                            .append("preferenceEligibilities", new BasicDBObject("$filter",
+                                    new BasicDBObject("input", "$preferenceEligibilities")
+                                            .append("as","item")
+                                            .append("cond", new BasicDBObject("$eq", asList("$$item.aoId", aoId)) )
+                                    ))),
+                    new BasicDBObject("$match", new BasicDBObject("preferenceEligibilities.maksuvelvollisuus",
+                            PreferenceEligibility.Maksuvelvollisuus.REQUIRED.name()))
+            );
+        }
     }
 
     public static class PaymentDueDateRules {
