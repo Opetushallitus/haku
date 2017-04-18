@@ -820,6 +820,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+    public List<String> findMaksuvelvolliset(final String applicationSystemId, final String aoId) {
+        return applicationDAO.findMaksuvelvolliset(applicationSystemId, aoId);
+    }
+
     @Override
     public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId, "maxApplicationOptions");

@@ -559,6 +559,16 @@ public class ApplicationResource {
         return applicationService.findApplicationAdditionalData(asId, aoId);
     }
 
+    @GET
+    @Path("/eligibilities/{asId}/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public List<String> getEligibilitiesForApplicationObject(@PathParam("asId") String asId,
+                                                                           @PathParam("aoId") String aoId) {
+        return applicationService.findMaksuvelvolliset(asId, aoId);
+    }
+
+
     @POST
     @Path("/additionalData")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
