@@ -50,10 +50,10 @@
                 <a href="https://opintopolku.fi/wp/ammattikorkeakoulu/ammattikorkeakoulujen-hakijapalvelut/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammattikorkeakoulujen-hakijapalvelut/</a>
             </li>
             <li>yliopistojen hakijapalvelut:
-                <a href="/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
+                <a href="https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
           </li>
            <li>ammatillisten opettajakorkeakoulujen hakijapalvelut:
-                <a href="/wp/fi/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
+                <a href="https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
           </li>
         </ul>
         <li>haettuasi ammatillisiin koulutuksiin</li>
@@ -83,13 +83,13 @@
         <li>om du sökt till högskola</li>
         <ul>
             <li>ansökningsservicen vid yrkeshögskolorna:
-                <a href="/wp/sv/yrkeshogskola/yrkeshogskolornas-ansokningsbyraer-och-ansokningsservice">https://opintopolku.fi/wp/sv/yrkeshogskola/yrkeshogskolornas-ansokningsbyraer-och-ansokningsservice</a>
+                <a href="https://studieinfo.fi/wp/sv/yrkeshogskola/yrkeshogskolornas-ansokningsbyraer-och-ansokningsservice">https://studieinfo.fi/wp/sv/yrkeshogskola/yrkeshogskolornas-ansokningsbyraer-och-ansokningsservice</a>
             </li>
             <li>ansökningsservicen vid universiteten:
-                <a href="/wp/sv/universitet/universitetens-ansokningsservice">https://opintopolku.fi/wp/sv/universitet/universitetens-ansokningsservice</a>
+                <a href="https://studieinfo.fi/wp/sv/universitet/universitetens-ansokningsservice">https://studieinfo.fi/wp/sv/universitet/universitetens-ansokningsservice</a>
           </li>
             <li>ansökningsservicen vid yrkespedagogiska lärarhögskolor (på finska):
-                <a href="/wp/fi/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
+                <a href="https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
           </li>
         </ul>
         <li>om du sökt till yrkesutbildning</li>
@@ -120,13 +120,13 @@
         <li>if you have applied to a higher education institution</li>
         <ul>
             <li>the admissions services at polytechnics/universities of applied sciences (UAS):
-                <a href="/wp2/en/higher-education/polytechnics-universities-of-applied-sciences">https://opintopolku.fi/wp2/en/higher-education/polytechnics-universities-of-applied-sciences</a>
+                <a href="https://studyinfo.fi/wp2/en/higher-education/polytechnics-universities-of-applied-sciences/admissions-services-of-finnish-polytechnics-uas/">https://studyinfo.fi/wp2/en/higher-education/polytechnics-universities-of-applied-sciences/admissions-services-of-finnish-polytechnics-uas/</a>
             </li>
             <li>the admissions services at universities:
-                <a href="/wp2/en/higher-education/universities">https://opintopolku.fi/wp2/en/higher-education/universities</a>
+                <a href="https://studyinfo.fi/wp2/en/higher-education/universities/admissions-services-of-finnish-universities/">https://studyinfo.fi/wp2/en/higher-education/universities/admissions-services-of-finnish-universities/</a>
             </li>
-            <li>the admissions services for vocational teacher education (in Finnish:
-                <a href="/wp/fi/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
+            <li>the admissions services for vocational teacher education (in Finnish):
+                <a href="https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
             </li>
         </ul>
         
