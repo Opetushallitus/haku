@@ -47,7 +47,7 @@
         <li>haettuasi korkeakouluun</li>
         <ul>
             <li>ammattikorkeakoulujen hakijapalvelut:
-                <a href="/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut">https://opintopolku.fi/wp/ammattikorkeakoulu/ammattikorkeakoulujen-hakijapalvelut/</a>
+                <a href="https://opintopolku.fi/wp/ammattikorkeakoulu/ammattikorkeakoulujen-hakijapalvelut/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammattikorkeakoulujen-hakijapalvelut/</a>
             </li>
             <li>yliopistojen hakijapalvelut:
                 <a href="/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
