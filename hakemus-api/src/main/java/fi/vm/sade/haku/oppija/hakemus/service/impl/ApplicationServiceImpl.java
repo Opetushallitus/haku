@@ -920,8 +920,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             Application applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
             if (FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
-                boolean isDiscretionary = isDiscretionaryBecauseOfBaseEducation(applicationWithValintaData);
-                updateKoulutusDiscretionary(application.getOid(), hakutoiveetAnswers, isDiscretionary);
+                boolean isDiscretionaryBecauseOfBaseEducation = isDiscretionaryBecauseOfBaseEducation(applicationWithValintaData);
+                updateKoulutusDiscretionary(application.getOid(), hakutoiveetAnswers, isDiscretionaryBecauseOfBaseEducation);
             }
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
             application = removeOrphanedAnswers(application, applicationWithValintaData);
@@ -950,16 +950,30 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionary) {
+    private void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionaryBecauseOfBaseEducation) {
         for (int i = 1; i < 20; i++) {
-          if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
-              final String discretionaryKey = String.format(PREFERENCE_DISCRETIONARY, i);
-              final String discretionaryValue = isDiscretionary ? "true" : "false";
-              final String followUpKey = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
-              final String followUpValue = isDiscretionary ? HakutoiveetPhase.TODISTUSTENPUUTTUMINEN : "";
-              updateAndLog(oid, hakutoiveetAnswers, discretionaryKey, discretionaryValue);
-              updateAndLog(oid, hakutoiveetAnswers, followUpKey, followUpValue);
-          }
+            if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
+                final String discretionaryKey = String.format(PREFERENCE_DISCRETIONARY, i);
+                final String followUpKey = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
+
+                String currentDiscretionaryValue = hakutoiveetAnswers.getOrDefault(discretionaryKey, "false");
+                boolean isDiscretionary = currentDiscretionaryValue.equals("true") ? true : isDiscretionaryBecauseOfBaseEducation;
+                String updatedDiscretionaryValue = isDiscretionary ? "true" : "false";
+
+                if (!currentDiscretionaryValue.equals(updatedDiscretionaryValue)) {
+                    updateAndLog(oid, hakutoiveetAnswers, discretionaryKey, updatedDiscretionaryValue);
+                }
+
+                if (!isDiscretionary) {
+                    removeAndLog(oid, hakutoiveetAnswers, followUpKey);
+                } else {
+                    String currentFollowUpValue = hakutoiveetAnswers.getOrDefault(followUpKey, "");
+                    String updatedFollowUpValue = isDiscretionaryBecauseOfBaseEducation ? HakutoiveetPhase.TODISTUSTENPUUTTUMINEN : currentFollowUpValue;
+                    if (!currentFollowUpValue.equals(updatedFollowUpValue)) {
+                        updateAndLog(oid, hakutoiveetAnswers, followUpKey, updatedFollowUpValue);
+                    }
+                }
+            }
         }
     }
 
@@ -971,6 +985,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     private void updateAndLog(String oid, Map<String, String> hakutoiveet, String key, String value) {
         LOGGER.info("PostProcess discretionary update application oid={} {}={}", oid, key, value);
         hakutoiveet.put(key, value);
+    }
+
+    private void removeAndLog(String oid, Map<String, String> hakutoiveet, String key) {
+        LOGGER.info("PostProcess discretionary remove key from application oid={} {}", oid, key);
+        hakutoiveet.remove(key);
     }
 
     public Application getApplication(final Application queryApplication) {
