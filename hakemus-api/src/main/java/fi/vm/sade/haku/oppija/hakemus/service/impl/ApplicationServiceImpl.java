@@ -653,6 +653,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                 return false;
             }
             return answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_DISCRETIONARY);
+        } else if(OppijaConstants.PHASE_EDUCATION.equals(phaseId) && OppijaConstants.ELEMENT_ID_BASE_EDUCATION_POSTPROCESS.equals(answerKey)){
+            return false;
         }
         return true;
     }
@@ -919,6 +921,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             Application applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
+
+            Map<String, String> oldEducationAnswers = application.getPhaseAnswersForModify(OppijaConstants.PHASE_EDUCATION);
+            oldEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION_POSTPROCESS, applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
+            application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, oldEducationAnswers);
+
             if (FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
                 boolean isDiscretionaryBecauseOfBaseEducation = isDiscretionaryBecauseOfBaseEducation(applicationWithValintaData);
                 updateKoulutusDiscretionary(application.getOid(), hakutoiveetAnswers, isDiscretionaryBecauseOfBaseEducation);

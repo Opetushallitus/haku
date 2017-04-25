@@ -81,6 +81,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
+    public static final String ELEMENT_ID_BASE_EDUCATION_POSTPROCESS = "POHJAKOULUTUS-POSTPROCESS";
     public static final String ELEMENT_ID_LISAKOULUTUS_KYMPPI = "LISAKOULUTUS_KYMPPI";
     public static final String ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN = "LISAKOULUTUS_VAMMAISTEN";
     public static final String ELEMENT_ID_LISAKOULUTUS_TALOUS = "LISAKOULUTUS_TALOUS";
