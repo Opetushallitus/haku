@@ -56,7 +56,7 @@ public class HakutoiveetPhase {
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
     private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet_teema";
     public static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
-    private static final String[] POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO = {KESKEYTYNYT, ULKOMAINEN_TUTKINTO};
+    private static final String[] POHJAKOULUTUS_VALMIS = {PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY};
 
     public static Element create(final FormParameters formParameters) {
         return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters)
@@ -217,9 +217,9 @@ public class HakutoiveetPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        Or baseEducationNotReadyOrForeignExpr = new Or(
-                ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO),
-                ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS-POSTPROCESS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO)
+        Or baseEducationReadyExpr = new Or(
+                ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS", POHJAKOULUTUS_VALMIS),
+                ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS-POSTPROCESS", POHJAKOULUTUS_VALMIS)
         );
 
         Element discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
@@ -230,14 +230,14 @@ public class HakutoiveetPhase {
         Element discretionaryRule =
                 createVarEqualsToValueRule(index + "-Koulutus-id-discretionary", KYLLA);
 
-        Element discretionaryRule2 = Rule(new Not(baseEducationNotReadyOrForeignExpr)).build();
+        Element discretionaryRule2 = Rule(baseEducationReadyExpr).build();
 
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
         Element KoulutusValittu = Rule(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).build();
 
-        Element keskeytynytTaiUlkomainenRule = Rule(baseEducationNotReadyOrForeignExpr).build();
+        Element keskeytynytTaiUlkomainenRule = Rule(new Not(baseEducationReadyExpr)).build();
 
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
         ElementUtil.addRequiredValidator(hiddenDiscretionary, formParameters);
