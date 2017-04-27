@@ -56,7 +56,7 @@ public class HakutoiveetPhase {
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
     private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet_teema";
     public static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
-    private static final String[] POHJAKOULUTUS_VALMIS = {PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY};
+    private static final String[] POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO = {KESKEYTYNYT, ULKOMAINEN_TUTKINTO};
 
     public static Element create(final FormParameters formParameters) {
         return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters)
@@ -217,10 +217,14 @@ public class HakutoiveetPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        Or baseEducationReadyExpr = new Or(
-                ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS", POHJAKOULUTUS_VALMIS),
-                ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS-POSTPROCESS", POHJAKOULUTUS_VALMIS)
-        );
+        Expr jalkikasitelty = new NotNull("POHJAKOULUTUS-POSTPROCESS");
+        Expr jalkikasittelyHarkinnanvarainen = ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS-POSTPROCESS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO);
+        Expr jalkikasittelyEiHarkinnanvarainen = new Not(jalkikasittelyHarkinnanvarainen);
+        Expr hakemusKesken = ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO);
+
+        Expr jalkikasittelyPakottanutHarkinnanvaraiseksiTaiHakemusHarkinnanvarainen = new And(jalkikasitelty, new Or(jalkikasittelyHarkinnanvarainen, new And(jalkikasittelyEiHarkinnanvarainen, hakemusKesken)));
+        Expr jalkikasittelyaEiVielaTehtyJaHakemusHarkinnanvarainen = new And(new Not(jalkikasittelyPakottanutHarkinnanvaraiseksiTaiHakemusHarkinnanvarainen), hakemusKesken);
+        Expr harkinnanvarainen = new Or(jalkikasittelyPakottanutHarkinnanvaraiseksiTaiHakemusHarkinnanvarainen, jalkikasittelyaEiVielaTehtyJaHakemusHarkinnanvarainen);
 
         Element discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
@@ -230,14 +234,14 @@ public class HakutoiveetPhase {
         Element discretionaryRule =
                 createVarEqualsToValueRule(index + "-Koulutus-id-discretionary", KYLLA);
 
-        Element discretionaryRule2 = Rule(baseEducationReadyExpr).build();
+        Element discretionaryRule2 = Rule(new Not(harkinnanvarainen)).build();
 
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
         Element KoulutusValittu = Rule(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).build();
 
-        Element keskeytynytTaiUlkomainenRule = Rule(new Not(baseEducationReadyExpr)).build();
+        Element keskeytynytTaiUlkomainenRule = Rule(harkinnanvarainen).build();
 
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
         ElementUtil.addRequiredValidator(hiddenDiscretionary, formParameters);
