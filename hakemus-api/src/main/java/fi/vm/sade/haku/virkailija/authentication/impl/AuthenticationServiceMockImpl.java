@@ -89,11 +89,6 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     }
 
     @Override
-    public Person getStudentOid(String personOid) {
-        return PersonBuilder.start().setStudentOid(personOid).get();
-    }
-
-    @Override
     public String getLangCookieName() {
         return "testi18next";
     }

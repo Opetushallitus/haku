@@ -89,11 +89,6 @@
                     </c:if>
                 </c:otherwise>
             </c:choose>
-            <c:choose>
-                <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
-                    <jsp:include page="addStudentOid.jsp"/>
-                </c:when>
-            </c:choose>
             <c:if test="${it.postProcessAllowed}">
                 <jsp:include page="postProcess.jsp"/>
             </c:if>

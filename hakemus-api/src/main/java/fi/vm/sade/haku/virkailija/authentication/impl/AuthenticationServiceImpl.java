@@ -133,7 +133,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
             for (JsonElement elem: orgJson) {
                 JsonObject orgObj = elem.getAsJsonObject();
-                String organization = orgObj.get("organisaatioOid").getAsString();
+                String organization = orgObj.get("organisaatio.oid").getAsString();
                 if (!orgObj.get("passivoitu").getAsBoolean()){
                     orgs.add(organization);
                 } else {
@@ -188,25 +188,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RemoteServiceException(targetService + url, e);
         }
     }
-
-    @Override
-    public Person getStudentOid(String personOid) {
-        String url = urlConfiguration.url("authentication-service.henkiloYksiloi", personOid);
-
-        String responseString = null;
-        try {
-            HttpResponse response = cachingRestClient.put(url, MediaType.APPLICATION_JSON, null);
-            BasicResponseHandler handler = new BasicResponseHandler();
-            responseString = handler.handleResponse(response);
-        } catch (CachingRestClient.HttpException hte) {
-            // Nothing to do
-        } catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
-        }
-        log.debug("Person found: {}", responseString);
-        return gson.fromJson(responseString, Person.class);
-    }
-
+    
     private Person createPerson(Person person) {
         String personJson = gson.toJson(person, Person.class);
         String url = urlConfiguration.url("authentication-service.henkilo");

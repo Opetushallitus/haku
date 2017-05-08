@@ -44,8 +44,6 @@ public interface OfficerUIService {
 
     Application createApplication(final String asId);
 
-    void addStudentOid(final String oid);
-
     void postProcess(final String oid, final boolean email);
 
     void changeState(String oid, Application.State state, String reason);
