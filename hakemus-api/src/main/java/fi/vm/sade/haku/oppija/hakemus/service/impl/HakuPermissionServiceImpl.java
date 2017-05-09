@@ -13,6 +13,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;
@@ -35,22 +36,25 @@ import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
     private AuthenticationService authenticationService;
+    private KayttooikeusService kayttoikeusService;
     private ApplicationSystemService applicationSystemService;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
+                                     KayttooikeusService kayttoikeusService,
                                      ApplicationSystemService applicationSystemService,
                                      OrganisationHierarchyAuthorizer authorizer) {
         super("HAKEMUS");
         this.authenticationService = authenticationService;
+        this.kayttoikeusService = kayttoikeusService;
         this.applicationSystemService = applicationSystemService;
         this.setAuthorizer(authorizer);
     }
 
     @Override
     public List<String> userCanReadApplications() {
-        return userCanReadApplications(authenticationService.getOrganisaatioHenkilo());
+        return userCanReadApplications(kayttoikeusService.getOrganisaatioHenkilo());
     }
 
     @Override
@@ -68,12 +72,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public List<String> userHasOpoRole() {
-        return userHasOpoRole(authenticationService.getOrganisaatioHenkilo());
+        return userHasOpoRole(kayttoikeusService.getOrganisaatioHenkilo());
     }
 
     @Override
     public List<String> userHasHetuttomienKasittelyRole() {
-        return userHasHetuttomienKasittelyRole(authenticationService.getOrganisaatioHenkilo());
+        return userHasHetuttomienKasittelyRole(kayttoikeusService.getOrganisaatioHenkilo());
     }
 
     @Override
@@ -251,7 +255,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanEnterApplication() {
-        for (String org : authenticationService.getOrganisaatioHenkilo()) {
+        for (String org : kayttoikeusService.getOrganisaatioHenkilo()) {
             if (checkAccess(org, getCreateReadUpdateDeleteRole())) {
                 return true;
             }
@@ -262,7 +266,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     @Override
     public List<String> userCanEnterApplications() {
         List<String> orgs = new ArrayList<String>();
-        for (String org : authenticationService.getOrganisaatioHenkilo()) {
+        for (String org : kayttoikeusService.getOrganisaatioHenkilo()) {
             if (checkAccess(org, getCreateReadUpdateDeleteRole())) {
                 orgs.add(org);
             }

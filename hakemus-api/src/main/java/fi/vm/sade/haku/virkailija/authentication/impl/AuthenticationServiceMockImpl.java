@@ -48,23 +48,6 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     }
 
     @Override
-    public List<String> getOrganisaatioHenkilo() {
-        if (SecurityContextHolder.getContext() == null
-                || SecurityContextHolder.getContext().getAuthentication() == null
-                || SecurityContextHolder.getContext().getAuthentication().getName() == null) {
-            return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
-        }
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (username.equals("officer")) {
-            return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
-        } else if (username.equals("kkvirkailija") || username.equals("eikkvirkailija")) {
-            return Lists.newArrayList("1.2.246.562.10.61042218794");
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
     public Person getCurrentHenkilo() {
         return PersonBuilder.start()
                 .setContactLanguage("fi")
