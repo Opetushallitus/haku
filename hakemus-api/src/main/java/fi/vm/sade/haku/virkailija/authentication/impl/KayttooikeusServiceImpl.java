@@ -48,15 +48,13 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile(value = {"default", "vagrant"})
+@Profile(value = {"default", "vagrant", "devluokka"})
 public class KayttooikeusServiceImpl implements KayttooikeusService {
 
     final Logger log = LoggerFactory.getLogger(KayttooikeusServiceImpl.class);
 
     private final String targetService;
     private final CachingRestClient cachingRestClient;
-    private final String userOidPrefix;
-    private final String langCookieName;
     private OphProperties urlConfiguration;
 
     @Autowired
@@ -64,9 +62,7 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
             OphProperties urlConfiguration,
     @Value("${cas.service.kayttooikeus-service}") String targetService,
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
-    @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
-    @Value("${user.oid.prefix}") String userOidPrefix,
-    @Value("${haku.langCookie}") String langCookieName) {
+    @Value("${haku.app.password.to.usermanagement}") String clientAppPass) {
         this.urlConfiguration = urlConfiguration;
         cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
         cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
@@ -74,8 +70,6 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
         cachingRestClient.setUsername(clientAppUser);
         cachingRestClient.setPassword(clientAppPass);
         this.targetService = targetService;
-        this.userOidPrefix = userOidPrefix;
-        this.langCookieName = langCookieName;
     }
 
     @Override
@@ -89,7 +83,7 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
             JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
             for (JsonElement elem: orgJson) {
                 JsonObject orgObj = elem.getAsJsonObject();
-                String organization = orgObj.get("organisaatio.oid").getAsString();
+                String organization = orgObj.get("organisaatio").getAsJsonObject().get("oid").getAsString();
                 if (!orgObj.get("passivoitu").getAsBoolean()){
                     orgs.add(organization);
                 } else {
