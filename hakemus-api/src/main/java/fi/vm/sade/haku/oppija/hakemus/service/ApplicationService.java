@@ -61,6 +61,7 @@ public interface ApplicationService {
 
     ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters);
 
+    List<String> findMaksuvelvolliset(final String applicationSystemId, final String aoId);
     List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId);
     List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final List<String> oids);
 
