@@ -56,6 +56,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     boolean checkIfExistsByEmail(String asId, String email);
 
+    List<String> findMaksuvelvolliset(final String applicationSystemId, final String aoId);
+
     /**
      * Checks if submitted application already exists by specified social security number, application option and
      * application system
