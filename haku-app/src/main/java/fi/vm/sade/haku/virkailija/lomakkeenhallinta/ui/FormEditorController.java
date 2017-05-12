@@ -13,7 +13,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
@@ -102,7 +102,7 @@ public class FormEditorController {
     private FormGenerator formGenerator;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private KayttooikeusService kayttooikeusService;
 
     @Autowired
     private OrganizationService organizationService;
@@ -112,11 +112,11 @@ public class FormEditorController {
 
     @Autowired
     public FormEditorController(HakuService hakuService, FormGenerator formGenerator,
-                                AuthenticationService authenticationService, HakukohdeService hakukohdeService,
+                                KayttooikeusService kayttooikeusService, HakukohdeService hakukohdeService,
                                 OrganizationService organizationService) {
         this.hakuService = hakuService;
         this.formGenerator = formGenerator;
-        this.authenticationService = authenticationService;
+        this.kayttooikeusService = kayttooikeusService;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
     }
@@ -231,7 +231,7 @@ public class FormEditorController {
             LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
             orgHierarchy.addOrganization(providerId);
         }
-        List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
+        List<String> henkOrgs = kayttooikeusService.getOrganisaatioHenkilo();
         LOGGER.debug("Got " + henkOrgs.size() + " organization for the user");
         HashSet<Organization> organizations = new HashSet<Organization>();
         for (String henkOrg : henkOrgs){

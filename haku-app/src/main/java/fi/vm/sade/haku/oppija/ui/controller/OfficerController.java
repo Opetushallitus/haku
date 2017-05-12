@@ -354,16 +354,6 @@ public class OfficerController {
     }
 
     @POST
-    @Path("/hakemus/{oid}/addStudentOid")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
-        officerUIService.addStudentOid(oid);
-        return redirectToOidResponse(oid);
-    }
-
-    @POST
     @Path("/hakemus/{oid}/processAttachmentsAndEligibility")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)

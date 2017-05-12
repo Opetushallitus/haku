@@ -18,15 +18,8 @@ package fi.vm.sade.haku.virkailija.authentication;
 
 import java.util.List;
 
-public interface AuthenticationService {
+public interface KayttooikeusService {
 
-    Person addPerson(Person person);
+    List<String> getOrganisaatioHenkilo();
 
-    Person getCurrentHenkilo();
-
-    Person getHenkilo(String personOid);
-
-    String getLangCookieName();
-    
-    List<Person> getHenkiloList(List<String> personOids);
 }

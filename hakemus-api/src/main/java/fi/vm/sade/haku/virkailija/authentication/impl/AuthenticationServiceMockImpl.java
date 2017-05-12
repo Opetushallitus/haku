@@ -31,7 +31,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile(value = {"dev", "it"})
+@Profile(value = {"dev", "it", "devluokka"})
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     public static final int RANGE_SIZE = 1000000000;
@@ -45,23 +45,6 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
         PersonBuilder builder = PersonBuilder.start(person)
                 .setPersonOid(OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE)));
         return builder.get();
-    }
-
-    @Override
-    public List<String> getOrganisaatioHenkilo() {
-        if (SecurityContextHolder.getContext() == null
-                || SecurityContextHolder.getContext().getAuthentication() == null
-                || SecurityContextHolder.getContext().getAuthentication().getName() == null) {
-            return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
-        }
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (username.equals("officer")) {
-            return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
-        } else if (username.equals("kkvirkailija") || username.equals("eikkvirkailija")) {
-            return Lists.newArrayList("1.2.246.562.10.61042218794");
-        } else {
-            return new ArrayList<>();
-        }
     }
 
     @Override
@@ -86,11 +69,6 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     @Override
     public Person getHenkilo(String personOid) {
         return getCurrentHenkilo();
-    }
-
-    @Override
-    public Person getStudentOid(String personOid) {
-        return PersonBuilder.start().setStudentOid(personOid).get();
     }
 
     @Override

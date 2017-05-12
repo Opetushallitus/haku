@@ -771,30 +771,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addStudentOid(String oid) {
-        Application application = applicationService.getApplicationByOid(oid);
-        String studentOid = application.getPersonOid();
-        if (!Strings.isNullOrEmpty(application.getStudentOid())) {
-            throw new IllegalStateException("Student oid is already set");
-        } else if (Strings.isNullOrEmpty(studentOid)) {
-            throw new IllegalArgumentException("Invalid student oid");
-        }
-        Person person = authenticationService.getStudentOid(studentOid);
-        if (person != null) {
-            application.modifyPersonalData(person);
-            application.logStudentOidIfChanged(userSession.getUser().getUserName(), null);
-            application.addNote(createNote("Oppijanumero syötetty"));
-            AUDIT.log(builder()
-                    .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE)
-                    .hakuOid(application.getApplicationSystemId())
-                    .add("studentOid",person.getStudentOid())
-                    .hakemusOid(application.getOid()).build());
-        }
-        Application queryApplication = new Application(oid);
-        applicationService.update(queryApplication, application);
-    }
-
-    @Override
     public void postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
         application.setRedoPostProcess(email ? Application.PostProcessingState.FULL : Application.PostProcessingState.NOMAIL);

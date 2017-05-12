@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.haku.virkailija.authentication.impl.KayttooikeusServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ import java.util.Map;
 public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     @Override
     public List<String> userCanReadApplications() {
-        AuthenticationServiceMockImpl authenticationService = new AuthenticationServiceMockImpl();
-        return userCanReadApplications(authenticationService.getOrganisaatioHenkilo());
+        KayttooikeusServiceMockImpl kayttoikeusService = new KayttooikeusServiceMockImpl();
+        return userCanReadApplications(kayttoikeusService.getOrganisaatioHenkilo());
     }
 
     @Override
@@ -30,14 +31,14 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
 
     @Override
     public List<String> userHasOpoRole() {
-        AuthenticationServiceMockImpl authenticationService = new AuthenticationServiceMockImpl();
-        return userHasOpoRole(authenticationService.getOrganisaatioHenkilo());
+        KayttooikeusServiceMockImpl kayttoikeusService = new KayttooikeusServiceMockImpl();
+        return userHasOpoRole(kayttoikeusService.getOrganisaatioHenkilo());
     }
 
     @Override
     public List<String> userHasHetuttomienKasittelyRole() {
-        AuthenticationServiceMockImpl authenticationService = new AuthenticationServiceMockImpl();
-        return userHasHetuttomienKasittelyRole(authenticationService.getOrganisaatioHenkilo());
+        KayttooikeusServiceMockImpl kayttoikeusService = new KayttooikeusServiceMockImpl();
+        return userHasHetuttomienKasittelyRole(kayttoikeusService.getOrganisaatioHenkilo());
     }
 
     @Override
