@@ -13,6 +13,7 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -180,7 +181,7 @@ public class SyntheticApplicationService {
         return app;
     }
     private PreferenceEligibility.Maksuvelvollisuus getMaksuvelvollisuusFromHakemus(SyntheticApplication.Hakemus hakemus) {
-        return hakemus.maksuvelvollisuus != null ? PreferenceEligibility.Maksuvelvollisuus.valueOf(hakemus.maksuvelvollisuus) : PreferenceEligibility.Maksuvelvollisuus.NOT_CHECKED;
+        return StringUtils.isNotEmpty(hakemus.maksuvelvollisuus) ? PreferenceEligibility.Maksuvelvollisuus.valueOf(hakemus.maksuvelvollisuus) : PreferenceEligibility.Maksuvelvollisuus.NOT_CHECKED;
     }
 
     private Application updateApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus, Application current) {
