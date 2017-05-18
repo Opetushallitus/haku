@@ -83,7 +83,7 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
             JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
             for (JsonElement elem: orgJson) {
                 JsonObject orgObj = elem.getAsJsonObject();
-                String organization = orgObj.get("organisaatio").getAsJsonObject().get("oid").getAsString();
+                String organization = orgObj.get("organisaatioOid").getAsString();
                 if (!orgObj.get("passivoitu").getAsBoolean()){
                     orgs.add(organization);
                 } else {
