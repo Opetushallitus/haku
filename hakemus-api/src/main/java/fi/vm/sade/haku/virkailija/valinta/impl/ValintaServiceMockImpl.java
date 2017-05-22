@@ -848,6 +848,11 @@ public class ValintaServiceMockImpl implements ValintaService {
     }
 
     @Override
+    public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
+        return getHakija(asOid, applicationOid);
+    }
+
+    @Override
     public Map<String, String> fetchValintaData(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException{
         Map<String, String> result = new HashMap<>();
         for(Map<String, String> r : application.getAnswers().values()) {
