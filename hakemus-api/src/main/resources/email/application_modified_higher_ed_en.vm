@@ -37,7 +37,6 @@
     #end
     #parse("email/email_attachment_requests.vm")
     
-    <p>You can give feedback about Studyinfo with this <a href="https://www.webropolsurveys.com/S/6D3D70B1F0AF47DE.par"target="_blank">questionnaire</a>.</p>
     
     <p>This is an automatically generated email, please do not reply.</p>
 </div>
