@@ -107,6 +107,19 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     @Override
+    public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
+        String url = urlConfiguration.url("valintarekisteri.hakija", asOid, applicationOid);
+        CachingRestClient client = getCachingRestClientValintaTulosService();
+
+        try {
+            return client.get(url, HakijaDTO.class);
+        } catch (Exception e) {
+            log.error(String.format("GET %s with parameters hakuOid / hakemusOid %s / %s failed: ", url, asOid, applicationOid), e);
+        }
+        return new HakijaDTO();
+    }
+
+    @Override
     public Map<String, String> fetchValintaData(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException {
         String asId = application.getApplicationSystemId();
         String personOid = application.getPersonOid();

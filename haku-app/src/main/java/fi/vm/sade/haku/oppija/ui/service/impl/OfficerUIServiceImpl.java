@@ -106,6 +106,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final Session userSession;
     private final I18nBundleService i18nBundleService;
     private final HakumaksuService hakumaksuService;
+    private final Boolean readFromValintarekisteri;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
@@ -126,7 +127,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ValintaService valintaService,
                                 final Session userSession,
                                 final I18nBundleService i18nBundleService,
-                                HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi) {
+                                HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi,
+                                @Value("${readFromValintarekisteri:false}") String readFromValintarekisteri) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
@@ -142,6 +144,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.i18nBundleService = i18nBundleService;
         this.hakumaksuService = hakumaksuService;
         this.kevatkausi = kevatkausi;
+        this.readFromValintarekisteri = Boolean.valueOf(readFromValintarekisteri);
     }
 
     @Override
@@ -285,7 +288,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        HakijaDTO hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
+        HakijaDTO hakijaDTO = null;
+        if(readFromValintarekisteri) {
+            hakijaDTO = valintaService.getHakijaFromValintarekisteri(application.getApplicationSystemId(), application.getOid());
+        } else {
+            hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
+        }
         Map<String, String> aoAnswers = application.getPhaseAnswers(PHASE_APPLICATION_OPTIONS);
 
         Map<String, String> koulutusAnswers = application.getPhaseAnswers(PHASE_EDUCATION);

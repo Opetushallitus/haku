@@ -155,7 +155,8 @@ public class OfficerUIServiceImplTest {
                 userSession,
                 null,
                 mock(HakumaksuService.class),
-                "01.02 - 01.09");
+                "01.02 - 01.09",
+                "false");
         form.addChild(phase);
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
         when(applicationService.getApplication(OID)).thenReturn(application);
