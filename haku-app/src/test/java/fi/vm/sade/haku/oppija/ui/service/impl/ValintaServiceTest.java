@@ -105,7 +105,7 @@ public class ValintaServiceTest {
 
         OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
                 hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
-                null, null, valintaService, session, null, mock(HakumaksuService.class), null);
+                null, null, valintaService, session, null, mock(HakumaksuService.class), null, "false");
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu", true);
 
         List<ApplicationOptionDTO> hakukohteet = (List<ApplicationOptionDTO>) response.getModel().get("hakukohteet");
