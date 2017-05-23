@@ -97,15 +97,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                                    @Value("${root.organisaatio.oid}") final String rootOrganizationOid,
                                    @Value("${application.oid.prefix}") final String applicationOidPrefix,
                                    @Value("${user.oid.prefix}") final String userOidPrefix) {
-        super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
+        super("application", dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
         this.dbObjectToMapFunction = dbObjectToMapFunction;
         this.applicationQueryBuilder = new ApplicationDAOMongoQueryBuilder(shaEncrypter, rootOrganizationOid, applicationOidPrefix, userOidPrefix);
-    }
-
-    @Override
-    protected String getCollectionName() {
-        return "application";
     }
 
     public List<String> findMaksuvelvolliset(final String applicationSystemId, final String aoId) {

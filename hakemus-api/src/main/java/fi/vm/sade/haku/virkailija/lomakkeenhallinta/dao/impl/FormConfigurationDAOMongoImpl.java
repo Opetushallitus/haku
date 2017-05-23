@@ -26,12 +26,10 @@ public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConf
     @Value("${mongodb.ensureIndex:true}")
     private boolean ensureIndex;
 
-    private static final String collectionName = "formconfiguration";
-
     @Autowired
     public FormConfigurationDAOMongoImpl(DBObjectToFormConfigurationFunction dbObjectToFormConfigurationConverter,
       FormConfigurationToDBObjectFunction formConfigurationToBasicDBObjectConverter) {
-        super(dbObjectToFormConfigurationConverter, formConfigurationToBasicDBObjectConverter);
+        super("formconfiguration", dbObjectToFormConfigurationConverter, formConfigurationToBasicDBObjectConverter);
     }
 
     @PostConstruct
@@ -45,11 +43,6 @@ public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConf
 
         //other ?
         checkIndexes("after ensures");
-    }
-
-    @Override
-    protected String getCollectionName() {
-        return collectionName;
     }
 
     @Override
