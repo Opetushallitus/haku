@@ -40,15 +40,16 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     protected final Function<T, DBObject> toDBObject;
     protected final Function<DBObject, T> fromDBObject;
 
-    public AbstractDAOMongoImpl(Function<DBObject, T> fromDBObject, Function<T, DBObject> toDBObject) {
+    private final String collectionName;
+
+    public AbstractDAOMongoImpl(String collectionName, Function<DBObject, T> fromDBObject, Function<T, DBObject> toDBObject) {
+        this.collectionName = collectionName;
         this.fromDBObject = fromDBObject;
         this.toDBObject = toDBObject;
     }
 
-    protected abstract String getCollectionName();
-
     protected DBCollection getCollection() {
-        return mongoTemplate.getCollection(getCollectionName());
+        return mongoTemplate.getCollection(collectionName);
     }
 
     @Override

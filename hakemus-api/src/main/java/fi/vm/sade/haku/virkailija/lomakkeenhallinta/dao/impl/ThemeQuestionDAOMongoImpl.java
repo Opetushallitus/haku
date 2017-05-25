@@ -52,15 +52,10 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static int PARAM_SORT_BY = 2;
     private static int PARAM_KEYS = 3;
 
-    private static final String collectionName = "themequestion";
-
     @Autowired
     public ThemeQuestionDAOMongoImpl(DBObjectToThemeQuestionFunction dbObjectToThemeQuestionFunction, ThemeQuestionToDBObjectFunction themeQuestionToDBObjectFunction) {
-        super(dbObjectToThemeQuestionFunction, themeQuestionToDBObjectFunction);
+        super("themequestion", dbObjectToThemeQuestionFunction, themeQuestionToDBObjectFunction);
     }
-
-    @Override
-    protected String getCollectionName() { return collectionName; }
 
     private DBCursor executeQuery(DBObject[] queryParam){
         final DBCursor dbCursor = getCollection().find(queryParam[PARAM_QUERY], queryParam[PARAM_KEYS]);
