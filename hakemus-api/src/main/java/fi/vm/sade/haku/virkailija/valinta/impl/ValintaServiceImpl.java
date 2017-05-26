@@ -7,6 +7,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import fi.vm.sade.authentication.cas.CasClient;
+import fi.vm.sade.generic.PERA;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.virkailija.valinta.MapJsonAdapter;
@@ -16,8 +18,11 @@ import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.Date;
@@ -52,6 +58,13 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${haku.app.password.to.valintalaskenta}")
     private String clientAppPassValinta;
 
+    @Value("${cas.service.valintarekisteri-service}")
+    private String targetServiceValintarekisteri;
+    @Value("${haku.app.username.to.valintarekisteri}")
+    private String clientAppUserValintarekisteri;
+    @Value("${haku.app.password.to.valintarekisteri}")
+    private String clientAppPassValintarekisteri;
+
     @Value("${cas.service.valintalaskentakoostepalvelu}")
     private String targetServiceKooste;
     @Value("${haku.app.username.to.valintalaskentakoostepalvelu}")
@@ -68,10 +81,15 @@ public class ValintaServiceImpl implements ValintaService {
     private static CachingRestClient cachingRestClientKooste;
     private static CachingRestClient cachingRestClientValintaTulosService;
 
+    private String valintarekisteriTicket = null;
+    private Header[] valintarekisteriHeaders = null;
+    private HttpClient httpClient;
+
     @Autowired
     public ValintaServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
+        httpClient = CachingRestClient.createDefaultHttpClient(5 * 60 * 1000, 60);
     }
 
     @Override
@@ -109,14 +127,78 @@ public class ValintaServiceImpl implements ValintaService {
     @Override
     public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
         String url = urlConfiguration.url("valintarekisteri.hakija", asOid, applicationOid);
-        CachingRestClient client = getCachingRestClientValintaTulosService();
-
         try {
-            return client.get(url, HakijaDTO.class);
+            HakijaDTO hdto = makeRequest(url);
+            return hdto;
         } catch (Exception e) {
             log.error(String.format("GET %s with parameters hakuOid / hakemusOid %s / %s failed: ", url, asOid, applicationOid), e);
         }
         return new HakijaDTO();
+    }
+
+    private HakijaDTO makeRequest(String url){
+        HttpGet req = new HttpGet(url);
+        Gson gson = null;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+        String response = null;
+        HakijaDTO hakijaDTO = new HakijaDTO();
+        try {
+            if(valintarekisteriHeaders == null) {
+                authorizeValintarekisteri();
+            }
+            req.setHeaders(valintarekisteriHeaders);
+            HttpResponse httpresponse = httpClient.execute(req);
+            if(httpresponse.getStatusLine().getStatusCode() == 200){
+                HttpEntity responseEntity = httpresponse.getEntity();
+                response = IOUtils.toString(responseEntity.getContent());
+                hakijaDTO = gson.fromJson(response, HakijaDTO.class);
+            } else if(authorizeValintarekisteri()){
+                req.setHeaders(valintarekisteriHeaders);
+                httpresponse = httpClient.execute(req);
+                if(httpresponse.getStatusLine().getStatusCode() == 200) {
+                    HttpEntity responseEntity = httpresponse.getEntity();
+                    response = IOUtils.toString(responseEntity.getContent());
+                    hakijaDTO = gson.fromJson(response, HakijaDTO.class);
+                }
+            }
+            return hakijaDTO;
+        } catch (IOException e){
+            log.error(String.format("GET %s with parameters failed: ", url), e);
+        } finally {
+            req.releaseConnection();
+        }
+        return hakijaDTO;
+    }
+
+    private boolean authorizeValintarekisteri(){
+        synchronized (this) {
+            valintarekisteriTicket = getTicket();
+            HttpGet req2 = new HttpGet(targetServiceValintarekisteri + "/auth/login?ticket=" + valintarekisteriTicket);
+            req2.setHeader(CachingRestClient.CAS_SECURITY_TICKET, valintarekisteriTicket);
+            req2.setHeader(PERA.X_KUTSUKETJU_ALOITTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
+            req2.setHeader(PERA.X_PALVELUKUTSU_LAHETTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
+            try {
+                HttpResponse ticketResponse = httpClient.execute(req2);
+                if (ticketResponse.getStatusLine().getStatusCode() == 200) {
+                    valintarekisteriHeaders = ticketResponse.getHeaders("session");
+                    return true;
+                }
+                log.error(String.format("CAS ticket fetch failed with statuscode %s:", ticketResponse.getStatusLine().getStatusCode()));
+                return false;
+            } catch (IOException e) {
+                log.error("CAS ticket fetch failed: ", e);
+                return false;
+            } finally {
+                req2.releaseConnection();
+            }
+        }
+    }
+
+    private String getTicket(){
+        valintarekisteriTicket = CasClient.getTicket(casUrl+"/v1/tickets", clientAppUserValintarekisteri, clientAppPassValintarekisteri, targetServiceValintarekisteri+"/auth/login", false);
+        log.debug("ticket "+valintarekisteriTicket);
+        return valintarekisteriTicket;
     }
 
     @Override
@@ -151,7 +233,7 @@ public class ValintaServiceImpl implements ValintaService {
             cachingRestClientKooste.setUsername(clientAppUserKooste);
             cachingRestClientKooste.setPassword(clientAppPassKooste);
             log.debug("cachingRestClientKooste "
-                            + "carUrl: " + casUrl
+                            + "casUrl: " + casUrl
                             + " casService: " + targetServiceKooste
                             + " username: " + clientAppUserKooste
                             + " password: " + clientAppPassKooste
@@ -168,7 +250,7 @@ public class ValintaServiceImpl implements ValintaService {
             cachingRestClientValinta.setUsername(clientAppUserValinta);
             cachingRestClientValinta.setPassword(clientAppPassValinta);
             log.debug("getCachingRestClientValinta "
-                            + "carUrl: " + casUrl
+                            + "casUrl: " + casUrl
                             + " casService: " + targetServiceValinta
                             + " username: " + clientAppUserValinta
                             + " password: " + clientAppPassValinta
