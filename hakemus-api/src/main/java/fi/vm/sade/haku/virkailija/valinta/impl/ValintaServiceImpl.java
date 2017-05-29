@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.Date;
@@ -81,8 +82,10 @@ public class ValintaServiceImpl implements ValintaService {
     private static CachingRestClient cachingRestClientKooste;
     private static CachingRestClient cachingRestClientValintaTulosService;
 
-    private String valintarekisteriTicket = null;
-    private Header[] valintarekisteriHeaders = null;
+    private String CAS_TICKET_FOR_VALINTAREKISTERI = "CAS_TICKET_FOR_VALINTAREKISTERI";
+    private String LOGIN_HEADERS_FOR_VALINTAREKISTERI = "LOGIN_HEADERS_FOR_VALINTAREKISTERI";
+    private static final HashMap<String, SoftReference<String>>valintarekisteriTicket = new HashMap<String, SoftReference<String>>();
+    private static final HashMap<String, SoftReference<Header[]>>valintarekisteriHeaders = new HashMap<String, SoftReference<Header[]>>();
     private HttpClient httpClient;
 
     @Autowired
@@ -144,17 +147,16 @@ public class ValintaServiceImpl implements ValintaService {
         String response = null;
         HakijaDTO hakijaDTO = new HakijaDTO();
         try {
-            if(valintarekisteriHeaders == null) {
-                authorizeValintarekisteri();
-            }
-            req.setHeaders(valintarekisteriHeaders);
+            Header[] rekisteriHeaders = getCachedHeadersForValintarekisteri();
+            req.setHeaders(rekisteriHeaders);
             HttpResponse httpresponse = httpClient.execute(req);
             if(httpresponse.getStatusLine().getStatusCode() == 200){
                 HttpEntity responseEntity = httpresponse.getEntity();
                 response = IOUtils.toString(responseEntity.getContent());
                 hakijaDTO = gson.fromJson(response, HakijaDTO.class);
-            } else if(authorizeValintarekisteri()){
-                req.setHeaders(valintarekisteriHeaders);
+            } else if(authorizeValintarekisteri(true, true)){
+                rekisteriHeaders = getCachedHeadersForValintarekisteri();
+                req.setHeaders(rekisteriHeaders);
                 httpresponse = httpClient.execute(req);
                 if(httpresponse.getStatusLine().getStatusCode() == 200) {
                     HttpEntity responseEntity = httpresponse.getEntity();
@@ -171,34 +173,55 @@ public class ValintaServiceImpl implements ValintaService {
         return hakijaDTO;
     }
 
-    private boolean authorizeValintarekisteri(){
-        synchronized (this) {
-            valintarekisteriTicket = getTicket();
-            HttpGet req2 = new HttpGet(targetServiceValintarekisteri + "/auth/login?ticket=" + valintarekisteriTicket);
-            req2.setHeader(CachingRestClient.CAS_SECURITY_TICKET, valintarekisteriTicket);
-            req2.setHeader(PERA.X_KUTSUKETJU_ALOITTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
-            req2.setHeader(PERA.X_PALVELUKUTSU_LAHETTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
-            try {
-                HttpResponse ticketResponse = httpClient.execute(req2);
-                if (ticketResponse.getStatusLine().getStatusCode() == 200) {
-                    valintarekisteriHeaders = ticketResponse.getHeaders("session");
-                    return true;
-                }
-                log.error(String.format("CAS ticket fetch failed with statuscode %s:", ticketResponse.getStatusLine().getStatusCode()));
-                return false;
-            } catch (IOException e) {
-                log.error("CAS ticket fetch failed: ", e);
-                return false;
-            } finally {
-                req2.releaseConnection();
+    private synchronized boolean authorizeValintarekisteri(boolean reloadHeaders, boolean reloadTicket){
+        if(reloadTicket) {
+            valintarekisteriTicket.put(CAS_TICKET_FOR_VALINTAREKISTERI,null);
+        }
+        if(reloadHeaders) {
+            valintarekisteriHeaders.put(LOGIN_HEADERS_FOR_VALINTAREKISTERI,null);
+        }
+        String ticket = getTicketForValintarekisteri();
+
+        HttpGet req2 = new HttpGet(targetServiceValintarekisteri + "/auth/login?ticket=" + ticket);
+        req2.setHeader(CachingRestClient.CAS_SECURITY_TICKET, ticket);
+        req2.setHeader(PERA.X_KUTSUKETJU_ALOITTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
+        req2.setHeader(PERA.X_PALVELUKUTSU_LAHETTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
+        try {
+            HttpResponse ticketResponse = httpClient.execute(req2);
+            if (ticketResponse.getStatusLine().getStatusCode() == 200) {
+                valintarekisteriHeaders.put(LOGIN_HEADERS_FOR_VALINTAREKISTERI, new SoftReference<Header[]>(ticketResponse.getHeaders("session")));
+                return true;
             }
+            log.error(String.format("CAS ticket fetch failed with statuscode %s:", ticketResponse.getStatusLine().getStatusCode()));
+            return false;
+        } catch (IOException e) {
+            log.error("CAS ticket fetch failed: ", e);
+            return false;
+        } finally {
+            req2.releaseConnection();
         }
     }
 
-    private String getTicket(){
-        valintarekisteriTicket = CasClient.getTicket(casUrl+"/v1/tickets", clientAppUserValintarekisteri, clientAppPassValintarekisteri, targetServiceValintarekisteri+"/auth/login", false);
-        log.debug("ticket "+valintarekisteriTicket);
-        return valintarekisteriTicket;
+    private synchronized Header[] getCachedHeadersForValintarekisteri(){
+        SoftReference<Header[]> headers = valintarekisteriHeaders.get(LOGIN_HEADERS_FOR_VALINTAREKISTERI);
+        if(headers == null) {
+            authorizeValintarekisteri(true, false);
+        }
+        Header[] header = null == headers ? null : headers.get();
+        return header;
+    }
+
+    private String getTicketForValintarekisteri() {
+        if (valintarekisteriTicket.get(CAS_TICKET_FOR_VALINTAREKISTERI) == null) {
+            String ticket = CasClient.getTicket(casUrl + "/v1/tickets", clientAppUserValintarekisteri, clientAppPassValintarekisteri, targetServiceValintarekisteri + "/auth/login", false);
+            log.debug("ticket " + ticket);
+            valintarekisteriTicket.put(CAS_TICKET_FOR_VALINTAREKISTERI, new SoftReference<String>(ticket));
+            return ticket;
+        } else {
+            SoftReference<String> ticket = valintarekisteriTicket.get(CAS_TICKET_FOR_VALINTAREKISTERI);
+            String stringTicket = null == ticket ? null : ticket.get();
+            return stringTicket;
+        }
     }
 
     @Override
