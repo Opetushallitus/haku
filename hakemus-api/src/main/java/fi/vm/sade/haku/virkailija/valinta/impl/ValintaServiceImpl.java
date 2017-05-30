@@ -131,7 +131,7 @@ public class ValintaServiceImpl implements ValintaService {
     public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
         String url = urlConfiguration.url("valintarekisteri.hakija", asOid, applicationOid);
         try {
-            HakijaDTO hdto = makeRequest(url);
+            HakijaDTO hdto = makeAuthenticatedRequestToValintarekisteri(url);
             return hdto;
         } catch (Exception e) {
             log.error(String.format("GET %s with parameters hakuOid / hakemusOid %s / %s failed: ", url, asOid, applicationOid), e);
@@ -139,37 +139,38 @@ public class ValintaServiceImpl implements ValintaService {
         return new HakijaDTO();
     }
 
-    private HakijaDTO makeRequest(String url){
+    private HakijaDTO makeAuthenticatedRequestToValintarekisteri(String url){
         HttpGet req = new HttpGet(url);
-        Gson gson = null;
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder.create();
-        String response = null;
-        HakijaDTO hakijaDTO = new HakijaDTO();
         try {
             Header[] rekisteriHeaders = getCachedHeadersForValintarekisteri();
             req.setHeaders(rekisteriHeaders);
             HttpResponse httpresponse = httpClient.execute(req);
-            if(httpresponse.getStatusLine().getStatusCode() == 200){
-                HttpEntity responseEntity = httpresponse.getEntity();
-                response = IOUtils.toString(responseEntity.getContent());
-                hakijaDTO = gson.fromJson(response, HakijaDTO.class);
-            } else if(authorizeValintarekisteri(true, true)){
+            int statusCode = httpresponse.getStatusLine().getStatusCode();
+            if(statusCode == 200){
+                return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
+            } else if (statusCode == 403){
+                authorizeValintarekisteri(true, true);
                 rekisteriHeaders = getCachedHeadersForValintarekisteri();
                 req.setHeaders(rekisteriHeaders);
                 httpresponse = httpClient.execute(req);
                 if(httpresponse.getStatusLine().getStatusCode() == 200) {
-                    HttpEntity responseEntity = httpresponse.getEntity();
-                    response = IOUtils.toString(responseEntity.getContent());
-                    hakijaDTO = gson.fromJson(response, HakijaDTO.class);
+                    return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
                 }
             }
-            return hakijaDTO;
         } catch (IOException e){
-            log.error(String.format("GET %s with parameters failed: ", url), e);
+            log.error(String.format("GET %s failed: ", url), e);
         } finally {
             req.releaseConnection();
         }
+        return new HakijaDTO();
+    }
+
+    private HakijaDTO parseHakijaFromInputStream(InputStream stream) throws IOException {
+        HakijaDTO hakijaDTO = new HakijaDTO();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        String response = IOUtils.toString(stream);
+        hakijaDTO = gson.fromJson(response, HakijaDTO.class);
         return hakijaDTO;
     }
 
