@@ -128,7 +128,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final Session userSession,
                                 final I18nBundleService i18nBundleService,
                                 HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi,
-                                @Value("${readFromValintarekisteri:false}") String readFromValintarekisteri) {
+                                @Value("${readFromValintarekisteri}") String readFromValintarekisteri) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
