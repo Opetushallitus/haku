@@ -92,7 +92,11 @@ public class ValintaServiceImpl implements ValintaService {
     public ValintaServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
-        httpClient = CachingRestClient.createDefaultHttpClient(5 * 60 * 1000, 60);
+        setHttpClient(CachingRestClient.createDefaultHttpClient(5 * 60 * 1000, 60));
+    }
+
+    public void setHttpClient(HttpClient client){
+        httpClient = client;
     }
 
     @Override
@@ -179,7 +183,7 @@ public class ValintaServiceImpl implements ValintaService {
             valintarekisteriTicket.put(CAS_TICKET_FOR_VALINTAREKISTERI,null);
         }
         if(reloadHeaders) {
-            valintarekisteriHeaders.put(LOGIN_HEADERS_FOR_VALINTAREKISTERI,null);
+            setValintarekisteriHeaders(null);
         }
         String ticket = getTicketForValintarekisteri();
 
@@ -190,7 +194,7 @@ public class ValintaServiceImpl implements ValintaService {
         try {
             HttpResponse ticketResponse = httpClient.execute(req2);
             if (ticketResponse.getStatusLine().getStatusCode() == 200) {
-                valintarekisteriHeaders.put(LOGIN_HEADERS_FOR_VALINTAREKISTERI, new SoftReference<Header[]>(ticketResponse.getHeaders("session")));
+                setValintarekisteriHeaders(ticketResponse.getHeaders("session"));
                 return true;
             }
             log.error(String.format("CAS ticket fetch failed with statuscode %s:", ticketResponse.getStatusLine().getStatusCode()));
@@ -223,6 +227,10 @@ public class ValintaServiceImpl implements ValintaService {
             String stringTicket = null == ticket ? null : ticket.get();
             return stringTicket;
         }
+    }
+
+    public void setValintarekisteriHeaders(Header[] headers){
+        valintarekisteriHeaders.put(LOGIN_HEADERS_FOR_VALINTAREKISTERI, new SoftReference<Header[]>(headers));
     }
 
     @Override
