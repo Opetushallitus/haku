@@ -24,13 +24,21 @@ public class Pistetieto {
     private static final Map<String, String> nameOverriddenDisplayValues = new HashMap<>();
 
     static {
-        osallistuminenTranslations = new HashMap<Osallistuminen, I18nText>(3);
+        osallistuminenTranslations = new HashMap<Osallistuminen, I18nText>(7);
         osallistuminenTranslations.put(Osallistuminen.OSALLISTUU,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.osallistuu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         osallistuminenTranslations.put(Osallistuminen.EI_OSALLISTU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiOsallistu", OppijaConstants.MESSAGES_BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiosallistu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         osallistuminenTranslations.put(Osallistuminen.VIRHE,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.virhe", OppijaConstants.MESSAGES_BUNDLE_NAME));
+        osallistuminenTranslations.put(Osallistuminen.MERKITSEMATTA,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.merkitsematta", OppijaConstants.MESSAGES_BUNDLE_NAME));
+        osallistuminenTranslations.put(Osallistuminen.OSALLISTUI,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.osallistui", OppijaConstants.MESSAGES_BUNDLE_NAME));
+        osallistuminenTranslations.put(Osallistuminen.EI_OSALLISTUNUT,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiosallistunut", OppijaConstants.MESSAGES_BUNDLE_NAME));
+        osallistuminenTranslations.put(Osallistuminen.EI_VAADITA,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eivaadita", OppijaConstants.MESSAGES_BUNDLE_NAME));
 
         pisteetOverriddenDisplayValues.put("true", "Hyväksytty");
         pisteetOverriddenDisplayValues.put("false", "Hylätty");
