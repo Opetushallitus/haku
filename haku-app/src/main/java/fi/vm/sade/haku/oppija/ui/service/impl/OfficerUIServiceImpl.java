@@ -354,9 +354,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                         for (FunktioTulosDTO funktioTulosDTO : jonosijaDTO.getFunktioTulokset()) {
                             ao.addPistetieto(buildPistetieto(funktioTulosDTO));
                         }
-                        for (SyotettyArvoDTO syotettyArvoDTO : jonosijaDTO.getSyotetytArvot()) {
-                            ao.addPistetieto(buildPistetieto(syotettyArvoDTO));
-                        }
                     }
                 }
             }
@@ -432,15 +429,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         pistetieto.setNimi(buildFunktioNimet(funktioTulosDTO));
         pistetieto.setPisteet(funktioTulosDTO.getArvo());
         pistetieto.setOsallistuminen(null);
-        return pistetieto;
-    }
-
-    private Pistetieto buildPistetieto(SyotettyArvoDTO syotettyArvoDTO) {
-        Pistetieto pistetieto = new Pistetieto();
-        pistetieto.setId(syotettyArvoDTO.getTunniste());
-        pistetieto.setNimi(ElementUtil.createI18NAsIs(syotettyArvoDTO.getTunniste()));
-        pistetieto.setPisteet(syotettyArvoDTO.getArvo());
-        pistetieto.setOsallistuminen(Osallistuminen.valueOf(syotettyArvoDTO.getOsallistuminen()));
         return pistetieto;
     }
 
