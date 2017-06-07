@@ -152,7 +152,7 @@ public class ValintaServiceImpl implements ValintaService {
             int statusCode = httpresponse.getStatusLine().getStatusCode();
             if(statusCode == 200){
                 return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
-            } else if (statusCode == 403){
+            } else {
                 authorizeValintarekisteri(true, true);
                 rekisteriHeaders = getCachedHeadersForValintarekisteri();
                 req.setHeaders(rekisteriHeaders);
@@ -196,6 +196,9 @@ public class ValintaServiceImpl implements ValintaService {
             if (ticketResponse.getStatusLine().getStatusCode() == 200) {
                 setValintarekisteriHeaders(ticketResponse.getHeaders("session"));
                 return true;
+            } else {
+                valintarekisteriTicket.put(CAS_TICKET_FOR_VALINTAREKISTERI,null);
+                setValintarekisteriHeaders(null);
             }
             log.error(String.format("CAS ticket fetch failed with statuscode %s:", ticketResponse.getStatusLine().getStatusCode()));
             return false;
