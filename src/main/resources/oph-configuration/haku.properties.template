@@ -19,6 +19,8 @@ haku.app.username.to.usermanagement={{haku_app_username_to_usermanagement}}
 haku.app.password.to.usermanagement={{haku_app_password_to_usermanagement}}
 haku.app.username.to.valintalaskenta={{haku_app_username_to_valintalaskenta}}
 haku.app.password.to.valintalaskenta={{haku_app_password_to_valintalaskenta}}
+haku.app.username.to.valintarekisteri={{haku_app_username_to_valintarekisteri}}
+haku.app.password.to.valintarekisteri={{haku_app_password_to_valintarekisteri}}
 haku.app.username.to.valintalaskentakoostepalvelu={{haku_app_username_to_valintalaskentakoostepalvelu}}
 haku.app.password.to.valintalaskentakoostepalvelu={{haku_app_password_to_valintalaskentakoostepalvelu}}
 haku.app.username.to.suoritusrekisteri={{haku_app_username_to_suoritusrekisteri}}
@@ -80,6 +82,7 @@ cas.service.valintalaskentakoostepalvelu=https://${host.virkailija}/valintalaske
 cas.service.viestintapalvelu=https://${host.virkailija}/viestintapalvelu
 cas.service.ryhmasahkoposti=https://${host.virkailija}/ryhmasahkoposti-service
 cas.service.valinta-tulos-service=https://${host.virkailija}/valinta-tulos-service
+cas.service.valintarekisteri-service=https://${host.virkailija}/valinta-tulos-service
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
 flyway.initOnMigrate=true
 komo.oid.kuntouttava=1.2.246.562.5.2013112814572435755085
@@ -128,3 +131,4 @@ onlyBackgroundValidation =
 #Run every hour, cron enabled only on DEMO environment!
 scheduler.runDemoModeCleanupCron=0 0 * * * *
 
+readFromValintarekisteri={{haku_read_from_valintarekisteri}}

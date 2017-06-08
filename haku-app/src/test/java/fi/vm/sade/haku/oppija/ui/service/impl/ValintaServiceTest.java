@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -22,6 +23,9 @@ import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceImpl;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -61,14 +65,34 @@ public class ValintaServiceTest {
     public void testOfficerUi() throws Exception {
         CachingRestClient sijoitteluClient = mock(CachingRestClient.class);
         CachingRestClient valintaClient = mock(CachingRestClient.class);
+
+        // mocking valintarekisteri
+        HttpClient httpClient = mock(HttpClient.class);
+        HttpResponse httpresponse = mock(HttpResponse.class);
+        HttpEntity httpEntity = mock(HttpEntity.class);
+        StatusLine statusline = mock(StatusLine.class);
+        IOUtils ioUtils = mock(IOUtils.class);
+        InputStream inputStream = IOUtils.toInputStream(fileAsString("valintarekisteritulos.json"));
+
+        when(statusline.getStatusCode()).thenReturn(200);
+        when(httpresponse.getStatusLine()).thenReturn(statusline);
+        when(httpEntity.getContent()).thenReturn(inputStream);
+        when(httpresponse.getEntity()).thenReturn(httpEntity);
+        when(httpClient.execute(any())).thenReturn(httpresponse);
+
         when(sijoitteluClient.getAsString(startsWith("https://localhost:9090/sijoittelu-service/resources/sijoittelu"))).thenReturn(fileAsString("sijoittelu1.json"));
         when(valintaClient.getAsString(startsWith("https://localhost:9090/valintalaskenta-laskenta-service/resources/hakemus"))).thenReturn(fileAsString("laskenta1.json"));
 
         ValintaServiceImpl valintaService = new ValintaServiceImpl(urlConfiguration);
         valintaService.setCachingRestClientValinta(valintaClient);
 
+        valintaService.setValintarekisteriHeaders(new Header[]{});
+        valintaService.setHttpClient(httpClient);
+
         ApplicationService applicationService = mock(ApplicationService.class);
         Application application = new Application();
+        application.setApplicationSystemId("oid");
+        application.setOid("1.2.246.562.11.00002361873");
         application.setState(Application.State.ACTIVE);
         Map<String, String> aoMap = createHakutoiveet();
         Map<String, String> eduMap = new HashMap<String, String>() {{
@@ -105,7 +129,7 @@ public class ValintaServiceTest {
 
         OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
                 hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
-                null, null, valintaService, session, null, mock(HakumaksuService.class), null);
+                null, null, valintaService, session, null, mock(HakumaksuService.class), null, "true");
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu", true);
 
         List<ApplicationOptionDTO> hakukohteet = (List<ApplicationOptionDTO>) response.getModel().get("hakukohteet");
