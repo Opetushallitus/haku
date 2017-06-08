@@ -213,8 +213,10 @@
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
                    class="tab current"><span>Hakemus</span></a>
 
+                <c:if test="${applicationSystem.kohdejoukkoUri ne 'haunkohdejoukko_12'}">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
+                </c:if>
 
                 <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet" id="kelpoisuusliitteetTab"
