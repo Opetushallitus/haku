@@ -922,13 +922,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             Application applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
 
-            Map<String, String> oldEducationAnswers = application.getPhaseAnswersForModify(OppijaConstants.PHASE_EDUCATION);
-            oldEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION_POSTPROCESS, applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
-            application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, oldEducationAnswers);
+            if(applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION) != null) {
+                Map<String, String> oldEducationAnswers = application.getPhaseAnswersForModify(OppijaConstants.PHASE_EDUCATION);
+                oldEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION_POSTPROCESS, applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
+                application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, oldEducationAnswers);
 
-            if (FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
-                boolean isDiscretionaryBecauseOfBaseEducation = isDiscretionaryBecauseOfBaseEducation(applicationWithValintaData);
-                updateKoulutusDiscretionary(application.getOid(), hakutoiveetAnswers, isDiscretionaryBecauseOfBaseEducation);
+                if (FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
+                    boolean isDiscretionaryBecauseOfBaseEducation = isDiscretionaryBecauseOfBaseEducation(applicationWithValintaData);
+                    boolean isReadyBecauseOfBaseEducation = isReadyBecauseOfBaseEducation(applicationWithValintaData);
+                    updateKoulutusDiscretionary(application.getOid(), hakutoiveetAnswers, isDiscretionaryBecauseOfBaseEducation, isReadyBecauseOfBaseEducation);
+                }
             }
             application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
             application = removeOrphanedAnswers(application, applicationWithValintaData);
@@ -949,6 +952,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         return isDiscretionary;
     }
 
+    private boolean isReadyBecauseOfBaseEducation(Application application) {
+        final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
+        return !isDiscretionaryBecauseOfBaseEducation(application) && !koulutustaustaAnswers.get(ELEMENT_ID_BASE_EDUCATION).equals("");
+    }
+
     private ValidationResult validateApplication(final Application application) {
         Map<String, String> allAnswers = application.getVastauksetMerged();
         Form form = formService.getForm(application.getApplicationSystemId());
@@ -957,7 +965,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionaryBecauseOfBaseEducation) {
+    private void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionaryBecauseOfBaseEducation, boolean isReadyBecauseOfBaseEducation) {
         for (int i = 1; i < 20; i++) {
             if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
                 final String discretionaryKey = String.format(PREFERENCE_DISCRETIONARY, i);
@@ -965,6 +973,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
                 String currentDiscretionaryValue = hakutoiveetAnswers.getOrDefault(discretionaryKey, "false");
                 boolean isDiscretionary = currentDiscretionaryValue.equals("true") ? true : isDiscretionaryBecauseOfBaseEducation;
+                if(isDiscretionary && isReadyBecauseOfBaseEducation){
+                    isDiscretionary = false;
+                }
+
                 String updatedDiscretionaryValue = isDiscretionary ? "true" : "false";
 
                 if (!currentDiscretionaryValue.equals(updatedDiscretionaryValue)) {

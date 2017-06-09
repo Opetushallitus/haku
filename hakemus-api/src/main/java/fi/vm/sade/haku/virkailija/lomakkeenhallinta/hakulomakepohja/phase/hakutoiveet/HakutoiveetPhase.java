@@ -218,7 +218,7 @@ public class HakutoiveetPhase {
                 .formParams(formParameters).build();
 
         Expr jalkikasitelty = new NotNull("POHJAKOULUTUS-POSTPROCESS");
-        Expr jalkikasittelyHarkinnanvarainen = ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS-POSTPROCESS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO);
+        Expr jalkikasittelyHarkinnanvarainen = new And(jalkikasitelty, ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS-POSTPROCESS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO));
         Expr jalkikasittelyEiHarkinnanvarainen = new Not(jalkikasittelyHarkinnanvarainen);
         Expr hakemusKesken = ExprUtil.atLeastOneValueEqualsToVariable("POHJAKOULUTUS", POHJAKOULUTUS_KESKEYTYNYT_TAI_ULKOMAINEN_TUTKINTO);
 
