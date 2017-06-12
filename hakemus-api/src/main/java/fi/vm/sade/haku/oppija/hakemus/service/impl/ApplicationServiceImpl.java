@@ -972,8 +972,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                 final String followUpKey = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
 
                 String currentDiscretionaryValue = hakutoiveetAnswers.getOrDefault(discretionaryKey, "false");
+                String currentFollowUpValue = hakutoiveetAnswers.getOrDefault(followUpKey, "");
+
                 boolean isDiscretionary = currentDiscretionaryValue.equals("true") ? true : isDiscretionaryBecauseOfBaseEducation;
-                if(isDiscretionary && isReadyBecauseOfBaseEducation){
+                if(!isDiscretionary && isReadyBecauseOfBaseEducation && currentFollowUpValue.equals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN)){
                     isDiscretionary = false;
                 }
 
@@ -986,7 +988,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 if (!isDiscretionary) {
                     removeAndLog(oid, hakutoiveetAnswers, followUpKey);
                 } else {
-                    String currentFollowUpValue = hakutoiveetAnswers.getOrDefault(followUpKey, "");
                     String updatedFollowUpValue = isDiscretionaryBecauseOfBaseEducation ? HakutoiveetPhase.TODISTUSTENPUUTTUMINEN : currentFollowUpValue;
                     if (!currentFollowUpValue.equals(updatedFollowUpValue)) {
                         updateAndLog(oid, hakutoiveetAnswers, followUpKey, updatedFollowUpValue);
