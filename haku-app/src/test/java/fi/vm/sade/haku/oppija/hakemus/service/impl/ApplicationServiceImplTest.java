@@ -39,6 +39,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametri;
@@ -773,6 +774,44 @@ public class ApplicationServiceImplTest {
 
         assertFalse(withValintadata.getPhaseAnswers(OppijaConstants.PHASE_GRADES).containsKey("PK_A1"));
         assertTrue(withValintadata.getPhaseAnswers(OppijaConstants.PHASE_GRADES).containsKey("PK_A12"));
+    }
+
+    @Test
+    public void testUpdateKoulutusDiscretionary() throws ValintaServiceCallFailedException {
+        final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null);
+        String uthStv = "ulkomainen_tai_keskeytynyt_tutkinto_suoritusrekisterista_tulee_tulos";
+        String discretionary = "preference1-discretionary";
+        String discretionaryFollowUp = "preference1-discretionary-follow-up";
+
+        Map<String, String> hakutoiveetAnswers = new HashMap<String, String>() {{
+            put("preference1-Koulutus-id", uthStv);
+            put(discretionary, "true");
+            put(discretionaryFollowUp, "sosiaalisetsyyt");
+        }};
+
+        applicationService.updateKoulutusDiscretionary(uthStv, hakutoiveetAnswers, false, false);
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionary, "").equals("true"));
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionaryFollowUp, "").equals("sosiaalisetsyyt"));
+
+        hakutoiveetAnswers.put(discretionaryFollowUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
+        applicationService.updateKoulutusDiscretionary(uthStv, hakutoiveetAnswers, false, true);
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionary, "").equals("false"));
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionaryFollowUp, "ARVOPOISTETTU").equals("ARVOPOISTETTU"));
+
+        applicationService.updateKoulutusDiscretionary(uthStv, hakutoiveetAnswers, true, false);
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionary, "").equals("true"));
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionaryFollowUp, "").equals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN));
+
+        hakutoiveetAnswers.put(discretionaryFollowUp, "sosiaalisetsyyt");
+        applicationService.updateKoulutusDiscretionary(uthStv, hakutoiveetAnswers, true, false);
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionary, "").equals("true"));
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionaryFollowUp, "").equals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN));
+
+        hakutoiveetAnswers.put(discretionaryFollowUp, "sosiaalisetsyyt");
+        applicationService.updateKoulutusDiscretionary(uthStv, hakutoiveetAnswers, false, true);
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionary, "").equals("true"));
+        assertTrue(hakutoiveetAnswers.getOrDefault(discretionaryFollowUp, "").equals("sosiaalisetsyyt"));
     }
 
 }
