@@ -871,6 +871,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 final String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
 
                 final ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(ensuredAnswers.get(key), lang);
+
                 final List<String> teachingLangs = applicationOption.getTeachingLanguages();
                 final String teachingLang = teachingLangs != null && teachingLangs.size() > 0
                         ? teachingLangs.get(0) : "";
@@ -965,7 +966,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionaryBecauseOfBaseEducation, boolean isReadyBecauseOfBaseEducation) {
+    public void updateKoulutusDiscretionary(String oid, Map<String, String> hakutoiveetAnswers, boolean isDiscretionaryBecauseOfBaseEducation, boolean isReadyBecauseOfBaseEducation) {
         for (int i = 1; i < 20; i++) {
             if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
                 final String discretionaryKey = String.format(PREFERENCE_DISCRETIONARY, i);
@@ -974,9 +975,12 @@ public class ApplicationServiceImpl implements ApplicationService {
                 String currentDiscretionaryValue = hakutoiveetAnswers.getOrDefault(discretionaryKey, "false");
                 String currentFollowUpValue = hakutoiveetAnswers.getOrDefault(followUpKey, "");
 
-                boolean isDiscretionary = currentDiscretionaryValue.equals("true") ? true : isDiscretionaryBecauseOfBaseEducation;
-                if(!isDiscretionary && isReadyBecauseOfBaseEducation && currentFollowUpValue.equals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN)){
+                boolean isDiscretionary = currentDiscretionaryValue.equals("true") ? true : false;
+                // kaksi tapausta jolloin sure jyrää hakemuksen datan
+                if(isReadyBecauseOfBaseEducation && currentDiscretionaryValue.equals("true") && currentFollowUpValue.equals(HakutoiveetPhase.TODISTUSTENPUUTTUMINEN)) {
                     isDiscretionary = false;
+                } else if (isDiscretionaryBecauseOfBaseEducation && !isDiscretionary){
+                    isDiscretionary = true;
                 }
 
                 String updatedDiscretionaryValue = isDiscretionary ? "true" : "false";
