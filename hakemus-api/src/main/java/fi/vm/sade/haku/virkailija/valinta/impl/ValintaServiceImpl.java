@@ -155,7 +155,7 @@ public class ValintaServiceImpl implements ValintaService {
             int statusCode = httpresponse.getStatusLine().getStatusCode();
             if(statusCode == 200){
                 return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
-            } else {
+            } else if (statusCode == 401) {
                 authorizeValintarekisteri(true, true);
                 rekisteriHeaders = getCachedHeadersForValintarekisteri();
                 req.setHeaders(rekisteriHeaders);
