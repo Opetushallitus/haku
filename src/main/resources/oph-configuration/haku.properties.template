@@ -132,3 +132,4 @@ onlyBackgroundValidation =
 scheduler.runDemoModeCleanupCron=0 0 * * * *
 
 readFromValintarekisteri={{haku_read_from_valintarekisteri}}
+valintarekisteri-default.timeout.millis=300000

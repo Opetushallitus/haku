@@ -88,11 +88,14 @@ public class ValintaServiceImpl implements ValintaService {
     private static final HashMap<String, SoftReference<Header[]>>valintarekisteriHeaders = new HashMap<String, SoftReference<Header[]>>();
     private HttpClient httpClient;
 
+    @Value("${valintarekisteri-default.timeout.millis:300000}")
+    private int defaultValintarekisteriHttpRequestTimeoutMilliseconds;
+
     @Autowired
     public ValintaServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
-        setHttpClient(CachingRestClient.createDefaultHttpClient(5 * 60 * 1000, 60));
+        setHttpClient(CachingRestClient.createDefaultHttpClient(defaultValintarekisteriHttpRequestTimeoutMilliseconds, 60));
     }
 
     public void setHttpClient(HttpClient client){
