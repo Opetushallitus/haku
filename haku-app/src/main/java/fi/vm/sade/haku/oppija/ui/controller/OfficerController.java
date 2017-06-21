@@ -290,7 +290,7 @@ public class OfficerController {
         officerUIService.saveApplicationAdditionalInfo(oid, vals);
         AUDIT.log(builder()
                 .hakemusOid(oid)
-                .addAll(vals)
+                .messageJson(vals)
                 .setOperaatio(HakuOperation.SAVE_ADDITIONAL_INFO).build());
         return redirectToOidResponse(oid);
     }
