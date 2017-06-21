@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -130,11 +131,18 @@ public class ApplicationResource {
 
         applicationService.update(new Application(application.getOid()), application, false);
 
+        Map<String, Object> changes = new HashMap<>();
+        Map<String, Object> payment = new HashMap<>();
+        payment.put("vanhaArvo",nameOrEmpty(oldState));
+        payment.put("uusiArvo",nameOrEmpty(state));
+        nameOrEmpty(oldState);
+        changes.put("paymentState", payment);
+        Gson gson = new Gson();
+
         AUDIT.log(builder()
                 .hakemusOid(application.getOid())
                 .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                .add("oldValue", nameOrEmpty(oldState))
-                .add("newValue", nameOrEmpty(state))
+                .changesJson(changes)
                 .build());
     }
 
@@ -594,7 +602,7 @@ public class ApplicationResource {
             if(saveSucceeded) {
                 for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
                     AUDIT.log(builder().hakuOid(asId).hakukohdeOid(aoId)
-                            .addAll(applicationAdditionalDataDTO.getAdditionalData())
+                            .messageJson(applicationAdditionalDataDTO.getAdditionalData())
                             .hakemusOid(applicationAdditionalDataDTO.getOid())
                             .setOperaatio(HakuOperation.SAVE_ADDITIONAL_DATA).build());
                 }
@@ -618,7 +626,7 @@ public class ApplicationResource {
             if(saveSucceeded) {
                 for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
                     AUDIT.log(builder().hakuOid(asId)
-                            .addAll(applicationAdditionalDataDTO.getAdditionalData())
+                            .messageJson(applicationAdditionalDataDTO.getAdditionalData())
                             .hakemusOid(applicationAdditionalDataDTO.getOid())
                             .setOperaatio(HakuOperation.SAVE_ADDITIONAL_DATA).build());
                 }
