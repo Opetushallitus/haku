@@ -97,8 +97,7 @@ public class ApplicationPostProcessorService {
                 AUDIT.log(builder()
                         .hakemusOid(application.getOid())
                         .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                        .add("oldValue", nameOrEmpty(oldPaymentState))
-                        .add("newValue", application.getRequiredPaymentState())
+                        .add("payment_state_change",application.getRequiredPaymentState(),nameOrEmpty(oldPaymentState))
                         .build());
             }
 
@@ -106,8 +105,9 @@ public class ApplicationPostProcessorService {
                 AUDIT.log(builder()
                         .hakemusOid(application.getOid())
                         .setOperaatio(HakuOperation.PAYMENT_DUE_DATE_CHANGE)
-                        .add("oldValue", oldDueDate != null ? String.format("%d", oldDueDate.getTime()) : "")
-                        .add("newValue", application.getPaymentDueDate() != null ? String.format("%d", application.getPaymentDueDate().getTime()) : "")
+                        .add("payment_due_date",
+                                application.getPaymentDueDate() != null ? String.format("%d", application.getPaymentDueDate().getTime()) : "",
+                                oldDueDate != null ? String.format("%d", oldDueDate.getTime()) : "")
                         .build());
             }
         }
