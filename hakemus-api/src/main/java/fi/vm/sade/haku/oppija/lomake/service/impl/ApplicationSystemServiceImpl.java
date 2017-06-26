@@ -7,6 +7,8 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import com.google.gson.Gson;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
+
+import static fi.vm.sade.haku.ApiAuditHelper.AUDIT;
+import static fi.vm.sade.haku.ApiAuditHelper.builder;
 
 @Service
 public class ApplicationSystemServiceImpl implements ApplicationSystemService {
@@ -100,6 +105,13 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         if(cacheApplicationSystems) {
             cache.put(applicationSystem.getId(), applicationSystem);
         }
+
+        Gson gson = new Gson();
+        AUDIT.log(builder()
+                .hakuOid(applicationSystem.getId())
+                .setOperaatio(HakuOperation.SAVE_APPLICATION_SYSTEM)
+                .message(gson.toJson(applicationSystem))
+                .build());
     }
 
     @Override
