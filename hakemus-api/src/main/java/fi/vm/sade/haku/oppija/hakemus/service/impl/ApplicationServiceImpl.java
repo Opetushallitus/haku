@@ -17,6 +17,8 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import static com.google.common.collect.Maps.filterKeys;
+import static fi.vm.sade.haku.ApiAuditHelper.AUDIT;
+import static fi.vm.sade.haku.ApiAuditHelper.builder;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
@@ -31,6 +33,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Multimaps;
 
+import com.google.gson.Gson;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -253,6 +257,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             application = updatePreferenceBasedData(application).getApplication();
             this.applicationDAO.save(application);
+
+            Gson g = new Gson();
+            AUDIT.log(builder()
+                    .id(user.getUserName())
+                    .hakemusOid(application.getOid())
+                    .hakuOid(applicationSystem.getId())
+                    .message(g.toJson(application))
+                    .setOperaatio(HakuOperation.SAVE_APPLICATION)
+                    .build());
+
             this.userSession.removeApplication(application);
             return application;
         } else {
@@ -789,6 +803,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(application, oldApplication, userSession.getUser().getUserName(), "update");
         }
         this.applicationDAO.update(queryApplication, application);
+        Gson g = new Gson();
+        AUDIT.log(builder()
+                .hakemusOid(application.getOid())
+                .message(g.toJson(application))
+                .setOperaatio(HakuOperation.UPDATE_APPLICATION)
+                .build());
     }
 
     @Override
@@ -817,6 +837,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new IllegalArgumentException("Value can't be null");
         } else {
             applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
+            AUDIT.log(builder()
+                    .hakemusOid(applicationOid)
+                    .add(key, value)
+                    .setOperaatio(HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE)
+                    .build());
         }
     }
 
@@ -855,6 +880,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
+
+        Gson g = new Gson();
+        AUDIT.log(builder()
+                .hakemusOid(application.getOid())
+                .hakuOid(asId)
+                .message(g.toJson(application))
+                .setOperaatio(HakuOperation.SAVE_APPLICATION)
+                .build());
+
         return application;
     }
 
