@@ -42,7 +42,7 @@ public final class ApplicationDAOMongoConstants {
     static final String META_ALL_ORGANIZATIONS = "authorizationMeta.allAoOrganizations";
 
     static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
-    static final String META_FIELD_AO = "authorizationMeta.applicationPreference.preferenceDataKoulutus-id";
+    static final String META_FIELD_AO = "authorizationMeta.applicationPreferences.preferenceData.Koulutus-id";
 
     static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
 
