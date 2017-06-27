@@ -28,7 +28,7 @@ public final class ApplicationDAOMongoConstants {
     static final String INDEX_ASID_ORG_OID = "index_asid_org_oid";
     static final String INDEX_ORG_OID = "index_org_oid";
     static final String INDEX_PAYMENT_DUE_DATE = "index_payment_due_date";
-    static final String INDEX_RECEIVED_UPDATED = "index_received_updated";
+    static final String INDEX_UPDATED = "index_updated";
 
     //Reference fields
     static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";

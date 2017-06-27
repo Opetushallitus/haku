@@ -237,7 +237,7 @@ public class SendMailService {
         VelocityContext ctx = new VelocityContext();
         DateFormat dateFmt = dateTimeFormatter(locale);
         String receivedDate = dateFmt.format(application.getReceived());
-        String modifiedDate = dateFmt.format(application.getUpdated() != null ? application.getUpdated() : application.getReceived());
+        String modifiedDate = dateFmt.format(application.getUpdated());
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
 

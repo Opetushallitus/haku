@@ -572,7 +572,11 @@ public class Application implements Serializable {
     }
 
     public Application setReceived(Date received) {
-        this.received = received; return this;
+        this.received = received;
+        if(this.updated == null){
+            this.updated = received;
+        }
+        return this;
     }
 
     public Date getReceived() {
