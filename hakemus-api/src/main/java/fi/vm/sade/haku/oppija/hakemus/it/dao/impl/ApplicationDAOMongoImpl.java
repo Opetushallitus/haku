@@ -572,16 +572,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
         // default query indexes
         ensureIndex(INDEX_STATE_ASID_FN, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, FIELD_FULL_NAME);
-        ensureIndex(INDEX_STATE_FN, FIELD_APPLICATION_STATE, FIELD_FULL_NAME);
         ensureIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID, FIELD_FULL_NAME);
         ensureIndex(INDEX_SSN_DIGEST_SEARCH, FIELD_SSN_DIGEST);
         ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
         ensureIndex(INDEX_PERSON_OID, FIELD_PERSON_OID);
-        ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
         ensureIndex(INDEX_EMAIL, FIELD_EMAIL);
         ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
-        ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
-        ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, META_ALL_ORGANIZATIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME, META_ALL_ORGANIZATIONS);
 
@@ -607,8 +603,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         // Preference Indexes
         for (int i = 1; i <= 8; i++) {
             createPreferenceIndexes("preference" + i, i > 1,
-                    format(FIELD_LOP_T, i),
-                    format(FIELD_DISCRETIONARY_T, i),
                     format(FIELD_AO_T, i),
                     format(FIELD_AO_KOULUTUS_ID_T, i));
 
@@ -616,12 +610,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         checkIndexes("after ensures");
     }
 
-    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo,
-                                         String fieldAoIdentifier) {
-        ensureIndex("index_" + preference + "_lop", sparsePossible.booleanValue(), lopField);
-        ensureSparseIndex("index_" + preference + "_discretionary", discretionaryField);
-        ensureIndex("index_" + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
-        ensureIndex("index_" + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
+    private void createPreferenceIndexes(String preference, boolean sparsePossible, String fieldAo, String fieldAoIdentifier) {
+        ensureIndex("index_" + preference + "_ao", sparsePossible, fieldAo);
+        ensureIndex("index_" + preference + "_ao_identifier", sparsePossible, fieldAoIdentifier);
     }
 
     @Override
