@@ -46,7 +46,8 @@ public class ApplicationSystem implements Serializable {
      * When persisted by MongoTemplate, this field is de/compressed by hooks.
      * @see {@link ApplicationSystemMongoEventListener}.
      */
-    private Form form;
+    //recursive loop without transient when serializing to json for audit logging
+    private transient Form form;
 
     private I18nText name;
     private String state;
