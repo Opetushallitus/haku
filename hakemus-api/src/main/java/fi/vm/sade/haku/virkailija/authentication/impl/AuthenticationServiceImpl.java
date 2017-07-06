@@ -138,7 +138,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Person getHenkilo(String personOid) {
-        String url = urlConfiguration.url("oppijanumerorekisteri-service.s2s", personOid);
+        String url = urlConfiguration.url("oppijanumerorekisteri-service.s2s.master", personOid);
         try {
             String personJson = cachingRestClient.getAsString(url);
             log.debug("Got person: {}", personJson);
