@@ -563,6 +563,11 @@
         </dependency>
 
         <dependency>
+            <groupId>fi.vm.sade</groupId>
+            <artifactId>auditlogger</artifactId>
+            <version>${auditlog.api.version}</version>
+        </dependency>
+        <dependency>
             <groupId>fi.vm.sade.authentication</groupId>
             <artifactId>authentication-api</artifactId>
             <version>${authentication-api.version}</version>

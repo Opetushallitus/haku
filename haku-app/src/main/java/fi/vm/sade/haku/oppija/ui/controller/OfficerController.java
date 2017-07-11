@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -219,13 +220,15 @@ public class OfficerController {
         final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
 
+        Map<String, String> values = toSingleValueMap(multiValues);
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
-                new ApplicationPhase(applicationSystemId, phaseId, toSingleValueMap(multiValues)),
+                new ApplicationPhase(applicationSystemId, phaseId, values),
                 userSession.getUser());
 
         AUDIT.log(builder()
                 .hakuOid(applicationSystemId)
                 .hakemusOid(oid).add("phaseid", phaseId)
+                .changesJson(values)
                 .setOperaatio(HakuOperation.UPDATE_APPLICATION_PHASE).build());
 
         if (modelResponse.hasErrors()) {
@@ -290,7 +293,7 @@ public class OfficerController {
         officerUIService.saveApplicationAdditionalInfo(oid, vals);
         AUDIT.log(builder()
                 .hakemusOid(oid)
-                .addAll(vals)
+                .messageJson(vals)
                 .setOperaatio(HakuOperation.SAVE_ADDITIONAL_INFO).build());
         return redirectToOidResponse(oid);
     }
