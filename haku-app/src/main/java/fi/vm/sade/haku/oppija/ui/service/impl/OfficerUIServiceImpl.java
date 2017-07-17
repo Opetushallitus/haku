@@ -488,7 +488,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         List<String> newPreferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
         Set<String> newPreferenceAoIdsUnique = new HashSet<>(newPreferenceAoIds);
-        if (newPreferenceAoIdsUnique.size() != application.getPreferencesChecked().size()) {
+        if (newPreferenceAoIdsUnique.size() != newPreferenceAoIds.size()) {
             errors.put("hakutoiveet.duplikaatteja", createI18NText("hakutoiveet.duplikaatteja", MESSAGES_BUNDLE_NAME));
         }
 
