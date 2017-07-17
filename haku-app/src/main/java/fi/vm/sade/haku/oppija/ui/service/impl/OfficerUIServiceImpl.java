@@ -73,6 +73,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.api.client.util.Lists.*;
 import static com.google.common.base.Predicates.notNull;
