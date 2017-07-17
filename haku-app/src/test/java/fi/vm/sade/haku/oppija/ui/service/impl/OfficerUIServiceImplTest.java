@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -90,6 +91,7 @@ public class OfficerUIServiceImplTest {
         application.setApplicationSystemId("asid");
         applicationValinnoissa.setApplicationSystemId("asid");
         application.setOid(OID);
+        application.getPreferencesChecked().add(new PreferenceChecked("aoOid", true, "officerOid"));
         applicationValinnoissa.setOid(OID);
         application.setPhaseId(OppijaConstants.PHASE_EDUCATION);
         HashMap<String, String> valintaData = new HashMap<>();
@@ -185,6 +187,15 @@ public class OfficerUIServiceImplTest {
         ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
         assertEquals(11, modelResponse.getModel().size());
+    }
+
+    public void testUpdateApplicationFailsWithDuplicatePreferences() throws Exception {
+        PreferenceChecked duplicatePreference = application.getPreferencesChecked().get(0);
+        application.getPreferencesChecked().add(duplicatePreference);
+
+        ModelResponse modelResponse = officerUIService.updateApplication(
+                OID, new ApplicationPhase(application.getApplicationSystemId(), OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
+        assertTrue(modelResponse.getErrorMessages().size() == 1);
     }
 
     @Test
