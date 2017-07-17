@@ -73,6 +73,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.api.client.util.Lists.*;
 import static com.google.common.base.Predicates.notNull;
@@ -483,6 +484,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     "virkailija.hakemus.valintaservicefail",
                     createI18NText("virkailija.hakemus.valinnatfail.block.save", MESSAGES_BUNDLE_NAME)
             );
+        }
+
+        Set<String> preferenceAoOidsUnique = application.getPreferencesChecked().stream().map(PreferenceChecked::getPreferenceAoOid).collect(Collectors.toSet());
+        if (preferenceAoOidsUnique.size() != application.getPreferencesChecked().size()) {
+            throw new IllegalArgumentException("New application contained duplicate preferences");
         }
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
