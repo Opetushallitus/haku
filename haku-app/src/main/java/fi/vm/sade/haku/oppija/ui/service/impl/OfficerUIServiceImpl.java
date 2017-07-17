@@ -488,7 +488,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         Set<String> preferenceAoOidsUnique = application.getPreferencesChecked().stream().map(PreferenceChecked::getPreferenceAoOid).collect(Collectors.toSet());
         if (preferenceAoOidsUnique.size() != application.getPreferencesChecked().size()) {
-            throw new IllegalArgumentException("New application contained duplicate preferences");
+            errors.put("hakutoiveet.duplikaatteja", createI18NText("hakutoiveet.duplikaatteja", MESSAGES_BUNDLE_NAME));
         }
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,

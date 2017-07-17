@@ -189,13 +189,13 @@ public class OfficerUIServiceImplTest {
         assertEquals(11, modelResponse.getModel().size());
     }
 
-    @Test(expected = IllegalArgumentException.class)
     public void testUpdateApplicationFailsWithDuplicatePreferences() throws Exception {
         PreferenceChecked duplicatePreference = application.getPreferencesChecked().get(0);
         application.getPreferencesChecked().add(duplicatePreference);
 
-        officerUIService.updateApplication(
+        ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
+        assertTrue(modelResponse.getErrorMessages().size() == 1);
     }
 
     @Test
