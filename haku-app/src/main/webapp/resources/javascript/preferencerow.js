@@ -63,7 +63,7 @@ var preferenceRow = {
                 koulutusIdElements = _.filter(koulutusIdElements, function (e) {
                     return !e.id.startsWith(selectInputId); // don't check against element currently being populated
                 });
-                var selectedKoulutusIds = _.pluck(koulutusIdElements, 'value');
+                var selectedKoulutusIds = _.map(koulutusIdElements, 'value');
                 if (selectedKoulutusIds) {
                     data = _.filter(data, function (item) {
                         return !selectedKoulutusIds.includes(item.id);
