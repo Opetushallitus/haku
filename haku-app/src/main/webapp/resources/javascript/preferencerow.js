@@ -58,6 +58,15 @@ var preferenceRow = {
             function (data) {
                 data = _.sortBy(data, 'name');
 
+                // Filter already selected items from dropdown to prevent duplicates
+                var koulutusIdElements = $( "input[name$='Koulutus-id']" );
+                var selectedKoulutusIds = _.pluck(koulutusIdElements, 'value');
+                if (selectedKoulutusIds) {
+                    data = _.filter(data, function (item) {
+                        return !selectedKoulutusIds.includes(item.id);
+                    })
+                }
+
                 var hakukohdeId = $("#" + selectInputId + "-id").val();
                 var $selectInput = $("#" + selectInputId);
                 var selectedPreferenceOK = false;
