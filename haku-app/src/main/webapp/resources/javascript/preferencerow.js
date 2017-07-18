@@ -60,6 +60,9 @@ var preferenceRow = {
 
                 // Filter already selected items from dropdown to prevent duplicates
                 var koulutusIdElements = $( "input[name$='Koulutus-id']" );
+                koulutusIdElements = _.filter(koulutusIdElements, function (e) {
+                    return !e.id.startsWith(selectInputId); // don't check against element currently being populated
+                });
                 var selectedKoulutusIds = _.pluck(koulutusIdElements, 'value');
                 if (selectedKoulutusIds) {
                     data = _.filter(data, function (item) {
