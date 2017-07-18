@@ -485,6 +485,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             );
         }
 
+        List<String> newPreferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
+        Set<String> newPreferenceAoIdsUnique = new HashSet<>(newPreferenceAoIds);
+        if (newPreferenceAoIdsUnique.size() != newPreferenceAoIds.size()) {
+            errors.put("hakutoiveet.duplikaatteja", createI18NText("hakutoiveet.duplikaatteja", MESSAGES_BUNDLE_NAME));
+        }
+
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 application.getVastauksetMerged(), oid, application.getApplicationSystemId(),
                 ValidationInput.ValidationContext.officer_modify));
