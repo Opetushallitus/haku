@@ -356,7 +356,7 @@ public class UIServiceImpl implements UIService {
         }
         Cookie langCookie = getLangCookie(request);
         if (langCookie == null || isBlank(langCookie.getValue())) {
-            return null;
+            return getLanguageFromHost(request);
         }
         String lang = langCookie.getValue();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
@@ -388,5 +388,18 @@ public class UIServiceImpl implements UIService {
             }
         }
         return null;
+    }
+
+    private String getLanguageFromHost(HttpServletRequest request) {
+        String host = request.getHeader("Host");
+        request.getRequestURL();
+
+        if (host != null && host.endsWith("studieinfo.fi")) {
+            return "sv";
+        } else if (host != null && host.endsWith("studyinfo.fi")) {
+            return "en";
+        } else {
+            return "fi";
+        }
     }
 }
