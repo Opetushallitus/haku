@@ -355,10 +355,12 @@ public class UIServiceImpl implements UIService {
             return null;
         }
         Cookie langCookie = getLangCookie(request);
+        String lang;
         if (langCookie == null || isBlank(langCookie.getValue())) {
-            return getLanguageFromHost(request);
+            lang = getLanguageFromHost(request);
+        } else {
+            lang = langCookie.getValue();
         }
-        String lang = langCookie.getValue();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
         List<String> allowedLanguages = as.getAllowedLanguages();
         if (!allowedLanguages.contains(lang)) {
