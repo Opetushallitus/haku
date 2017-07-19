@@ -366,8 +366,8 @@ public class UIServiceImpl implements UIService {
             HttpSession session = request.getSession();
             Locale newLocale = new Locale(lang);
             Config.set(session, Config.FMT_LOCALE, newLocale);
-            request.setAttribute("fi_vm_sade_oppija_language", lang);
         }
+        request.setAttribute("fi_vm_sade_oppija_language", lang);
         return lang;
     }
 
