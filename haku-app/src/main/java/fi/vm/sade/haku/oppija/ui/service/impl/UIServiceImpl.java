@@ -354,13 +354,8 @@ public class UIServiceImpl implements UIService {
         if (request == null) {
             return null;
         }
-        Cookie langCookie = getLangCookie(request);
-        String lang;
-        if (langCookie == null || isBlank(langCookie.getValue())) {
-            lang = getLanguageFromHost(request);
-        } else {
-            lang = langCookie.getValue();
-        }
+        String lang = request.getAttribute("fi_vm_sade_oppija_language").toString();
+
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
         List<String> allowedLanguages = as.getAllowedLanguages();
         if (!allowedLanguages.contains(lang)) {
@@ -368,8 +363,8 @@ public class UIServiceImpl implements UIService {
             HttpSession session = request.getSession();
             Locale newLocale = new Locale(lang);
             Config.set(session, Config.FMT_LOCALE, newLocale);
+            request.setAttribute("fi_vm_sade_oppija_language", lang);
         }
-        request.setAttribute("fi_vm_sade_oppija_language", lang);
         return lang;
     }
 
@@ -390,18 +385,5 @@ public class UIServiceImpl implements UIService {
             }
         }
         return null;
-    }
-
-    private String getLanguageFromHost(HttpServletRequest request) {
-        String host = request.getHeader("Host");
-        request.getRequestURL();
-
-        if (host != null && host.endsWith("studieinfo.fi")) {
-            return "sv";
-        } else if (host != null && host.endsWith("studyinfo.fi")) {
-            return "en";
-        } else {
-            return "fi";
-        }
     }
 }
