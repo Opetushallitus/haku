@@ -373,17 +373,4 @@ public class UIServiceImpl implements UIService {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId, "form");
         return as.getForm();
     }
-
-    private Cookie getLangCookie(HttpServletRequest request) {
-        String langCookie = authenticationService.getLangCookieName();
-        if (request.getCookies() == null) {
-            return null;
-        }
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals(langCookie)) {
-                return cookie;
-            }
-        }
-        return null;
-    }
 }
