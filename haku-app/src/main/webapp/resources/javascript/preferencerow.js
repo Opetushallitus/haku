@@ -66,7 +66,7 @@ var preferenceRow = {
                 var selectedKoulutusIds = _.map(koulutusIdElements, 'value');
                 if (selectedKoulutusIds) {
                     data = _.filter(data, function (item) {
-                        return !selectedKoulutusIds.includes(item.id);
+                        return !_.contains(selectedKoulutusIds, item.id);
                     })
                 }
 
