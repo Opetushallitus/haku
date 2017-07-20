@@ -165,19 +165,6 @@ public class FormController {
 
     }
 
-    private Response.ResponseBuilder addLangCookie(Response.ResponseBuilder builder, HttpServletRequest request,
-                                                   String lang) {
-        if (lang != null) {
-            String domain = request.getServerName();
-            LOGGER.debug("cookie domain: {}", domain);
-            NewCookie newCookie = new NewCookie(authenticationService.getLangCookieName(), lang,
-                    "/", null, null, -1, false);
-            LOGGER.debug("langCookie: {}", newCookie.toString());
-            builder.language(lang).cookie(newCookie);
-        }
-        return builder;
-    }
-
     @GET
     @Path("/{applicationSystemId}/esikatselu")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
