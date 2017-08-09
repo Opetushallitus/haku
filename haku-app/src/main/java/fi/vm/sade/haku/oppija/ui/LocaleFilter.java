@@ -31,15 +31,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.core.Context;
 import java.util.Locale;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 public class LocaleFilter implements ContainerRequestFilter {
 
     private static final Logger log = LoggerFactory.getLogger(LocaleFilter.class);
 
     private static final Locale DEFAULT_LOCALE = new Locale("fi");
-    public static final String LANGUAGE_COOKIE_KEY = "i18next";
-    public static final String LANGUAGE_COOKIE_KEY_TEST = "testi18next";
     public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
     final HttpServletRequest httpServletRequest;
@@ -68,7 +64,7 @@ public class LocaleFilter implements ContainerRequestFilter {
         return containerRequest;
     }
 
-    public String getLanguage(ContainerRequest containerRequest) {
+    private String getLanguage(ContainerRequest containerRequest) {
         String host = containerRequest.getHeaderValue("Host");
 
         String lang;
