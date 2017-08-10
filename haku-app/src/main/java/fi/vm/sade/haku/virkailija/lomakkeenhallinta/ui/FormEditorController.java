@@ -199,7 +199,7 @@ public class FormEditorController {
         ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
         if (applicationSystem == null)
             throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
-        return ImmutableMap.of("hakutapa", applicationSystem.getHakutapa(), "hakuajat", applicationSystem.getApplicationPeriods());
+        return ImmutableMap.of("hakutyyppi", applicationSystem.getApplicationSystemType(), "hakutapa", applicationSystem.getHakutapa(), "hakuajat", applicationSystem.getApplicationPeriods());
     }
 
     @GET
