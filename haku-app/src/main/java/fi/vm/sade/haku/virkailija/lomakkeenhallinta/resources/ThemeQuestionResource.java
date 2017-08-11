@@ -469,7 +469,7 @@ public class ThemeQuestionResource {
 
     private boolean allowInsertOrModifyApplicationSystemThemeQuestions(String applicationSystemId) {
         ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
-        if(isYhteishaku(applicationSystem.getHakutapa())) {
+        if(isYhteishaku(applicationSystem.getHakutapa()) && isVarsinainenHaku(applicationSystem.getApplicationSystemType())) {
             return isRekisterinpitaja() || !isHakuaikaGoing(applicationSystem.getApplicationPeriods());
         }
         return true;
@@ -477,7 +477,7 @@ public class ThemeQuestionResource {
 
     private boolean allowDeleteApplicationSystemThemeQuestions(String applicationSystemId) {
         ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
-        if(isYhteishaku(applicationSystem.getHakutapa())) {
+        if(isYhteishaku(applicationSystem.getHakutapa()) && isVarsinainenHaku(applicationSystem.getApplicationSystemType())) {
             return isRekisterinpitaja() || isBeforeFirstHakuaika(applicationSystem.getApplicationPeriods());
         }
         return true;
@@ -501,6 +501,10 @@ public class ThemeQuestionResource {
 
     private boolean isYhteishaku(String hakutapa) {
         return "hakutapa_01".equals(hakutapa);
+    }
+
+    private boolean isVarsinainenHaku(String hakutyyppi) {
+        return "hakutyyppi_01".equals(hakutyyppi);
     }
 
     private boolean isRekisterinpitaja() {
