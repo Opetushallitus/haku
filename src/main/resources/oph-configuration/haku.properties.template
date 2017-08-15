@@ -53,7 +53,6 @@ scheduler.runPaymentDueDateProcessing={{haku_scheduler_run_paymentduedateprocess
 scheduler.paymentDueDateProcessingCron={{haku_scheduler_paymentduedateprocessing_cron}}
 scheduler.sendMail={{haku_scheduler_sendMail}}
 scheduler.demoCleanup={{haku_scheduler_demoCleanup | default('false')}}
-haku.langCookie={{ haku_lang_cookie | default('i18next') }}
 demo.hakuoids={{demo_hakuoids}}
 
 # Oletusarvoja

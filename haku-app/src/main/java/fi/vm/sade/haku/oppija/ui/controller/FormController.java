@@ -111,10 +111,9 @@ public class FormController {
     public Response getApplication(@Context HttpServletRequest request,
                                    @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("getApplication {}", new Object[]{applicationSystemId});
-        String lang = uiService.ensureLanguage(request, applicationSystemId);
+        uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.getApplication(applicationSystemId);
         Response.ResponseBuilder builder = Response.seeOther(new URI(new RedirectToPhaseViewPath(applicationSystemId, modelResponse.getPhaseId()).getPath()));
-        builder = addLangCookie(builder, request, lang);
 
         return builder.build();
     }
@@ -145,7 +144,6 @@ public class FormController {
         uiService.storePrefilledAnswers(applicationSystemId, toSingleValueMap(multiValues), lang);
         Response.ResponseBuilder builder = Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationSystemId).getPath()));
-        builder = addLangCookie(builder, request, lang);
 
         return builder.build();
     }
@@ -163,22 +161,8 @@ public class FormController {
         Viewable viewable = new Viewable(ROOT_VIEW, modelResponse.getModel());
 
         Response.ResponseBuilder builder = Response.ok(viewable);
-        builder = addLangCookie(builder, request, lang);
         return builder.build();
 
-    }
-
-    private Response.ResponseBuilder addLangCookie(Response.ResponseBuilder builder, HttpServletRequest request,
-                                                   String lang) {
-        if (lang != null) {
-            String domain = request.getServerName();
-            LOGGER.debug("cookie domain: {}", domain);
-            NewCookie newCookie = new NewCookie(authenticationService.getLangCookieName(), lang,
-                    "/", null, null, -1, false);
-            LOGGER.debug("langCookie: {}", newCookie.toString());
-            builder.language(lang).cookie(newCookie);
-        }
-        return builder;
     }
 
     @GET

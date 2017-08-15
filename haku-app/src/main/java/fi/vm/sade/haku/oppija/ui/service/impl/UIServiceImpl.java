@@ -354,11 +354,8 @@ public class UIServiceImpl implements UIService {
         if (request == null) {
             return null;
         }
-        Cookie langCookie = getLangCookie(request);
-        if (langCookie == null || isBlank(langCookie.getValue())) {
-            return null;
-        }
-        String lang = langCookie.getValue();
+        String lang = request.getAttribute("fi_vm_sade_oppija_language").toString();
+
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
         List<String> allowedLanguages = as.getAllowedLanguages();
         if (!allowedLanguages.contains(lang)) {
@@ -375,18 +372,5 @@ public class UIServiceImpl implements UIService {
     public Form getApplicationSystemForm(String applicationSystemId) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId, "form");
         return as.getForm();
-    }
-
-    private Cookie getLangCookie(HttpServletRequest request) {
-        String langCookie = authenticationService.getLangCookieName();
-        if (request.getCookies() == null) {
-            return null;
-        }
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals(langCookie)) {
-                return cookie;
-            }
-        }
-        return null;
     }
 }

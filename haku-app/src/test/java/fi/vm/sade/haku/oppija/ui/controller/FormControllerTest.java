@@ -82,7 +82,6 @@ public class FormControllerTest {
         when(uiService.ensureLanguage(Matchers.<HttpServletRequest>any(), Matchers.<String>any())).thenReturn("fi");
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, "fi")).thenReturn(modelResponse);
         when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any(), Matchers.<String>any())).thenReturn(modelResponse);
-        when(authenticationService.getLangCookieName()).thenReturn("testi18next");
         this.formController = new FormController(uiService, pdfService, authenticationService, null);
 
         FORM.addChild(PHASE);

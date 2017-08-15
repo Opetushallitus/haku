@@ -26,7 +26,5 @@ public interface AuthenticationService {
 
     Person getHenkilo(String personOid);
 
-    String getLangCookieName();
-    
     List<Person> getHenkiloList(List<String> personOids);
 }

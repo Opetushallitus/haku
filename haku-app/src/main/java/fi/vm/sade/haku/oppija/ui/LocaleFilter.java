@@ -31,15 +31,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.core.Context;
 import java.util.Locale;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 public class LocaleFilter implements ContainerRequestFilter {
 
     private static final Logger log = LoggerFactory.getLogger(LocaleFilter.class);
 
     private static final Locale DEFAULT_LOCALE = new Locale("fi");
-    public static final String LANGUAGE_COOKIE_KEY = "i18next";
-    public static final String LANGUAGE_COOKIE_KEY_TEST = "testi18next";
     public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
     final HttpServletRequest httpServletRequest;
@@ -68,29 +64,16 @@ public class LocaleFilter implements ContainerRequestFilter {
         return containerRequest;
     }
 
-    public String getLanguage(ContainerRequest containerRequest) {
-        String langCookie = authenticationService.getLangCookieName();
+    private String getLanguage(ContainerRequest containerRequest) {
+        String host = containerRequest.getHeaderValue("Host");
 
-        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
-        log.debug("Param lang: " + lang);
-
-        if (!isBlank(lang)) {
-            return lang;
-        }
-
-        lang = containerRequest.getCookieNameValueMap().getFirst(langCookie);
-        if (!isBlank(lang)) {
-            return lang;
-        }
-
-        lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
-        if (!isBlank(lang)) {
-            return lang;
-        }
-
-        lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY_TEST);
-        if (!isBlank(lang)) {
-            return lang;
+        String lang;
+        if (host != null && host.endsWith("studieinfo.fi")) {
+            lang = "sv";
+        } else if (host != null && host.endsWith("studyinfo.fi")) {
+            lang = "en";
+        } else {
+            lang = "fi";
         }
 
         Person person = authenticationService.getCurrentHenkilo();
