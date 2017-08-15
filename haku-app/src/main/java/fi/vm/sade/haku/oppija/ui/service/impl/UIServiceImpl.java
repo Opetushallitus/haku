@@ -358,7 +358,7 @@ public class UIServiceImpl implements UIService {
 
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
         List<String> allowedLanguages = as.getAllowedLanguages();
-        if (!allowedLanguages.contains(lang)) {
+        if (allowedLanguages != null && !allowedLanguages.contains(lang)) {
             lang = allowedLanguages.get(0);
             HttpSession session = request.getSession();
             Locale newLocale = new Locale(lang);
