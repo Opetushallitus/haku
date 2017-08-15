@@ -51,6 +51,7 @@ public class EmailUniqueValidatorTest extends IntegrationTestSupport {
         Whitebox.setInternalState(applicationService, "userSession", session);
         request = new MockHttpServletRequest();
         request.getSession().setAttribute(Config.FMT_LOCALE + ".session", new Locale("fi"));
+        request.setAttribute("fi_vm_sade_oppija_language", "fi");
 
 
         answers.put("phaseId", Lists.newArrayList("koulutustausta"));
