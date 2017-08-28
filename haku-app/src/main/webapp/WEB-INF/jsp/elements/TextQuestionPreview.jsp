@@ -22,7 +22,7 @@
             <td class="label" colspan="2">
                 <a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}"/>:</span>
                 <div class="textareaPreview"
-                     style="white-space: pre-wrap; word-break: break-all; word-wrap: break-word"><c:out value="${answers[element.id]}"/></div>
+                     style="white-space: pre-wrap; word-wrap: break-word"><c:out value="${answers[element.id]}"/></div>
             </td>
         </c:when>
         <c:when test="${element.inline or print}">

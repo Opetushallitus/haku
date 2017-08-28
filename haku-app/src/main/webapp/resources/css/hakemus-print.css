@@ -2300,7 +2300,6 @@ select, select:focus, select:active {
   display: block;
   margin: 0 0 10px;
   color: #333;
-  word-break: break-all;
   word-wrap: break-word;
   font-weight: normal;
   white-space: pre-wrap;
