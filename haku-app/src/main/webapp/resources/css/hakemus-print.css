@@ -1388,6 +1388,9 @@ input, textarea, select, option {
 /*** Links
 ************************************************/
 a:link {
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   color: #2b4560;
   text-decoration: underline; }
 a:active {
