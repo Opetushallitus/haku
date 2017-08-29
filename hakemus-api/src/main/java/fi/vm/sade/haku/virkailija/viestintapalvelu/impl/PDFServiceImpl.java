@@ -9,6 +9,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.DocumentSourceDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.json.DocumentSourceJsonAdapter;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,7 @@ public class PDFServiceImpl implements PDFService {
     private ApplicationPrintViewService applicationPrintViewService;
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
+    private static int maxLineLength =  79;
 
     @Autowired
     public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, OphProperties urlConfiguration) {
@@ -42,6 +44,7 @@ public class PDFServiceImpl implements PDFService {
 	@Override
 	public HttpResponse getUriToPDF(String applicationOid) {
 		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlConfiguration.url("haku-app.hakemusPdf", applicationOid));
+        applicationPrintView = splitLongUrls(applicationPrintView);
 		String documentSourceJson = getDocumentsourceJson(applicationPrintView);
 
 		String url = urlConfiguration.url("viestintapalvelu.uriToPDF");
@@ -52,6 +55,21 @@ public class PDFServiceImpl implements PDFService {
             throw new RemoteServiceException(url, e);
         }
 	}
+
+	private String splitLongUrls(String document) {
+        String newDocument = document;
+        String[] urlMatches = StringUtils.substringsBetween(newDocument, "<a href", "/a>");
+
+        for (String urlMatch : urlMatches) {
+            String content = StringUtils.substringBetween(urlMatch, ">", "<");
+            if (content.length() > maxLineLength) {
+                String splitContent = new StringBuilder(content).insert(maxLineLength, "<br>").toString();
+                newDocument = newDocument.replace(content, splitContent);
+            }
+        }
+
+        return newDocument;
+    }
 
     @Override
     @Deprecated // NOT IN USE?
