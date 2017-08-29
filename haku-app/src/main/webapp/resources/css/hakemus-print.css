@@ -411,7 +411,7 @@ table {
   width: 90%; }
 
 .width-100 {
-  width: 60%; }
+  width: 100%; }
 
 /*** Text
 ************************************************/
@@ -2300,7 +2300,10 @@ select, select:focus, select:active {
   display: block;
   margin: 0 0 10px;
   color: #333;
+  word-break: break-all;
+  word-break: break-word;
   word-wrap: break-word;
+  overflow-wrap: break-word;
   font-weight: normal;
   white-space: pre-wrap;
 }
