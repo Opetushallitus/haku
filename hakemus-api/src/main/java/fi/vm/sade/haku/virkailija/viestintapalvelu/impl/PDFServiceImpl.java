@@ -63,7 +63,8 @@ public class PDFServiceImpl implements PDFService {
         for (String urlMatch : urlMatches) {
             String content = StringUtils.substringBetween(urlMatch, ">", "<");
             if (content.length() > maxLineLength) {
-                String splitContent = new StringBuilder(content).insert(maxLineLength, "<br>").toString();
+                String lineBreak = "<br>";
+                String splitContent = new StringBuilder(content).insert(0, lineBreak).insert(maxLineLength, lineBreak).toString();
                 newDocument = newDocument.replace(content, splitContent);
             }
         }
