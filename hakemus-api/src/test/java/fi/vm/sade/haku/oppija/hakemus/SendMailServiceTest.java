@@ -56,7 +56,7 @@ public class SendMailServiceTest {
         OppijanTunnistusDTO capturedBody = (OppijanTunnistusDTO) firstCaptured.body;
 
         assertEquals(lastApplicationPeriodEndDate.getTime(), capturedBody.expires);
-        assertEquals("https://localhost/oppijan-tunnistus/api/v1/token", firstCaptured.url);
+        assertEquals("https://localhost:9090/oppijan-tunnistus/api/v1/token", firstCaptured.url);
         assertEquals("POST", firstCaptured.method);
         assertEquals("https://localhost:9090/omatsivut/hakutoiveidenMuokkaus.html#/token/", capturedBody.url);
         assertEquals(fi, capturedBody.lang);
@@ -143,7 +143,10 @@ public class SendMailServiceTest {
         when(siirtohaku.getKohdejoukonTarkenne()).thenReturn(OppijaConstants.KOHDEJOUKON_TARKENNE_SIIRTOHAKU);
 
         UrlConfiguration urlConfiguration = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
-        urlConfiguration.addDefault("host.haku","localhost:9090").addDefault("host.virkailija","localhost");
+        urlConfiguration
+                .addDefault("host.alb.virkailija","localhost:9090")
+                .addDefault("schema.alb.virkailija","https")
+                .addDefault("host.haku","localhost:9090").addDefault("host.virkailija","localhost");
         service = new SendMailService(applicationSystemService, restClient, emailServiceMockImpl, urlConfiguration);
     }
 

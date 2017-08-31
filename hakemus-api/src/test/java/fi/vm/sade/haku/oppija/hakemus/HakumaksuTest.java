@@ -57,6 +57,8 @@ public class HakumaksuTest {
 
     public HakumaksuTest() {
         urls.addDefault("host.virkailija","localhost:9090")
+                .addDefault("host.alb.virkailija","localhost:9090")
+                .addDefault("schema.alb.virkailija","https")
                 .addDefault("host.haku","localhost:9090")
                 .addDefault("host.haku.sv","localhost-sv");
         service = new HakumaksuService(urls, mockRestClient);
