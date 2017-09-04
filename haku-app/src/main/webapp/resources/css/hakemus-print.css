@@ -1388,6 +1388,9 @@ input, textarea, select, option {
 /*** Links
 ************************************************/
 a:link {
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   color: #2b4560;
   text-decoration: underline; }
 a:active {
@@ -2301,7 +2304,9 @@ select, select:focus, select:active {
   margin: 0 0 10px;
   color: #333;
   word-break: break-all;
+  word-break: break-word;
   word-wrap: break-word;
+  overflow-wrap: break-word;
   font-weight: normal;
   white-space: pre-wrap;
 }
