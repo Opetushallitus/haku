@@ -44,6 +44,7 @@ public class PDFServiceImpl implements PDFService {
 	@Override
 	public HttpResponse getUriToPDF(String applicationOid) {
 		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlConfiguration.url("haku-app.hakemusPdf", applicationOid));
+        applicationPrintView = removeInvalidXMLCharacters(applicationPrintView);
         applicationPrintView = splitLongUrls(applicationPrintView);
 		String documentSourceJson = getDocumentsourceJson(applicationPrintView);
 
@@ -55,6 +56,16 @@ public class PDFServiceImpl implements PDFService {
             throw new RemoteServiceException(url, e);
         }
 	}
+
+    private String removeInvalidXMLCharacters(String document) {
+        String xml10InvalidPattern = "[^"
+                + "\u0009\r\n"
+                + "\u0020-\uD7FF"
+                + "\uE000-\uFFFD"
+                + "\ud800\udc00-\udbff\udfff"
+                + "]";
+        return document.replaceAll(xml10InvalidPattern, "");
+    }
 
 	private String splitLongUrls(String document) {
         String newDocument = document;
