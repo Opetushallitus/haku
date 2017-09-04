@@ -15,15 +15,15 @@
     <div class="grid16-7">
         <table>
             <tr>
-                <td><fmt:message key="virkailija.hakemus.valintatiedot.kokonaispisteet" var="applicationState"/></td>
+                <td><fmt:message key="virkailija.hakemus.valintatiedot.kokonaispisteet"/></td>
                 <td><fmt:formatNumber value="${ao.yhteispisteet}" maxFractionDigits="2"/></td>
             </tr>
             <tr>
-                <td><fmt:message key="virkailija.hakemus.valintatiedot.sijoittelunTulos" var="applicationState"/></td>
+                <td><fmt:message key="virkailija.hakemus.valintatiedot.sijoittelunTulos"/></td>
                 <td><haku:i18nText value="${ao.sijoittelunTulosText}" /></td>
             </tr>
             <tr>
-                <td><fmt:message key="virkailija.hakemus.valintatiedot.vastaanottoTieto" var="applicationState"/></td>
+                <td><fmt:message key="virkailija.hakemus.valintatiedot.vastaanottoTieto"/></td>
                 <td><haku:i18nText value="${ao.vastaanottoTietoText}" /></td>
             </tr>
         </table>

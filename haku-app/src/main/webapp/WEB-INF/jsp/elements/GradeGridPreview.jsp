@@ -21,9 +21,9 @@
 <c:if test="${officerUi}">
     <tr>
         <td colspan="8">
-            <fmt:message key="lomake.component.gradegrid.muokkaaArvosanoja" var="applicationState"/>
+            <fmt:message key="lomake.component.gradegrid.muokkaaArvosanoja"/>
             <a href="/suoritusrekisteri/#/muokkaa/${it.application.personOid}" target="_blank">
-                <fmt:message key="virkailija.hakemus.suoritusrekisterissa" var="applicationState"/>
+                <fmt:message key="virkailija.hakemus.suoritusrekisterissa"/>
             </a>
         </td>
     </tr>
