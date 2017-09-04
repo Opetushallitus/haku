@@ -33,7 +33,7 @@ public class PDFServiceImpl implements PDFService {
     private ApplicationPrintViewService applicationPrintViewService;
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
-    private static int maxLineLength =  79;
+    private final static Long MAX_LINE_LENGTH =  79L;
 
     @Autowired
     public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, OphProperties urlConfiguration) {
@@ -62,9 +62,9 @@ public class PDFServiceImpl implements PDFService {
 
         for (String urlMatch : urlMatches) {
             String content = StringUtils.substringBetween(urlMatch, ">", "<");
-            if (content.length() > maxLineLength) {
+            if (content.length() > MAX_LINE_LENGTH) {
                 String lineBreak = "<br>";
-                String splitContent = new StringBuilder(content).insert(0, lineBreak).insert(maxLineLength, lineBreak).toString();
+                String splitContent = new StringBuilder(content).insert(0, lineBreak).insert(MAX_LINE_LENGTH.intValue(), lineBreak).toString();
                 newDocument = newDocument.replace(content, splitContent);
             }
         }
