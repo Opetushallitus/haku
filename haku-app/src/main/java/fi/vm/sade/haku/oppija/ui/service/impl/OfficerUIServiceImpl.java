@@ -547,11 +547,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ModelResponse modelResponse = new ModelResponse();
 
         List<Option> organizationTypes = new ArrayList<Option>();
-        for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
-            organizationTypes.add((Option) OptionBuilder.Option("organizationTypes")
-                    .setValue(ot.value())
-                    .i18nText(ElementUtil.createI18NAsIs(ot.value()))
-                    .build());
+        for (Option organisation : koodistoService.getOrganizationTypes()) {
+            String value = organisation.getValue();
+            value = value.replaceAll("#[0-9]$", "#*");
+            organizationTypes.add(new Option(organisation.getI18nText(), value));
         }
         List<ApplicationSystem> applicationSystems = getApplicationSystems();
         modelResponse.addObjectToModel("applicationSystems", applicationSystems);
