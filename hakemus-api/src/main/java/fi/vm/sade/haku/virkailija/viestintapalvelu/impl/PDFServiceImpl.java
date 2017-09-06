@@ -67,19 +67,19 @@ public class PDFServiceImpl implements PDFService {
         return document.replaceAll(xml10InvalidPattern, "");
     }
 
-	private String splitLongUrls(String document) {
+    private String splitLongUrls(String document) {
         String newDocument = document;
         String[] urlMatches = StringUtils.substringsBetween(newDocument, "<a href", "/a>");
-
-        for (String urlMatch : urlMatches) {
-            String content = StringUtils.substringBetween(urlMatch, ">", "<");
-            if (content.length() > MAX_LINE_LENGTH) {
-                String lineBreak = "<br>";
-                String splitContent = new StringBuilder(content).insert(0, lineBreak).insert(MAX_LINE_LENGTH.intValue(), lineBreak).toString();
-                newDocument = newDocument.replace(content, splitContent);
+        if (urlMatches != null) {
+            for (String urlMatch : urlMatches) {
+                String content = StringUtils.substringBetween(urlMatch, ">", "<");
+                if (content.length() > MAX_LINE_LENGTH) {
+                    String lineBreak = "<br>";
+                    String splitContent = new StringBuilder(content).insert(0, lineBreak).insert(MAX_LINE_LENGTH.intValue(), lineBreak).toString();
+                    newDocument = newDocument.replace(content, splitContent);
+                }
             }
         }
-
         return newDocument;
     }
 
