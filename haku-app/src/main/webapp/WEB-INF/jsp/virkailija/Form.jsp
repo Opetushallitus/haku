@@ -192,15 +192,9 @@
                     <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}' cellId="infocell_paymentstate"/>
 
                     <td>
-                        <fmt:message key="virkailija.hakemus.hakijanTiedot"/>
-                        <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank">
-                            <fmt:message key="virkailija.hakemus.suoritusrekisterissa"/>
-                        </a>
+                        <fmt:message key="virkailija.hakemus.hakijanTiedot"/> <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank"><fmt:message key="virkailija.hakemus.suoritusrekisterissa"/></a>
                         </br>
-                        <fmt:message key="virkailija.hakemus.hakijanTiedot"/>
-                        <a href="/authentication-henkiloui/html/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank">
-                            <fmt:message key="virkailija.hakemus.henkilopalvelussa"/>
-                        </a>
+                        <fmt:message key="virkailija.hakemus.hakijanTiedot"/> <a href="/authentication-henkiloui/html/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank"><fmt:message key="virkailija.hakemus.henkilopalvelussa"/></a>
                     </td>
 
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
