@@ -38,8 +38,8 @@
             <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th>Kutsuttu</th>
-                    <th>Pisteet</th>
+                    <th><fmt:message key="virkailija.hakemus.valintatiedot.kutsuttu" /></th>
+                    <th><fmt:message key="virkailija.hakemus.valintatiedot.pisteet" /></th>
                 </tr>
             <thead>
             <tbody>
