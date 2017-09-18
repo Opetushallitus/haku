@@ -8,7 +8,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.google.gson.Gson;
-import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.haku.ApiAuditLogger;
+import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
@@ -22,8 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 
-import static fi.vm.sade.haku.ApiAuditHelper.AUDIT;
-import static fi.vm.sade.haku.ApiAuditHelper.builder;
 
 @Service
 public class ApplicationSystemServiceImpl implements ApplicationSystemService {
@@ -31,14 +32,17 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final LoadingCache<String, ApplicationSystem> cache;
     private final Boolean cacheApplicationSystems;
     private final ExecutorService executors = Executors.newFixedThreadPool(10);
+    private final ApiAuditLogger apiAuditLogger;
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
                                         @Value("${application.system.cache:true}") final boolean cacheApplicationSystems,
-                                        final CacheBuilder<String, ApplicationSystem> cacheBuilder) {
+                                        final CacheBuilder<String, ApplicationSystem> cacheBuilder,
+                                        final ApiAuditLogger apiAuditLogger) {
         this.applicationSystemRepository = applicationSystemRepository;
         this.cacheApplicationSystems = cacheApplicationSystems;
         this.cache = cacheBuilder.build(new ApplicationSystemCacheLoader());
+        this.apiAuditLogger = apiAuditLogger;
     }
 
     private Date getLastGeneratedForId(String key) {
@@ -107,11 +111,14 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         }
 
         Gson gson = new Gson();
-        AUDIT.log(builder()
-                .hakuOid(applicationSystem.getId())
-                .setOperaatio(HakuOperation.SAVE_APPLICATION_SYSTEM)
-                .message(gson.toJson(applicationSystem))
-                .build());
+
+        Target.Builder target = new Target.Builder();
+        Changes.Builder changes = new Changes.Builder();
+
+        target.setField("hakuOid", applicationSystem.getId());
+        changes.added("applicationSystem", gson.toJson(applicationSystem));
+
+        apiAuditLogger.log(null, HakuOperation.SAVE_APPLICATION_SYSTEM, target.build(), changes.build());
     }
 
     @Override

@@ -18,19 +18,26 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.auditlog.haku.HakuOperation;
-import fi.vm.sade.auditlog.haku.LogMessage;
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.auditlog.User;
+import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.OppijaAuditLogger;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.ui.common.*;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.ietf.jgss.GSSException;
+import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +48,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -53,8 +62,6 @@ import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueM
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static fi.vm.sade.haku.OppijaAuditHelper.AUDIT;
-import static fi.vm.sade.haku.AuditHelper.builder;
 
 @Component
 @Path("lomake")
@@ -79,20 +86,25 @@ public class FormController {
 
     private final ObjectMapper mapper;
 
+    private final OppijaAuditLogger oppijaAuditLogger;
+
     @Autowired
     public FormController(final UIService uiService, final PDFService pdfService,
                           final AuthenticationService authenticationService,
-                          @Value("${application.system.generatorUrl:}") final String generatorUrl) {
+                          @Value("${application.system.generatorUrl:}") final String generatorUrl,
+                          OppijaAuditLogger oppijaAuditLogger) {
         this.uiService = uiService;
         this.pdfService = pdfService;
         this.authenticationService = authenticationService;
         this.generatorUrl = generatorUrl;
+        this.oppijaAuditLogger = oppijaAuditLogger;
 
         mapper = new ObjectMapper()
                 .disable(SerializationConfig.Feature.INDENT_OUTPUT)
                 .disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS)
                 .disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS)
                 .disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
+
     }
 
     @GET
@@ -212,28 +224,24 @@ public class FormController {
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
-    private LogMessage.LogMessageBuilder withIpAndSession(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
+    private Target.Builder targetWithIpAndSession(Target.Builder builder, HttpServletRequest request) {
         String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
         if (ipAddressProxy != null) {
-            builder.add("ip", ipAddressProxy);
+            builder.setField("ip", ipAddressProxy);
         }
         String sessionId = request.getRequestedSessionId();
         if (sessionId != null) {
-            builder.sessionId(sessionId);
+            builder.setField("sessionId", sessionId);
         }
         return builder;
     }
 
-    private LogMessage.LogMessageBuilder entryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
-        return builder().hakemusOid(app.getOid()).hakuOid(app.getApplicationSystemId())
-                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
-                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION);
-    }
-
-    private LogMessage.LogMessageBuilder entrySavePhase(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
-        return builder().hakemusOid(app.getOid()).hakuOid(app.getApplicationSystemId())
-                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
-                .setOperaatio(HakuOperation.SAVE_PHASE_TO_SESSION);
+    private Changes.Builder changesEntryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
+        Changes.Builder builder = new Changes.Builder();
+        for (Map.Entry<String, String> entry : applicationToMap(app).entrySet()) {
+            builder.added(entry.getKey(), entry.getValue());
+        }
+        return builder;
     }
 
     @POST
@@ -247,11 +255,23 @@ public class FormController {
             ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
             final String oid = modelResponse.getApplication().getOid();
             RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
-            AUDIT.log(withIpAndSession(entryNewApplication(modelResponse.getApplication()).message("Submitted new application"),request).build());
+
+
+            Target.Builder targetBuilder = new Target.Builder()
+                .setField("applicationSystemId", applicationSystemId);
+            Changes.Builder changesBuilder = changesEntryNewApplication(modelResponse.getApplication());
+
+            auditLogRequest(request, HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build(), changesBuilder.build());
+
             return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
         } catch(Throwable t) {
             fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
-            AUDIT.log(withIpAndSession(entryNewApplication(application).message("Failed: " + t.getMessage()),request).build());
+
+            Target.Builder targetBuilder = new Target.Builder()
+                    .setField("applicationSystemId", applicationSystemId)
+                    .setField("message", "Failed: " + t.getMessage());
+            auditLogRequest(request, HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build());
+
             throw t;
         }
     }
@@ -278,7 +298,14 @@ public class FormController {
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
         fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
-        AUDIT.log(withIpAndSession(entrySavePhase(application).message(String.format("Submitted phase %s", phaseId)),request).build());
+
+        Changes.Builder changesBuilder = changesEntryNewApplication(application);
+        Target.Builder targetBuilder = new Target.Builder()
+                .setField("applicationSystemId", applicationSystemId)
+                .setField("phaseId", phaseId);
+
+        auditLogRequest(request, HakuOperation.SAVE_PHASE_TO_SESSION, targetBuilder.build(), changesBuilder.build());
+
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
@@ -345,5 +372,29 @@ public class FormController {
     @Produces(MediaType.TEXT_PLAIN)
     public String refreshSession() {
         return "OK";
+    }
+
+    private InetAddress getInetAddress(HttpServletRequest request) {
+        InetAddress inetaddress;
+        try {
+            inetaddress = InetAddress.getByName(request.getRemoteAddr());
+        } catch (UnknownHostException e) {
+            LOGGER.error("Could not create inetaddress of remote address {}", request.getRemoteAddr());
+            inetaddress = null;
+        }
+        return inetaddress;
+    }
+
+    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target) {
+        auditLogRequest(request, operation, target, null);
+    }
+
+    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target, Changes changes) {
+        if(changes == null) {
+            changes = new Changes.Builder().build();
+        }
+        InetAddress inetaddress = getInetAddress(request);
+        User user = new User(oppijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
+        oppijaAuditLogger.log(user, operation, target, changes);
     }
 }

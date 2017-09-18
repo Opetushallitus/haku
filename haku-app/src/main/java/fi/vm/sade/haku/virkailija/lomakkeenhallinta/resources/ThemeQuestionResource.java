@@ -17,7 +17,11 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.auditlog.User;
+import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
@@ -36,6 +40,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.bson.types.ObjectId;
+import org.ietf.jgss.GSSException;
+import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +50,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static fi.vm.sade.haku.AuditHelper.AUDIT;
-import static fi.vm.sade.haku.AuditHelper.builder;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -87,6 +94,9 @@ public class ThemeQuestionResource {
     @Autowired
     private HakuService hakuService;
 
+    @Autowired
+    VirkailijaAuditLogger virkailijaAuditLogger;
+
     public ThemeQuestionResource(){
     }
 
@@ -96,13 +106,15 @@ public class ThemeQuestionResource {
                                  final OrganizationService organizationService,
                                  final AuthenticationService authenticationService,
                                  final FormConfigurationService formConfigurationService,
-                                 final HakuService hakuService) {
+                                 final HakuService hakuService,
+                                 final VirkailijaAuditLogger virkailijaAuditLogger) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.authenticationService = authenticationService;
         this.formConfigurationService = formConfigurationService;
         this.hakuService = hakuService;
+        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     @GET
@@ -130,7 +142,8 @@ public class ThemeQuestionResource {
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
-    public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
+    public void deleteThemeQuestionByOid(@Context HttpServletRequest request,
+                                         @PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
         if(!allowDeleteApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
@@ -141,12 +154,14 @@ public class ThemeQuestionResource {
         }
         themeQuestionDAO.delete(themeQuestionId);
 
-        AUDIT.log(builder().hakuOid(dbThemeQuestion.getApplicationSystemId())
-                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_DELETE)
-                .add("themeQuestionId", themeQuestionId)
-                .add("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
-                .add("themeId", dbThemeQuestion.getTheme())
-                .build());
+        Target target = new Target.Builder()
+                .setField("hakuOid", dbThemeQuestion.getApplicationSystemId())
+                .setField("themeQuestionId", themeQuestionId)
+                .setField("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
+                .setField("themeId", dbThemeQuestion.getTheme()).build();
+
+        auditLogRequest(request, HakuOperation.APPSYS_THEMEQUESTION_DELETE, target);
+
         renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
     }
 
@@ -167,7 +182,8 @@ public class ThemeQuestionResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
-    public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
+    public void updateThemeQuestion(@Context HttpServletRequest request,
+                                    @PathParam("themeQuestionId") String themeQuestionId,
                                     ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
 
@@ -195,12 +211,14 @@ public class ThemeQuestionResource {
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question with id: " + themeQuestionId);
 
-        AUDIT.log(builder().hakuOid(dbThemeQuestion.getApplicationSystemId())
-                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_UPDATE)
-                .add("themeQuestionId", themeQuestion.getId())
-                .add("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
-                .add("themeId", themeQuestion.getTheme())
-                .build());
+        Target target = new Target.Builder()
+                .setField("hakuOid", dbThemeQuestion.getApplicationSystemId())
+                .setField("themeQuestionId", themeQuestion.getId().toString())
+                .setField("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
+                .setField("themeId", themeQuestion.getTheme()).build();
+
+
+        auditLogRequest(request, HakuOperation.APPSYS_THEMEQUESTION_UPDATE, target);
     }
 
     private ThemeQuestion fetchThemeQuestion(String themeQuestionId){
@@ -216,7 +234,8 @@ public class ThemeQuestionResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
-    public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
+    public void saveNewThemeQuestion(@Context HttpServletRequest request,
+                                     @PathParam("applicationSystemId") String applicationSystemId,
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
                                      ThemeQuestion themeQuestion) throws IOException {
@@ -279,11 +298,12 @@ public class ThemeQuestionResource {
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
 
-        AUDIT.log(builder().hakuOid(applicationSystemId)
-                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_INSERT)
-                .add("learningOpportunityId", learningOpportunityId)
-                .add("themeId", themeId)
-                .build());
+        Target target = new Target.Builder()
+                .setField("hakuOid", applicationSystemId)
+                .setField("learningOpportunityId", learningOpportunityId)
+                .setField("themeId", themeId).build();
+
+        auditLogRequest(request, HakuOperation.APPSYS_THEMEQUESTION_INSERT, target);
     }
 
     @POST
@@ -582,5 +602,29 @@ public class ThemeQuestionResource {
         for (ThemeQuestion tq: tqsWithoutOrdinal){
             themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
         }
+    }
+
+    private InetAddress getInetAddress(HttpServletRequest request) {
+        InetAddress inetaddress;
+        try {
+            inetaddress = InetAddress.getByName(request.getRemoteAddr());
+        } catch (UnknownHostException e) {
+            LOGGER.error("Could not create inetaddress of remote address {}", request.getRemoteAddr());
+            inetaddress = null;
+        }
+        return inetaddress;
+    }
+
+    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target) {
+        auditLogRequest(request, operation, target, null);
+    }
+
+    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target, Changes changes) {
+        if(changes == null) {
+            changes = new Changes.Builder().build();
+        }
+        InetAddress inetaddress = getInetAddress(request);
+        User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
+        virkailijaAuditLogger.log(user, operation, target, changes);
     }
 }

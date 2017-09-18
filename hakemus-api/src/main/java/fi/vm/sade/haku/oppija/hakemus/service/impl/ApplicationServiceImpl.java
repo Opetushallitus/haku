@@ -17,8 +17,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import static com.google.common.collect.Maps.filterKeys;
-import static fi.vm.sade.haku.ApiAuditHelper.AUDIT;
-import static fi.vm.sade.haku.ApiAuditHelper.builder;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
@@ -34,7 +32,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Multimaps;
 
 import com.google.gson.Gson;
-import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.haku.ApiAuditLogger;
+import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -90,6 +91,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 import org.apache.commons.lang.StringUtils;
+import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +134,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ValintaService valintaService;
     private final Boolean disableHistory;
     private final OhjausparametritService ohjausparametritService;
+    private final ApiAuditLogger apiAuditLogger;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -154,7 +157,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ValintaService valintaService,
                                   OhjausparametritService ohjausparametritService,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation,
-                                  @Value("${disableHistory:false}") String disableHistory) {
+                                  @Value("${disableHistory:false}") String disableHistory,
+                                  ApiAuditLogger apiAuditLogger) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -172,6 +176,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
         this.disableHistory = Boolean.valueOf(disableHistory);
+        this.apiAuditLogger = apiAuditLogger;
     }
 
 
@@ -259,13 +264,15 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.applicationDAO.save(application);
 
             Gson g = new Gson();
-            AUDIT.log(builder()
-                    .id(user.getUserName())
-                    .hakemusOid(application.getOid())
-                    .hakuOid(applicationSystem.getId())
-                    .message(g.toJson(application))
-                    .setOperaatio(HakuOperation.SAVE_APPLICATION)
-                    .build());
+            fi.vm.sade.auditlog.User u = new fi.vm.sade.auditlog.User(apiAuditLogger.getCurrentPersonOid(), null, null, null);
+            Target.Builder target = new Target.Builder();
+            Changes.Builder changes = new Changes.Builder();
+            target.setField("hakemusOid", application.getOid())
+                    .setField("hakuOid", applicationSystem.getId());
+            changes.added("hakemus", g.toJson(application));
+
+            fi.vm.sade.auditlog.User auditUser = new fi.vm.sade.auditlog.User(apiAuditLogger.getCurrentPersonOid(), null, null, null);
+            apiAuditLogger.log(auditUser, HakuOperation.SAVE_APPLICATION, target.build(), changes.build());
 
             this.userSession.removeApplication(application);
             return application;
@@ -804,11 +811,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         this.applicationDAO.update(queryApplication, application);
         Gson g = new Gson();
-        AUDIT.log(builder()
-                .hakemusOid(application.getOid())
-                .message(g.toJson(application))
-                .setOperaatio(HakuOperation.UPDATE_APPLICATION)
-                .build());
+
+        Oid currentPersonOid = apiAuditLogger.getCurrentPersonOid();
+        Target.Builder target = new Target.Builder()
+                .setField("hakemusOid", application.getOid());
+        Changes.Builder changes = new Changes.Builder()
+                .added("application", g.toJson(application));
+
+        fi.vm.sade.auditlog.User u = new fi.vm.sade.auditlog.User(currentPersonOid, null, null, null);
+        apiAuditLogger.log(u, HakuOperation.UPDATE_APPLICATION, target.build(), changes.build());
+
     }
 
     @Override
@@ -837,11 +849,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new IllegalArgumentException("Value can't be null");
         } else {
             applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
-            AUDIT.log(builder()
-                    .hakemusOid(applicationOid)
-                    .add(key, value)
-                    .setOperaatio(HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE)
-                    .build());
+
+            Target.Builder target = new Target.Builder().setField("applicationOid",applicationOid);
+            Changes.Builder changes = new Changes.Builder().updated("additionaliInfo."+key, "",value);
+            apiAuditLogger.log(null, HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE, target.build(), changes.build());
         }
     }
 
@@ -881,13 +892,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
 
-        Gson g = new Gson();
-        AUDIT.log(builder()
-                .hakemusOid(application.getOid())
-                .hakuOid(asId)
-                .message(g.toJson(application))
-                .setOperaatio(HakuOperation.SAVE_APPLICATION)
-                .build());
+        Target.Builder target = new Target.Builder().setField("applicationSystemId", asId).setField("applicationOid", application.getOid());
+        Changes.Builder changes = new Changes.Builder()
+                .added("state", application.getState().name())
+                .added("received", application.getReceived().toString())
+                .added("appplicationOid", application.getOid());
+        apiAuditLogger.log(null, HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
 
         return application;
     }
