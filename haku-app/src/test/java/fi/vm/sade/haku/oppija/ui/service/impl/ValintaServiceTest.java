@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
@@ -129,7 +130,8 @@ public class ValintaServiceTest {
 
         OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
                 hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
-                null, null, valintaService, session, null, mock(HakumaksuService.class), null, "true");
+                null, null, valintaService, session, null, mock(VirkailijaAuditLogger.class),
+                mock(HakumaksuService.class), null, "true");
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu", true);
 
         List<ApplicationOptionDTO> hakukohteet = (List<ApplicationOptionDTO>) response.getModel().get("hakukohteet");

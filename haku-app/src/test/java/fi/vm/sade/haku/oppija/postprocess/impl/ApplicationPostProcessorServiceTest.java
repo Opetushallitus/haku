@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
@@ -16,7 +17,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,9 +45,11 @@ public class ApplicationPostProcessorServiceTest {
         final HakuService hakuService = null;
         final ApplicationSystemService applicationSystemService = null;
         final HakumaksuService hakumaksuService = null;
+        final VirkailijaAuditLogger virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
         final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker = null;
 
-        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, applicationSystemService, baseEducationService, formService, elementTreeValidator, authenticationService, hakuService, hakumaksuService, paymentDueDateProcessingWorker);
+        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, applicationSystemService, baseEducationService, formService,
+                elementTreeValidator, authenticationService, hakuService, hakumaksuService, paymentDueDateProcessingWorker, virkailijaAuditLogger);
         applicationPostProcessorService.setRetryFailQuickCount(5);
         applicationPostProcessorService.setRetryFailedAgainTime(10000);
 
