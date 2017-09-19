@@ -95,18 +95,29 @@ public class OfficerController {
     public static final String APPLICATION_PRINT_VIEW = "/print/print";
     public static final String PHASE_ID_PREVIEW = "esikatselu";
 
-    final OfficerUIService officerUIService;
-    final UIService uiService;
-    final FormService formService;
+    @Autowired
+    OfficerUIService officerUIService;
+    @Autowired
+    UIService uiService;
+    @Autowired
+    FormService formService;
+    @Autowired
     Session userSession;
-    private final PDFService pdfService;
-    private final EmailService emailService;
-    private final OphProperties urlConfiguration;
+    @Autowired
+    private PDFService pdfService;
+    @Autowired
+    private EmailService emailService;
 
-    private final OppijaAuditLogger oppijaAuditLogger;
+    @Autowired
+    private OphProperties urlConfiguration;
 
-    final
-    AuthenticationService authenticationService;
+    @Autowired
+    private OppijaAuditLogger oppijaAuditLogger;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    public OfficerController() {}
 
     @Autowired
     public OfficerController(OfficerUIService officerUIService, UIService uiService, FormService formService, Session userSession, PDFService pdfService, EmailService emailService, OphProperties urlConfiguration, OppijaAuditLogger oppijaAuditLogger, AuthenticationService authenticationService) {
