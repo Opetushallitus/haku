@@ -852,7 +852,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             Target.Builder target = new Target.Builder().setField("applicationOid",applicationOid);
             Changes.Builder changes = new Changes.Builder().updated("additionaliInfo."+key, "",value);
-            apiAuditLogger.log(null, HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE, target.build(), changes.build());
+            Oid currentPersonOid = apiAuditLogger.getCurrentPersonOid();
+            fi.vm.sade.auditlog.User user = new fi.vm.sade.auditlog.User(currentPersonOid, null, null, null);
+            apiAuditLogger.log(user, HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE, target.build(), changes.build());
         }
     }
 
@@ -897,7 +899,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .added("state", application.getState().name())
                 .added("received", application.getReceived().toString())
                 .added("appplicationOid", application.getOid());
-        apiAuditLogger.log(null, HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
+        fi.vm.sade.auditlog.User user = new fi.vm.sade.auditlog.User(apiAuditLogger.getCurrentPersonOid(), null, null, null);
+        apiAuditLogger.log(user, HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
 
         return application;
     }

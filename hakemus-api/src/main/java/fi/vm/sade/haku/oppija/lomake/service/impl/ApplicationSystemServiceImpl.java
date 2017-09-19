@@ -10,6 +10,7 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.google.gson.Gson;
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -17,6 +18,7 @@ import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredExcepti
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.repository.ApplicationSystemRepository;
+import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -118,7 +120,9 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         target.setField("hakuOid", applicationSystem.getId());
         changes.added("applicationSystem", gson.toJson(applicationSystem));
 
-        apiAuditLogger.log(null, HakuOperation.SAVE_APPLICATION_SYSTEM, target.build(), changes.build());
+        Oid currentPersonOid = apiAuditLogger.getCurrentPersonOid();
+        User user = new User(currentPersonOid, null, null, null);
+        apiAuditLogger.log(user, HakuOperation.SAVE_APPLICATION_SYSTEM, target.build(), changes.build());
     }
 
     @Override
