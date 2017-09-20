@@ -10,7 +10,6 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.google.gson.Gson;
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
-import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -18,13 +17,10 @@ import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredExcepti
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.repository.ApplicationSystemRepository;
-import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
@@ -37,9 +33,6 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final Boolean cacheApplicationSystems;
     private final ExecutorService executors = Executors.newFixedThreadPool(10);
     private final ApiAuditLogger apiAuditLogger;
-
-    @Context
-    private HttpServletRequest request;
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
