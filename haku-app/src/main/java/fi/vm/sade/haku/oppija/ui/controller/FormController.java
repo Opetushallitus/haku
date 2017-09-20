@@ -79,8 +79,6 @@ public class FormController {
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
 
     private final UIService uiService;
-    private final PDFService pdfService;
-    private final AuthenticationService authenticationService;
 
     private final String generatorUrl;
 
@@ -89,13 +87,10 @@ public class FormController {
     private final OppijaAuditLogger oppijaAuditLogger;
 
     @Autowired
-    public FormController(final UIService uiService, final PDFService pdfService,
-                          final AuthenticationService authenticationService,
+    public FormController(final UIService uiService,
                           @Value("${application.system.generatorUrl:}") final String generatorUrl,
                           OppijaAuditLogger oppijaAuditLogger) {
         this.uiService = uiService;
-        this.pdfService = pdfService;
-        this.authenticationService = authenticationService;
         this.generatorUrl = generatorUrl;
         this.oppijaAuditLogger = oppijaAuditLogger;
 
@@ -393,8 +388,6 @@ public class FormController {
         if(changes == null) {
             changes = new Changes.Builder().build();
         }
-        //InetAddress inetaddress = getInetAddress(request);
-        //User user = new User(oppijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
         oppijaAuditLogger.log(oppijaAuditLogger.getUser(), operation, target, changes);
     }
 }
