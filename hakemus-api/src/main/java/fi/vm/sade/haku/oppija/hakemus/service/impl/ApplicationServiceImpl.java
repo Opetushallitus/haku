@@ -829,9 +829,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         Changes.Builder changes = new Changes.Builder()
                 .added("application", g.toJson(application));
 
-        ServletRequestAttributes sra = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        HttpServletRequest req = sra.getRequest();
-        fi.vm.sade.auditlog.User  ads = apiAuditLogger.getUser();
         apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.UPDATE_APPLICATION, target.build(), changes.build());
 
     }
