@@ -626,9 +626,10 @@ public class OfficerController {
         if(changes == null) {
             changes = new Changes.Builder().build();
         }
-        InetAddress inetaddress = getInetAddress(request);
-        HttpSession session = request.getSession();
-        User user = new User(oppijaAuditLogger.getCurrentPersonOid(), inetaddress, session != null ? session.toString() : "", request.getHeader("user-agent"));
+        //InetAddress inetaddress = getInetAddress(request);
+        //HttpSession session = request.getSession();
+        //User user = new User(oppijaAuditLogger.getCurrentPersonOid(), inetaddress, session != null ? session.toString() : "", request.getHeader("user-agent"));
+        User user = oppijaAuditLogger.getUser();
         oppijaAuditLogger.log(user, operation, target, changes);
     }
 }

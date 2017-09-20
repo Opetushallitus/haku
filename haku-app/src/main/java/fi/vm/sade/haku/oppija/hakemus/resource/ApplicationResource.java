@@ -727,7 +727,7 @@ public class ApplicationResource {
         InetAddress inetaddress = getInetAddress(request);
 
         HttpSession session = request.getSession();
-        User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, session != null ? session.toString() : "", request.getHeader("user-agent"));
-        virkailijaAuditLogger.log(user, operation, target, changes);
+        //User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, session != null ? session.toString() : "", request.getHeader("user-agent"));
+        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, changes);
     }
 }

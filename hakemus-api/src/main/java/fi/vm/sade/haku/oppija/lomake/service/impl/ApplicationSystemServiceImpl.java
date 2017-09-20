@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
@@ -35,6 +37,9 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final Boolean cacheApplicationSystems;
     private final ExecutorService executors = Executors.newFixedThreadPool(10);
     private final ApiAuditLogger apiAuditLogger;
+
+    @Context
+    private HttpServletRequest request;
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
@@ -120,9 +125,7 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         target.setField("hakuOid", applicationSystem.getId());
         changes.added("applicationSystem", gson.toJson(applicationSystem));
 
-        Oid currentPersonOid = apiAuditLogger.getCurrentPersonOid();
-        User user = new User(currentPersonOid, null, null, null);
-        apiAuditLogger.log(user, HakuOperation.SAVE_APPLICATION_SYSTEM, target.build(), changes.build());
+        apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.SAVE_APPLICATION_SYSTEM, target.build(), changes.build());
     }
 
     @Override
