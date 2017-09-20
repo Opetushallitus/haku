@@ -393,8 +393,8 @@ public class FormController {
         if(changes == null) {
             changes = new Changes.Builder().build();
         }
-        InetAddress inetaddress = getInetAddress(request);
-        User user = new User(oppijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
-        oppijaAuditLogger.log(user, operation, target, changes);
+        //InetAddress inetaddress = getInetAddress(request);
+        //User user = new User(oppijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
+        oppijaAuditLogger.log(oppijaAuditLogger.getUser(), operation, target, changes);
     }
 }

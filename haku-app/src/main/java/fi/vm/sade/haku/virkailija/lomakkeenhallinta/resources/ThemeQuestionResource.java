@@ -623,8 +623,8 @@ public class ThemeQuestionResource {
         if(changes == null) {
             changes = new Changes.Builder().build();
         }
-        InetAddress inetaddress = getInetAddress(request);
-        User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
-        virkailijaAuditLogger.log(user, operation, target, changes);
+        //InetAddress inetaddress = getInetAddress(request);
+        //User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, request.getSession().toString(), request.getHeader("user-agent"));
+        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, changes);
     }
 }

@@ -63,6 +63,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Request;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -108,6 +113,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private static final String KAUSI_FORMAT_STRING = "dd.MM.yyyy";
     private final String kevatkausi;
+
+    @Context
+    private HttpServletRequest httpServletRequest;
+
+    @Context
+    private Request request;
+
+    @Context
+    private HttpHeaders httpHeaders;
+
+    @Context
+    private HttpSession httpSession;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,

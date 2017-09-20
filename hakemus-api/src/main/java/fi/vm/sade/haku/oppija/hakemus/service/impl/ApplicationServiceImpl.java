@@ -98,20 +98,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Request;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -140,6 +140,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final String onlyBackgroundValidation;
 
     private static final String REGEX_NOT_DIGIT = "[^0-9]";
+
+    @Context
+    private HttpServletRequest httpServletRequest;
+
+    @Context
+    private Request request;
+
+    @Context
+    private HttpHeaders httpHeaders;
+
+    @Context
+    private HttpSession httpSession;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -264,15 +276,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.applicationDAO.save(application);
 
             Gson g = new Gson();
-            fi.vm.sade.auditlog.User u = new fi.vm.sade.auditlog.User(apiAuditLogger.getCurrentPersonOid(), null, null, null);
+            fi.vm.sade.auditlog.User apiUser = apiAuditLogger.getUser();
             Target.Builder target = new Target.Builder();
             Changes.Builder changes = new Changes.Builder();
             target.setField("hakemusOid", application.getOid())
                     .setField("hakuOid", applicationSystem.getId());
             changes.added("hakemus", g.toJson(application));
 
-            fi.vm.sade.auditlog.User auditUser = new fi.vm.sade.auditlog.User(apiAuditLogger.getCurrentPersonOid(), null, null, null);
-            apiAuditLogger.log(auditUser, HakuOperation.SAVE_APPLICATION, target.build(), changes.build());
+            apiAuditLogger.log(apiUser, HakuOperation.SAVE_APPLICATION, target.build(), changes.build());
 
             this.userSession.removeApplication(application);
             return application;
@@ -812,14 +823,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationDAO.update(queryApplication, application);
         Gson g = new Gson();
 
-        Oid currentPersonOid = apiAuditLogger.getCurrentPersonOid();
+
         Target.Builder target = new Target.Builder()
                 .setField("hakemusOid", application.getOid());
         Changes.Builder changes = new Changes.Builder()
                 .added("application", g.toJson(application));
 
-        fi.vm.sade.auditlog.User u = new fi.vm.sade.auditlog.User(currentPersonOid, null, null, null);
-        apiAuditLogger.log(u, HakuOperation.UPDATE_APPLICATION, target.build(), changes.build());
+        ServletRequestAttributes sra = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        HttpServletRequest req = sra.getRequest();
+        fi.vm.sade.auditlog.User  ads = apiAuditLogger.getUser();
+        apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.UPDATE_APPLICATION, target.build(), changes.build());
 
     }
 
@@ -852,9 +865,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             Target.Builder target = new Target.Builder().setField("applicationOid",applicationOid);
             Changes.Builder changes = new Changes.Builder().updated("additionaliInfo."+key, "",value);
-            Oid currentPersonOid = apiAuditLogger.getCurrentPersonOid();
-            fi.vm.sade.auditlog.User user = new fi.vm.sade.auditlog.User(currentPersonOid, null, null, null);
-            apiAuditLogger.log(user, HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE, target.build(), changes.build());
+            apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE, target.build(), changes.build());
         }
     }
 
@@ -899,8 +910,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .added("state", application.getState().name())
                 .added("received", application.getReceived().toString())
                 .added("appplicationOid", application.getOid());
-        fi.vm.sade.auditlog.User user = new fi.vm.sade.auditlog.User(apiAuditLogger.getCurrentPersonOid(), null, null, null);
-        apiAuditLogger.log(user, HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
+        apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
 
         return application;
     }
