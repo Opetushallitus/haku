@@ -55,10 +55,16 @@ public class OppijaAuditLogger extends Audit {
                 InetAddress address = InetAddress.getByName(remoteAddr);
                 return new User(getCurrentPersonOid(), address, sessionId, useragent);
             } catch (UnknownHostException e) {
-                LOGGER.error("Error creating inetadress for user out of {}, returning null user", remoteAddr);
+                LOGGER.error("Error creating inetadress for user out of {}, returning null user", remoteAddr, e);
+                return null;
+            }
+        } else {
+            try {
+                return new User(getCurrentPersonOid(), InetAddress.getLocalHost(), "", "");
+            } catch (UnknownHostException e) {
+                LOGGER.error("Error creating localhost inetaddress",e);
                 return null;
             }
         }
-        return null;
     }
 }
