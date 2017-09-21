@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -31,9 +32,11 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
@@ -61,8 +64,8 @@ public class OfficerControllerTest {
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
-        officerController = new OfficerController();
-        officerController.userSession = mock(UserSession.class);
+
+        //officerController.oppijaAuditLogger
 
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
@@ -88,19 +91,22 @@ public class OfficerControllerTest {
         when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(modelResponse);
         when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(modelResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
-        officerController.officerUIService = officerApplicationService;
+
+        officerController = new OfficerController(officerApplicationService, null, formService, null, null,
+                null, null, mock(OppijaAuditLogger.class), mock(AuthenticationService.class));
+        officerController.userSession = mock(UserSession.class);
     }
 
     @Test
     public void testUpdatePhase() throws URISyntaxException, IOException {
         Response response = null;
-        response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
+        response = officerController.updatePhase(mock(HttpServletRequest.class), ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetAdditionalInfo() throws IOException {
-        Viewable viewable = officerController.getAdditionalInfo(OID);
+        Viewable viewable = officerController.getAdditionalInfo(mock(HttpServletRequest.class), OID);
         assertEquals(OfficerController.ADDITIONAL_INFO_VIEW, viewable.getTemplateName());
     }
 
@@ -108,7 +114,7 @@ public class OfficerControllerTest {
     public void testSaveAdditionalInfo() throws URISyntaxException, IOException {
         MultivaluedMap<String, String> additionalInfo = new MultivaluedMapImpl();
         additionalInfo.put("key", newArrayList("value"));
-        Response response = officerController.saveAdditionalInfo(OID, additionalInfo);
+        Response response = officerController.saveAdditionalInfo(mock(HttpServletRequest.class), OID, additionalInfo);
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 

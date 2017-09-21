@@ -30,4 +30,8 @@
     <context:annotation-config/>
     <context:component-scan base-package="fi.vm.sade.haku.oppija,fi.vm.sade.hakutest"/>
 
+    <bean name="apiAuditLogger" class="fi.vm.sade.haku.ApiAuditLogger"/>
+    <bean name="oppijaAuditLogger" class="fi.vm.sade.haku.OppijaAuditLogger"/>
+    <bean name="virkailijaAuditLogger" class="fi.vm.sade.haku.VirkailijaAuditLogger"/>
+
 </beans>

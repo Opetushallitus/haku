@@ -21,7 +21,11 @@ import com.google.gson.Gson;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
-import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.auditlog.User;
+import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -35,10 +39,14 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import org.apache.commons.lang3.StringUtils;
+import org.ietf.jgss.GSSException;
+import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,17 +55,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.*;
 
-import static fi.vm.sade.haku.AuditHelper.AUDIT;
-import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.AuthorizationRoles.ALLOWED_FOR_ADMIN;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -84,8 +93,9 @@ public class ApplicationResource {
 
     private I18nBundleService i18nBundleService;
 
-    @Autowired
     private OfficerUIService officerUIService;
+
+    private VirkailijaAuditLogger virkailijaAuditLogger;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
@@ -98,12 +108,15 @@ public class ApplicationResource {
                                final ApplicationSystemService applicationSystemService,
                                final ApplicationOptionService applicationOptionService,
                                final SyntheticApplicationService syntheticApplicationService,
-                               final I18nBundleService i18nBundleService) {
+                               final I18nBundleService i18nBundleService, OfficerUIService officerUIService,
+                               final VirkailijaAuditLogger virkailijaAuditLogger) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.applicationOptionService = applicationOptionService;
         this.syntheticApplicationService = syntheticApplicationService;
         this.i18nBundleService = i18nBundleService;
+        this.officerUIService = officerUIService;
+        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     @GET
@@ -113,13 +126,14 @@ public class ApplicationResource {
     @ApiOperation(
             value = "Palauttaa hakemuksen tiedot",
             response = Application.class)
-    public Application getApplicationByOid(@ApiParam(value="Hakemuksen oid-tunniste") @PathParam(OID) String oid) {
+    public Application getApplicationByOid(@Context HttpServletRequest request,
+                                           @ApiParam(value="Hakemuksen oid-tunniste") @PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
             Application application = applicationService.getApplicationByOid(oid);
             LOGGER.debug("Got applicatoin by oid : {}", application.getOid());
-            AUDIT.log(builder().hakemusOid(oid)
-                    .setOperaatio(HakuOperation.VIEW_APPLICATION).build());
+            Target.Builder targetBuilder = new Target.Builder().setField("hakemusOid", oid);
+            auditLogRequest(request, HakuOperation.VIEW_APPLICATION, targetBuilder.build());
             return application;
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Status.NOT_FOUND, "Could not find requested application", e);
@@ -131,19 +145,9 @@ public class ApplicationResource {
 
         applicationService.update(new Application(application.getOid()), application, false);
 
-        Map<String, Object> changes = new HashMap<>();
-        Map<String, Object> payment = new HashMap<>();
-        payment.put("vanhaArvo",nameOrEmpty(oldState));
-        payment.put("uusiArvo",nameOrEmpty(state));
-        nameOrEmpty(oldState);
-        changes.put("paymentState", payment);
-        Gson gson = new Gson();
-
-        AUDIT.log(builder()
-                .hakemusOid(application.getOid())
-                .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                .changesJson(changes)
-                .build());
+        Target target = new Target.Builder().setField("hakemusOid", application.getOid()).build();
+        Changes changes = new Changes.Builder().updated("payment_state", oldState.name(), state.name()).build();
+        virkailijaAuditLogger.log(null, HakuOperation.PAYMENT_STATE_CHANGE, target, changes);
     }
 
     @POST
@@ -591,7 +595,8 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public void putApplicationAdditionalData(@PathParam("asId") String asId,
+    public void putApplicationAdditionalData(@Context HttpServletRequest request,
+                                             @PathParam("asId") String asId,
                                              @PathParam("aoId") String aoId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
         boolean saveSucceeded = false;
@@ -601,12 +606,17 @@ public class ApplicationResource {
         } finally {
             if(saveSucceeded) {
                 for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
-                    AUDIT.log(builder().hakuOid(asId).hakukohdeOid(aoId)
-                            .messageJson(applicationAdditionalDataDTO.getAdditionalData())
-                            .hakemusOid(applicationAdditionalDataDTO.getOid())
-                            .setOperaatio(HakuOperation.SAVE_ADDITIONAL_DATA).build());
+                    Target target = new Target.Builder()
+                            .setField("hakuOid", asId)
+                            .setField("hakukohdeOid", aoId)
+                            .setField("hakemusOid", applicationAdditionalDataDTO.getOid())
+                            .build();
+                    Changes.Builder changesBuilder = new Changes.Builder();
+                    for (Map.Entry<String, String> entry : applicationAdditionalDataDTO.getAdditionalData().entrySet()) {
+                        changesBuilder.added(entry.getKey(),entry.getValue());
+                    }
+                    auditLogRequest(request, HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
                 }
-
             }
         }
     }
@@ -616,7 +626,8 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public void putApplicationAdditionalData(@PathParam("asId") String asId,
+    public void putApplicationAdditionalData(@Context HttpServletRequest request,
+                                             @PathParam("asId") String asId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
         boolean saveSucceeded = false;
         try {
@@ -625,12 +636,16 @@ public class ApplicationResource {
         } finally {
             if(saveSucceeded) {
                 for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
-                    AUDIT.log(builder().hakuOid(asId)
-                            .messageJson(applicationAdditionalDataDTO.getAdditionalData())
-                            .hakemusOid(applicationAdditionalDataDTO.getOid())
-                            .setOperaatio(HakuOperation.SAVE_ADDITIONAL_DATA).build());
+                    Target target = new Target.Builder()
+                            .setField("hakuOid", asId)
+                            .setField("hakemusOid", applicationAdditionalDataDTO.getOid())
+                            .build();
+                    Changes.Builder changesBuilder = new Changes.Builder();
+                    for (Map.Entry<String, String> entry : applicationAdditionalDataDTO.getAdditionalData().entrySet()) {
+                        changesBuilder.added(entry.getKey(),entry.getValue());
+                    }
+                    auditLogRequest(request, HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
                 }
-
             }
         }
     }
@@ -687,5 +702,32 @@ public class ApplicationResource {
             LOGGER.error("Passivation failed {}", e);
             throw new JSONException(Status.INTERNAL_SERVER_ERROR, "Passivation failed", e);
         }
+    }
+
+    private InetAddress getInetAddress(HttpServletRequest request) {
+        InetAddress inetaddress;
+        try {
+            inetaddress = InetAddress.getByName(request.getRemoteAddr());
+        } catch (UnknownHostException e) {
+            LOGGER.error("Could not create inetaddress of remote address {}", request.getRemoteAddr());
+            inetaddress = null;
+        }
+        return inetaddress;
+    }
+
+    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target) {
+        auditLogRequest(request, operation, target, null);
+    }
+
+    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target, Changes changes) {
+        if(changes == null) {
+            changes = new Changes.Builder().build();
+        }
+
+        InetAddress inetaddress = getInetAddress(request);
+
+        HttpSession session = request.getSession();
+        //User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, session != null ? session.toString() : "", request.getHeader("user-agent"));
+        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, changes);
     }
 }
