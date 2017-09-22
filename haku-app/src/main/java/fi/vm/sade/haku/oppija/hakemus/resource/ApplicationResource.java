@@ -133,7 +133,7 @@ public class ApplicationResource {
             Application application = applicationService.getApplicationByOid(oid);
             LOGGER.debug("Got applicatoin by oid : {}", application.getOid());
             Target.Builder targetBuilder = new Target.Builder().setField("hakemusOid", oid);
-            auditLogRequest(request, HakuOperation.VIEW_APPLICATION, targetBuilder.build());
+            auditLogRequest(HakuOperation.VIEW_APPLICATION, targetBuilder.build());
             return application;
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Status.NOT_FOUND, "Could not find requested application", e);
@@ -615,7 +615,7 @@ public class ApplicationResource {
                     for (Map.Entry<String, String> entry : applicationAdditionalDataDTO.getAdditionalData().entrySet()) {
                         changesBuilder.added(entry.getKey(),entry.getValue());
                     }
-                    auditLogRequest(request, HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
+                    auditLogRequest(HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
                 }
             }
         }
@@ -644,7 +644,7 @@ public class ApplicationResource {
                     for (Map.Entry<String, String> entry : applicationAdditionalDataDTO.getAdditionalData().entrySet()) {
                         changesBuilder.added(entry.getKey(),entry.getValue());
                     }
-                    auditLogRequest(request, HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
+                    auditLogRequest(HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
                 }
             }
         }
@@ -715,19 +715,14 @@ public class ApplicationResource {
         return inetaddress;
     }
 
-    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target) {
-        auditLogRequest(request, operation, target, null);
+    private void auditLogRequest(HakuOperation operation, Target target) {
+        auditLogRequest(operation, target, null);
     }
 
-    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target, Changes changes) {
+    private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
         if(changes == null) {
             changes = new Changes.Builder().build();
         }
-
-        InetAddress inetaddress = getInetAddress(request);
-
-        HttpSession session = request.getSession();
-        //User user = new User(virkailijaAuditLogger.getCurrentPersonOid(), inetaddress, session != null ? session.toString() : "", request.getHeader("user-agent"));
         virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, changes);
     }
 }

@@ -219,18 +219,6 @@ public class FormController {
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
-    private Target.Builder targetWithIpAndSession(Target.Builder builder, HttpServletRequest request) {
-        String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
-        if (ipAddressProxy != null) {
-            builder.setField("ip", ipAddressProxy);
-        }
-        String sessionId = request.getRequestedSessionId();
-        if (sessionId != null) {
-            builder.setField("sessionId", sessionId);
-        }
-        return builder;
-    }
-
     private Changes.Builder changesEntryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
         Changes.Builder builder = new Changes.Builder();
         for (Map.Entry<String, String> entry : applicationToMap(app).entrySet()) {
@@ -256,7 +244,7 @@ public class FormController {
                 .setField("applicationSystemId", applicationSystemId);
             Changes.Builder changesBuilder = changesEntryNewApplication(modelResponse.getApplication());
 
-            auditLogRequest(request, HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build(), changesBuilder.build());
+            auditLogRequest(HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build(), changesBuilder.build());
 
             return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
         } catch(Throwable t) {
@@ -265,7 +253,7 @@ public class FormController {
             Target.Builder targetBuilder = new Target.Builder()
                     .setField("applicationSystemId", applicationSystemId)
                     .setField("message", "Failed: " + t.getMessage());
-            auditLogRequest(request, HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build());
+            auditLogRequest(HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build());
 
             throw t;
         }
@@ -299,7 +287,7 @@ public class FormController {
                 .setField("applicationSystemId", applicationSystemId)
                 .setField("phaseId", phaseId);
 
-        auditLogRequest(request, HakuOperation.SAVE_PHASE_TO_SESSION, targetBuilder.build(), changesBuilder.build());
+        auditLogRequest(HakuOperation.SAVE_PHASE_TO_SESSION, targetBuilder.build(), changesBuilder.build());
 
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
@@ -369,22 +357,11 @@ public class FormController {
         return "OK";
     }
 
-    private InetAddress getInetAddress(HttpServletRequest request) {
-        InetAddress inetaddress;
-        try {
-            inetaddress = InetAddress.getByName(request.getRemoteAddr());
-        } catch (UnknownHostException e) {
-            LOGGER.error("Could not create inetaddress of remote address {}", request.getRemoteAddr());
-            inetaddress = null;
-        }
-        return inetaddress;
+    private void auditLogRequest(HakuOperation operation, Target target) {
+        auditLogRequest(operation, target, null);
     }
 
-    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target) {
-        auditLogRequest(request, operation, target, null);
-    }
-
-    private void auditLogRequest(HttpServletRequest request, HakuOperation operation, Target target, Changes changes) {
+    private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
         if(changes == null) {
             changes = new Changes.Builder().build();
         }
