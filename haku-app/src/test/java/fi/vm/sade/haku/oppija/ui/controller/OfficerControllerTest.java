@@ -100,13 +100,13 @@ public class OfficerControllerTest {
     @Test
     public void testUpdatePhase() throws URISyntaxException, IOException {
         Response response = null;
-        response = officerController.updatePhase(mock(HttpServletRequest.class), ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
+        response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetAdditionalInfo() throws IOException {
-        Viewable viewable = officerController.getAdditionalInfo(mock(HttpServletRequest.class), OID);
+        Viewable viewable = officerController.getAdditionalInfo(OID);
         assertEquals(OfficerController.ADDITIONAL_INFO_VIEW, viewable.getTemplateName());
     }
 
@@ -114,7 +114,7 @@ public class OfficerControllerTest {
     public void testSaveAdditionalInfo() throws URISyntaxException, IOException {
         MultivaluedMap<String, String> additionalInfo = new MultivaluedMapImpl();
         additionalInfo.put("key", newArrayList("value"));
-        Response response = officerController.saveAdditionalInfo(mock(HttpServletRequest.class), OID, additionalInfo);
+        Response response = officerController.saveAdditionalInfo(OID, additionalInfo);
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 

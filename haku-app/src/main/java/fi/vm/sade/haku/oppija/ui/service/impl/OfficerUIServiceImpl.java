@@ -1,7 +1,9 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
 import fi.vm.sade.haku.HakuOperation;
@@ -63,11 +65,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Request;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -76,10 +73,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.google.api.client.util.Lists.*;
+import static com.google.api.client.util.Lists.newArrayList;
 import static com.google.common.base.Predicates.notNull;
-import static com.google.common.collect.FluentIterable.*;
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.Maps.immutableEntry;
+import static com.google.common.collect.Maps.newHashMap;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.paymentNotificationAnswers;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -113,18 +111,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private static final String KAUSI_FORMAT_STRING = "dd.MM.yyyy";
     private final String kevatkausi;
-
-    @Context
-    private HttpServletRequest httpServletRequest;
-
-    @Context
-    private Request request;
-
-    @Context
-    private HttpHeaders httpHeaders;
-
-    @Context
-    private HttpSession httpSession;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -989,13 +975,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private AttachmentRequestStatusUpdate updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
         ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(attachmentDTO.getReceptionStatus());
-        Person currentHenkilo = authenticationService.getCurrentHenkilo();
-        fi.vm.sade.auditlog.User user = null;
-        try {
-            user = new fi.vm.sade.auditlog.User(new Oid(currentHenkilo.getPersonOid()), null, null, null);
-        } catch (GSSException e) {
-            LOGGER.error("Error creating Oid-object out of {}", currentHenkilo.getPersonOid());
-        }
         Target.Builder targetBuilder = new Target.Builder();
         Changes.Builder changesBuilder = new Changes.Builder();
         if (newReceptionStatus != attachment.getReceptionStatus()) {
@@ -1005,7 +984,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     .setField("hakemusOid", application.getOid());
 
             changesBuilder = changesBuilder.updated("receptionStatus", attachment.getReceptionStatus().name(), newReceptionStatus.name());
-            //virkailijaAuditLogger.log(user, HakuOperation.UPDATE_ATTACHMENT_RECEPTION_STATUS, target, changes);
             attachment.setReceptionStatus(newReceptionStatus);
         }
         ApplicationAttachmentRequest.ProcessingStatus newProcessingStatus = ApplicationAttachmentRequest.ProcessingStatus.valueOf(attachmentDTO.getProcessingStatus());
@@ -1016,7 +994,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     .setField("hakemusOid", application.getOid());
 
             changesBuilder = changesBuilder.updated("processingStatus", attachment.getReceptionStatus().name(), newReceptionStatus.name());
-            //virkailijaAuditLogger.log(user, HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS, target, changes);
             attachment.setProcessingStatus(newProcessingStatus);
         }
         return new AttachmentRequestStatusUpdate(targetBuilder, changesBuilder);

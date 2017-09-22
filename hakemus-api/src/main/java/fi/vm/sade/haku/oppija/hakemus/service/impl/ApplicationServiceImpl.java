@@ -16,21 +16,9 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import static com.google.common.collect.Maps.filterKeys;
-import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
-import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
-import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_BASE_EDUCATION;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.KESKEYTYNYT;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_DISCRETIONARY;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Multimaps;
-
 import com.google.gson.Gson;
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
@@ -42,13 +30,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPreferenceMeta;
-import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
@@ -91,27 +73,24 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 import org.apache.commons.lang.StringUtils;
-import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Request;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.*;
+
+import static com.google.common.collect.Maps.filterKeys;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -140,18 +119,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final String onlyBackgroundValidation;
 
     private static final String REGEX_NOT_DIGIT = "[^0-9]";
-
-    @Context
-    private HttpServletRequest httpServletRequest;
-
-    @Context
-    private Request request;
-
-    @Context
-    private HttpHeaders httpHeaders;
-
-    @Context
-    private HttpSession httpSession;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
