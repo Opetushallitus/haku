@@ -147,7 +147,7 @@ public class ApplicationResource {
 
         Target target = new Target.Builder().setField("hakemusOid", application.getOid()).build();
         Changes changes = new Changes.Builder().updated("payment_state", oldState.name(), state.name()).build();
-        virkailijaAuditLogger.log(null, HakuOperation.PAYMENT_STATE_CHANGE, target, changes);
+        auditLogRequest(HakuOperation.PAYMENT_STATE_CHANGE, target, changes);
     }
 
     @POST
@@ -595,8 +595,7 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public void putApplicationAdditionalData(@Context HttpServletRequest request,
-                                             @PathParam("asId") String asId,
+    public void putApplicationAdditionalData(@PathParam("asId") String asId,
                                              @PathParam("aoId") String aoId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
         boolean saveSucceeded = false;
@@ -626,8 +625,7 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public void putApplicationAdditionalData(@Context HttpServletRequest request,
-                                             @PathParam("asId") String asId,
+    public void putApplicationAdditionalData(@PathParam("asId") String asId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
         boolean saveSucceeded = false;
         try {
@@ -702,17 +700,6 @@ public class ApplicationResource {
             LOGGER.error("Passivation failed {}", e);
             throw new JSONException(Status.INTERNAL_SERVER_ERROR, "Passivation failed", e);
         }
-    }
-
-    private InetAddress getInetAddress(HttpServletRequest request) {
-        InetAddress inetaddress;
-        try {
-            inetaddress = InetAddress.getByName(request.getRemoteAddr());
-        } catch (UnknownHostException e) {
-            LOGGER.error("Could not create inetaddress of remote address {}", request.getRemoteAddr());
-            inetaddress = null;
-        }
-        return inetaddress;
     }
 
     private void auditLogRequest(HakuOperation operation, Target target) {
