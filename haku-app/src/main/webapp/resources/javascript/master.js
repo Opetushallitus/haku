@@ -185,6 +185,52 @@ $(document).ready(function () {
     });
 });
 
+function appendCookieConfirm() {
+    var texts = getCookieTexts();
+    $('body').prepend('<div><div class="cookieHeader"><span class="cookieText">' + texts.info + '</span><a class="btn-cookies" href="#" onclick="javascript:setAcceptCookie();return false;">' + texts.close + '</a></div></div>');
+}
+function checkAcceptCookie() {
+    if(!isAcceptCookie()){
+        appendCookieConfirm();
+    }
+}
+function getCookieTexts(){
+    if(document.cookie.indexOf('i18next=sv') > 0){
+        return {
+            info: "Vi använder oss av cookies för att underlätta användningen av webbplatsen.",
+            close: "Stäng"
+        };
+    } else if(document.cookie.indexOf('i18next=en') > 0){
+        return {
+            info: "We use cookies on this site to enhance your user experience.",
+            close: "Close"
+        };
+    } else {
+        return {
+            info: "Jotta sivuston käyttö olisi sinulle sujuvaa, käytämme evästeitä.",
+            close: "Sulje"
+        };
+    }
+}
+
+function isAcceptCookie() {
+    if(document.cookie.indexOf('oph-cookies-accepted=true') >= 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function setAcceptCookie() {
+    document.cookie = "oph-cookies-accepted=true";
+    $('div.cookieHeader').attr('style', 'display:none;');
+    return false;
+}
+
+$(document).ready(function () {
+    checkAcceptCookie();
+});
+
 // Sets CSRF header for ajax and hidden field for FORMs
 function initCSRF() {
     function getCookie(name) {
