@@ -222,7 +222,7 @@ function isAcceptCookie() {
 }
 
 function setAcceptCookie() {
-    document.cookie = "oph-cookies-accepted=true";
+    document.cookie = "oph-cookies-accepted=true; path=/;";
     $('div.cookieHeader').attr('style', 'display:none;');
     return false;
 }
