@@ -3432,3 +3432,37 @@ table {
 #label-toisen_asteen_suoritusmaa {
     display: none;
 }
+
+.cookieHeader{
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-family: 'Open Sans', sans-serif;
+  background-color: rgb(246, 244, 240);
+  color: #333;
+  font-size: 14px;
+}
+.cookieHeader a{
+  color: #fff;
+  text-decoration: none
+}
+.btn-cookies{
+  margin-left: 5px;
+  margin-bottom: 4px;
+  height: 32px;
+  color: #FFFFFF;
+  background-color: #159ECB;
+  padding: 2px 12px 2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.btn-cookies:hover{
+   background: #00B5EF;
+   color: #ffffff;
+ }
+.cookieText{
+  height: 20px;
+  margin-bottom:3px;
+}
