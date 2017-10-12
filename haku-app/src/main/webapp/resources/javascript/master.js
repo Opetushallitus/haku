@@ -187,7 +187,7 @@ $(document).ready(function () {
 
 function appendCookieConfirm() {
     var texts = getCookieTexts();
-    $('body').prepend('<div><div class="cookieHeader"><span class="cookieText">' + texts.info + '</span><a class="btn-cookies" href="#" onclick="javascript:setAcceptCookie();return false;">' + texts.close + '</a></div></div>');
+    $('body').prepend('<div class="cookieHeader"><span class="cookieText">' + texts.info + '</span><a class="btn-cookies" href="#" onclick="javascript:setAcceptCookie();return false;">' + texts.close + '</a></div>');
 }
 function checkAcceptCookie() {
     if(!isAcceptCookie()){
@@ -195,12 +195,12 @@ function checkAcceptCookie() {
     }
 }
 function getCookieTexts(){
-    if(document.cookie.indexOf('i18next=sv') > 0){
+    if(document.cookie.indexOf('i18next=sv') >= 0){
         return {
             info: "Vi använder oss av cookies för att underlätta användningen av webbplatsen.",
             close: "Stäng"
         };
-    } else if(document.cookie.indexOf('i18next=en') > 0){
+    } else if(document.cookie.indexOf('i18next=en') >= 0){
         return {
             info: "We use cookies on this site to enhance your user experience.",
             close: "Close"
