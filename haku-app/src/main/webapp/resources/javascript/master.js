@@ -190,7 +190,8 @@ function appendCookieConfirm() {
     $('body').prepend('<div class="cookieHeader"><span class="cookieText">' + texts.info + '</span><a class="btn-cookies" href="#" onclick="javascript:setAcceptCookie();return false;">' + texts.close + '</a></div>');
 }
 function checkAcceptCookie() {
-    if(!isAcceptCookie()){
+    // virkailijaSide is set in other js
+    if(!isAcceptCookie() && typeof virkailijaSide == "undefined"){
         appendCookieConfirm();
     }
 }

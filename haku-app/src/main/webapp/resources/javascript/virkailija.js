@@ -14,7 +14,8 @@
  * European Union Public Licence for more details.
  */
 
-var urlsWithoutEmptyQSParams = window.urls().omitEmptyValuesFromQuerystring()
+var urlsWithoutEmptyQSParams = window.urls().omitEmptyValuesFromQuerystring();
+var virkailijaSide = true; // dont show cookies in master.js
 
 $(document).ready(function () {
 
