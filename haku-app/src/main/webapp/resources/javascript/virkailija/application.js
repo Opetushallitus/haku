@@ -1,4 +1,4 @@
-
+var virkailijaSide = true;
 
 $(document).ready(function() {
 
