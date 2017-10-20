@@ -90,7 +90,7 @@ public final class KielitaitokysymyksetTheme {
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr tuoreTodistusPK = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
-        Element kysytaankoArvosanaPkFi = Rule(tuoreTodistusPK).build();
+/*        Element kysytaankoArvosanaPkFi = Rule(tuoreTodistusPK).build();
         kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", formParameters));
 
         naytetaankoSuomiPK.addChild(kysytaankoArvosanaPkFi,
@@ -114,7 +114,7 @@ public final class KielitaitokysymyksetTheme {
         naytetaankoViittomaPK.addChild(kysytaankoArvosanaPkVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", formParameters));
-
+*/
         //YO
         Expr pohjakoulutusOnYO = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
 
