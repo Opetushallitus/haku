@@ -265,11 +265,6 @@ public class FormParameters {
         return !isPerusopetuksenJalkeinenValmentava();
     }
 
-    public boolean kysytaankoUrheilijanLisakysymykset() {
-        return ! (isPerusopetuksenJalkeinenValmentava() || isHigherEd() ||
-                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
-    }
-
     public boolean kysytaankoOppisopimuskysymys() {
         return KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri()) &&
                 OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa());
@@ -277,11 +272,6 @@ public class FormParameters {
 
     public boolean kysytaankoYlioppilastutkinto() {
         return !isPerusopetuksenJalkeinenValmentava();
-    }
-
-    public boolean kysytaankoKielitaitokysymykset() {
-        return ! (isPerusopetuksenJalkeinenValmentava() ||
-                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
     }
 
     public boolean kysytaankoUlkomaisenTutkinnonTarkennus() {
