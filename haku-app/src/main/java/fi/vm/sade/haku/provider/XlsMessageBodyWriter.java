@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -54,18 +55,20 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         Sheet sheet = wb.createSheet(sheetname);
         sheet.setDefaultColumnWidth(20);
 
+        CellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setQuotePrefixed(true);
 
-        createRow(sheet, "Haku", xlsModel.asName);
-        createRow(sheet, "Haku oid", xlsModel.asId);
-        createRow(sheet, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
-        createRow(sheet, "Hakuvuosi", xlsModel.hakukausiVuosi);
-        createRow(sheet, "Hakukohde", xlsModel.ao.getName());
+        createRow(sheet, cellStyle, "Haku", xlsModel.asName);
+        createRow(sheet, cellStyle, "Haku oid", xlsModel.asId);
+        createRow(sheet, cellStyle, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
+        createRow(sheet, cellStyle, "Hakuvuosi", xlsModel.hakukausiVuosi);
+        createRow(sheet, cellStyle, "Hakukohde", xlsModel.ao.getName());
 
-        createRow(sheet);
+        createRow(sheet, cellStyle);
 
-        Row titleRow = createRow(sheet);
+        Row titleRow = createRow(sheet, cellStyle);
         for (Element title : xlsModel.columnKeyList()) {
-            createCell(titleRow).setCellValue(xlsModel.getText(title));
+            createCell(titleRow, cellStyle).setCellValue(xlsModel.getText(title));
         }
 
         List<String> rowKeys = xlsModel.rowKeyList();
@@ -76,7 +79,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         for (int i = 0; i < rows; i++) {
             Row row = sheet.createRow(rowOffset + i);
             for (int j = 0; j < cols; j++) {
-                Cell cell = row.createCell(j);
+                Cell cell = newCell(row, cellStyle, j);
                 cell.setCellValue(xlsModel.getValue(rowKeys.get(i), colKeys.get(j)));
             }
         }
@@ -87,17 +90,23 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         wb.write(entityStream);
     }
 
-    private Row createRow(final Sheet sheet, String... values) {
+    private Row createRow(final Sheet sheet, CellStyle cellStyle, String... values) {
         int lastRowNum = sheet.getLastRowNum();
         Row row = sheet.createRow(lastRowNum + 1);
         for (String value : values) {
-            createCell(row).setCellValue(value);
+            createCell(row, cellStyle).setCellValue(value);
         }
         return row;
     }
 
-    private Cell createCell(final Row row) {
+    private Cell createCell(final Row row, CellStyle cellStyle) {
         short lastCellNum = row.getLastCellNum();
-        return row.createCell(lastCellNum == -1 ? 0 : lastCellNum);
+        return newCell(row, cellStyle, lastCellNum == -1 ? 0 : lastCellNum);
+    }
+
+    private Cell newCell(Row row, CellStyle cellStyle, int j) {
+        Cell cell = row.createCell(j);
+        cell.setCellStyle(cellStyle);
+        return cell;
     }
 }
