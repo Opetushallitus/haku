@@ -87,11 +87,6 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         wb.write(entityStream);
     }
 
-    private Cell createCell(final Row row) {
-        short lastCellNum = row.getLastCellNum();
-        return row.createCell(lastCellNum == -1 ? 0 : lastCellNum);
-    }
-
     private Row createRow(final Sheet sheet, String... values) {
         int lastRowNum = sheet.getLastRowNum();
         Row row = sheet.createRow(lastRowNum + 1);
@@ -99,5 +94,10 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
             createCell(row).setCellValue(value);
         }
         return row;
+    }
+
+    private Cell createCell(final Row row) {
+        short lastCellNum = row.getLastCellNum();
+        return row.createCell(lastCellNum == -1 ? 0 : lastCellNum);
     }
 }
