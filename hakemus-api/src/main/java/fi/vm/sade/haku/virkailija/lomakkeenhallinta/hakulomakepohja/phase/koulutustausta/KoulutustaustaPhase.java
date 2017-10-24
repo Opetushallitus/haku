@@ -1093,18 +1093,9 @@ public final class KoulutustaustaPhase {
                 "paattotodistuvuosiPkRule",
                         ExprUtil.lessThanRule(kymppiPaatosQuestion.getId(), String.valueOf(hakukausiVuosi - 2))
         ).build();
-/*        kymppiPaatosRule.addChild(paattotodistusvuosiKymppiRule);
-*/
-        Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
-                .addOptions(ImmutableList.of(
-                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
-                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
-                .required()
-                .formParams(formParameters).build();
 
         pkKysymyksetRule.addChild(suorittanutGroup,
-                paattotodistusvuosiKymppiRule,
-                koulutuspaikkaAmmatillisenTutkintoon);
+                paattotodistusvuosiKymppiRule);
 
 
         if (formParameters.kysytaankoYlioppilastutkinto()) {

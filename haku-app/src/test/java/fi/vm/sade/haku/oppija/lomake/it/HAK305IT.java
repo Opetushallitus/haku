@@ -64,9 +64,6 @@ public class HAK305IT extends DummyModelBaseItTest {
         selectByValue("PK_AI_OPPIAINE", "SV");
         selectByValue("PK_A2_OPPIAINE", "SE");
         clickByXPath("//td[@id='PK_B1_column1']//a");
-        clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
-        clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
-        clickByNameAndValue("peruskoulun_paattotodistus_vahintaan_seitseman_fi", "true");
         nextPhase(OppijaConstants.PHASE_MISC);
         fillInRestOfThePhasesAndCheckTheOID();
     }
@@ -103,10 +100,8 @@ public class HAK305IT extends DummyModelBaseItTest {
 
     private void fillOutTheKoulutustaustaPhase(final String opetuskieli) {
         setValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
-        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
         setValue(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, "true");
         setValue(OppijaConstants.KYMPPI_PAATTOTODISTUSVUOSI, "2012");
-        setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         setPerusopetuksenKieli(opetuskieli);
     }
 
