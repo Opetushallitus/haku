@@ -25,18 +25,8 @@
         },
         "koulutustausta": {
             "POHJAKOULUTUS": "1",
-            "LISAKOULUTUS_MAAHANMUUTTO": "true",
-            "LISAKOULUTUS_KANSANOPISTO": "true",
-            "PK_PAATTOTODISTUSVUOSI": "2012",
-            "KYMPPI_PAATTOTODISTUSVUOSI" : "2013",
-            "LISAKOULUTUS_AMMATTISTARTTI": "true",
-            "LISAKOULUTUS_TALOUS": "true",
-            "osallistunut": "false",
-            "LISAKOULUTUS_VAMMAISTEN": "true",
-            "LISAKOULUTUS_KYMPPI": "true",
             "perusopetuksen_kieli": "FI",
-            "phaseId": "hakutoiveet",
-            "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON": "false"
+            "phaseId": "hakutoiveet"
         },
         "hakutoiveet": {
             "preference1-discretionary": "false",

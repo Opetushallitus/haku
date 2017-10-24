@@ -45,7 +45,6 @@ describe('Erityisoppilaitosten lomake', function () {
                     virkailija.editVaiheButton(hakuOid, "koulutustausta"),
                     virkailija.addYksilollistettyCheckbox),
                 input(
-                    lomake.pkPaattotodistusVuosi, ""+new Date().getFullYear(),
                     lomake.pkKieli, "FI"
                 ),
                 click(virkailija.saveVaiheButton("koulutustausta")),
@@ -54,7 +53,6 @@ describe('Erityisoppilaitosten lomake', function () {
 
             describe("lisäämisen jälkeen", function() {
                 it("vastaukset näkyvät", function () {
-                    expect(answerForQuestion('PK_PAATTOTODISTUSVUOSI')).to.equal(""+new Date().getFullYear());
                     expect(answerForQuestion('perusopetuksen_kieli')).to.equal('Suomi');
                 });
             });
@@ -150,7 +148,6 @@ describe('Erityisoppilaitosten lomake', function () {
                     before(seqDone(
                         click(lomake.pohjakoulutus("1")),
                         input(
-                            lomake.pkPaattotodistusVuosi, ""+new Date().getFullYear(),
                             lomake.pkKieli, "FI"
                         )
                     ));
