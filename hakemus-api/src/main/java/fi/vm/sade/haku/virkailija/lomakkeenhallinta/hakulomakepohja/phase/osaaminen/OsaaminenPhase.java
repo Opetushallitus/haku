@@ -58,9 +58,6 @@ public class OsaaminenPhase {
             } else {
                 osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
             }
-            /*if (formParameters.kysytaankoKielitaitokysymykset()) {
-                osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
-            }*/
         } else {
             Element osaaminenTheme = Theme("osaaminenteema").configurable().formParams(formParameters).build();
             osaaminen.addChild(osaaminenTheme);

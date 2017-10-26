@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.common.selenium;
 
-import clover.org.jfree.util.Log;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
