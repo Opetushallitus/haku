@@ -26,7 +26,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextA
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.KielitaitokysymyksetTheme.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class LisatiedotPhase {
@@ -83,6 +82,16 @@ public class LisatiedotPhase {
         }
 
         return element;
+    }
+
+    private static final String[] BASE_EDUCATION_KESK_ULK = new String[]{
+            OppijaConstants.KESKEYTYNYT,
+            OppijaConstants.ULKOMAINEN_TUTKINTO
+    };
+
+    static Expr createPohjakoilutusUlkomainenTaiKeskeyttanyt() {
+        return ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION,
+                BASE_EDUCATION_KESK_ULK);
     }
 
     static Element createTyokokemus(final FormParameters formParameters) {
