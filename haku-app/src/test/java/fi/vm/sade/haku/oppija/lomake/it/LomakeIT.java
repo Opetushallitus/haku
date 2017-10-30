@@ -98,6 +98,9 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
 
+        findById(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
+        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
+
         findByIdAndClick(
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO,

@@ -25,6 +25,7 @@
         },
         "koulutustausta": {
             "POHJAKOULUTUS": "1",
+            "PK_PAATTOTODISTUSVUOSI": "2012",
             "perusopetuksen_kieli": "FI",
             "phaseId": "hakutoiveet"
         },

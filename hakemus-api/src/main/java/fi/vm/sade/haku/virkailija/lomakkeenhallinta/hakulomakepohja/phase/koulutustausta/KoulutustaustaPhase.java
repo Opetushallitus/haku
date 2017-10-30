@@ -987,6 +987,52 @@ public final class KoulutustaustaPhase {
         return applicationPeriods.get(0).getEnd();
     }
 
+    private static Element buildPKTodistusSaatuViimeVuonna(final FormParameters formParameters,
+                                                           final Element paattotodistusvuosiPeruskoulu) {
+        // Check if the applicant has received the elementary school diploma during the previous year and
+        // if the current application system type is "HAKUTYYPPI_VARSINAINEN_HAKU".
+        // If so, generate an extra question. If the applicant has received diploma within a period of six months
+        // from the end of application period they are eligible to receive an extra point. Generate the date ranges
+        // according to these.
+        Calendar cal = Calendar.getInstance();
+        Date applicationPeriodEnds = getFirstApplicationPeriodEndDate(formParameters.getApplicationSystem());
+        if (applicationPeriodEnds == null) {
+            return Rule(Value.FALSE).build();
+        }
+
+        cal.setTime(applicationPeriodEnds);
+        cal.add(Calendar.MONTH, -6);
+        Variable pkPaattotodistusVuosi = new Variable(paattotodistusvuosiPeruskoulu.getId());
+        Expr kysytaankoPaattotodistusAjanjakso = new All(Arrays.asList(
+                new Equals(
+                        pkPaattotodistusVuosi,
+                        new Value(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1))
+                ),
+                new Equals(
+                        new Value(formParameters.getApplicationSystem().getApplicationSystemType()),
+                        new Value(HAKUTYYPPI_VARSINAINEN_HAKU)
+                ),
+                new Not(
+                        new Equals(
+                                new Value(formParameters.getApplicationSystem().getKohdejoukkoUri()),
+                                new Value(KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA)
+                        )
+                )
+        ));
+        SimpleDateFormat fmt = new SimpleDateFormat("d.M.");
+        String excludedPeriod = "1.1. - " + fmt.format(cal.getTime());
+        cal.add(Calendar.DATE, 1);
+        String includedPeriod = fmt.format(cal.getTime()) + " - 31.12.";
+        Element valitseTodistuksenSaantiAjankohta = Radio("peruskoulutodistus_saatu_puolivuotta_haun_lopusta")
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NAsIs(excludedPeriod), "false"),
+                        new Option(createI18NAsIs(includedPeriod), "true")))
+                .formParams(formParameters).build();
+        Element todistusSaatuViimeVuonna = Rule(kysytaankoPaattotodistusAjanjakso).build();
+        todistusSaatuViimeVuonna.addChild(valitseTodistuksenSaantiAjankohta);
+        return todistusSaatuViimeVuonna;
+    }
+
     private static Element createPaattovuosiKysymys(String parentElement, String fieldName, String label, FormParameters formParameters) {
         Element vuosiRule = createRuleIfVariableIsTrue(parentElement);
         Element vuosiQuestion = new TextQuestionBuilder(fieldName)
@@ -1055,6 +1101,14 @@ public final class KoulutustaustaPhase {
         baseEducation.addChild(ulkomaillaSuoritettuTutkintoRule);
         baseEducation.addChild(keskeytynytRule);
 
+        Element paattotodistusvuosiPeruskoulu = new TextQuestionBuilder(PERUSOPETUS_PAATTOTODISTUSVUOSI)
+                .labelKey("form.koulutustausta.paattotodistusvuosi")
+                .required()
+                .size(4)
+                .maxLength(4)
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi(), 1900))
+                .formParams(formParameters).build();
+
         Element kymppiPaatosRule = createRuleIfVariableIsTrue(ELEMENT_ID_LISAKOULUTUS_KYMPPI);
         Element kymppiPaatosQuestion = new TextQuestionBuilder(KYMPPI_PAATTOTODISTUSVUOSI)
                 .labelKey("form.koulutustausta.kymppipaattotodistusvuosi")
@@ -1089,13 +1143,20 @@ public final class KoulutustaustaPhase {
         Element pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
-        Element paattotodistusvuosiKymppiRule = Rule(
-                "paattotodistuvuosiPkRule",
-                        ExprUtil.lessThanRule(kymppiPaatosQuestion.getId(), String.valueOf(hakukausiVuosi - 2))
-        ).build();
+        Element paattotodistusvuosiPeruskouluRule = Rule(
+                        "paattotodistuvuosiPkRule",
+                        new Or(
+                                ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), String.valueOf(hakukausiVuosi - 2)),
+                                ExprUtil.lessThanRule(kymppiPaatosQuestion.getId(), String.valueOf(hakukausiVuosi - 2))
+                        )
+                ).build();
 
-        pkKysymyksetRule.addChild(suorittanutGroup,
-                paattotodistusvuosiKymppiRule);
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu,
+                buildPKTodistusSaatuViimeVuonna(
+                        formParameters,
+                        paattotodistusvuosiPeruskoulu),
+                suorittanutGroup,
+                paattotodistusvuosiPeruskouluRule);
 
 
         if (formParameters.kysytaankoYlioppilastutkinto()) {
