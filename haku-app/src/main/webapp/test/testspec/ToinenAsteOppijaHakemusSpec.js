@@ -70,6 +70,7 @@ describe('2. asteen lomake', function () {
             waitForFormReady(),
             click(lomake.pohjakoulutus("1")),
             input(
+                lomake.pkPaattotodistusVuosi, "2014",
                 lomake.pkKieli, "FI"),
             pageChange(lomake.fromKoulutustausta),
             headingVisible("Hakutoiveet"),
@@ -161,6 +162,7 @@ describe('2. asteen lomake', function () {
       ));
       describe("Edellisvuonna suoritettu peruskoulu", function() {
         before(seqDone(
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
             input(lomake.pkKieli, "FI"),
             click(lomake.ammatillinenKoulutuspaikka(false))
         ));
@@ -221,7 +223,9 @@ describe('2. asteen lomake', function () {
                 function() { S('#nav-koulutustausta')[0].click() },
                 headingVisible("Koulutustausta"),
                 waitForFormReady(),
-                hidden(lomake.overlay), input(lomake.pkKieli, "FI"),
+                hidden(lomake.overlay),
+                input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
+                input(lomake.pkKieli, "FI"),
                 click(lomake.ammatillinenKoulutuspaikka(false)),
                 click(lomake.ammatillinenSuoritettu(false)),
                 pageChange(lomake.fromKoulutustausta)

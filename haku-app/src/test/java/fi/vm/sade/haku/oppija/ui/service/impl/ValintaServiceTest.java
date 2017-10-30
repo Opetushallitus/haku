@@ -97,6 +97,7 @@ public class ValintaServiceTest {
         Map<String, String> aoMap = createHakutoiveet();
         Map<String, String> eduMap = new HashMap<String, String>() {{
             put(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO, "true");
+            put("PK_PAATTOTODISTUSVUOSI", "2012");
             put(OppijaConstants.KANSANOPISTO_PAATTOTODISTUSVUOSI, "2012");
             put("POHJAKOULUTUS", "1");
             put("perusopetuksen_kieli", "SV");

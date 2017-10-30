@@ -100,6 +100,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
     private void fillOutTheKoulutustaustaPhase(final String opetuskieli) {
         setValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
+        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
         setValue(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, "true");
         setValue(OppijaConstants.KYMPPI_PAATTOTODISTUSVUOSI, "2012");
         setPerusopetuksenKieli(opetuskieli);

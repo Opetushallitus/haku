@@ -33,6 +33,7 @@ public class EducationBackgroundIT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
+        elementsPresentByName(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
         elementsPresentByName(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI);
 
