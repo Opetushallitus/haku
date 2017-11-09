@@ -27,7 +27,8 @@
             "POHJAKOULUTUS": "1",
             "PK_PAATTOTODISTUSVUOSI": "2012",
             "perusopetuksen_kieli": "FI",
-            "phaseId": "hakutoiveet"
+            "phaseId": "hakutoiveet",
+            "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON": "false"
         },
         "hakutoiveet": {
             "preference1-discretionary": "false",

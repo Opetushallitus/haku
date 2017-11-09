@@ -1052,6 +1052,23 @@ public final class KoulutustaustaPhase {
             ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
         }
 
+        Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")
+               .addOptions(ImmutableList.of(
+                       new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                       new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                .required()
+                .formParams(formParameters).build();
+
+        if (formParameters.isAmmatillinenTutkintoEstaaHakemisen()) {
+            Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue("suorittanutTutkinnonRule", suorittanutAmmatillisenTutkinnon.getId());
+            Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
+                    .formParams(formParameters).build();
+            suorittanutTutkinnonRule.addChild(warning);
+            suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
+        }
+
+        ulkomaillaSuoritettuTutkintoRule.addChild(suorittanutAmmatillisenTutkinnon);
+
         baseEducation.addChild(ulkomaillaSuoritettuTutkintoRule);
         baseEducation.addChild(keskeytynytRule);
 
@@ -1170,6 +1187,8 @@ public final class KoulutustaustaPhase {
         }
 
         baseEducation.addChild(pkKysymyksetRule);
+
+        paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
         pkKysymyksetRule.addChild(Dropdown(PERUSOPETUS_KIELI)
                 .emptyOptionDefault()
