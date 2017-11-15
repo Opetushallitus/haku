@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.ui;
 import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.core.Context;
 import java.util.Locale;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class LocaleFilter implements ContainerRequestFilter {
 
@@ -65,9 +68,13 @@ public class LocaleFilter implements ContainerRequestFilter {
     }
 
     private String getLanguage(ContainerRequest containerRequest) {
-        String host = containerRequest.getHeaderValue("Host");
+        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
 
-        String lang;
+        if (!isBlank(lang)) {
+            return lang;
+        }
+
+        String host = containerRequest.getHeaderValue("Host");
         if (host != null && host.endsWith("studieinfo.fi")) {
             lang = "sv";
         } else if (host != null && host.endsWith("studyinfo.fi")) {
