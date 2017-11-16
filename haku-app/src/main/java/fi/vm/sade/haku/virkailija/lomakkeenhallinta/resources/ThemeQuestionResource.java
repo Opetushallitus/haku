@@ -593,13 +593,6 @@ public class ThemeQuestionResource {
     }
 
     private void auditLogRequest(HakuOperation operation, Target target) {
-        auditLogRequest(operation, target, null);
-    }
-
-    private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
-        if (changes == null) {
-            changes = new Changes.Builder().build();
-        }
-        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, changes);
+        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, new Changes.Builder().build());
     }
 }
