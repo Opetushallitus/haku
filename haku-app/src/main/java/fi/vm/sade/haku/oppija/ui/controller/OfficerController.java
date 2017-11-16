@@ -494,7 +494,7 @@ public class OfficerController {
     public Response getApplicationByEmailDTO() {
     	ApplicationTemplateDTO template = new ApplicationTemplateDTO();
     	
-    	List<ApplicationReplacementDTO> replacements = new ArrayList<ApplicationReplacementDTO>();
+    	List<ApplicationReplacementDTO> replacements = new ArrayList<>();
     	ApplicationReplacementDTO replacement = new ApplicationReplacementDTO();
     	replacement.setName("name");
     	replacement.setValue("value");
@@ -514,9 +514,9 @@ public class OfficerController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, String>> getApplicationSystems() {
         List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
-        List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());
+        List<Map<String, String>> applicationSystems = new ArrayList<>(applicationSystemList.size());
         for (ApplicationSystem as : applicationSystemList) {
-            Map<String, String> applicationSystem = new HashMap<String, String>();
+            Map<String, String> applicationSystem = new HashMap<>();
             applicationSystem.put("id", as.getId());
             applicationSystem.put("hakukausiUri", as.getHakukausiUri());
             applicationSystem.put("hakukausiVuosi", as.getHakukausiVuosi().toString());
@@ -556,7 +556,7 @@ public class OfficerController {
         } else if ("group".equals(list)) {
             return officerUIService.getGroups(term);
         }
-        return new ArrayList<Map<String, Object>>(0);
+        return new ArrayList<>(0);
     }
     
     @POST
