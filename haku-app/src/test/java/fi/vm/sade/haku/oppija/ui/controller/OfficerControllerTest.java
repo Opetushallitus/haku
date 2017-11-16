@@ -55,18 +55,14 @@ import static org.mockito.Mockito.when;
  * @author Mikko Majapuro
  */
 public class OfficerControllerTest {
-
-    public static final String ASID = "dummyAsid";
-    public static final String PREVIEW_PHASE = "esikatselu";
+    private static final String ASID = "dummyAsid";
+    private static final String PREVIEW_PHASE = "esikatselu";
     private OfficerController officerController;
     private static final String OID = "1.2.3.4.5.0";
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
-
-        //officerController.oppijaAuditLogger
-
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
 
@@ -99,8 +95,7 @@ public class OfficerControllerTest {
 
     @Test
     public void testUpdatePhase() throws URISyntaxException, IOException {
-        Response response = null;
-        response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
+        Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
