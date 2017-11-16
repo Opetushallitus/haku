@@ -16,28 +16,32 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static com.google.common.base.Objects.firstNonNull;
+import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.convert;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
+import static java.util.Collections.emptyMap;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
-import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.OppijaAuditLogger;
-import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.ui.common.*;
+import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
+import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
+import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.ietf.jgss.GSSException;
-import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +50,22 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.Config;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.net.InetAddress;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static com.google.common.base.Objects.firstNonNull;
-import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.*;
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @Path("lomake")
@@ -221,9 +225,7 @@ public class FormController {
 
     private Changes.Builder changesEntryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
         Changes.Builder builder = new Changes.Builder();
-        for (Map.Entry<String, String> entry : applicationToMap(app).entrySet()) {
-            builder.added(entry.getKey(), entry.getValue());
-        }
+        applicationToMap(app).forEach(builder::added);
         return builder;
     }
 
