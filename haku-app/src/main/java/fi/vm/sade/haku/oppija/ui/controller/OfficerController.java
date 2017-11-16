@@ -72,32 +72,32 @@ import static javax.ws.rs.core.Response.seeOther;
 @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
 public class OfficerController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
-    public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus";
-    public static final String DEFAULT_VIEW = "/virkailija/Form";
-    public static final String VALINTA_TAB_VIEW = "/virkailija/valintaTab";
-    public static final String KELPOISUUS_JA_LIITTEET_TAB_VIEW = "/virkailija/kelpoisuusLiitteetTab";
-    public static final String OID_PATH_PARAM = "oid";
-    public static final String ORGANIZATION_OID_PATH_PARAM = "orgOid";
-    public static final String VERBOSE_HELP_VIEW = "/help";
-    public static final String PHASE_ID_PATH_PARAM = "phaseId";
-    public static final String ELEMENT_ID_PATH_PARAM = "elementId";
-    public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
-    public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
-    public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
-    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
-    public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + CHARSET_UTF_8;
-    public static final String APPLICATION_PRINT_VIEW = "/print/print";
-    public static final String PHASE_ID_PREVIEW = "esikatselu";
+    private static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
+    private static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus";
+    private static final String DEFAULT_VIEW = "/virkailija/Form";
+    private static final String VALINTA_TAB_VIEW = "/virkailija/valintaTab";
+    private static final String KELPOISUUS_JA_LIITTEET_TAB_VIEW = "/virkailija/kelpoisuusLiitteetTab";
+    private static final String OID_PATH_PARAM = "oid";
+    private static final String ORGANIZATION_OID_PATH_PARAM = "orgOid";
+    private static final String VERBOSE_HELP_VIEW = "/help";
+    private static final String PHASE_ID_PATH_PARAM = "phaseId";
+    private static final String ELEMENT_ID_PATH_PARAM = "elementId";
+    private static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
+    static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
+    private static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
+    private static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    private static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + CHARSET_UTF_8;
+    private static final String APPLICATION_PRINT_VIEW = "/print/print";
+    private static final String PHASE_ID_PREVIEW = "esikatselu";
 
     @Autowired
-    OfficerUIService officerUIService;
+    private OfficerUIService officerUIService;
     @Autowired
-    UIService uiService;
+    private UIService uiService;
     @Autowired
-    FormService formService;
+    private FormService formService;
     @Autowired
-    Session userSession;
+    private Session userSession;
     @Autowired
     private PDFService pdfService;
     @Autowired

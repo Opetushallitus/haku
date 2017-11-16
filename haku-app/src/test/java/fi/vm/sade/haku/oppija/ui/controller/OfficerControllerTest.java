@@ -88,9 +88,8 @@ public class OfficerControllerTest {
         when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(modelResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
 
-        officerController = new OfficerController(officerApplicationService, null, formService, null, null,
+        officerController = new OfficerController(officerApplicationService, null, formService, mock(UserSession.class), null,
                 null, null, mock(OppijaAuditLogger.class), mock(AuthenticationService.class));
-        officerController.userSession = mock(UserSession.class);
     }
 
     @Test
