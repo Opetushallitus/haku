@@ -16,10 +16,20 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
+import static com.google.common.collect.Maps.filterKeys;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_BASE_EDUCATION;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.KESKEYTYNYT;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_DISCRETIONARY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import com.google.common.collect.Multimaps;
 import com.google.gson.Gson;
+
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
 import fi.vm.sade.haku.ApiAuditLogger;
@@ -30,7 +40,13 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil;
-import fi.vm.sade.haku.oppija.hakemus.domain.*;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPreferenceMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
@@ -82,15 +98,17 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.*;
-
-import static com.google.common.collect.Maps.filterKeys;
-import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
-import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
-import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -174,7 +192,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         final Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
         final Map<String, String> answers = applicationPhase.getAnswers();
 
-        Map<String, String> allAnswers = new HashMap<String, String>();
+        Map<String, String> allAnswers = new HashMap<>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
         Application current = userSession.getApplication(applicationSystemId);
@@ -210,7 +228,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application submitApplication(final String applicationSystemId, String language) {
         final User user = userSession.getUser();
 
-        Application application = null;
+        Application application;
         if (userSession.hasApplication(applicationSystemId)) {
             application = userSession.getApplication(applicationSystemId);
         } else {
@@ -336,15 +354,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
-
-        Map<String, Collection<Map<String, Object>>> applicationsByKey = Multimaps.index(applications, new Function<Map<String, Object>, String>() {
-            @Override
-            public String apply(Map<String, Object> application) {
-                return (String) application.get(key);
-            }
-        }).asMap();
-
-        return applicationsByKey;
+        return Multimaps.index(applications, application -> (String) application.get(key)).asMap();
     }
 
     private List<Map<String, Object>> convertApplications(List<Map<String, Object>> applications) {
@@ -402,11 +412,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             try {
                 final Integer ordinal = Integer.valueOf(splitKey[0]);
                 final String dataKey = splitKey[1];
-                Map<String, String> preferenceData = applicationPreferenceData.get(ordinal);
-                if (null == preferenceData) {
-                    preferenceData = new HashMap<>();
-                    applicationPreferenceData.put(ordinal, preferenceData);
-                }
+                Map<String, String> preferenceData = applicationPreferenceData.computeIfAbsent(ordinal, k -> new HashMap<>());
                 preferenceData.put(dataKey, originalEntry.getValue());
 
                 if (OppijaConstants.PREFERENCE_FRAGMENT_ORGANIZATION_ID.equals(dataKey)) {
@@ -549,7 +555,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         break;
                     }
                 }
-                if(foundMatch == false) {
+                if (!foundMatch) {
                     String note = "Liitemerkintä poistettu.";
                     note +=" Saapunut: " + (ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus())?"Kyllä.":"Myöhässä.");
                     if(orig.getPreferenceAoId() != null) {
@@ -648,7 +654,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private boolean keyCanBePruned(String phaseId, String answerKey) {
         if(OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId)
            && answerKey.startsWith(OppijaConstants.PREFERENCE_PREFIX)) {
-            if(answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_NAME)) {
+            if (answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_NAME)) {
                 return false;
             }
             return answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_DISCRETIONARY);
@@ -661,7 +667,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
 
-        HashSet<String> educationElementIds = new HashSet(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
+        HashSet<String> educationElementIds = new HashSet<>(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
         for (Element elem : educationPhase.getAllChildren()) {
             educationElementIds.add(elem.getId());
         }
@@ -698,12 +704,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     private void removeGradesFromApplication(final Application application) {
-        final Map<String, String> filteredGrades = filterKeys(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES), new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return input != null && !isArvosanaKey(input);
-            }
-        });
+        final Map<String, String> filteredGrades = filterKeys(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES),
+            input -> input != null && !isArvosanaKey(input));
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, filteredGrades);
     }
 
@@ -863,7 +865,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setReceived(new Date());
         application.setState(Application.State.DRAFT);
         AuthorizationMeta authorizationMeta = new AuthorizationMeta();
-        authorizationMeta.setAllAoOrganizations(new HashSet<String>(hakuPermissionService.userCanEnterApplications()));
+        authorizationMeta.setAllAoOrganizations(new HashSet<>(hakuPermissionService.userCanEnterApplications()));
         application.setAuthorizationMeta(authorizationMeta);
         application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
@@ -909,7 +911,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ensuredAnswers.put(basekey + "-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
                 ensuredAnswers.put(basekey + "-Koulutus-id-discretionary", String.valueOf(applicationOption.isKysytaanHarkinnanvaraiset()));
 
-                final ArrayList<String> aoGroupList = new ArrayList<String>();
+                final ArrayList<String> aoGroupList = new ArrayList<>();
                 final List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
                 if (null != organizationGroups && organizationGroups.size() > 0) {
                     for (final OrganizationGroupDTO organizationGroup : organizationGroups) {
