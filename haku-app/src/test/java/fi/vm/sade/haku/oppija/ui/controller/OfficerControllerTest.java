@@ -36,7 +36,6 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
@@ -88,8 +87,8 @@ public class OfficerControllerTest {
         when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(modelResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
 
-        officerController = new OfficerController(officerApplicationService, null, formService, mock(UserSession.class), null,
-                null, null, mock(OppijaAuditLogger.class), mock(AuthenticationService.class));
+        officerController = new OfficerController(officerApplicationService, null, mock(UserSession.class), null,
+                null, mock(OppijaAuditLogger.class));
     }
 
     @Test

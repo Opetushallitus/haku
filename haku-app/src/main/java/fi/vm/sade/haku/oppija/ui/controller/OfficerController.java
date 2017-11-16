@@ -16,7 +16,12 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.seeOther;
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
 import fi.vm.sade.auditlog.User;
@@ -29,20 +34,17 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
-import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
-import fi.vm.sade.properties.OphProperties;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -61,11 +69,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
-import static javax.ws.rs.core.Response.ok;
-import static javax.ws.rs.core.Response.seeOther;
 
 @Path("virkailija")
 @Controller
@@ -78,7 +81,6 @@ public class OfficerController {
     private static final String VALINTA_TAB_VIEW = "/virkailija/valintaTab";
     private static final String KELPOISUUS_JA_LIITTEET_TAB_VIEW = "/virkailija/kelpoisuusLiitteetTab";
     private static final String OID_PATH_PARAM = "oid";
-    private static final String ORGANIZATION_OID_PATH_PARAM = "orgOid";
     private static final String VERBOSE_HELP_VIEW = "/help";
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
     private static final String ELEMENT_ID_PATH_PARAM = "elementId";
@@ -95,8 +97,6 @@ public class OfficerController {
     @Autowired
     private UIService uiService;
     @Autowired
-    private FormService formService;
-    @Autowired
     private Session userSession;
     @Autowired
     private PDFService pdfService;
@@ -104,27 +104,18 @@ public class OfficerController {
     private EmailService emailService;
 
     @Autowired
-    private OphProperties urlConfiguration;
-
-    @Autowired
     private OppijaAuditLogger oppijaAuditLogger;
-
-    @Autowired
-    private AuthenticationService authenticationService;
 
     public OfficerController() {}
 
     @Autowired
-    public OfficerController(OfficerUIService officerUIService, UIService uiService, FormService formService, Session userSession, PDFService pdfService, EmailService emailService, OphProperties urlConfiguration, OppijaAuditLogger oppijaAuditLogger, AuthenticationService authenticationService) {
+    public OfficerController(OfficerUIService officerUIService, UIService uiService, Session userSession, PDFService pdfService, EmailService emailService, OppijaAuditLogger oppijaAuditLogger) {
         this.officerUIService = officerUIService;
         this.uiService = uiService;
-        this.formService = formService;
         this.userSession = userSession;
         this.pdfService = pdfService;
         this.emailService = emailService;
-        this.urlConfiguration = urlConfiguration;
         this.oppijaAuditLogger = oppijaAuditLogger;
-        this.authenticationService = authenticationService;
     }
 
     @GET
