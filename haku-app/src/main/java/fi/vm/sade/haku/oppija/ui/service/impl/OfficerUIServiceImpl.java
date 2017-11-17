@@ -855,13 +855,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 throw new IncoherentDataException(msg);
             }
             UpdateChanges updateChanges = updateEligibilityStatus(application, dto, preferenceEligibility, preferenceChecked, userSession.getUser().getUserName());
-            Person currentHenkilo = authenticationService.getCurrentHenkilo();
-            fi.vm.sade.auditlog.User user = null;
-            try {
-                user = new fi.vm.sade.auditlog.User(new Oid(currentHenkilo.getPersonOid()), null, null, null);
-            } catch (GSSException e) {
-                LOGGER.error("Error creating Oid-object out of {}", currentHenkilo.getPersonOid());
-            }
+
+            fi.vm.sade.auditlog.User user = virkailijaAuditLogger.getUser();
             virkailijaAuditLogger.log(user, HakuOperation.UPDATE_ELIGIBILITY_STATUS, updateChanges.targetBuilder.build(), updateChanges.changesBuilder.build());
             for (AttachmentDTO attachmentDTO : dto.getAttachments()) {
                 checkDuplicateAttachmentDTO(attachmentDTO, dto.getAttachments());
