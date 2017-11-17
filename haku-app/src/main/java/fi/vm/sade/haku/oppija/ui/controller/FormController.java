@@ -254,7 +254,8 @@ public class FormController {
 
             Target.Builder targetBuilder = new Target.Builder()
                     .setField("applicationSystemId", applicationSystemId)
-                    .setField("message", "Failed: " + t.getMessage());
+                    .setField("applicationOid", application.getOid())
+                    .setField("message", "Failed to submit application for preview: " + t.getMessage());
             auditLogRequest(HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build());
 
             throw t;
