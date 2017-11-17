@@ -45,25 +45,23 @@ public class HakuAuditLogger extends Audit {
 
     public final User getUser() {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Oid currentPersonOid = getCurrentPersonOid();
         if(sra != null) {
+            InetAddress address;
             HttpServletRequest req = sra.getRequest();
             String sessionId = req.getSession().getId();
             String useragent = req.getHeader("User-Agent");
             String remoteAddr = req.getRemoteAddr();
             try {
-                InetAddress address = InetAddress.getByName(remoteAddr);
-                return new User(getCurrentPersonOid(), address, sessionId, useragent);
+                address = InetAddress.getByName(remoteAddr);
             } catch (UnknownHostException e) {
-                LOGGER.error("Error creating inetadress for user out of {}, returning null user", remoteAddr, e);
-                return null;
+                LOGGER.error("Error creating inetadress for user out of {}, using loopback address", remoteAddr, e);
+                address = InetAddress.getLoopbackAddress();
             }
+            return new User(currentPersonOid, address, sessionId, useragent);
         } else {
-            try {
-                return new User(getCurrentPersonOid(), InetAddress.getLocalHost(), "", "");
-            } catch (UnknownHostException e) {
-                LOGGER.error("Error creating localhost inetaddress",e);
-                return null;
-            }
+            LOGGER.warn("Servlet request attributes not present, can not audit log all user details");
+            return new User(currentPersonOid, InetAddress.getLoopbackAddress(), "", "");
         }
     }
 }
