@@ -968,6 +968,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.addNote(new ApplicationNote(eligibilityNote, new Date(), officerOid));
     }
 
+    /**
+     * Callee is responsible for logging the audit event that is returned by this method. This is because this method
+     * doesn't actually commit anything to database.
+     */
     private AttachmentRequestStatusUpdate updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
         ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(attachmentDTO.getReceptionStatus());
         Target.Builder targetBuilder = new Target.Builder();
@@ -988,19 +992,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     .setField("hakukohderyhmaOid", attachment.getPreferenceAoGroupId())
                     .setField("hakemusOid", application.getOid());
 
-            changesBuilder = changesBuilder.updated("processingStatus", attachment.getReceptionStatus().name(), newReceptionStatus.name());
+            changesBuilder = changesBuilder.updated("processingStatus", attachment.getProcessingStatus().name(), newProcessingStatus.name());
             attachment.setProcessingStatus(newProcessingStatus);
         }
-        return new AttachmentRequestStatusUpdate(targetBuilder, changesBuilder);
+        return new AttachmentRequestStatusUpdate(targetBuilder, changesBuilder, HakuOperation.UPDATE_ATTACHMENT);
     }
 
     private static class AttachmentRequestStatusUpdate {
         public final Target.Builder targetBuilder;
         public final Changes.Builder changesBuilder;
+        public final HakuOperation operation;
 
-        private AttachmentRequestStatusUpdate(Target.Builder targetBuilder, Changes.Builder changesBuilder) {
+        private AttachmentRequestStatusUpdate(Target.Builder targetBuilder, Changes.Builder changesBuilder, HakuOperation operation) {
             this.targetBuilder = targetBuilder;
             this.changesBuilder = changesBuilder;
+            this.operation = operation;
         }
     }
 
