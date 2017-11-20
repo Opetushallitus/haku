@@ -969,7 +969,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     /**
-     * Callee is responsible for logging the audit event that is returned by this method. This is because this method
+     * Caller is responsible for logging the audit event that is returned by this method. This is because this method
      * doesn't actually commit anything to database.
      */
     private AttachmentRequestStatusUpdate updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
