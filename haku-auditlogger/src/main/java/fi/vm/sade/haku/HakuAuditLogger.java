@@ -39,7 +39,9 @@ public class HakuAuditLogger extends Audit {
         try {
             return new Oid(personOid);
         } catch (GSSException e) {
-            LOGGER.error("Error creating Oid-object out of {}", personOid);
+            if(! "anonymousUser".equals(personOid)) {
+                LOGGER.error("Error creating Oid-object out of {}", personOid);
+            }
             return null;
         }
     }
