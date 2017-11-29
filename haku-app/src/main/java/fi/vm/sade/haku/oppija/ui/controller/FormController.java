@@ -16,18 +16,29 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static com.google.common.base.Objects.firstNonNull;
+import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.convert;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
+import static java.util.Collections.emptyMap;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.auditlog.haku.HakuOperation;
-import fi.vm.sade.auditlog.haku.LogMessage;
+
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.ui.common.*;
+import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
+import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
+import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
@@ -39,22 +50,22 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.Config;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static com.google.common.base.Objects.firstNonNull;
-import static fi.vm.sade.haku.oppija.ui.common.BeanToMapConverter.*;
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParameters;
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.APPLICATION_BLACKLISTED_FIELDS;
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static fi.vm.sade.haku.OppijaAuditHelper.AUDIT;
-import static fi.vm.sade.haku.AuditHelper.builder;
 
 @Component
 @Path("lomake")
@@ -72,27 +83,27 @@ public class FormController {
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
 
     private final UIService uiService;
-    private final PDFService pdfService;
-    private final AuthenticationService authenticationService;
 
     private final String generatorUrl;
 
     private final ObjectMapper mapper;
 
+    private final OppijaAuditLogger oppijaAuditLogger;
+
     @Autowired
-    public FormController(final UIService uiService, final PDFService pdfService,
-                          final AuthenticationService authenticationService,
-                          @Value("${application.system.generatorUrl:}") final String generatorUrl) {
+    public FormController(final UIService uiService,
+                          @Value("${application.system.generatorUrl:}") final String generatorUrl,
+                          OppijaAuditLogger oppijaAuditLogger) {
         this.uiService = uiService;
-        this.pdfService = pdfService;
-        this.authenticationService = authenticationService;
         this.generatorUrl = generatorUrl;
+        this.oppijaAuditLogger = oppijaAuditLogger;
 
         mapper = new ObjectMapper()
                 .disable(SerializationConfig.Feature.INDENT_OUTPUT)
                 .disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS)
                 .disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS)
                 .disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
+
     }
 
     @GET
@@ -212,28 +223,10 @@ public class FormController {
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
-    private LogMessage.LogMessageBuilder withIpAndSession(LogMessage.LogMessageBuilder builder, HttpServletRequest request) {
-        String ipAddressProxy = request.getHeader("X-FORWARDED-FOR");
-        if (ipAddressProxy != null) {
-            builder.add("ip", ipAddressProxy);
-        }
-        String sessionId = request.getRequestedSessionId();
-        if (sessionId != null) {
-            builder.sessionId(sessionId);
-        }
+    private Changes.Builder changesEntryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
+        Changes.Builder builder = new Changes.Builder();
+        applicationToMap(app).forEach(builder::added);
         return builder;
-    }
-
-    private LogMessage.LogMessageBuilder entryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
-        return builder().hakemusOid(app.getOid()).hakuOid(app.getApplicationSystemId())
-                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
-                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION);
-    }
-
-    private LogMessage.LogMessageBuilder entrySavePhase(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
-        return builder().hakemusOid(app.getOid()).hakuOid(app.getApplicationSystemId())
-                .add("delta", Arrays.toString(applicationToMap(app).entrySet().toArray()))
-                .setOperaatio(HakuOperation.SAVE_PHASE_TO_SESSION);
     }
 
     @POST
@@ -247,11 +240,24 @@ public class FormController {
             ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
             final String oid = modelResponse.getApplication().getOid();
             RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
-            AUDIT.log(withIpAndSession(entryNewApplication(modelResponse.getApplication()).message("Submitted new application"),request).build());
+
+
+            Target.Builder targetBuilder = new Target.Builder()
+                .setField("applicationSystemId", applicationSystemId);
+            Changes.Builder changesBuilder = changesEntryNewApplication(modelResponse.getApplication());
+
+            auditLogRequest(HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build(), changesBuilder.build());
+
             return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
         } catch(Throwable t) {
             fi.vm.sade.haku.oppija.hakemus.domain.Application application = uiService.getApplication(applicationSystemId).getApplication();
-            AUDIT.log(withIpAndSession(entryNewApplication(application).message("Failed: " + t.getMessage()),request).build());
+
+            Target.Builder targetBuilder = new Target.Builder()
+                    .setField("applicationSystemId", applicationSystemId)
+                    .setField("applicationOid", application.getOid())
+                    .setField("message", "Failed to submit application for preview: " + t.getMessage());
+            auditLogRequest(HakuOperation.SUBMIT_NEW_APPLICATION, targetBuilder.build());
+
             throw t;
         }
     }
@@ -278,7 +284,14 @@ public class FormController {
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
         fi.vm.sade.haku.oppija.hakemus.domain.Application application = modelResponse.getApplication();
-        AUDIT.log(withIpAndSession(entrySavePhase(application).message(String.format("Submitted phase %s", phaseId)),request).build());
+
+        Changes.Builder changesBuilder = changesEntryNewApplication(application);
+        Target.Builder targetBuilder = new Target.Builder()
+                .setField("applicationSystemId", applicationSystemId)
+                .setField("phaseId", phaseId);
+
+        auditLogRequest(HakuOperation.SAVE_PHASE_TO_SESSION, targetBuilder.build(), changesBuilder.build());
+
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
@@ -345,5 +358,16 @@ public class FormController {
     @Produces(MediaType.TEXT_PLAIN)
     public String refreshSession() {
         return "OK";
+    }
+
+    private void auditLogRequest(HakuOperation operation, Target target) {
+        auditLogRequest(operation, target, null);
+    }
+
+    private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
+        if(changes == null) {
+            changes = new Changes.Builder().build();
+        }
+        oppijaAuditLogger.log(oppijaAuditLogger.getUser(), operation, target, changes);
     }
 }

@@ -17,8 +17,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import static com.google.common.collect.Maps.filterKeys;
-import static fi.vm.sade.haku.ApiAuditHelper.AUDIT;
-import static fi.vm.sade.haku.ApiAuditHelper.builder;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
@@ -29,12 +27,13 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Multimaps;
-
 import com.google.gson.Gson;
-import fi.vm.sade.auditlog.haku.HakuOperation;
+
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.haku.ApiAuditLogger;
+import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -132,6 +131,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ValintaService valintaService;
     private final Boolean disableHistory;
     private final OhjausparametritService ohjausparametritService;
+    private final ApiAuditLogger apiAuditLogger;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -154,7 +154,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ValintaService valintaService,
                                   OhjausparametritService ohjausparametritService,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation,
-                                  @Value("${disableHistory:false}") String disableHistory) {
+                                  @Value("${disableHistory:false}") String disableHistory,
+                                  ApiAuditLogger apiAuditLogger) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -172,6 +173,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
         this.disableHistory = Boolean.valueOf(disableHistory);
+        this.apiAuditLogger = apiAuditLogger;
     }
 
 
@@ -190,7 +192,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         final Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
         final Map<String, String> answers = applicationPhase.getAnswers();
 
-        Map<String, String> allAnswers = new HashMap<String, String>();
+        Map<String, String> allAnswers = new HashMap<>();
         // if the current phase has previous phase, get all the answers for
         // validating rules
         Application current = userSession.getApplication(applicationSystemId);
@@ -226,7 +228,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application submitApplication(final String applicationSystemId, String language) {
         final User user = userSession.getUser();
 
-        Application application = null;
+        Application application;
         if (userSession.hasApplication(applicationSystemId)) {
             application = userSession.getApplication(applicationSystemId);
         } else {
@@ -259,13 +261,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.applicationDAO.save(application);
 
             Gson g = new Gson();
-            AUDIT.log(builder()
-                    .id(user.getUserName())
-                    .hakemusOid(application.getOid())
-                    .hakuOid(applicationSystem.getId())
-                    .message(g.toJson(application))
-                    .setOperaatio(HakuOperation.SAVE_APPLICATION)
-                    .build());
+            fi.vm.sade.auditlog.User apiUser = apiAuditLogger.getUser();
+            Target.Builder target = new Target.Builder();
+            Changes.Builder changes = new Changes.Builder();
+            target.setField("hakemusOid", application.getOid())
+                    .setField("hakuOid", applicationSystem.getId());
+            changes.added("hakemus", g.toJson(application));
+
+            apiAuditLogger.log(apiUser, HakuOperation.SAVE_APPLICATION, target.build(), changes.build());
 
             this.userSession.removeApplication(application);
             return application;
@@ -351,15 +354,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
-
-        Map<String, Collection<Map<String, Object>>> applicationsByKey = Multimaps.index(applications, new Function<Map<String, Object>, String>() {
-            @Override
-            public String apply(Map<String, Object> application) {
-                return (String) application.get(key);
-            }
-        }).asMap();
-
-        return applicationsByKey;
+        return Multimaps.index(applications, application -> (String) application.get(key)).asMap();
     }
 
     private List<Map<String, Object>> convertApplications(List<Map<String, Object>> applications) {
@@ -417,11 +412,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             try {
                 final Integer ordinal = Integer.valueOf(splitKey[0]);
                 final String dataKey = splitKey[1];
-                Map<String, String> preferenceData = applicationPreferenceData.get(ordinal);
-                if (null == preferenceData) {
-                    preferenceData = new HashMap<>();
-                    applicationPreferenceData.put(ordinal, preferenceData);
-                }
+                Map<String, String> preferenceData = applicationPreferenceData.computeIfAbsent(ordinal, k -> new HashMap<>());
                 preferenceData.put(dataKey, originalEntry.getValue());
 
                 if (OppijaConstants.PREFERENCE_FRAGMENT_ORGANIZATION_ID.equals(dataKey)) {
@@ -564,7 +555,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         break;
                     }
                 }
-                if(foundMatch == false) {
+                if (!foundMatch) {
                     String note = "Liitemerkintä poistettu.";
                     note +=" Saapunut: " + (ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus())?"Kyllä.":"Myöhässä.");
                     if(orig.getPreferenceAoId() != null) {
@@ -663,7 +654,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private boolean keyCanBePruned(String phaseId, String answerKey) {
         if(OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId)
            && answerKey.startsWith(OppijaConstants.PREFERENCE_PREFIX)) {
-            if(answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_NAME)) {
+            if (answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_NAME)) {
                 return false;
             }
             return answerKey.contains(OppijaConstants.PREFERENCE_FRAGMENT_DISCRETIONARY);
@@ -676,7 +667,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = as.getForm();
         Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
 
-        HashSet<String> educationElementIds = new HashSet(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
+        HashSet<String> educationElementIds = new HashSet<>(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
         for (Element elem : educationPhase.getAllChildren()) {
             educationElementIds.add(elem.getId());
         }
@@ -713,12 +704,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     private void removeGradesFromApplication(final Application application) {
-        final Map<String, String> filteredGrades = filterKeys(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES), new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return input != null && !isArvosanaKey(input);
-            }
-        });
+        final Map<String, String> filteredGrades = filterKeys(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES),
+            input -> input != null && !isArvosanaKey(input));
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, filteredGrades);
     }
 
@@ -804,11 +791,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         this.applicationDAO.update(queryApplication, application);
         Gson g = new Gson();
-        AUDIT.log(builder()
-                .hakemusOid(application.getOid())
-                .message(g.toJson(application))
-                .setOperaatio(HakuOperation.UPDATE_APPLICATION)
-                .build());
+
+
+        Target.Builder target = new Target.Builder()
+                .setField("hakemusOid", application.getOid());
+        Changes.Builder changes = new Changes.Builder()
+                .added("application", g.toJson(application));
+
+        apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.UPDATE_APPLICATION, target.build(), changes.build());
+
     }
 
     @Override
@@ -837,11 +828,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new IllegalArgumentException("Value can't be null");
         } else {
             applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
-            AUDIT.log(builder()
-                    .hakemusOid(applicationOid)
-                    .add(key, value)
-                    .setOperaatio(HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE)
-                    .build());
+
+            Target.Builder target = new Target.Builder().setField("applicationOid",applicationOid);
+            Changes.Builder changes = new Changes.Builder().updated("additionaliInfo."+key, "",value);
+            apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.UPDATE_ADDITIONAL_INFO_KEY_VALUE, target.build(), changes.build());
         }
     }
 
@@ -875,19 +865,18 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setReceived(new Date());
         application.setState(Application.State.DRAFT);
         AuthorizationMeta authorizationMeta = new AuthorizationMeta();
-        authorizationMeta.setAllAoOrganizations(new HashSet<String>(hakuPermissionService.userCanEnterApplications()));
+        authorizationMeta.setAllAoOrganizations(new HashSet<>(hakuPermissionService.userCanEnterApplications()));
         application.setAuthorizationMeta(authorizationMeta);
         application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
 
-        Gson g = new Gson();
-        AUDIT.log(builder()
-                .hakemusOid(application.getOid())
-                .hakuOid(asId)
-                .message(g.toJson(application))
-                .setOperaatio(HakuOperation.SAVE_APPLICATION)
-                .build());
+        Target.Builder target = new Target.Builder().setField("applicationSystemId", asId).setField("applicationOid", application.getOid());
+        Changes.Builder changes = new Changes.Builder()
+                .added("state", application.getState().name())
+                .added("received", application.getReceived().toString())
+                .added("appplicationOid", application.getOid());
+        apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
 
         return application;
     }
@@ -922,7 +911,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ensuredAnswers.put(basekey + "-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
                 ensuredAnswers.put(basekey + "-Koulutus-id-discretionary", String.valueOf(applicationOption.isKysytaanHarkinnanvaraiset()));
 
-                final ArrayList<String> aoGroupList = new ArrayList<String>();
+                final ArrayList<String> aoGroupList = new ArrayList<>();
                 final List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
                 if (null != organizationGroups && organizationGroups.size() > 0) {
                     for (final OrganizationGroupDTO organizationGroup : organizationGroups) {

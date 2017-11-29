@@ -1,11 +1,12 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
-import static fi.vm.sade.haku.AuditHelper.AUDIT;
-import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
-import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -48,6 +49,7 @@ public class ApplicationPostProcessorService {
     private final HakuService hakuService;
     private final HakumaksuService hakumaksuService;
     private final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker;
+    private final VirkailijaAuditLogger virkailijaAuditLogger;
 
     @Value("${scheduler.retryFailQuickCount:20}")
     private int retryFailQuickCount;
@@ -67,7 +69,8 @@ public class ApplicationPostProcessorService {
                                            final AuthenticationService authenticationService,
                                            final HakuService hakuService,
                                            final HakumaksuService hakumaksuService,
-                                           final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker){
+                                           final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker,
+                                           final VirkailijaAuditLogger virkailijaAuditLogger){
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
@@ -77,6 +80,7 @@ public class ApplicationPostProcessorService {
         this.hakuService = hakuService;
         this.hakumaksuService = hakumaksuService;
         this.paymentDueDateProcessingWorker = paymentDueDateProcessingWorker;
+        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException, ValintaServiceCallFailedException {
@@ -93,22 +97,26 @@ public class ApplicationPostProcessorService {
 
             application = hakumaksuService.processPayment(application, applicationSystem.getApplicationPeriods());
 
+            boolean hasChanges = false;
+            Changes.Builder changesBuilder = new Changes.Builder();
+            Target.Builder targetBuilder = new Target.Builder();
+
+            targetBuilder.setField("hakemusOid", application.getOid());
+
             if (application.getRequiredPaymentState() != oldPaymentState) {
-                AUDIT.log(builder()
-                        .hakemusOid(application.getOid())
-                        .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                        .add("payment_state_change",application.getRequiredPaymentState(),nameOrEmpty(oldPaymentState))
-                        .build());
+                changesBuilder.updated("payment_state_change", oldPaymentState.name(), application.getRequiredPaymentState().name());
+                hasChanges = true;
             }
 
             if (application.getPaymentDueDate() != oldDueDate) {
-                AUDIT.log(builder()
-                        .hakemusOid(application.getOid())
-                        .setOperaatio(HakuOperation.PAYMENT_DUE_DATE_CHANGE)
-                        .add("payment_due_date",
-                                application.getPaymentDueDate() != null ? String.format("%d", application.getPaymentDueDate().getTime()) : "",
-                                oldDueDate != null ? String.format("%d", oldDueDate.getTime()) : "")
-                        .build());
+                String newDate = application.getPaymentDueDate() != null ? String.format("%d", application.getPaymentDueDate().getTime()) : "";
+                String oldDate = oldDueDate != null ? String.format("%d", oldDueDate.getTime()) : "";
+
+                changesBuilder.updated("payment_due_date", oldDate, newDate);
+                hasChanges = true;
+            }
+            if(hasChanges) {
+                virkailijaAuditLogger.log(null, HakuOperation.PROCESS_PAYMENT_DATE_UPDATES, targetBuilder.build(), changesBuilder.build());
             }
         }
         if (applicationSystem.isMaksumuuriKaytossa()) {

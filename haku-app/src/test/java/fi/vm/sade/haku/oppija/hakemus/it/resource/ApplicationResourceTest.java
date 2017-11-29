@@ -1,6 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.ApiAuditLogger;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl.KoulutusinformaatioServiceMockImpl;
 import fi.vm.sade.haku.oppija.common.organisaatio.impl.OrganizationServiceMockImpl;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl.SuoritusrekisteriServiceMockImpl;
@@ -13,6 +15,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.HakuPermissionServiceMockImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
+import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
@@ -21,11 +24,13 @@ import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class ApplicationResourceTest extends AuthedIntegrationTest {
 
@@ -57,9 +62,11 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
                 new ValintaServiceMockImpl(),
                 ohjausparametritService,
                 "true",
-                "false"
+                "false",
+                mock(ApiAuditLogger.class)
         );
-        applicationResource = new ApplicationResource(as, applicationSystemService, applicationOptionService, syntheticApplicationService, i18nBundleService);
+        applicationResource = new ApplicationResource(as, applicationSystemService, applicationOptionService, syntheticApplicationService, i18nBundleService,
+                mock(OfficerUIService.class), mock(VirkailijaAuditLogger.class));
     }
 
     @Test
@@ -71,7 +78,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
 
         applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "OK"));
 
-        Application application = applicationResource.getApplicationByOid(OID);
+        Application application = applicationResource.getApplicationByOid(mock(HttpServletRequest.class), OID);
 
         assertEquals(PaymentState.OK, application.getRequiredPaymentState());
 
@@ -82,7 +89,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
 
         applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "NOT_OK"));
 
-        Application application2 = applicationResource.getApplicationByOid(OID);
+        Application application2 = applicationResource.getApplicationByOid(mock(HttpServletRequest.class), OID);
 
         assertEquals(PaymentState.NOT_OK, application2.getRequiredPaymentState());
     }
