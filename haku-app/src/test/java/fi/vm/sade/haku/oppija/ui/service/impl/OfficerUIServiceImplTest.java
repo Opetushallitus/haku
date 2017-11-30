@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
@@ -156,6 +157,7 @@ public class OfficerUIServiceImplTest {
                 valintaService,
                 userSession,
                 null,
+                mock(VirkailijaAuditLogger.class),
                 mock(HakumaksuService.class),
                 "01.02 - 01.09",
                 "true");
