@@ -89,7 +89,7 @@ public final class HenkilotiedotPhase {
         }
 
         henkilotiedotTeema.addChild(
-                createNameQuestionBuilder(ELEMENT_ID_LAST_NAME, 30).formParams(formParameters).build(),
+                createNameQuestionBuilder("b"+ELEMENT_ID_LAST_NAME, 30).formParams(formParameters).build(),
                 createNameQuestionBuilder(ELEMENT_ID_FIRST_NAMES, 30).formParams(formParameters).build(),
                 NickNameQuestion(ELEMENT_ID_NICKNAME)
                         .firstName(ELEMENT_ID_FIRST_NAMES)
@@ -191,7 +191,7 @@ public final class HenkilotiedotPhase {
         kunHetuKysytaan.addChild(ssnEmailBuilder.build());
         ElementBuilder noSsnEmailBuilder = createEmailBuilder(formParameters);
         // Kohdejoukko -Toisen asteen yhteishaku / Perusopetuksen jälkeisen valmistavan kouluttuksen haku / Erityisopetuksena järjestettävä ammatillinen koulutus
-        if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen()) {
+        if(formParameters.isToisenAsteenHaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isErityisopetuksenaJarjestettavaAmmatillinen() || formParameters.isLisahaku()) {
             noSsnEmailBuilder.required();
         }
 

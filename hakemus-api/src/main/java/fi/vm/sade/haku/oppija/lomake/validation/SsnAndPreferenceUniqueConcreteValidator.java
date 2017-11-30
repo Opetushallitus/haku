@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,6 +39,8 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
  */
 @Component
 public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
+
+    Logger LOG = Logger.getLogger("SSN or EMAIL for PREFERENCE validator");
 
     private final ApplicationDAO applicationDAO;
     private final ApplicationSystemService applicationSystemService;
@@ -62,23 +65,39 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
         return checkIfExistsBySocialSecurityNumberAndAo(
                 validationInput.getApplicationSystemId(),
                 validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER),
+                validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_EMAIL),
                 validationInput.getApplicationOid(),
                 validationInput.getValueByKey(preferenceKey),
                 validationInput.getElement().getId());
     }
 
-    private ValidationResult checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String applicationOid, String aoId, String elementId) {
+    private ValidationResult checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String email, String applicationOid, String aoId, String elementId) {
         ValidationResult validationResult = new ValidationResult();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ApplicationFilterParameters filterParams =
                 new ApplicationFilterParameters(as.getMaxApplicationOptions(), null, null, null, null, null, null);
-        if (!Strings.isNullOrEmpty(ssn) && Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
-            Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
-            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(filterParams, asId, ssn, aoId)) {
-                ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get(
-                  "henkilotiedot.hetuKaytetty"));
-                return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
+        if(Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
+            if (!Strings.isNullOrEmpty(ssn)) {
+                LOG.info(String.format("SSN olemassa, tarkistetaan että se on uniikki hakukohteelle %s", aoId));
+                Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
+                if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(filterParams, asId, ssn, aoId)) {
+                    ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get(
+                    "henkilotiedot.hetuKaytetty"));
+                    return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
+                }
+            } else if (!Strings.isNullOrEmpty(email)){
+                LOG.info(String.format("SSN ei olemassa, email on, tarkistetaan email että se on uniikki hakukohteelle %s", aoId));
+                if (this.applicationDAO.checkIfExistsByEmailAndAo(filterParams, asId, email, aoId)) {
+                    ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get(
+                    "henkilotiedot.hetuKaytetty")); //FIXME -> oikea teksti
+                    return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
+                }
+            } else {
+                LOG.info(String.format("Sekä SSN että email kelvottomia"));
+                //FIXME Tällaista tilannetta ei ehkä pitäisi olla (validointi aiemmin?), mutta entä jos silti on?
             }
+        } else {
+                LOG.info(String.format("Oltava kyse uudesta hakemuksesta ja lisäksi hakutoive oltava tiedossa, tai muuten tässä validoinnissa ei ole järkeä"));
         }
         return validationResult;
     }

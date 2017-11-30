@@ -70,6 +70,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     boolean checkIfExistsBySocialSecurityNumberAndAo(ApplicationFilterParameters filterParameters,
                                                      String asId, String ssn, String aoId);
 
+    boolean checkIfExistsByEmailAndAo(ApplicationFilterParameters filterParameters,
+                                      String asId, String email, String aoId);
+
     ApplicationSearchResultDTO findAllQueried(ApplicationQueryParameters queryParameters,
                                               ApplicationFilterParameters filterParameters);
 

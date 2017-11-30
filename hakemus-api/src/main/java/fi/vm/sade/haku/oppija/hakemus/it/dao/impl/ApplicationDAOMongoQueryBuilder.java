@@ -86,6 +86,12 @@ final class ApplicationDAOMongoQueryBuilder {
                 .get();
     }
 
+    public DBObject buildApplicationExistsForEmail(String email, String asId, String aoId) {
+        return _buildApplicationExistsForEmail(email, asId)
+                .and(META_FIELD_AO).is(aoId)
+                .get();
+    }
+
     private QueryBuilder _buildApplicationExistsForSSN(final String ssn, final String asId) {
         final String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
         return start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
@@ -444,4 +450,5 @@ final class ApplicationDAOMongoQueryBuilder {
             return new BasicDBObject(operator, queries);
         return queries.get(0);
     }
+
 }
