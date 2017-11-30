@@ -62,7 +62,7 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
 
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
-        return checkIfExistsBySocialSecurityNumberAndAo(
+        return checkIfExistsBySocialSecurityNumberOrEmailAndAo(
                 validationInput.getApplicationSystemId(),
                 validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER),
                 validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_EMAIL),
@@ -71,7 +71,8 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
                 validationInput.getElement().getId());
     }
 
-    private ValidationResult checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String email, String applicationOid, String aoId, String elementId) {
+    //Tarkistetaan, että annetulla hetulla (tai mailiosoitteella, jos hetua ei ole annettu) ei ole jo hakemusta kyseiseen hakukohteeseen (aoId)
+    private ValidationResult checkIfExistsBySocialSecurityNumberOrEmailAndAo(String asId, String ssn, String email, String applicationOid, String aoId, String elementId) {
         ValidationResult validationResult = new ValidationResult();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ApplicationFilterParameters filterParams =
@@ -85,14 +86,15 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
                     return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
                 }
             } else if (!Strings.isNullOrEmpty(email)){
-                LOG.info(String.format("SSN ei olemassa, email on, tarkistetaan email että se on uniikki hakukohteelle %s", aoId));
+                LOG.info(String.format("SSN ei olemassa, email on, että email on uniikki hakukohteelle %s", aoId));
                 if (this.applicationDAO.checkIfExistsByEmailAndAo(filterParams, asId, email, aoId)) {
                     ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get("henkilotiedot.emailkaytetty"));
                     return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
                 }
             } else {
                 LOG.info(String.format("Sekä SSN että email kelvottomia"));
-                //FIXME Tällaista tilannetta ei ehkä pitäisi olla (validointi aiemmin?), mutta entä jos silti on?
+                ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get("henkilotiedot.emailkaytetty")); //FIXME väärä viesti, mutta onko tällä tapauksella ylipäänsä väliä?
+                return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         } else {
                 LOG.info(String.format("Oltava kyse uudesta hakemuksesta ja lisäksi hakutoive oltava tiedossa, tai muuten tässä validoinnissa ei ole järkeä"));
