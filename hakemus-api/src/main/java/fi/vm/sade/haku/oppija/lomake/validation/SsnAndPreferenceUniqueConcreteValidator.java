@@ -81,15 +81,13 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
                 LOG.info(String.format("SSN olemassa, tarkistetaan että se on uniikki hakukohteelle %s", aoId));
                 Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
                 if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(filterParams, asId, ssn, aoId)) {
-                    ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get(
-                    "henkilotiedot.hetuKaytetty"));
+                    ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get("henkilotiedot.hetuKaytetty"));
                     return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
                 }
             } else if (!Strings.isNullOrEmpty(email)){
                 LOG.info(String.format("SSN ei olemassa, email on, tarkistetaan email että se on uniikki hakukohteelle %s", aoId));
                 if (this.applicationDAO.checkIfExistsByEmailAndAo(filterParams, asId, email, aoId)) {
-                    ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get(
-                    "henkilotiedot.hetuKaytetty")); //FIXME -> oikea teksti
+                    ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get("henkilotiedot.emailkaytetty"));
                     return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
                 }
             } else {
