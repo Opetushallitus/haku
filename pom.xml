@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.haku</groupId>
     <artifactId>haku</artifactId>
-    <version>14.0-SNAPSHOT</version>
+    <version>15.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Haku :: Parent</name>
 
