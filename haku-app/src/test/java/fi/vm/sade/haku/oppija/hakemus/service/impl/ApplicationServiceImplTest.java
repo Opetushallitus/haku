@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
@@ -194,7 +193,7 @@ public class ApplicationServiceImplTest {
         service = new ApplicationServiceImpl(applicationDAO, session, null, applicationOidService,
                 authenticationService, organizationService, hakuPermissionService, applicationSystemService,
                 koulutusinformaatioService, i18nBundleService, suoritusrekisteriService, hakuService,
-                elementTreeValidator, valintaService, ohjausparametritService, onlyBackgroundValidation, "false", mock(ApiAuditLogger.class));
+                elementTreeValidator, valintaService, ohjausparametritService, onlyBackgroundValidation, "false");
     }
 
     @Test
@@ -399,8 +398,7 @@ public class ApplicationServiceImplTest {
 
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null,
-                null, null, valintaService, null, null, "true", mock(ApiAuditLogger.class));
+                null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
         application = applicationService.getApplicationWithValintadata(application);
         assertEquals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY, application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
         assertEquals("1.2.3.4", application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION).get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
@@ -557,9 +555,7 @@ public class ApplicationServiceImplTest {
         when(valintaService.fetchValintaData(Mockito.<Application>any(), Mockito.same(valintaTimeout))).thenReturn(application.getVastauksetMerged());
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null,
-                null, null, null, valintaService,
-                null, null, "true", mock(ApiAuditLogger.class));
+                null, applicationSystemService, null, null, null, null, null, valintaService, null, null, "true");
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -692,9 +688,7 @@ public class ApplicationServiceImplTest {
         }});
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
-                null, null, null, suoritusrekisteriService,
-                hakuService, null, null, ohjausparametritService,
-                null, "true", mock(ApiAuditLogger.class));
+                null, null, null, suoritusrekisteriService, hakuService, null, null, ohjausparametritService, null, "true");
 
         application = applicationService.updateAutomaticEligibilities(application);
 
@@ -750,11 +744,8 @@ public class ApplicationServiceImplTest {
         when(elementTreeValidator.validate(any(ValidationInput.class))).thenReturn(validationResult);
 
         ApplicationServiceImpl applicationServiceImpl = new ApplicationServiceImpl(
-                null, userSession, null, null, null,
-                null, null,
-                applicationSystemService, null, null, null,
-                null, elementTreeValidator, null, null,
-                null, null, mock(ApiAuditLogger.class));
+                null, userSession, null, null, null, null, null,
+                applicationSystemService, null, null, null, null, elementTreeValidator, null, null, null, null);
         validationResult.setExpired(true);
         applicationServiceImpl.submitApplication(AS_ID, "fi");
     }
@@ -776,9 +767,7 @@ public class ApplicationServiceImplTest {
         final ValintaService valintaService = mock(ValintaService.class);
         when(valintaService.fetchValintaData(application, valintaTimeout)).thenReturn(ImmutableMap.of("PK_A12", "10"));
         final ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null,
-                null, null, applicationSystemService,
-                null, null, null, null,
-                null, valintaService, null, null, null, mock(ApiAuditLogger.class));
+                null, null, applicationSystemService, null, null, null, null, null, valintaService, null, null, null);
 
         Application withValintadata = applicationService.getApplicationWithValintadata(application);
 

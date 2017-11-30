@@ -19,7 +19,6 @@ package fi.vm.sade.haku.oppija.ui.controller;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -32,7 +31,6 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,14 +52,18 @@ import static org.mockito.Mockito.when;
  * @author Mikko Majapuro
  */
 public class OfficerControllerTest {
-    private static final String ASID = "dummyAsid";
-    private static final String PREVIEW_PHASE = "esikatselu";
+
+    public static final String ASID = "dummyAsid";
+    public static final String PREVIEW_PHASE = "esikatselu";
     private OfficerController officerController;
     private static final String OID = "1.2.3.4.5.0";
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
+        officerController = new OfficerController();
+        officerController.userSession = mock(UserSession.class);
+
         ApplicationService applicationService = mock(ApplicationService.class);
         FormService formService = mock(FormService.class);
 
@@ -86,14 +88,13 @@ public class OfficerControllerTest {
         when(officerApplicationService.getAdditionalInfo(OID)).thenReturn(modelResponse);
         when(officerApplicationService.updateApplication(eq(OID), any(ApplicationPhase.class), any(User.class))).thenReturn(modelResponse);
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
-
-        officerController = new OfficerController(officerApplicationService, null, mock(UserSession.class), null,
-                null, mock(OppijaAuditLogger.class));
+        officerController.officerUIService = officerApplicationService;
     }
 
     @Test
     public void testUpdatePhase() throws URISyntaxException, IOException {
-        Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
+        Response response = null;
+        response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 

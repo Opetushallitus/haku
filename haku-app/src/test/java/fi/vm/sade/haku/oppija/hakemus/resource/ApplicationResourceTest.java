@@ -16,14 +16,11 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
-import atg.taglib.json.util.HTTP;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
-import fi.vm.sade.haku.ApiAuditLogger;
-import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -35,12 +32,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -110,14 +105,12 @@ public class ApplicationResourceTest {
         when(applicationService.findApplications(any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
         when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(asIds);
-        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService,
-                null, null, i18nBundleService,
-                null, mock(VirkailijaAuditLogger.class));
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, null, i18nBundleService);
     }
 
     @Test
     public void testGetApplicationsByOid() {
-        Application application = this.applicationResource.getApplicationByOid(mock(HttpServletRequest.class), OID);
+        Application application = this.applicationResource.getApplicationByOid(OID);
         assertNotNull(application);
     }
 
@@ -125,7 +118,7 @@ public class ApplicationResourceTest {
     public void testSetPaymentStateToSame() {
         PaymentState requiredPaymentState = applicationWithPaymentState.getRequiredPaymentState();
         this.applicationResource.setPaymentState(OID_WITH_PAYMENT_STATE, ImmutableMap.of("paymentState", requiredPaymentState.name()));
-        Application application = this.applicationResource.getApplicationByOid(mock(HttpServletRequest.class),OID_WITH_PAYMENT_STATE);
+        Application application = this.applicationResource.getApplicationByOid(OID_WITH_PAYMENT_STATE);
 
         assertEquals(requiredPaymentState, application.getRequiredPaymentState());
     }
@@ -133,7 +126,7 @@ public class ApplicationResourceTest {
     @Test
     public void testSetPaymentState() {
         this.applicationResource.setPaymentState(OID_WITH_PAYMENT_STATE, ImmutableMap.of("paymentState", PaymentState.OK.name()));
-        Application application = this.applicationResource.getApplicationByOid(mock(HttpServletRequest.class),OID_WITH_PAYMENT_STATE);
+        Application application = this.applicationResource.getApplicationByOid(OID_WITH_PAYMENT_STATE);
 
         assertEquals(PaymentState.OK, application.getRequiredPaymentState());
     }
@@ -180,7 +173,7 @@ public class ApplicationResourceTest {
 
     @Test(expected = JSONException.class)
     public void testGetApplicationByInvalidOid() {
-        this.applicationResource.getApplicationByOid(mock(HttpServletRequest.class), INVALID_OID);
+        this.applicationResource.getApplicationByOid(INVALID_OID);
     }
 
     @Test
@@ -221,13 +214,7 @@ public class ApplicationResourceTest {
     @Test
     public void testFindApplicationsOrdered() {
         ApplicationServiceMock myApplicationService = new ApplicationServiceMock();
-        ApplicationResource resource = new ApplicationResource(myApplicationService,
-                applicationSystemService,
-                null,
-                null,
-                i18nBundleService,
-                null,
-                mock(VirkailijaAuditLogger.class));
+        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService, null, null, i18nBundleService);
         resource.findApplications("query", null, null, null, null, "aoId", "groupOid", "baseEducation", "lopOid", "", "", "", "aoId",
                 false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20, null);
@@ -280,7 +267,7 @@ public class ApplicationResourceTest {
 
         public ApplicationServiceMock() {
             super(null, null, null, null, null, null, null, applicationSystemService, null, null, null, null,
-                    null, null, null, null, "true", mock(ApiAuditLogger.class));
+                    null, null, null, null, "true");
         }
 
         @Override

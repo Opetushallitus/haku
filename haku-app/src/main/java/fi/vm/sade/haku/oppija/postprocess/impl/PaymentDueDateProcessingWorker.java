@@ -1,9 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
-import fi.vm.sade.auditlog.Changes;
-import fi.vm.sade.auditlog.Target;
-import fi.vm.sade.haku.HakuOperation;
-import fi.vm.sade.haku.VirkailijaAuditLogger;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -11,14 +8,18 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl.PaymentDueDateRules;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 import static fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.SYSTEM_USER;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
@@ -32,14 +33,11 @@ public class PaymentDueDateProcessingWorker {
 
     private ApplicationDAO applicationDAO;
     private HakumaksuService hakumaksuService;
-    private final VirkailijaAuditLogger virkailijaAuditLogger;
 
     @Autowired
-    public PaymentDueDateProcessingWorker(ApplicationDAO applicationDAO, HakumaksuService hakumaksuService,
-                                          VirkailijaAuditLogger virkailijaAuditLogger) {
+    public PaymentDueDateProcessingWorker(ApplicationDAO applicationDAO, HakumaksuService hakumaksuService) {
         this.applicationDAO = applicationDAO;
         this.hakumaksuService = hakumaksuService;
-        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     private void addPassivationNoteToApplication(Application application) {
@@ -103,11 +101,12 @@ public class PaymentDueDateProcessingWorker {
                     original = application.clone();
                     retries++;
                 } else if (status == 1) {
-                    Target target= new Target.Builder().setField("hakemusOid", application.getOid()).build();
-                    Changes changes = new Changes.Builder()
-                            .updated("paymentDueDate", original.getState().name(), application.getState().name())
-                            .build();
-                    virkailijaAuditLogger.log(null, HakuOperation.CHANGE_APPLICATION_STATE, target, changes);
+                    AUDIT.log(builder()
+                            .hakemusOid(application.getOid())
+                            .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE)
+                            .add("oldValue", nameOrEmpty(original.getState()))
+                            .add("newValue", nameOrEmpty(application.getState()))
+                            .build());
                     break;
                 } else {
                     throw new RuntimeException(String.format("update of single application (oid: %s) modified more than one applications", application.getOid()));

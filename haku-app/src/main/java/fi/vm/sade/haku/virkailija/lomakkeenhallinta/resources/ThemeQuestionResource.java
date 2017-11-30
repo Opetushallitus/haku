@@ -17,11 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import com.google.common.collect.ImmutableMap;
-
-import fi.vm.sade.auditlog.Changes;
-import fi.vm.sade.auditlog.Target;
-import fi.vm.sade.haku.HakuOperation;
-import fi.vm.sade.haku.VirkailijaAuditLogger;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
@@ -53,8 +49,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static javax.ws.rs.core.Response.Status.*;
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.status;
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -86,10 +87,7 @@ public class ThemeQuestionResource {
     @Autowired
     private HakuService hakuService;
 
-    @Autowired
-    private VirkailijaAuditLogger virkailijaAuditLogger;
-
-    public ThemeQuestionResource() {
+    public ThemeQuestionResource(){
     }
 
     @Autowired
@@ -98,15 +96,13 @@ public class ThemeQuestionResource {
                                  final OrganizationService organizationService,
                                  final AuthenticationService authenticationService,
                                  final FormConfigurationService formConfigurationService,
-                                 final HakuService hakuService,
-                                 final VirkailijaAuditLogger virkailijaAuditLogger) {
+                                 final HakuService hakuService) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.authenticationService = authenticationService;
         this.formConfigurationService = formConfigurationService;
         this.hakuService = hakuService;
-        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     @GET
@@ -126,7 +122,7 @@ public class ThemeQuestionResource {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         ThemeQuestion themeQuestion = themeQuestionDAO.findById(themeQuestionId);
         FormParameters formParameters = formConfigurationService.getFormParameters(
-            themeQuestion.getApplicationSystemId());
+          themeQuestion.getApplicationSystemId());
         return themeQuestion.generateElement(formParameters);
     }
 
@@ -137,7 +133,7 @@ public class ThemeQuestionResource {
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
-        if (!allowDeleteApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
+        if(!allowDeleteApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
             throw new JSONException(FORBIDDEN, "theme question delete is not allowed", null);
         }
         if (themeQuestionHasActiveOrLockedChildren(themeQuestionId)) {
@@ -145,14 +141,12 @@ public class ThemeQuestionResource {
         }
         themeQuestionDAO.delete(themeQuestionId);
 
-        Target target = new Target.Builder()
-            .setField("hakuOid", dbThemeQuestion.getApplicationSystemId())
-            .setField("themeQuestionId", themeQuestionId)
-            .setField("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
-            .setField("themeId", dbThemeQuestion.getTheme()).build();
-
-        auditLogRequest(HakuOperation.APPSYS_THEMEQUESTION_DELETE, target);
-
+        AUDIT.log(builder().hakuOid(dbThemeQuestion.getApplicationSystemId())
+                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_DELETE)
+                .add("themeQuestionId", themeQuestionId)
+                .add("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
+                .add("themeId", dbThemeQuestion.getTheme())
+                .build());
         renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
     }
 
@@ -177,7 +171,7 @@ public class ThemeQuestionResource {
                                     ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
 
-        if (!themeQuestionId.equals(themeQuestion.getId().toString())) {
+        if (!themeQuestionId.equals(themeQuestion.getId().toString())){
             throw new JSONException(BAD_REQUEST, "theme question id mismatch", null);
         }
         if (themeQuestion.getTargetIsGroup()) {
@@ -188,7 +182,7 @@ public class ThemeQuestionResource {
 
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
 
-        if (!allowInsertOrModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
+        if(!allowInsertOrModifyApplicationSystemThemeQuestions(dbThemeQuestion.getApplicationSystemId())) {
             throw new JSONException(FORBIDDEN, "theme question modify is not allowed", null);
         }
 
@@ -201,19 +195,17 @@ public class ThemeQuestionResource {
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question with id: " + themeQuestionId);
 
-        Target target = new Target.Builder()
-            .setField("hakuOid", dbThemeQuestion.getApplicationSystemId())
-            .setField("themeQuestionId", themeQuestion.getId().toString())
-            .setField("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
-            .setField("themeId", themeQuestion.getTheme()).build();
-
-
-        auditLogRequest(HakuOperation.APPSYS_THEMEQUESTION_UPDATE, target);
+        AUDIT.log(builder().hakuOid(dbThemeQuestion.getApplicationSystemId())
+                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_UPDATE)
+                .add("themeQuestionId", themeQuestion.getId())
+                .add("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
+                .add("themeId", themeQuestion.getTheme())
+                .build());
     }
 
-    private ThemeQuestion fetchThemeQuestion(String themeQuestionId) {
+    private ThemeQuestion fetchThemeQuestion(String themeQuestionId){
         ThemeQuestion dbThemeQuestion = themeQuestionDAO.findById(themeQuestionId);
-        if (null == dbThemeQuestion) {
+        if (null == dbThemeQuestion){
             throw new JSONException(NOT_FOUND, "No such theme question found", null);
         }
         return dbThemeQuestion;
@@ -226,29 +218,30 @@ public class ThemeQuestionResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
-                                     @PathParam("themeId") String themeId,
+                                     @PathParam("themeId")  String themeId,
                                      ThemeQuestion themeQuestion) throws IOException {
+
 
 
         LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(BAD_REQUEST, "Missing pathparameters", null);
         String tqAsId = themeQuestion.getApplicationSystemId();
-        if (!applicationSystemId.equals(tqAsId)) {
+        if (! applicationSystemId.equals(tqAsId)) {
             throw new JSONException(BAD_REQUEST, "Data error: Mismatch on applicationSystemId from path and model", null);
         }
         String tqLoId = themeQuestion.getLearningOpportunityId();
-        if (null == tqLoId) {
+        if (null == tqLoId){
             throw new JSONException(BAD_REQUEST, "Data error: Missing learningOpportunityId", null);
         }
         if (!learningOpportunityId.equals(tqLoId)) {
             throw new JSONException(BAD_REQUEST, "Data error: Mismatch on learningOpportunityId from path and model", null);
         }
         String tqThemeId = themeQuestion.getTheme();
-        if (!themeId.equals(tqThemeId)) {
+        if (! themeId.equals(tqThemeId)) {
             throw new JSONException(BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
         }
-        if (!allowInsertOrModifyApplicationSystemThemeQuestions(applicationSystemId)) {
+        if(!allowInsertOrModifyApplicationSystemThemeQuestions(applicationSystemId)) {
             throw new JSONException(FORBIDDEN, "theme question insert is not allowed", null);
         }
         //Check if parent exists
@@ -274,9 +267,9 @@ public class ThemeQuestionResource {
         themeQuestion.setCreatorPersonOid(currentHenkilo.getPersonOid());
         //Set ordinal
         if (null != parentId && !parentId.isEmpty()) { //Child
-            Integer maxOrdinal = themeQuestionDAO.getMaxOrdinalOfChildren(applicationSystemId, learningOpportunityId, themeId, parentId);
+            Integer  maxOrdinal = themeQuestionDAO.getMaxOrdinalOfChildren(applicationSystemId, learningOpportunityId, themeId, parentId);
             LOGGER.debug("getMaxOrdinalOfChildren returned: " + maxOrdinal);
-            themeQuestion.setOrdinal(null == maxOrdinal ? 1 : maxOrdinal + 1);
+            themeQuestion.setOrdinal(null == maxOrdinal ? 1: maxOrdinal + 1 );
         } else {
             Integer maxOrdinal = themeQuestionDAO.getMaxOrdinal(applicationSystemId, learningOpportunityId, themeId);
             themeQuestion.setOrdinal(null == maxOrdinal ? 1 : maxOrdinal + 1);
@@ -286,12 +279,11 @@ public class ThemeQuestionResource {
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
 
-        Target target = new Target.Builder()
-            .setField("hakuOid", applicationSystemId)
-            .setField("learningOpportunityId", learningOpportunityId)
-            .setField("themeId", themeId).build();
-
-        auditLogRequest(HakuOperation.APPSYS_THEMEQUESTION_INSERT, target);
+        AUDIT.log(builder().hakuOid(applicationSystemId)
+                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_INSERT)
+                .add("learningOpportunityId", learningOpportunityId)
+                .add("themeId", themeId)
+                .build());
     }
 
     @POST
@@ -300,23 +292,23 @@ public class ThemeQuestionResource {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void reorderThemeQuestions(@PathParam("learningOpportunityId") String learningOpportunityId,
-                                      @PathParam("themeId") String themeId, Map<String, Map<String, String>> reorderedQuestions) {
+      @PathParam("themeId") String themeId, Map<String,Map<String,String>> reorderedQuestions) {
         LOGGER.debug("Posted " + reorderedQuestions);
         if (null == learningOpportunityId || null == themeId)
             throw new JSONException(BAD_REQUEST, "Missing pathparameters", null);
         Set<String> themeQuestionIds = reorderedQuestions.keySet();
 
-        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId, themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
+        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
             throw new JSONException(BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
 
         if (!themeQuestionHierarchyForReorderingValid(themeQuestionIds)) {
             LOGGER.debug("Exception due to invalid parentId values");
             throw new JSONException(BAD_REQUEST, "ParentId values of given questions invalid", null);
         }
-        List<Map<String, String>> values = new ArrayList<>(reorderedQuestions.values());
+        List<Map<String, String>> values = new ArrayList(reorderedQuestions.values());
         boolean changes = false;
         long ordinalCheckSum = 0;
-        for (Map<String, String> value : values) {
+        for (Map<String,String> value : values){
             try {
                 Integer newOrdinal = Integer.valueOf(value.get(PARAM_NEW_ORDINAL));
                 Integer oldOrdinal = Integer.valueOf(value.get(PARAM_OLD_ORDINAL));
@@ -336,11 +328,11 @@ public class ThemeQuestionResource {
                     throw new JSONException(BAD_REQUEST, "Duplicate ordinals", null);
                 }
                 ordinalCheckSum += currentOrdinalCheckSum;
-            } catch (NumberFormatException exception) {
+            } catch (NumberFormatException exception){
                 throw new JSONException(BAD_REQUEST, "Ordinal values must be integers", null);
             }
         }
-        if (!changes) {
+        if (!changes){
             LOGGER.debug("No changes. Skipping the rest");
             return;
         }
@@ -348,7 +340,7 @@ public class ThemeQuestionResource {
 
         //If there are ordinals missing or old values do not match, apply renumerate to fix integrity
         boolean ordinalIntegrityOk = true;
-        for (String id : themeQuestionIds) {
+        for (String id : themeQuestionIds){
             Map<String, String> questionParam = reorderedQuestions.get(id);
             Integer dbOrdinal = themeQuestionDAO.findById(id).getOrdinal();
             if (dbOrdinal == null || !dbOrdinal.equals(Integer.valueOf(questionParam.get(PARAM_OLD_ORDINAL)))) {
@@ -356,7 +348,7 @@ public class ThemeQuestionResource {
             }
             themeQuestionDAO.setOrdinal(id, Integer.valueOf(questionParam.get(PARAM_NEW_ORDINAL)));
         }
-        if (!ordinalIntegrityOk) {
+        if(!ordinalIntegrityOk) {
             LOGGER.debug("Running ordinal renumeration to fix integrity");
             String applicationSystemId = themeQuestionDAO.findById(themeQuestionIds.iterator().next()).getApplicationSystemId();
             renumerateThemeQuestionOrdinals(applicationSystemId, learningOpportunityId, themeId);
@@ -389,31 +381,31 @@ public class ThemeQuestionResource {
 
     private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
-        HashSet<String> ownerOrganizations = new HashSet<>();
+        HashSet<String> ownerOrganizations = new HashSet<String>();
         ownerOrganizations.addAll(fetchApplicationOptionParents(themeQuestion.getLearningOpportunityId()));
-        themeQuestion.setOwnerOrganizationOids(new ArrayList<>(ownerOrganizations));
+        themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
         return themeQuestion;
     }
 
     private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(final ThemeQuestion themeQuestion) throws IOException {
         String applicationOptionGroupId = themeQuestion.getLearningOpportunityId();
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option group " + applicationOptionGroupId);
-        List<String> applicationOptionsIds = hakukohdeService.findByGroupAndApplicationSystem(applicationOptionGroupId, themeQuestion.getApplicationSystemId());
-        HashSet<String> ownerOrganizations = new HashSet<>();
-        for (String applicationOptionId : applicationOptionsIds) {
+        List <String> applicationOptionsIds = hakukohdeService.findByGroupAndApplicationSystem(applicationOptionGroupId, themeQuestion.getApplicationSystemId());
+        HashSet<String> ownerOrganizations = new HashSet<String>();
+        for (String applicationOptionId : applicationOptionsIds){
             ownerOrganizations.addAll(fetchApplicationOptionParents(applicationOptionId));
         }
-        themeQuestion.setOwnerOrganizationOids(new ArrayList<>(ownerOrganizations));
+        themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
         return themeQuestion;
     }
 
     private List<String> fetchApplicationOptionParents(final String applicationOptionId) throws IOException {
-        HakukohdeV1RDTO applicationOption;
+        HakukohdeV1RDTO applicationOption = null;
         try {
             applicationOption = hakukohdeService.findByOid(applicationOptionId);
             if (null == applicationOption)
                 throw new JSONException(BAD_REQUEST, "Invalid learningOpportunityId", null);
-        } catch (RuntimeException exception) {
+        } catch (RuntimeException exception){
             LOGGER.error("Application Option Search failed", exception);
             throw new JSONException(BAD_REQUEST, "Invalid learningOpportunityId", null);
         }
@@ -424,11 +416,11 @@ public class ThemeQuestionResource {
             // TODO jossain vaiheessa täytyy hoitaa useampi provider
             learningOpportunityProvicerId = providerOids.next();
         }
-        HashSet<String> parentOids = new HashSet<>();
+        HashSet<String> parentOids = new HashSet<String>();
         parentOids.addAll(organizationService.findParentOids(learningOpportunityProvicerId));
         parentOids.add(learningOpportunityProvicerId);
         LOGGER.debug("Owner organizations " + parentOids.toString() + " fetched for applicationoption " + applicationOption.getOid());
-        return new ArrayList<>(parentOids);
+        return new ArrayList<String>(parentOids);
     }
 
     @GET
@@ -436,7 +428,7 @@ public class ThemeQuestionResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public List<ThemeQuestion> getThemeQuestionByQuery(@PathParam("applicationSystemId") String applicationSystemId,
-                                                       @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId, @QueryParam("themeId") String themeId) {
+      @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId, @QueryParam("themeId") String themeId){
         LOGGER.debug("Listing by applicationSystemId: {}, learningOpportunityId: {}, organizationId: {} ", applicationSystemId, applicationSystemId, organizationId);
         ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
         tqq.setApplicationSystemId(applicationSystemId);
@@ -459,8 +451,8 @@ public class ThemeQuestionResource {
 
         if (!validationErrors.isEmpty()) {
             return status(BAD_REQUEST)
-                .entity(ImmutableMap.of("errors", validationErrors))
-                .build();
+                    .entity(ImmutableMap.of("errors", validationErrors))
+                    .build();
         }
 
         Map<ObjectId, ThemeQuestionCompact> questionMap = new HashMap<>();
@@ -477,7 +469,7 @@ public class ThemeQuestionResource {
 
     private boolean allowInsertOrModifyApplicationSystemThemeQuestions(String applicationSystemId) {
         ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
-        if (isYhteishaku(applicationSystem.getHakutapa()) && isVarsinainenHaku(applicationSystem.getApplicationSystemType())) {
+        if(isYhteishaku(applicationSystem.getHakutapa()) && isVarsinainenHaku(applicationSystem.getApplicationSystemType())) {
             return isRekisterinpitaja() || !isHakuaikaGoing(applicationSystem.getApplicationPeriods());
         }
         return true;
@@ -485,7 +477,7 @@ public class ThemeQuestionResource {
 
     private boolean allowDeleteApplicationSystemThemeQuestions(String applicationSystemId) {
         ApplicationSystem applicationSystem = getApplicationSystem(applicationSystemId);
-        if (isYhteishaku(applicationSystem.getHakutapa()) && isVarsinainenHaku(applicationSystem.getApplicationSystemType())) {
+        if(isYhteishaku(applicationSystem.getHakutapa()) && isVarsinainenHaku(applicationSystem.getApplicationSystemType())) {
             return isRekisterinpitaja() || isBeforeFirstHakuaika(applicationSystem.getApplicationPeriods());
         }
         return true;
@@ -503,7 +495,7 @@ public class ThemeQuestionResource {
     private ApplicationSystem getApplicationSystem(String applicationSystemId) {
         ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
         if (applicationSystem == null)
-            throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id " + applicationSystemId, null);
+            throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
         return applicationSystem;
     }
 
@@ -517,12 +509,12 @@ public class ThemeQuestionResource {
 
     private boolean isRekisterinpitaja() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-            .stream().map(GrantedAuthority::getAuthority).anyMatch(this::isRekisterinpitajaRole);
+          .stream().map(GrantedAuthority::getAuthority).anyMatch(a -> isRekisterinpitajaRole(a));
     }
 
     private boolean isRekisterinpitajaRole(String role) {
         return "ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD_1.2.246.562.10.00000000001".equals(role) ||
-            "ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE_1.2.246.562.10.00000000001".equals(role);
+               "ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE_1.2.246.562.10.00000000001".equals(role);
     }
 
     private static Set<String> getThemeQuestionsAsMapValidationErrors(String applicationSystemId, String lang) {
@@ -536,7 +528,7 @@ public class ThemeQuestionResource {
         return errors;
     }
 
-    private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId) {
+    private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId){
         // TODO: mutex
         //Fetch all theme questions for this application system/learning opportunity/theme as a sorted (ascending ordinal) list
         ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
@@ -547,8 +539,8 @@ public class ThemeQuestionResource {
         List<ThemeQuestion> allDbThemeQuestions = themeQuestionDAO.query(tqqp);
         //Renumerate ordinals, first the parents, then children one parent at a time
         if (!allDbThemeQuestions.isEmpty()) {
-            List<ThemeQuestion> parentThemeQuestions = new ArrayList<>();
-            List<ThemeQuestion> childThemeQuestions = new ArrayList<>();
+            List<ThemeQuestion> parentThemeQuestions = new ArrayList<ThemeQuestion>();
+            List<ThemeQuestion> childThemeQuestions = new ArrayList<ThemeQuestion>();
             for (ThemeQuestion tq : allDbThemeQuestions) {
                 if (tq.getParentId() == null) {
                     parentThemeQuestions.add(tq);
@@ -559,9 +551,9 @@ public class ThemeQuestionResource {
             //Parents
             processOrdinals(parentThemeQuestions);
             //Children
-            if (!childThemeQuestions.isEmpty()) {
+            if(!childThemeQuestions.isEmpty()) {
                 for (ThemeQuestion parentTq : parentThemeQuestions) {
-                    List<ThemeQuestion> childrenOfOneParent = new ArrayList<>();
+                    List<ThemeQuestion> childrenOfOneParent = new ArrayList<ThemeQuestion>();
                     for (ThemeQuestion childTq : childThemeQuestions) {
                         if (childTq.getParentId().toString().equals(parentTq.getId().toString())) {
                             childrenOfOneParent.add(childTq);
@@ -577,9 +569,9 @@ public class ThemeQuestionResource {
 
     private void processOrdinals(List<ThemeQuestion> tqList) {
         Integer assumedOrdinal = 1;
-        List<ThemeQuestion> tqsWithoutOrdinal = new ArrayList<>();
-        for (ThemeQuestion tq : tqList) {
-            if (null == tq.getOrdinal()) {
+        List<ThemeQuestion> tqsWithoutOrdinal = new ArrayList<ThemeQuestion>();
+        for (ThemeQuestion tq : tqList){
+            if (null == tq.getOrdinal()){
                 tqsWithoutOrdinal.add(tq);
             }
             if (!assumedOrdinal.equals(tq.getOrdinal())) {
@@ -587,12 +579,8 @@ public class ThemeQuestionResource {
             }
             assumedOrdinal++;
         }
-        for (ThemeQuestion tq : tqsWithoutOrdinal) {
+        for (ThemeQuestion tq: tqsWithoutOrdinal){
             themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
         }
-    }
-
-    private void auditLogRequest(HakuOperation operation, Target target) {
-        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), operation, target, new Changes.Builder().build());
     }
 }

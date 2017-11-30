@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -83,7 +82,7 @@ public class FormControllerTest {
         when(uiService.ensureLanguage(Matchers.<HttpServletRequest>any(), Matchers.<String>any())).thenReturn("fi");
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, "fi")).thenReturn(modelResponse);
         when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any(), Matchers.<String>any())).thenReturn(modelResponse);
-        this.formController = new FormController(uiService,null, mock(OppijaAuditLogger.class));
+        this.formController = new FormController(uiService, pdfService, authenticationService, null);
 
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);

@@ -1,13 +1,14 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.api.client.util.Lists;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-import fi.vm.sade.auditlog.Changes;
-import fi.vm.sade.auditlog.Target;
-import fi.vm.sade.haku.HakuOperation;
-import fi.vm.sade.haku.VirkailijaAuditLogger;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.*;
+import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -44,8 +45,10 @@ import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
@@ -56,8 +59,6 @@ import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.lang.StringUtils;
-import org.ietf.jgss.GSSException;
-import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,11 +74,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.google.api.client.util.Lists.newArrayList;
+import static com.google.api.client.util.Lists.*;
 import static com.google.common.base.Predicates.notNull;
-import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Maps.immutableEntry;
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.FluentIterable.*;
+import static com.google.common.collect.Maps.*;
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.paymentNotificationAnswers;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -101,7 +103,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private ValintaService valintaService;
-    private final VirkailijaAuditLogger virkailijaAuditLogger;
     private final Session userSession;
     private final I18nBundleService i18nBundleService;
     private final HakumaksuService hakumaksuService;
@@ -126,7 +127,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ValintaService valintaService,
                                 final Session userSession,
                                 final I18nBundleService i18nBundleService,
-                                final VirkailijaAuditLogger virkailijaAuditLogger,
                                 HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi,
                                 @Value("${readFromValintarekisteri}") String readFromValintarekisteri) {
         this.applicationService = applicationService;
@@ -145,7 +145,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.hakumaksuService = hakumaksuService;
         this.kevatkausi = kevatkausi;
         this.readFromValintarekisteri = Boolean.valueOf(readFromValintarekisteri);
-        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     @Override
@@ -854,10 +853,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 LOGGER.error(msg);
                 throw new IncoherentDataException(msg);
             }
-            UpdateChanges updateChanges = updateEligibilityStatus(application, dto, preferenceEligibility, preferenceChecked, userSession.getUser().getUserName());
-
-            fi.vm.sade.auditlog.User user = virkailijaAuditLogger.getUser();
-            virkailijaAuditLogger.log(user, HakuOperation.UPDATE_ELIGIBILITY_STATUS, updateChanges.targetBuilder.build(), updateChanges.changesBuilder.build());
+            updateEligibilityStatus(application, dto, preferenceEligibility, preferenceChecked, userSession.getUser().getUserName());
             for (AttachmentDTO attachmentDTO : dto.getAttachments()) {
                 checkDuplicateAttachmentDTO(attachmentDTO, dto.getAttachments());
                 ApplicationAttachmentRequest attachment = attachmentRequests.get(attachmentDTO.getId());
@@ -866,10 +862,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     LOGGER.error(msg);
                     throw new IncoherentDataException(msg);
                 }
-                AttachmentRequestStatusUpdate attachmentRequestStatusUpdate = updateAttachmentRequestStatus(application, attachmentDTO, attachment);
-                virkailijaAuditLogger.log(user, HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS,
-                        attachmentRequestStatusUpdate.targetBuilder.build(),
-                        attachmentRequestStatusUpdate.changesBuilder.build());
+                updateAttachmentRequestStatus(application, attachmentDTO, attachment);
             }
         }
         application.setEligibilitiesAndAttachmentsUpdated(new Date());
@@ -901,7 +894,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
     }
 
-    private static UpdateChanges updateEligibilityStatus(Application application,
+    private static LogMessage.LogMessageBuilder eligibilityAuditLogBuilder(Application application, AttachmentsAndEligibilityDTO dto) {
+        return builder()
+                .setOperaatio(HakuOperation.UPDATE_ELIGIBILITY)
+                .hakuOid(application.getApplicationSystemId())
+                .hakukohdeOid(dto.getAoId())
+                .hakemusOid(application.getOid());
+    }
+
+    private static void updateEligibilityStatus(Application application,
                                                 AttachmentsAndEligibilityDTO dto,
                                                 PreferenceEligibility preferenceEligibility,
                                                 PreferenceChecked preferenceChecked,
@@ -912,27 +913,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String newRejectionBasis = dto.getRejectionBasis();
         Boolean newChecked = dto.getPreferencesChecked();
         boolean updateMaksuvelvollisuus = newMaksuvelvollisuus != preferenceEligibility.getMaksuvelvollisuus();
-
-        Changes.Builder changesBuilder = new Changes.Builder();
-        Target.Builder targetBuilder = new Target.Builder()
-                .setField("hakuOid", application.getApplicationSystemId())
-                .setField("hakukohdeOid", dto.getAoId())
-                .setField("hakemusOid", application.getOid());
-
         if (updateMaksuvelvollisuus) {
-            changesBuilder.updated("maksuvelvollisuus", preferenceEligibility.getMaksuvelvollisuus().name(), newMaksuvelvollisuus.name());
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("maksuvelvollisuus", newMaksuvelvollisuus, preferenceEligibility.getMaksuvelvollisuus())
+                    .build());
             preferenceEligibility.setMaksuvelvollisuus(newMaksuvelvollisuus);
         }
 
         boolean updateStatus = newStatus != preferenceEligibility.getStatus();
         if (updateStatus) {
-            changesBuilder.updated("status", preferenceEligibility.getStatus().name(), newStatus.name());
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("status", newStatus, preferenceEligibility.getStatus())
+                    .build());
             preferenceEligibility.setStatus(newStatus);
         }
         
         boolean updateSource = newSource != preferenceEligibility.getSource();
         if (updateSource) {
-            changesBuilder.updated("source", preferenceEligibility.getSource().name(), newSource.name());
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("source", newSource, preferenceEligibility.getSource())
+                    .build());
             preferenceEligibility.setSource(newSource);
         }
 
@@ -941,18 +941,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         
         if (!newRejectionBasis.equals(preferenceEligibility.getRejectionBasis())) {
-            changesBuilder.updated("rejectionBasis", preferenceEligibility.getRejectionBasis(), newRejectionBasis);
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("rejectionBasis", newRejectionBasis, preferenceEligibility.getRejectionBasis())
+                    .build());
             preferenceEligibility.setRejectionBasis(newRejectionBasis);
         }
         if (!newChecked.equals(preferenceChecked.isChecked())) {
-            changesBuilder.updated("rejectionBasis", preferenceChecked.getChecked().toString(), newChecked.toString());
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("checked", newChecked, preferenceChecked.getChecked())
+                    .build());
             preferenceChecked.setChecked(newChecked);
             if (newChecked) {
                 preferenceChecked.setCheckedByOfficerOid(officerOid);
             }
         }
-
-        return new UpdateChanges(targetBuilder, changesBuilder);
     }
 
     private static void updateEligibilityStatusToApplicationNotes(Application application,
@@ -968,54 +970,30 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.addNote(new ApplicationNote(eligibilityNote, new Date(), officerOid));
     }
 
-    /**
-     * Caller is responsible for logging the audit event that is returned by this method. This is because this method
-     * doesn't actually commit anything to database.
-     */
-    private AttachmentRequestStatusUpdate updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
+    private static void updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
         ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(attachmentDTO.getReceptionStatus());
-        Target.Builder targetBuilder = new Target.Builder();
-        Changes.Builder changesBuilder = new Changes.Builder();
         if (newReceptionStatus != attachment.getReceptionStatus()) {
-            targetBuilder = targetBuilder.setField("hakuOid", application.getApplicationSystemId())
-                    .setField("hakukohdeOid", attachment.getPreferenceAoId())
-                    .setField("hakukohderyhmaOid", attachment.getPreferenceAoGroupId())
-                    .setField("hakemusOid", application.getOid());
-
-            changesBuilder = changesBuilder.updated("receptionStatus", attachment.getReceptionStatus().name(), newReceptionStatus.name());
+            AUDIT.log(builder()
+                    .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_RECEPTION_STATUS)
+                    .hakuOid(application.getApplicationSystemId())
+                    .hakukohdeOid(attachment.getPreferenceAoId())
+                    .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
+                    .hakemusOid(application.getOid())
+                    .add("receptionStatus", newReceptionStatus, attachment.getReceptionStatus())
+                    .build());
             attachment.setReceptionStatus(newReceptionStatus);
         }
         ApplicationAttachmentRequest.ProcessingStatus newProcessingStatus = ApplicationAttachmentRequest.ProcessingStatus.valueOf(attachmentDTO.getProcessingStatus());
         if (newProcessingStatus != attachment.getProcessingStatus()) {
-            targetBuilder = targetBuilder.setField("hakuOid", application.getApplicationSystemId())
-                    .setField("hakukohdeOid", attachment.getPreferenceAoId())
-                    .setField("hakukohderyhmaOid", attachment.getPreferenceAoGroupId())
-                    .setField("hakemusOid", application.getOid());
-
-            changesBuilder = changesBuilder.updated("processingStatus", attachment.getProcessingStatus().name(), newProcessingStatus.name());
+            AUDIT.log(builder()
+                    .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS)
+                    .hakuOid(application.getApplicationSystemId())
+                    .hakukohdeOid(attachment.getPreferenceAoId())
+                    .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
+                    .hakemusOid(application.getOid())
+                    .add("processingStatus", newProcessingStatus, attachment.getProcessingStatus())
+                    .build());
             attachment.setProcessingStatus(newProcessingStatus);
-        }
-        return new AttachmentRequestStatusUpdate(targetBuilder, changesBuilder, HakuOperation.UPDATE_ATTACHMENT);
-    }
-
-    private static class AttachmentRequestStatusUpdate {
-        public final Target.Builder targetBuilder;
-        public final Changes.Builder changesBuilder;
-        public final HakuOperation operation;
-
-        private AttachmentRequestStatusUpdate(Target.Builder targetBuilder, Changes.Builder changesBuilder, HakuOperation operation) {
-            this.targetBuilder = targetBuilder;
-            this.changesBuilder = changesBuilder;
-            this.operation = operation;
-        }
-    }
-
-    private static class UpdateChanges {
-        public final Target.Builder targetBuilder;
-        public final Changes.Builder changesBuilder;
-        UpdateChanges(Target.Builder targetBuilder, Changes.Builder changesBuilder) {
-            this.targetBuilder = targetBuilder;
-            this.changesBuilder = changesBuilder;
         }
     }
 }

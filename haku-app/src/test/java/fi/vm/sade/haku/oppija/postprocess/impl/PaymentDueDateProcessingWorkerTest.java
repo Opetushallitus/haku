@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.postprocess.impl;
 
 
 import com.google.common.collect.ImmutableList;
-import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
@@ -31,8 +30,7 @@ public class PaymentDueDateProcessingWorkerTest {
         hakumaksuService = mock(HakumaksuService.class);
         paymentDueDateProcessingWorker = new PaymentDueDateProcessingWorker(
                 applicationDAO,
-                hakumaksuService,
-                mock(VirkailijaAuditLogger.class)
+                hakumaksuService
         );
         when(applicationDAO.getNextForPaymentDueDateProcessing(PaymentDueDateProcessingWorker.BATCH_SIZE)).thenReturn(
                 ImmutableList.<Application>of(

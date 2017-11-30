@@ -12,7 +12,6 @@
     <modules>
         <module>hakemus-api</module>
         <module>haku-app</module>
-        <module>haku-auditlogger</module>
     </modules>
 
     <properties>
@@ -47,6 +46,7 @@
         <organisaatio-api.version>2015-04</organisaatio-api.version>
         <tarjonta-api.version>2016-07-SNAPSHOT</tarjonta-api.version>
         <viestintapalvelu.version>9.8</viestintapalvelu.version>
+        <auditlog.api.version>7.1.0-SNAPSHOT</auditlog.api.version>
     </properties>
 
     <repositories>
