@@ -192,8 +192,9 @@
                     <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}' cellId="infocell_paymentstate"/>
 
                     <td>
-                        Hakijan tiedot <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank">suoritusrekisteriss&auml;</a></br>
-                        Hakijan tiedot <a href="/authentication-henkiloui/html/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank">henkil&ouml;palvelussa</a>
+                        <fmt:message key="virkailija.hakemus.hakijanTiedot"/> <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank"><fmt:message key="virkailija.hakemus.suoritusrekisterissa"/></a>
+                        </br>
+                        <fmt:message key="virkailija.hakemus.hakijanTiedot"/> <a href="/authentication-henkiloui/html/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank"><fmt:message key="virkailija.hakemus.henkilopalvelussa"/></a>
                     </td>
 
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
@@ -211,16 +212,22 @@
 
             <div class="tabs">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
-                   class="tab current"><span>Hakemus</span></a>
+                   class="tab current"><span>
+                    <fmt:message key="virkailija.hakemus.valilehti.hakemus"/>
+                </span></a>
 
                 <c:if test="${applicationSystem.kohdejoukkoUri ne 'haunkohdejoukko_12'}">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
-                   class="tab"><span>Valinta</span></a>
+                   class="tab"><span>
+                    <fmt:message key="virkailija.hakemus.valilehti.valintatilanne"/>
+                </span></a>
                 </c:if>
 
                 <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet" id="kelpoisuusliitteetTab"
-                   class="tab"><span>Kk-haut: Kelpoisuus ja liitteet</span></a>
+                   class="tab"><span>
+                    <fmt:message key="virkailija.hakemus.valilehti.kelpoisuusjaliitteet"/>
+                </span></a>
                 </c:if>
 
             </div>

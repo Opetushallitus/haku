@@ -47,6 +47,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_POST = "posti";
     public static final String CODE_SUBJECT = "oppiaineetyleissivistava";
     public static final String CODE_GRADE_RANGE = "arvosanat";
+    public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
     public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
@@ -153,6 +154,11 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getSubjectLanguages() {
         return codesToOptions(CODE_SUBJECT_LANGUAGES);
+    }
+
+    @Override
+    public List<Option> getOrganizationTypes(){
+        return urisToOptions(CODE_ORGANIZATION_TYPES, true);
     }
 
     @Override

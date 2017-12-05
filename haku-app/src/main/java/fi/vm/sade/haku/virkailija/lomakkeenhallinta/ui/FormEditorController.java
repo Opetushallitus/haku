@@ -42,11 +42,11 @@ public class FormEditorController {
 
     private static final Map<ApplicationSystem.State, I18nText> stateTranslations =
             new ImmutableMap.Builder<ApplicationSystem.State,I18nText>()
-                    .put(ApplicationSystem.State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen")))
-                    .put(ApplicationSystem.State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu")))
-                    .put(ApplicationSystem.State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu")))
-                    .put(ApplicationSystem.State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu")))
-                    .put(ApplicationSystem.State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen")))
+                    .put(ApplicationSystem.State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen", "sv", "Aktiv")))
+                    .put(ApplicationSystem.State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu", "sv", "[sv] Lukittu")))
+                    .put(ApplicationSystem.State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu", "sv", "Publicerad")))
+                    .put(ApplicationSystem.State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu", "sv", "Stängt")))
+                    .put(ApplicationSystem.State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen", "sv", "Felaktigt")))
                     .build();
 
     private static final Map<String, Object> hakutoiveTheme =

@@ -308,6 +308,10 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         return this.listOfLanguages;
     }
 
+    @Override
+    public List<Option> getOrganizationTypes(){
+        return this.listOfOrganizationTypes;
+    }
 
     @Override
     public List<Option> getLearningInstitutionTypes() {

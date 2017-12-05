@@ -33,6 +33,8 @@ public interface KoodistoService {
 
     List<Option> getSubjectLanguages();
 
+    List<Option> getOrganizationTypes();
+
     List<Option> getLearningInstitutionTypes();
 
     List<Option> getCountries();
@@ -86,5 +88,4 @@ public interface KoodistoService {
     List<Option> getAmmatillisenTutkinnonArvosteluasteikko();
 
     List<Option> getYoArvosanaasteikko();
-
 }
