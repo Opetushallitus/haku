@@ -1,8 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.it.validators;
 
 import com.google.common.collect.Lists;
-import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import org.glassfish.jersey.server.mvc.Viewable;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -19,6 +18,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.servlet.jsp.jstl.core.Config;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -35,7 +35,7 @@ public class EmailUniqueValidatorTest extends IntegrationTestSupport {
     private FormController formController = appContext.getBean(FormController.class);
     private MockHttpServletRequest request;
     private static final String APPLICATION_SYSTEM_ID = "1.2.246.562.29.95390561488";
-    private MultivaluedMap answers = new MultivaluedMapImpl();
+    private MultivaluedMap<String, String> answers = new MultivaluedHashMap<>();
 
     @Before
     public void before() {

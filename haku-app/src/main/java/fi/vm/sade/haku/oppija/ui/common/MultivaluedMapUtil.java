@@ -17,8 +17,8 @@
 package fi.vm.sade.haku.oppija.ui.common;
 
 import com.google.common.collect.Sets;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.util.*;
 
@@ -36,7 +36,7 @@ public final class MultivaluedMapUtil {
 
     public static MultivaluedMap<String,String> removeKeys(MultivaluedMap<String,String> source, String... exclude) {
         HashSet<String> excludeStrings = Sets.newHashSet(exclude);
-        MultivaluedMapImpl dest = new MultivaluedMapImpl();
+        MultivaluedHashMap<String, String> dest = new MultivaluedHashMap<>();
         for(String key : source.keySet()) {
             if(!excludeStrings.contains(key)) {
                 dest.put(key, source.get(key));

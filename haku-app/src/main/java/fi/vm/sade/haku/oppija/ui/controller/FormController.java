@@ -24,7 +24,6 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import com.google.common.collect.ImmutableList;
-import com.sun.jersey.api.view.Viewable;
 
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
@@ -42,6 +41,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.http.HttpResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.glassfish.jersey.server.mvc.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

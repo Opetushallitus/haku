@@ -20,7 +20,6 @@ import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.filterOPHParam
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
-import com.sun.jersey.api.view.Viewable;
 
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
@@ -46,6 +45,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
 import org.apache.http.HttpResponse;
+import org.glassfish.jersey.server.mvc.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

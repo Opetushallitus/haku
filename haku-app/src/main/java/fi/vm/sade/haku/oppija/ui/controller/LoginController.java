@@ -16,7 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
-import com.sun.jersey.api.view.Viewable;
+import org.glassfish.jersey.server.mvc.Viewable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 

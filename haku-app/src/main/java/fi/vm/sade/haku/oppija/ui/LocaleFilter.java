@@ -16,12 +16,10 @@
 
 package fi.vm.sade.haku.oppija.ui;
 
-import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.spi.container.ContainerRequest;
-import com.sun.jersey.spi.container.ContainerRequestFilter;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import org.glassfish.jersey.server.ContainerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
 import java.util.Locale;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -43,7 +46,7 @@ public class LocaleFilter implements ContainerRequestFilter {
 
     final HttpServletRequest httpServletRequest;
 
-    @InjectParam
+    @Autowired
     AuthenticationService authenticationService;
 
     @Autowired
@@ -53,7 +56,7 @@ public class LocaleFilter implements ContainerRequestFilter {
 
 
     @Override
-    public ContainerRequest filter(ContainerRequest containerRequest) {
+    public void filter(ContainerRequestContext containerRequest) {
         HttpSession session = httpServletRequest.getSession();
         String lang = getLanguage(containerRequest);
 
@@ -64,17 +67,17 @@ public class LocaleFilter implements ContainerRequestFilter {
         Config.set(httpServletRequest, Config.FMT_LOCALE, newLocale);
         Config.set(httpServletRequest, Config.FMT_FALLBACK_LOCALE, DEFAULT_LOCALE);
         httpServletRequest.setAttribute("fi_vm_sade_oppija_language", newLocale.getLanguage());
-        return containerRequest;
     }
 
-    private String getLanguage(ContainerRequest containerRequest) {
-        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
+        private String getLanguage(ContainerRequestContext containerRequest) {
+            UriInfo uriInfo = containerRequest.getUriInfo();
+            String lang = uriInfo.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
 
         if (!isBlank(lang)) {
             return lang;
         }
 
-        String host = containerRequest.getHeaderValue("Host");
+        String host = containerRequest.getHeaderString("Host");
         if (host != null && host.endsWith("studieinfo.fi")) {
             lang = "sv";
         } else if (host != null && host.endsWith("studyinfo.fi")) {

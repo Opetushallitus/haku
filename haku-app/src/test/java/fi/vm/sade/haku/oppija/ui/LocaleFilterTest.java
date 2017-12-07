@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.oppija.ui;
 
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.spi.container.ContainerRequest;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -26,6 +25,7 @@ import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import static org.junit.Assert.assertEquals;
@@ -50,7 +50,7 @@ public class LocaleFilterTest {
         this.containerRequest = mock(ContainerRequest.class);
         this.authenticationService = mock(AuthenticationService.class);
 
-        MultivaluedMap<String, String> cookieMap = new MultivaluedMapImpl();
+        MultivaluedMap<String, String> cookieMap = new MultivaluedHashMap<>();
 
         langFi = PersonBuilder.start().setContactLanguage("fi").get();
         langSv = PersonBuilder.start().setContactLanguage("sv").get();
@@ -70,13 +70,13 @@ public class LocaleFilterTest {
     @Test
     public void testPersonFi() throws Exception {
         when(authenticationService.getCurrentHenkilo()).thenReturn(langFi);
-        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
+        MultivaluedMap<String, String> queryParameters = new MultivaluedHashMap<>();
         when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
         assertEquals("Container request changed", this.containerRequest, localeFilter.filter(containerRequest));
     }
 
     private void putLangParameter(final String lang) {
-        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
+        MultivaluedMap<String, String> queryParameters = new MultivaluedHashMap<>();
         queryParameters.putSingle(LocaleFilter.LANGUAGE_QUERY_PARAMETER_KEY, lang);
         when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
     }

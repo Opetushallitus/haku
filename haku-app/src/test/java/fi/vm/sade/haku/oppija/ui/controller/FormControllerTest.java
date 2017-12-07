@@ -16,8 +16,13 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
-import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -36,22 +41,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
 
@@ -121,13 +118,13 @@ public class FormControllerTest {
         errorMessages.put("", ElementUtil.createI18NAsIs(""));
         this.modelResponse.setErrorMessages(errorMessages);
         HttpServletRequest request = createRequest();
-        Viewable viewable = (Viewable) formController.savePhase(request, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl()).getEntity();
+        Viewable viewable = (Viewable) formController.savePhase(request, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedHashMap<>()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());
     }
 
     @Test
     public void testSavePhaseValid() throws Exception {
-        Response response = formController.savePhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl());
+        Response response = formController.savePhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedHashMap<>());
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getPath(), actual);
     }

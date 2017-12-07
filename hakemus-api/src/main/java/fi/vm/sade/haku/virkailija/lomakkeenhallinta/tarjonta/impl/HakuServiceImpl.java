@@ -17,8 +17,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl;
 
 import com.google.common.collect.Lists;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
@@ -32,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +58,11 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        ResultV1RDTO<List<HakuV1RDTO>> hakuResult = clientWithJacksonSerializer
-                .resource(urlConfiguration.url("tarjonta-service.v1.haku.resource", "find"))
+        ResultV1RDTO<List<HakuV1RDTO>> hakuResult = clientWithJacksonSerializer.
+                target(urlConfiguration.url("tarjonta-service.v1.haku.resource", "find"))
                 .queryParam(COUNT_PARAMETER, MAX_COUNT)
                 .queryParam("addHakuKohdes", String.valueOf(false))
+                .request()
                 .accept(MEDIA_TYPE)
                 .get(new GenericType<ResultV1RDTO<List<HakuV1RDTO>>>() {
                 });
@@ -87,7 +88,7 @@ public class HakuServiceImpl implements HakuService {
     public List<String> getRelatedApplicationOptionIds(String oid){
         final HakuV1RDTO hakuV1RDTO = getRawApplicationSystem(oid);
         List <String> applicationOptionOids = hakuV1RDTO.getHakukohdeOids();
-        return null != applicationOptionOids ? applicationOptionOids : new ArrayList<String>(0);
+        return null != applicationOptionOids ? applicationOptionOids : new ArrayList<>(0);
     }
 
     @Override
@@ -99,8 +100,9 @@ public class HakuServiceImpl implements HakuService {
     @Override
     public HakuV1RDTO getRawApplicationSystem(String oid) {
         ResultV1RDTO<HakuV1RDTO> result = clientWithJacksonSerializer
-                .resource(urlConfiguration.url("tarjonta-service.v1.haku.resource", oid))
+                .target(urlConfiguration.url("tarjonta-service.v1.haku.resource", oid))
                 .queryParam(COUNT_PARAMETER, MAX_COUNT)
+                .request()
                 .accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
         });
         HakuV1RDTO haku = result.getResult();

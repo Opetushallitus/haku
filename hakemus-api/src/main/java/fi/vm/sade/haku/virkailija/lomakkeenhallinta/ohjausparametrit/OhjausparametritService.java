@@ -1,7 +1,5 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
 import fi.vm.sade.properties.OphProperties;
@@ -10,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 @Service
@@ -26,7 +26,8 @@ public class OhjausparametritService {
     }
 
     public Ohjausparametrit fetchOhjausparametritForHaku(String oid) {
-        return clientWithJacksonSerializer.resource(urlConfiguration.url("ohjausparametrit-service.resource.url", oid))
-                .accept(MEDIA_TYPE).get(new GenericType<Ohjausparametrit>() {});
+        return clientWithJacksonSerializer.target(urlConfiguration.url("ohjausparametrit-service.resource.url", oid))
+            .request()
+            .accept(MEDIA_TYPE).get(new GenericType<Ohjausparametrit>() {});
     }
 }

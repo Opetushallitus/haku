@@ -1,9 +1,6 @@
 package fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl;
 
 import com.google.common.base.Strings;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
@@ -15,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 @Service
@@ -44,9 +44,9 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
             if (StringUtils.isEmpty(lang)) {
                 lang = "fi";
 			}
-            WebResource asWebResource = clientWithJacksonSerializer.resource(urlConfiguration.url("koulutusinformaatio-app.ao", oid)).queryParam("lang", lang).queryParam("uiLang", lang);
-			LOGGER.debug(asWebResource.getUriBuilder().build().toString());
-			return asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {});
+            WebTarget webTarget = clientWithJacksonSerializer.target(urlConfiguration.url("koulutusinformaatio-app.ao", oid)).queryParam("lang", lang).queryParam("uiLang", lang);
+			LOGGER.debug(webTarget.getUriBuilder().build().toString());
+			return webTarget.request().accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {});
 		}
 	}
 }

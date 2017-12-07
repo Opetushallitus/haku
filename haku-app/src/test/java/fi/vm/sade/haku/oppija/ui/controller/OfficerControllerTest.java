@@ -16,8 +16,14 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
-import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import static com.google.common.collect.Lists.newArrayList;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.glassfish.jersey.server.mvc.Viewable;
 
 import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -31,24 +37,14 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
-
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Mikko Majapuro
@@ -93,25 +89,21 @@ public class OfficerControllerTest {
 
     @Test
     public void testUpdatePhase() throws URISyntaxException, IOException {
-        Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
+        Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedHashMap<>());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
     @Test
-    public void testGetAdditionalInfo() throws IOException {
+    public void testGetAdditionalInfo() {
         Viewable viewable = officerController.getAdditionalInfo(OID);
         assertEquals(OfficerController.ADDITIONAL_INFO_VIEW, viewable.getTemplateName());
     }
 
     @Test
-    public void testSaveAdditionalInfo() throws URISyntaxException, IOException {
-        MultivaluedMap<String, String> additionalInfo = new MultivaluedMapImpl();
+    public void testSaveAdditionalInfo() throws URISyntaxException {
+        MultivaluedMap<String, String> additionalInfo = new MultivaluedHashMap<>();
         additionalInfo.put("key", newArrayList("value"));
         Response response = officerController.saveAdditionalInfo(OID, additionalInfo);
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
-    }
-
-    private String getLocationHeader(final Response response) {
-        return response.getMetadata().get("Location").get(0).toString();
     }
 }
