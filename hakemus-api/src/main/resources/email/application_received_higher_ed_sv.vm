@@ -54,7 +54,7 @@
     #end
     #parse("email/email_attachment_requests.vm")
     
-    <p>Ge feedback om Studieinfo genom att svara på <a href="https://www.webropolsurveys.com/S/2758FA201A18AFE3.par" target="_blank">frågeformuläret</a>.<p>
+    <p>Ge feedback om Studieinfo genom att svara på <a href="https://link.webropolsurveys.com/S/D8F69F6A52638FF9" target="_blank">frågeformuläret</a>.<p>
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
 </body>
