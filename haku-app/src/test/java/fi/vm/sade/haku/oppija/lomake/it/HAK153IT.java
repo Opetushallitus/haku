@@ -38,8 +38,6 @@ public class HAK153IT extends DummyModelBaseItTest {
         click(By.cssSelector("#preference1-Koulutus option[value='Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)']"));
         elementsNotPresentBy(By.cssSelector("a.popup-link[href='#'][data-po-show='sora-popup']"));
         click(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
-        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
-        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
     }
 
 

@@ -101,6 +101,7 @@ public class ValintaServiceTest {
             put("PK_PAATTOTODISTUSVUOSI", "2012");
             put("ammatillinenTutkintoSuoritettu", "false");
             put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
+            put(OppijaConstants.KANSANOPISTO_PAATTOTODISTUSVUOSI, "2012");
             put("POHJAKOULUTUS", "1");
             put("perusopetuksen_kieli", "SV");
         }};

@@ -26,7 +26,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextA
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.KielitaitokysymyksetTheme.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class LisatiedotPhase {
@@ -78,14 +77,21 @@ public class LisatiedotPhase {
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
 
-        if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
-            lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
-        }
         if(formParameters.kysytaankoOppisopimuskysymys()){
             lisatiedot.addChild(createOppisopimusLisakysymys(formParameters));
         }
 
         return element;
+    }
+
+    private static final String[] BASE_EDUCATION_KESK_ULK = new String[]{
+            OppijaConstants.KESKEYTYNYT,
+            OppijaConstants.ULKOMAINEN_TUTKINTO
+    };
+
+    static Expr createPohjakoilutusUlkomainenTaiKeskeyttanyt() {
+        return ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION,
+                BASE_EDUCATION_KESK_ULK);
     }
 
     static Element createTyokokemus(final FormParameters formParameters) {
@@ -174,66 +180,6 @@ public class LisatiedotPhase {
         return hakeeAmmatilliseenSaanto;
     }
 
-    static Element createUrheilijanLisakysymykset(final FormParameters formParameters) {
-        Element urheilijanLisakysymyksetTeema = new ThemeBuilder("urheilija").previewable().formParams(formParameters).build();
-
-        Expr onkoUrheilija = ExprUtil.atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
-                "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference1_urheilijalinjan_lisakysymys",
-                "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference2_urheilijalinjan_lisakysymys",
-                "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference3_urheilijalinjan_lisakysymys",
-                "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference4_urheilijalinjan_lisakysymys",
-                "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                "preference5_urheilijalinjan_lisakysymys");
-
-        Element urheilijanLisakysymyksetSaanto = Rule(onkoUrheilija).build();
-        urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
-
-        Element opinnotGroup = TitledGroup("opinnot").formParams(formParameters).build()
-                .addChild(
-                        createTextQuestion("liikunnanopettajan-nimi", 50, formParameters),
-                        createTextQuestion("lukuaineiden-keskiarvo", 4, formParameters),
-                        createTextQuestion("pakollinen-liikunnan-numero", 2, formParameters));
-
-        Element urheilulajitGroup = TitledGroup("urheilu").formParams(formParameters).build()
-                .addChild(
-                        createTextQuestion("Urheilulaji1", 50, formParameters),
-                        createTextQuestion("lajiliitto1", 50, formParameters),
-                        createTextQuestion("Urheilulaji2", 50, formParameters),
-                        createTextQuestion("lajiliitto2", 50, formParameters));
-
-        Element saavutuksetGroup = TitledGroup("saavutukset.ryhma").formParams(formParameters).build()
-                .addChild(
-                        TextArea("saavutukset")
-                                .cols(60)
-                                .maxLength(2000)
-                                .inline()
-                                .formParams(formParameters).build());
-
-        Element valmentajaGroup =
-                TitledGroup("valmentajan-yhteystiedot").formParams(formParameters).build()
-                        .addChild(createTextQuestion("valmentajan-nimi", 50, formParameters))
-                        .addChild(createTextQuestion("valmentajan-puhelinnumero", 50, formParameters))
-                        .addChild(TextQuestion("valmentajan-sähköpostiosoite")
-                                .inline()
-                                .size(30)
-                                .maxLength(50)
-                                .pattern(EMAIL_REGEX)
-                                .formParams(formParameters).build());
-
-        Element valmennusryhmaGroup =
-                TitledGroup("valmennusryhma").formParams(formParameters).build()
-                        .addChild(createTextQuestion("lajiliitto-maajoukkue", 100, formParameters))
-                        .addChild(createTextQuestion("alue-piiri", 100, formParameters))
-                        .addChild(createTextQuestion("seura", 100, formParameters));
-
-        urheilijanLisakysymyksetTeema.addChild(opinnotGroup, urheilulajitGroup,
-                saavutuksetGroup, valmentajaGroup, valmennusryhmaGroup);
-        return urheilijanLisakysymyksetSaanto;
-    }
 
     private static Element createTextQuestion(final String id, int maxLength, final FormParameters formParameters) {
         return TextQuestion(id)

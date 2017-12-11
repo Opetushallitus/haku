@@ -38,7 +38,6 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
         click(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
         isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         clickByNameAndValue("preference1-discretionary", "false");
-        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
         nextPhase(OppijaConstants.PHASE_GRADES);

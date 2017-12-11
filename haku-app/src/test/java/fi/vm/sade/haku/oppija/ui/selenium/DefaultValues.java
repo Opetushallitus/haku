@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.testfixtures.Pohjakoulutus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.LinkedHashMap;
@@ -53,7 +54,6 @@ public final class DefaultValues {
 
         koulutustausta_pk.put("POHJAKOULUTUS", "1");
         koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
-        koulutustausta_pk.put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         koulutustausta_pk.put(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, "true");
         koulutustausta_pk.put(OppijaConstants.KYMPPI_PAATTOTODISTUSVUOSI, "2012");
         koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_KIELI, "FI");
@@ -64,7 +64,6 @@ public final class DefaultValues {
         lisatiedot.put("lupaJulkaisu", "true");
 
         preference1.put("preference1-discretionary", "false");
-        preference1.put("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         preference1.put("preference1_sora_terveys", "false");
         preference1.put("preference1_sora_oikeudenMenetys", "false");
     }

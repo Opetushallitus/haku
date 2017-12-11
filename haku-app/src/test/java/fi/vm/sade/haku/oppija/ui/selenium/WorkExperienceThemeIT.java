@@ -52,7 +52,6 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
-        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
 
         nextPhase(OppijaConstants.PHASE_GRADES);
         select();

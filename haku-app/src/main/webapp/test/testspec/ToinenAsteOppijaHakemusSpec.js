@@ -187,37 +187,6 @@ describe('2. asteen lomake', function () {
             click(lomake.pohjakoulutus("1"))
         ));
 
-        describe("Edellisvuonna suoritettu peruskoulu", function() {
-            before(seqDone(
-                input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
-                input(lomake.pkKieli, "FI"),
-                click(lomake.ammatillinenKoulutuspaikka(false))
-            ));
-            describe("Jos ei ole syötetty saantiajankohtaa", function() {
-              before(seqDone(
-                  pageChange(lomake.fromKoulutustausta)
-              ));
-              it('ei pääse eteenpäin', seqDone(
-                  headingVisible("Koulutustausta")
-              ));
-              it('näkyy sivun alussa että tuli virheitä', function () {
-                expect(firstWarningText()).to.contain("Lomakkeella puuttuvia tai virheellisiä tietoja, tarkista lomakkeen tiedot")
-              });
-              it('näkyy pakollisuus virhe', function () {
-                expect(S("#peruskoulutodistus_saatu_puolivuotta_haun_lopusta-error").text()).to.equal("Pakollinen tieto.");
-              });
-            });
-            describe("Todistuksen saantiajankohdan syötön jälkeen", function() {
-                before(seqDone(
-                    click(lomake.pkPaattotodistusSaatuPuolenVuodenSisaan(true)),
-                    pageChange(lomake.fromKoulutustausta)
-                ));
-                it('pääsee hakutoiveisinn', seqDone(
-                    headingVisible("Hakutoiveet")
-                ));
-            });
-        });
-
         describe("Aiemmin kuin edellisvuonna suoritettu peruskoulu", function() {
             before(seqDone(
                 function() { S('#nav-koulutustausta')[0].click() },
