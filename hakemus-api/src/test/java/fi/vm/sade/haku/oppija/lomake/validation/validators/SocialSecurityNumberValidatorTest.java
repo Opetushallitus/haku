@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -108,6 +109,23 @@ public class SocialSecurityNumberValidatorTest {
         values.put("kansalaisuus", "fi");
         ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testCentenarianIsInvalid() {
+        values.put("henkilotunnus", "010101-123N");
+        values.put("kansalaisuus", "fi");
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertTrue(validationResult.hasErrors());
+    }
+
+    @Test
+    public void testCentenarianIsValidInTestEnvironment() {
+        ReflectionTestUtils.setField(validator, "isTestEnvironment", true);
+        values.put("henkilotunnus", "010101-123N");
+        values.put("kansalaisuus", "fi");
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertFalse(validationResult.hasErrors());
     }
 
 }
