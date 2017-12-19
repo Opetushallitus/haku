@@ -3,11 +3,11 @@ package fi.vm.sade.haku.provider;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.javautils.poi.OphCellStyles.OphHssfCellStyles;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,23 +49,26 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
     @Override
     public void writeTo(XlsModel xlsModel, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
-        Workbook wb = new HSSFWorkbook();
+        HSSFWorkbook wb = new HSSFWorkbook();
         String sheetname = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.ao.getName();
-        Sheet sheet = wb.createSheet(sheetname);
+        HSSFSheet sheet = wb.createSheet(sheetname);
         sheet.setDefaultColumnWidth(20);
 
+        OphHssfCellStyles cellStyles = new OphHssfCellStyles(wb);
 
-        createRow(sheet, "Haku", xlsModel.asName);
-        createRow(sheet, "Haku oid", xlsModel.asId);
-        createRow(sheet, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
-        createRow(sheet, "Hakuvuosi", xlsModel.hakukausiVuosi);
-        createRow(sheet, "Hakukohde", xlsModel.ao.getName());
+        createRow(sheet, cellStyles, "Haku", xlsModel.asName);
+        createRow(sheet, cellStyles, "Haku oid", xlsModel.asId);
+        createRow(sheet, cellStyles, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
+        createRow(sheet, cellStyles, "Hakuvuosi", xlsModel.hakukausiVuosi);
+        createRow(sheet, cellStyles, "Hakukohde", xlsModel.ao.getName());
 
-        createRow(sheet);
+        createRow(sheet, cellStyles);
 
-        Row titleRow = createRow(sheet);
+        HSSFRow titleRow = createRow(sheet, cellStyles);
         for (Element title : xlsModel.columnKeyList()) {
-            createCell(titleRow).setCellValue(xlsModel.getText(title));
+            HSSFCell cell = createCell(titleRow);
+            cell.setCellValue(xlsModel.getText(title));
+            cellStyles.apply(cell);
         }
 
         List<String> rowKeys = xlsModel.rowKeyList();
@@ -74,10 +77,11 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         int cols = colKeys.size();
         int rowOffset = sheet.getLastRowNum() + 1;
         for (int i = 0; i < rows; i++) {
-            Row row = sheet.createRow(rowOffset + i);
+            HSSFRow row = sheet.createRow(rowOffset + i);
             for (int j = 0; j < cols; j++) {
-                Cell cell = row.createCell(j);
+                HSSFCell cell = row.createCell(j);
                 cell.setCellValue(xlsModel.getValue(rowKeys.get(i), colKeys.get(j)));
+                cellStyles.apply(cell);
             }
         }
         for (int i = 0; i < colKeys.size(); i++) {
@@ -87,17 +91,20 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         wb.write(entityStream);
     }
 
-    private Cell createCell(final Row row) {
-        short lastCellNum = row.getLastCellNum();
-        return row.createCell(lastCellNum == -1 ? 0 : lastCellNum);
-    }
-
-    private Row createRow(final Sheet sheet, String... values) {
+    private HSSFRow createRow(final HSSFSheet sheet, OphHssfCellStyles cellStyles, String... values) {
         int lastRowNum = sheet.getLastRowNum();
-        Row row = sheet.createRow(lastRowNum + 1);
+        HSSFRow row = sheet.createRow(lastRowNum + 1);
         for (String value : values) {
-            createCell(row).setCellValue(value);
+            HSSFCell cell = createCell(row);
+            cell.setCellValue(value);
+            cellStyles.apply(cell);
         }
         return row;
+    }
+
+    private HSSFCell createCell(final HSSFRow row) {
+        short lastCellNum = row.getLastCellNum();
+        int j = lastCellNum == -1 ? 0 : lastCellNum;
+        return row.createCell(j);
     }
 }
