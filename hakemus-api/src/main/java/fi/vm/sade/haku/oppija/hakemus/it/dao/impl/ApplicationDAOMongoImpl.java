@@ -157,6 +157,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return false;
     }
 
+    @Override
+    public boolean checkIfExistsByEmailAndAo(final ApplicationFilterParameters filterParameters,
+                                             final String asId, final String email, final String aoId) {
+        if (!Strings.isNullOrEmpty(email)) {
+            return resultNotEmpty(applicationQueryBuilder.buildApplicationExistsForEmail(email, asId, aoId), INDEX_EMAIL);
+        }
+        return false;
+    }
+
     private void createIndexForSSNCheck() {
         ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST, META_FIELD_AO);
     }
