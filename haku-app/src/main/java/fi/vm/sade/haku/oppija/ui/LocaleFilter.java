@@ -57,6 +57,10 @@ public class LocaleFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext containerRequest) {
+       filterAndReturn(containerRequest);
+    }
+
+    public ContainerRequestContext filterAndReturn(ContainerRequestContext containerRequest) {
         HttpSession session = httpServletRequest.getSession();
         String lang = getLanguage(containerRequest);
 
@@ -67,9 +71,11 @@ public class LocaleFilter implements ContainerRequestFilter {
         Config.set(httpServletRequest, Config.FMT_LOCALE, newLocale);
         Config.set(httpServletRequest, Config.FMT_FALLBACK_LOCALE, DEFAULT_LOCALE);
         httpServletRequest.setAttribute("fi_vm_sade_oppija_language", newLocale.getLanguage());
+        return containerRequest;
     }
 
-        private String getLanguage(ContainerRequestContext containerRequest) {
+
+    private String getLanguage(ContainerRequestContext containerRequest) {
             UriInfo uriInfo = containerRequest.getUriInfo();
             String lang = uriInfo.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
 

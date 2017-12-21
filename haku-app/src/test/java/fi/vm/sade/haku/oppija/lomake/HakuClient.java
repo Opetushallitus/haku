@@ -2,22 +2,21 @@ package fi.vm.sade.haku.oppija.lomake;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.representation.Form;
-import com.sun.jersey.client.apache.ApacheHttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.glassfish.jersey.client.ClientResponse;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +36,8 @@ public class HakuClient {
         URL url = Resources.getResource(resource);
         final ObjectMapper mapper = new ObjectMapper();
         Map data = mapper.readValue(url, Map.class);
-        this.client = ApacheHttpClient.create();
-        this.client.setFollowRedirects(false);
+        this.client = ClientBuilder.newClient(new ClientConfig());
+        this.client.property(ClientProperties.FOLLOW_REDIRECTS, false);
         this.applicationData = (Map<String, Map<String, String>>) data.get("answers");
         this.applicationData.put("esikatselu", new ImmutableMap.Builder<String, String>()
                 .put("nav-send", "true").build());
@@ -47,16 +46,16 @@ public class HakuClient {
     }
 
     private void getPhase(final ClientResponse previousPhaseResponse) throws IOException {
-        WebResource webResource = client.resource(previousPhaseResponse.getLocation());
-        WebResource.Builder builder = webResource.getRequestBuilder();
+        WebTarget target = client.target(previousPhaseResponse.getLocation());
+        Invocation.Builder request = target.request();
         for (NewCookie cookie : cookies) {
-            builder.cookie(cookie);
+            request.cookie(cookie);
         }
-        ClientResponse response = builder.accept(MediaType.TEXT_HTML + CHARSET_UTF_8).get(ClientResponse.class);
+        Response response = request.accept(MediaType.TEXT_HTML + CHARSET_UTF_8).get();
         if (response.getStatus() == HttpStatus.SC_OK) {
-            response.close();
+            response.getEntity();
         } else {
-            LOGGER.debug(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
+            LOGGER.debug(response.getEntity().toString());
             throw new RuntimeException("get uri failed (" + response.getStatus() + ") " + previousPhaseResponse.getLocation());
         }
     }
@@ -65,19 +64,20 @@ public class HakuClient {
         String phaseId = parsePhaseId(previousPhaseResponse.getLocation().toString());
         if (this.applicationData.containsKey(phaseId)) {
             Form form = mapToForm(this.applicationData.get(phaseId));
-            WebResource webResource = client.resource(previousPhaseResponse.getLocation());
-            WebResource.Builder builder = webResource.getRequestBuilder();
+            WebTarget target = client.target(previousPhaseResponse.getLocation());
+            Invocation.Builder request = target.request();
             for (NewCookie cookie : cookies) {
-                builder.cookie(cookie);
+                request.cookie(cookie);
             }
             getPhase(previousPhaseResponse);
-            ClientResponse response = builder.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE + CHARSET_UTF_8).accept(MediaType.TEXT_HTML + CHARSET_UTF_8).post(ClientResponse.class, form);
+            ClientResponse response = request.accept(MediaType.APPLICATION_FORM_URLENCODED_TYPE + CHARSET_UTF_8, MediaType.TEXT_HTML + CHARSET_UTF_8)
+                    .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE), ClientResponse.class);
 
             if (response.getStatus() == HttpStatus.SC_SEE_OTHER) {
                 response.close();
                 return response;
             } else {
-                throw new RuntimeException("Phase " + phaseId + " not completed (status=" + response.getStatus() + "). Response:\n"+ IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
+                throw new RuntimeException("Phase " + phaseId + " not completed (status=" + response.getStatus() + "). Response:\n"+ response.getEntity().toString());
             }
         } else {
             return null;
@@ -90,14 +90,14 @@ public class HakuClient {
     }
 
     private ClientResponse getFirstPhaseLocation() throws IOException {
-        WebResource r = client.resource(formUrl);
-        ClientResponse response = r.accept(MediaType.TEXT_HTML + CHARSET_UTF_8).get(ClientResponse.class);
+        WebTarget target = client.target(formUrl);
+        ClientResponse response = target.request().accept(MediaType.TEXT_HTML + CHARSET_UTF_8).get(ClientResponse.class);
         if (response.getStatus() == HttpStatus.SC_SEE_OTHER) {
             response.close();
-            cookies = response.getCookies();
+            cookies = new ArrayList<>(response.getCookies().values());
             return response;
         } else {
-            throw new RuntimeException(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
+            throw new RuntimeException(response.getEntity().toString());
         }
     }
 
@@ -111,9 +111,9 @@ public class HakuClient {
 
     private Form mapToForm(final Map<String, String> values) {
         Form form = new Form();
-        for (Map.Entry<String, String> value : values.entrySet()) {
-            form.add(value.getKey(), value.getValue());
-        }
+        values.forEach((key, value) ->
+                form.param(key, value)
+        );
         return form;
     }
 
