@@ -8,6 +8,7 @@
 # Aseta vähintään nämä ympäristökohtaiset arvot
 auth.mode={{auth_mode}}
 env.loglevel={{env_loglevel}}
+env.is.test.environment={{env_is_test_environment | default('false')}}
 email.from={{email_from}}
 email.replyTo={{email_replyTo}}
 email.smtp.host={{email_smtp_host}}

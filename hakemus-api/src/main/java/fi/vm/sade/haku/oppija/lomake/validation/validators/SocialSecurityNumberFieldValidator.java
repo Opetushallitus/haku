@@ -19,6 +19,7 @@ import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,6 +45,9 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private static Map<String, Integer> centuries = new HashMap<String, Integer>();
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
+
+    @Value("${env.is.test.environment:false}")
+    private boolean isTestEnvironment;
 
     static {
         centuries.put("-", 1900); // NOSONAR
@@ -104,7 +108,10 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         String separator = socialSecurityNumber.substring(6, 7);
 
         // separator should be a/A and not in any case + (added for backward compatibility)
-        if ( ( yearPart <= currentYear && !separator.equalsIgnoreCase("a") ) || separator.equals("+")) {
+        // except in test environment, where some test SSNs from 1901 are required
+        boolean is1800s = separator.equals("+");
+        boolean is100YearsAway = (yearPart <= currentYear) && !separator.equalsIgnoreCase("a");
+        if ( (is100YearsAway && !isTestEnvironment) || is1800s ) {
             result = new ValidationResult(validationInput.getFieldName(), getI18Text(GENERIC_ERROR_MESSAGE_KEY, validationInput.getApplicationSystemId()));
         }
 
