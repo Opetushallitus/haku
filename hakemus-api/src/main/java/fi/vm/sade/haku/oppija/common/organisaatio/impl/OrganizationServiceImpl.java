@@ -30,6 +30,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.NoConnectionReuseStrategy;
@@ -77,7 +78,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         this.gson = builder.create();
         this.httpClient = HttpClientBuilder.create()
                 .disableAuthCaching()
-                .setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(120 * 1000).setSocketTimeout(60 * 1000).build())
+                .setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(120 * 1000).setSocketTimeout(60 * 1000).setCookieSpec(CookieSpecs.STANDARD).build())
                 .setConnectionReuseStrategy(new NoConnectionReuseStrategy())
                 .build();
     }
