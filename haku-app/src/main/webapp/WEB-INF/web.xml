@@ -48,30 +48,30 @@
 
     <filter>
         <filter-name>jersey</filter-name>
-        <filter-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</filter-class>
+        <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
         <init-param>
-            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-name>org.glassfish.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
         </init-param>
         <init-param>
-            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-name>org.glassfish.jersey.spi.container.ContainerResponseFilters</param-name>
             <param-value>fi.vm.sade.haku.oppija.common.filter.NoCacheFilter</param-value>
         </init-param>
         <init-param>
-            <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+            <param-name>org.glassfish.jersey.spi.container.ContainerRequestFilters</param-name>
             <param-value>fi.vm.sade.haku.oppija.ui.LocaleFilter;fi.vm.sade.haku.oppija.common.filter.XSSFilter</param-value>
         </init-param>
         <init-param>
-            <param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
+            <param-name>org.glassfish.jersey.config.property.JSPTemplatesBasePath</param-name>
             <param-value>/WEB-INF/jsp</param-value>
         </init-param>
         <init-param>
-            <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+            <param-name>org.glassfish.jersey.config.property.WebPageContentRegex</param-name>
             <param-value>(/(images|js|styles|(WEB-INF/jsp)|resources|swagger|services|test)/.*)|(/buildversion\.txt)
             </param-value>
         </init-param>
         <init-param>
-            <param-name>com.sun.jersey.config.feature.DisableWADL</param-name>
+            <param-name>org.glassfish.jersey.config.feature.DisableWADL</param-name>
             <param-value>true</param-value>
         </init-param>
     </filter>
