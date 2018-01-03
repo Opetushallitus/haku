@@ -16,18 +16,20 @@
 
 package fi.vm.sade.haku.oppija.ui;
 
+
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
-import org.glassfish.jersey.server.ContainerRequest;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -41,23 +43,20 @@ public class LocaleFilterTest {
 
     private HttpServletRequest httpServletRequest;
     private HttpSession session;
-    private ContainerRequest containerRequest;
-    private ContainerRequest realRequest;
+    private ContainerRequestContext context;
     private LocaleFilter localeFilter;
     private AuthenticationService authenticationService;
 
     private Person langFi;
     private Person langSv;
+    private UriInfo mockUriInfo;
 
     @Before
     public void setUp() throws Exception {
         this.httpServletRequest = mock(HttpServletRequest.class);
         this.session = mock(HttpSession.class);
-        this.containerRequest = mock(ContainerRequest.class);
+        this.context = mock(ContainerRequestContext.class);
         this.authenticationService = mock(AuthenticationService.class);
-
-        realRequest = new ContainerRequest(new URI(""), new URI(""), "", null, null);
-        localeFilter.filter(realRequest);
 
         Map<String, Cookie> cookieMap = new HashMap<>();
 
@@ -65,7 +64,8 @@ public class LocaleFilterTest {
         langSv = PersonBuilder.start().setContactLanguage("sv").get();
 
         when(httpServletRequest.getSession()).thenReturn(session);
-        when(containerRequest.getCookies()).thenReturn(cookieMap);
+        when(context.getCookies()).thenReturn(cookieMap);
+        context.setRequestUri(new URI(""));
         localeFilter = new LocaleFilter(httpServletRequest);
         localeFilter.setAuthenticationService(authenticationService);
     }
@@ -73,20 +73,26 @@ public class LocaleFilterTest {
     @Test
     public void testFilterFiParam() throws Exception {
         putLangParameter("fi");
-        assertEquals("Container request changed", this.containerRequest, localeFilter.filterAndReturn(containerRequest));
+        assertEquals("Container request changed", this.context, localeFilter.filterAndReturn(context));
     }
 
     @Test
     public void testPersonFi() throws Exception {
         when(authenticationService.getCurrentHenkilo()).thenReturn(langFi);
         MultivaluedMap<String, String> queryParameters = new MultivaluedHashMap<>();
-        when(containerRequest.getUriInfo().getQueryParameters()).thenReturn(queryParameters);
-        assertEquals("Container request changed", this.containerRequest, localeFilter.filterAndReturn(containerRequest));
+        this.mockUriInfo = mock(UriInfo.class);
+        when(mockUriInfo.getQueryParameters()).thenReturn(queryParameters);
+        when(context.getUriInfo()).thenReturn(mockUriInfo);
+
+        ContainerRequestContext realContext = localeFilter.filterAndReturn(context);
+        assertEquals("Container request changed", this.context, realContext);
     }
 
     private void putLangParameter(final String lang) {
         MultivaluedMap<String, String> queryParameters = new MultivaluedHashMap<>();
         queryParameters.putSingle(LocaleFilter.LANGUAGE_QUERY_PARAMETER_KEY, lang);
-        when(containerRequest.getUriInfo().getQueryParameters()).thenReturn(queryParameters);
+        this.mockUriInfo = mock(UriInfo.class);
+        when(mockUriInfo.getQueryParameters()).thenReturn(queryParameters);
+        when(context.getUriInfo()).thenReturn(mockUriInfo);
     }
 }
