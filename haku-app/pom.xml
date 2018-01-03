@@ -257,7 +257,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
             <artifactId>jersey-spring3</artifactId>
-            <version>2.26-b03</version>
+            <version>${jersey.version}</version>
         </dependency>
 
         <dependency>
