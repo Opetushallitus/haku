@@ -74,6 +74,10 @@
             <param-name>org.glassfish.jersey.config.feature.DisableWADL</param-name>
             <param-value>true</param-value>
         </init-param>
+        <init-param>
+            <param-name>jersey.config.servlet.filter.contextPath</param-name>
+            <param-value>/</param-value>
+        </init-param>
     </filter>
 
     
