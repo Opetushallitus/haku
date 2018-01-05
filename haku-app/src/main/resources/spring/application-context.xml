@@ -122,6 +122,9 @@
                 base-package="fi.vm.sade.haku,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
+        <!-- scans packages to find and register beans within the application context -->
+        <context:component-scan base-package="com.jersey.series.spring.integration" />
+
         <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.postprocess.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
