@@ -52,3 +52,6 @@ log4j.logger.org.vaadin=ERROR
 log4j.logger.javax.sql=ERROR
 # cas session + singlelogout tracing
 # log4j.logger.org.jasig.cas.client.session=INFO
+
+#OY-130 filter out cookie header warnings
+log4j.logger.org.apache.http.client.protocol.ResponseProcessCookies=ERROR
