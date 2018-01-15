@@ -88,8 +88,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO = "LISAKOULUTUS_KANSANOPISTO";
     public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO = "LISAKOULUTUS_MAAHANMUUTTO";
     public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO_LUKIO = "LISAKOULUTUS_MAAHANMUUTTO_LUKIO";
-    public static final String ELEMENT_ID_LISAKOULUTUS_VALMA = "LISAKOULUTUS_VALMA";
-    public static final String ELEMENT_ID_LISAKOULUTUS_TELMA = "LISAKOULUTUS_TELMA";
+    public static final String ELEMENT_ID_LISAKOULUTUS_VALMA = "LISAKOULUTUS_VALMA";;
 
     public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_PITKA = "yo-arvosana-paraskieli-pitka";
     public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_LYHYT = "yo-arvosana-paraskieli-lyhyt";
@@ -163,7 +162,6 @@ public final class OppijaConstants {
     public static final String KANSANOPISTO_PAATTOTODISTUSVUOSI = "KANSANOPISTO_PAATTOTODISTUSVUOSI";
     public static final String LUVA_PAATTOTODISTUSVUOSI = "LUVA_PAATTOTODISTUSVUOSI";
     public static final String VALMA_PAATTOTODISTUSVUOSI = "VALMA_PAATTOTODISTUSVUOSI";
-    public static final String TELMA_PAATTOTODISTUSVUOSI = "TELMA_PAATTOTODISTUSVUOSI";
     public static final String TOISEN_ASTEEN_SUORITUS = "toisen_asteen_suoritus";
     public static final String TOISEN_ASTEEN_SUORITUSMAA = "toisen_asteen_suoritusmaa";
 
