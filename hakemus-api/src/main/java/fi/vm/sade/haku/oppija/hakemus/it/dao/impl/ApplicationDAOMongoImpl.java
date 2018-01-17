@@ -47,6 +47,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.mongodb.QueryOperators.IN;
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
@@ -247,6 +249,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
+    public Stream<Map<String, Object>> findAllQueriedFullStreaming(final ApplicationQueryParameters queryParameters,
+                                                          final ApplicationFilterParameters filterParameters) {
+        final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);
+        final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
+        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
+        return searchListingStreaming(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
+                (dobj) -> dbObjectToMapFunction.apply(dobj));
+    }
+
+    @Override
     public List<Map<String, Object>> findAllQueriedFull(final ApplicationQueryParameters queryParameters,
                                                         final ApplicationFilterParameters filterParameters) {
         final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);
@@ -275,6 +287,32 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
 
+    private <T> Stream<T> searchListingStreaming(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
+                          final java.util.function.Function<DBObject, T> transformationFunction) {
+        LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
+        final long startTime = System.currentTimeMillis();
+        final DBCursor dbCursor = getCollection().find(query, keys);
+        if (null != sortBy)
+            dbCursor.sort(sortBy);
+        if (start > 0)
+            dbCursor.skip(start);
+        if (rows > 0)
+            dbCursor.limit(rows);
+        if (enableSearchOnSecondary)
+            dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
+        try {
+            return StreamSupport.stream(
+                    Spliterators.spliteratorUnknownSize(
+                            dbCursor.iterator(),
+                            Spliterator.ORDERED
+                    ),
+                    false
+            ).map(transformationFunction);
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
+            throw mongoException;
+        }
+    }
 
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                                                final Function<DBObject, T> transformationFunction, final boolean doCount) {

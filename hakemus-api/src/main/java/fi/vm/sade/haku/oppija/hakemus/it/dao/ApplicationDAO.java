@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -82,6 +83,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     List<Map<String, Object>> findAllQueriedFull(ApplicationQueryParameters queryParameters,
                                                  ApplicationFilterParameters filterParameters);
+
+    Stream<Map<String, Object>> findAllQueriedFullStreaming(ApplicationQueryParameters queryParameters,
+                                                   ApplicationFilterParameters filterParameters);
 
     /**
      * Updates key/value of the application by oid
