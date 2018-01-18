@@ -11,7 +11,6 @@ public class ApplicationSearchDTO {
     public final List<String> states;
     public final List<String> keys;
 
-
     public ApplicationSearchDTO(
             @JsonProperty("searchTerms") String searchTerms,
             @JsonProperty("aoOids") List<String> aoOids,
