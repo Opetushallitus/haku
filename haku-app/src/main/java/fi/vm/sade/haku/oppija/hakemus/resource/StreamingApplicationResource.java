@@ -29,14 +29,11 @@ import static fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource.CHARSE
 @Component
 @Path("/streaming/applications")
 public class StreamingApplicationResource {
-
-    private final ApplicationService applicationService;
-
     @Autowired
-    public StreamingApplicationResource(ApplicationService applicationService) {
-        this.applicationService = applicationService;
+    private ApplicationService applicationService;
+    public StreamingApplicationResource() {
     }
-
+    
     @POST
     @Path("/listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
