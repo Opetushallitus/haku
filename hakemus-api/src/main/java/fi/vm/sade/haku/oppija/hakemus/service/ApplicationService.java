@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.CloseableIterator;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 
@@ -118,7 +119,7 @@ public interface ApplicationService {
             final ApplicationQueryParameters applicationQueryParameters,
             final String... keys);
 
-    Stream<Map<String, Object>> findFullApplicationsStreaming(final ApplicationQueryParameters applicationQueryParameters);
+    CloseableIterator<Map<String, Object>> findFullApplicationsStreaming(final ApplicationQueryParameters applicationQueryParameters);
 
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 

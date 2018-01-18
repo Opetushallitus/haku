@@ -16,15 +16,12 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.google.gson.Gson;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
-import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
@@ -40,17 +37,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.ietf.jgss.GSSException;
-import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,23 +49,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.StreamingOutput;
-import java.io.*;
-import java.net.InetAddress;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static fi.vm.sade.haku.oppija.AuthorizationRoles.ALLOWED_FOR_ADMIN;
-import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
@@ -355,50 +338,7 @@ public class ApplicationResource {
         LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
         return apps;
     }
-    @POST
-    @Path("/listfullstreaming")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    @ApiOperation(
-            value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
-    public Response findFullApplicationsPostStreaming(final ApplicationSearchDTO applicationSearchDTO) {
 
-        LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
-        List<String> state = applicationSearchDTO.states;
-        List<String> asIds = applicationSearchDTO.asIds;
-        List<String> aoOid = applicationSearchDTO.aoOids;
-
-        ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
-                .setSearchTerms("")
-                .setStates(state)
-                .setAsIds(asIds)
-                .addAoOid(aoOid.toArray(new String[0]))
-                .build();
-
-        try {
-            Iterator<Map<String, Object>> apps = applicationService.findFullApplicationsStreaming(queryParams).iterator();
-            StreamingOutput stream = os -> {
-                JsonGenerator json = new JsonFactory().setCodec(new ObjectMapper()).createJsonGenerator(os);
-                json.writeStartArray();
-                try {
-                    while(apps.hasNext()) {
-                        Map<String, Object> next = apps.next();
-                        json.writeObject(next);
-                        json.flush();
-                    }
-                } catch (Exception e) {
-                    json.writeObject(ImmutableMap.of("error", e.getMessage()));
-                } finally {
-                    json.writeEndArray();
-                    json.flush();
-                }
-            };
-            return Response.ok(stream).build();
-        } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
-        }
-    }
     @GET
     @Path("/listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)

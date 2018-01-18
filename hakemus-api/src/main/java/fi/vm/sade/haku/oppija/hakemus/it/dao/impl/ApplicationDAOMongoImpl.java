@@ -249,7 +249,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public Stream<Map<String, Object>> findAllQueriedFullStreaming(final ApplicationQueryParameters queryParameters,
+    public CloseableIterator<Map<String, Object>> findAllQueriedFullStreaming(final ApplicationQueryParameters queryParameters,
                                                           final ApplicationFilterParameters filterParameters) {
         final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);
         final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
@@ -287,7 +287,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
 
-    private <T> Stream<T> searchListingStreaming(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
+    private <T> CloseableIterator<T> searchListingStreaming(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                           final java.util.function.Function<DBObject, T> transformationFunction) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
         final long startTime = System.currentTimeMillis();
@@ -301,13 +301,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
         try {
-            return StreamSupport.stream(
-                    Spliterators.spliteratorUnknownSize(
-                            dbCursor.iterator(),
-                            Spliterator.ORDERED
-                    ),
-                    false
-            ).map(transformationFunction);
+            return new CloseableIterator<T>() {
+                final Iterator<DBObject> iterator = dbCursor.iterator();
+
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
+                public T next() {
+                    return transformationFunction.apply(iterator.next());
+                }
+                public void close() throws Exception {
+                    dbCursor.close();
+                }
+            };
         } catch (MongoException mongoException) {
             LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
             throw mongoException;

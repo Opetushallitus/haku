@@ -56,6 +56,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.CloseableIterator;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -368,7 +369,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Stream<Map<String, Object>> findFullApplicationsStreaming(final ApplicationQueryParameters applicationQueryParameters) {
+    public CloseableIterator<Map<String, Object>> findFullApplicationsStreaming(final ApplicationQueryParameters applicationQueryParameters) {
         return applicationDAO.findAllQueriedFullStreaming(applicationQueryParameters,
                 buildFilterParams(applicationQueryParameters)).map(this::convertApplication);
     }
