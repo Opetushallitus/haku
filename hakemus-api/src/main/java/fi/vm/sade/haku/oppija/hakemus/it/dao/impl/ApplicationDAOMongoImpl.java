@@ -290,49 +290,31 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private <T> CloseableIterator<T> searchListingStreaming(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                           final java.util.function.Function<DBObject, T> transformationFunction) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
-        final long startTime = System.currentTimeMillis();
-        final DBCursor dbCursor = getCollection().find(query, keys);
-        if (null != sortBy)
-            dbCursor.sort(sortBy);
-        if (start > 0)
-            dbCursor.skip(start);
-        if (rows > 0)
-            dbCursor.limit(rows);
-        if (enableSearchOnSecondary)
-            dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
-        try {
-            return new CloseableIterator<T>() {
-                final Iterator<DBObject> iterator = dbCursor.iterator();
+        final DBCursor dbCursor = searchListingToDBCursor(query, keys, sortBy, start, rows);
+        return closeableIteratorFromDBCursor(transformationFunction, dbCursor);
+    }
 
-                public boolean hasNext() {
-                    return iterator.hasNext();
-                }
-                public T next() {
-                    return transformationFunction.apply(iterator.next());
-                }
-                public void close() throws Exception {
-                    dbCursor.close();
-                }
-            };
-        } catch (MongoException mongoException) {
-            LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
-            throw mongoException;
-        }
+    private <T> CloseableIterator<T> closeableIteratorFromDBCursor(java.util.function.Function<DBObject, T> transformationFunction, DBCursor dbCursor) {
+        return new CloseableIterator<T>() {
+            final Iterator<DBObject> iterator = dbCursor.iterator();
+
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+            public T next() {
+                return transformationFunction.apply(iterator.next());
+            }
+            public void close() throws Exception {
+                dbCursor.close();
+            }
+        };
     }
 
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                                                final Function<DBObject, T> transformationFunction, final boolean doCount) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
         final long startTime = System.currentTimeMillis();
-        final DBCursor dbCursor = getCollection().find(query, keys);
-        if (null != sortBy)
-            dbCursor.sort(sortBy);
-        if (start > 0)
-            dbCursor.skip(start);
-        if (rows > 0)
-            dbCursor.limit(rows);
-        if (enableSearchOnSecondary)
-            dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
+        final DBCursor dbCursor = searchListingToDBCursor(query, keys, sortBy, start, rows);
         int searchHits = -1;
 
         try {
@@ -341,22 +323,32 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 searchHits = dbCursor.count();
             // Guessing for sizes
             final int listSize = doCount ? searchHits : rows > 0 ? rows : 1000;
-            final List<T> results = new ArrayList<T>(listSize);
-            while (dbCursor.hasNext()) {
-                DBObject obj = dbCursor.next();
-                results.add(transformationFunction.apply(obj));
+            try(CloseableIterator<T> apps = closeableIteratorFromDBCursor(transformationFunction::apply, dbCursor)) {
+                List<T> results = Lists.newArrayListWithExpectedSize(listSize);
+                Iterators.addAll(results, apps);
+                if (!doCount)
+                    searchHits = results.size();
+                LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}",
+                        (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
+                return new SearchResults<T>(searchHits, results);
             }
-
-            if (!doCount)
-                searchHits = results.size();
-
-            LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}",
-                    (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
-            return new SearchResults<T>(searchHits, results);
-        } catch (MongoException mongoException) {
+        } catch (Exception mongoException) {
             LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
-            throw mongoException;
+            throw new MongoException(mongoException.getMessage(), mongoException);
         }
+    }
+
+    private DBCursor searchListingToDBCursor(DBObject query, DBObject keys, DBObject sortBy, int start, int rows) {
+        final DBCursor dbCursor = getCollection().find(query, keys);
+        if (null != sortBy)
+            dbCursor.sort(sortBy);
+        if (start > 0)
+            dbCursor.skip(start);
+        if (rows > 0)
+            dbCursor.limit(rows);
+        if (enableSearchOnSecondary)
+            dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
+        return dbCursor;
     }
 
     private <T> SearchResults<T> simpleSearchListing(final DBObject query, final  DBObject keys, final Function<DBObject, T> transformationFunction, final String indexHint) {
