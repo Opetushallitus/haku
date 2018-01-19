@@ -8,6 +8,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.CloseableIterator;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+@Ignore
 public class StreamingApplicationResourceTest {
 
     @Test
