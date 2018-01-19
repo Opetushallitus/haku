@@ -62,21 +62,21 @@ public class StreamingApplicationResourceTest {
         assertEquals(expectedError, getLast(response).get("error"));
     }
 
-    private static List<Map<String,Object>> streamingResponseAsJson(ApplicationService service) throws IOException {
+    private List<Map<String,Object>> streamingResponseAsJson(ApplicationService service) throws IOException {
         return new Gson().fromJson(toString(new StreamingApplicationResource(service).findFullApplicationsPostStreaming(prepareEmptySearch())), Lists.newArrayList().getClass());
     }
 
-    private static String toString(Response response) throws IOException {
+    private String toString(Response response) throws IOException {
         StreamingOutput entity = (StreamingOutput)response.getEntity();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         entity.write(output);
         return new String(output.toByteArray());
     }
 
-    private static List<Map<String,Object>> randomData(int size) {
+    private List<Map<String,Object>> randomData(int size) {
         return range(0, size).mapToObj((index) -> of("index", (Object)index)).collect(toList());
     }
-    private static <E> CloseableIterator<E> newCloseableIterator(Iterator<E> iterator) {
+    private <E> CloseableIterator<E> newCloseableIterator(Iterator<E> iterator) {
 
         return new CloseableIterator<E>() {
             @Override
@@ -95,7 +95,7 @@ public class StreamingApplicationResourceTest {
             }
         };
     }
-    private static ApplicationSearchDTO prepareEmptySearch() {
+    private ApplicationSearchDTO prepareEmptySearch() {
         return new ApplicationSearchDTO("",emptyList(), emptyList(),emptyList(),emptyList());
     }
 }
