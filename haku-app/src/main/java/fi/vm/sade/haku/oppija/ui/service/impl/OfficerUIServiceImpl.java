@@ -69,6 +69,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -107,7 +108,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final HakumaksuService hakumaksuService;
     private final Boolean readFromValintarekisteri;
 
-    private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
+    private static final DecimalFormatSymbols dcs = new DecimalFormatSymbols(Locale.getDefault());
+    static { dcs.setDecimalSeparator('.'); }
+    private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##", dcs);
 
     private static final String KAUSI_FORMAT_STRING = "dd.MM.yyyy";
     private final String kevatkausi;
