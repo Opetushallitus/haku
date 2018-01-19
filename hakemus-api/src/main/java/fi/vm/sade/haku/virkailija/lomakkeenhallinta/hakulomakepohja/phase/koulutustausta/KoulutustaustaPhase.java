@@ -1094,7 +1094,6 @@ public final class KoulutustaustaPhase {
         Element kansanopistoRule = createPaattovuosiKysymys(ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO, KANSANOPISTO_PAATTOTODISTUSVUOSI, "form.koulutustausta.suorituspaattotodistusvuosi", formParameters);
         Element luvaRule = createPaattovuosiKysymys(ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO_LUKIO, LUVA_PAATTOTODISTUSVUOSI, "form.koulutustausta.suorituspaattotodistusvuosi", formParameters);
         Element valmaRule = createPaattovuosiKysymys(ELEMENT_ID_LISAKOULUTUS_VALMA, VALMA_PAATTOTODISTUSVUOSI, "form.koulutustausta.suorituspaattotodistusvuosi", formParameters);
-        Element telmaRule = createPaattovuosiKysymys(ELEMENT_ID_LISAKOULUTUS_TELMA, TELMA_PAATTOTODISTUSVUOSI, "form.koulutustausta.suorituspaattotodistusvuosi", formParameters);
 
         Element suorittanutGroup =
                 TitledGroup("suorittanut.ryhma").formParams(formParameters).build()
@@ -1106,9 +1105,7 @@ public final class KoulutustaustaPhase {
                                 Checkbox(ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO_LUKIO).formParams(formParameters).build(),
                                 luvaRule,
                                 Checkbox(ELEMENT_ID_LISAKOULUTUS_VALMA).formParams(formParameters).build(),
-                                valmaRule,
-                                Checkbox(ELEMENT_ID_LISAKOULUTUS_TELMA).formParams(formParameters).build(),
-                                telmaRule
+                                valmaRule
                         );
 
         Element pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),

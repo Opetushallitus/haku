@@ -123,7 +123,6 @@ lomake = initSelectors({
     lisakoulutusKymppi: 'input#LISAKOULUTUS_KYMPPI',
     lisakoulutusKymppiYear: 'input#KYMPPI_PAATTOTODISTUSVUOSI',
     lisakoulutusValma: 'input#LISAKOULUTUS_VALMA',
-    lisakoulutusTelma: 'input#LISAKOULUTUS_TELMA',
     kiinnostunutOppisopimuksesta: 'input#kiinnostunutoppisopimuksesta',
 
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
