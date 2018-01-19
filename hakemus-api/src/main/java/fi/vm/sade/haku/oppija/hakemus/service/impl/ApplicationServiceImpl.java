@@ -56,6 +56,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.CloseableIterator;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -109,6 +110,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -356,13 +359,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Map<String, Collection<Map<String, Object>>> transformApplicationsByKey(List<Map<String, Object>> applications, final String key) {
         return Multimaps.index(applications, application -> (String) application.get(key)).asMap();
     }
-
+    private Map<String, Object> convertApplication(Map<String, Object> application) {
+        restoreV0ModelLOPParentsToApplicationMap(application);
+        removeAuthorizationMeta(application);
+        return application;
+    }
     private List<Map<String, Object>> convertApplications(List<Map<String, Object>> applications) {
-        for (Map<String, Object> application : applications) {
-            restoreV0ModelLOPParentsToApplicationMap(application);
-            removeAuthorizationMeta(application);
-        }
-        return applications;
+        return applications.stream().map(this::convertApplication).collect(Collectors.toList());
+    }
+
+    @Override
+    public CloseableIterator<Map<String, Object>> findFullApplicationsStreaming(final ApplicationQueryParameters applicationQueryParameters) {
+        return applicationDAO.findAllQueriedFullStreaming(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters)).map(this::convertApplication);
     }
 
     @Override

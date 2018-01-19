@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.common.dao.BaseDAO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.CloseableIterator;
 
 import java.util.*;
 
@@ -82,6 +83,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     List<Map<String, Object>> findAllQueriedFull(ApplicationQueryParameters queryParameters,
                                                  ApplicationFilterParameters filterParameters);
+
+    CloseableIterator<Map<String, Object>> findAllQueriedFullStreaming(ApplicationQueryParameters queryParameters,
+                                                                                             ApplicationFilterParameters filterParameters);
 
     /**
      * Updates key/value of the application by oid

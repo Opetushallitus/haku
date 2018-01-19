@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.CloseableIterator;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 
@@ -31,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public interface ApplicationService {
 
@@ -116,7 +118,9 @@ public interface ApplicationService {
     List<Map<String, Object>> findApplicationsWithKeys(
             final ApplicationQueryParameters applicationQueryParameters,
             final String... keys);
-    
+
+    CloseableIterator<Map<String, Object>> findFullApplicationsStreaming(final ApplicationQueryParameters applicationQueryParameters);
+
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 
     Map<String, Collection<Map<String, Object>>> findApplicationsByPersonOid(Set<String> personOids, final boolean allKeys, final boolean removeSensitiveInfo);

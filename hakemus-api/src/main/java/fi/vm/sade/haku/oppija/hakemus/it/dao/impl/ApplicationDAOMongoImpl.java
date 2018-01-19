@@ -47,6 +47,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.mongodb.QueryOperators.IN;
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
@@ -247,6 +249,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
+    public CloseableIterator<Map<String, Object>> findAllQueriedFullStreaming(final ApplicationQueryParameters queryParameters,
+                                                          final ApplicationFilterParameters filterParameters) {
+        final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);
+        final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
+        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
+        return searchListingStreaming(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
+                (dobj) -> dbObjectToMapFunction.apply(dobj));
+    }
+
+    @Override
     public List<Map<String, Object>> findAllQueriedFull(final ApplicationQueryParameters queryParameters,
                                                         final ApplicationFilterParameters filterParameters) {
         final DBObject query = applicationQueryBuilder.buildFindAllQuery(queryParameters, filterParameters);
@@ -275,11 +287,58 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
 
+    private <T> CloseableIterator<T> searchListingStreaming(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
+                          final java.util.function.Function<DBObject, T> transformationFunction) {
+        LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
+        final DBCursor dbCursor = searchListingToDBCursor(query, keys, sortBy, start, rows);
+        return closeableIteratorFromDBCursor(transformationFunction, dbCursor);
+    }
+
+    private <T> CloseableIterator<T> closeableIteratorFromDBCursor(java.util.function.Function<DBObject, T> transformationFunction, DBCursor dbCursor) {
+        return new CloseableIterator<T>() {
+            final Iterator<DBObject> iterator = dbCursor.iterator();
+
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+            public T next() {
+                return transformationFunction.apply(iterator.next());
+            }
+            public void close() throws Exception {
+                dbCursor.close();
+            }
+        };
+    }
 
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                                                final Function<DBObject, T> transformationFunction, final boolean doCount) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
         final long startTime = System.currentTimeMillis();
+        final DBCursor dbCursor = searchListingToDBCursor(query, keys, sortBy, start, rows);
+        int searchHits = -1;
+
+        try {
+            // Trying to avoid needless full table scans caused by data structuring
+            if (doCount)
+                searchHits = dbCursor.count();
+            // Guessing for sizes
+            final int listSize = doCount ? searchHits : rows > 0 ? rows : 1000;
+            try(CloseableIterator<T> apps = closeableIteratorFromDBCursor(transformationFunction::apply, dbCursor)) {
+                List<T> results = Lists.newArrayListWithExpectedSize(listSize);
+                Iterators.addAll(results, apps);
+                if (!doCount)
+                    searchHits = results.size();
+                LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}",
+                        (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
+                return new SearchResults<T>(searchHits, results);
+            }
+        } catch (Exception mongoException) {
+            LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
+            throw new MongoException(mongoException.getMessage(), mongoException);
+        }
+    }
+
+    private DBCursor searchListingToDBCursor(DBObject query, DBObject keys, DBObject sortBy, int start, int rows) {
         final DBCursor dbCursor = getCollection().find(query, keys);
         if (null != sortBy)
             dbCursor.sort(sortBy);
@@ -289,30 +348,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             dbCursor.limit(rows);
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
-        int searchHits = -1;
-
-        try {
-            // Trying to avoid needless full table scans caused by data structuring
-            if (doCount)
-                searchHits = dbCursor.count();
-            // Guessing for sizes
-            final int listSize = doCount ? searchHits : rows > 0 ? rows : 1000;
-            final List<T> results = new ArrayList<T>(listSize);
-            while (dbCursor.hasNext()) {
-                DBObject obj = dbCursor.next();
-                results.add(transformationFunction.apply(obj));
-            }
-
-            if (!doCount)
-                searchHits = results.size();
-
-            LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}",
-                    (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
-            return new SearchResults<T>(searchHits, results);
-        } catch (MongoException mongoException) {
-            LOG.error("Got error {} with query: {}", mongoException.getMessage(), dbCursor);
-            throw mongoException;
-        }
+        return dbCursor;
     }
 
     private <T> SearchResults<T> simpleSearchListing(final DBObject query, final  DBObject keys, final Function<DBObject, T> transformationFunction, final String indexHint) {
