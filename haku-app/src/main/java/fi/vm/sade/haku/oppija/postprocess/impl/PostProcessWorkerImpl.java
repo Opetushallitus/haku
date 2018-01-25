@@ -79,6 +79,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
         int count = 0;
         do {
             Application application = getNextApplicationFor(processingType);
+            LOGGER.info("Saatiin hakemus prosessoitavaksi: ["+application+ "]processingType = [" + processingType + "], sendMail = [" + sendMail + "]");
             if (null == application)
                 break;
             statusRepository.startOperation(processingType.toString(), application.getOid());
@@ -100,6 +101,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     }
 
     private void processOneApplication(Application application, final boolean sendMail) {
+        LOGGER.info("processOneApplication: application = [" + application + "], sendMail = [" + sendMail + "]");
         final Application queryApplication = new Application(application.getOid(), application.getVersion());
         try {
             //TODO =RS= add Version
