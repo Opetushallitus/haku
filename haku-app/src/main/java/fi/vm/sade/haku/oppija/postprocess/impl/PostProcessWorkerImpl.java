@@ -100,6 +100,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     }
 
     private void processOneApplication(Application application, final boolean sendMail) {
+        LOGGER.info("processOneApplication: application = [" + application + "], sendMail = [" + sendMail + "]");
         final Application queryApplication = new Application(application.getOid(), application.getVersion());
         try {
             //TODO =RS= add Version
