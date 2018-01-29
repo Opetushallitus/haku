@@ -135,6 +135,11 @@ public class HakutoiveetPhase {
         if (formParameters.kysytaankoSora()) {
             pr.addChild(createSoraQuestions(id, formParameters));
         }
+
+        if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
+            pr.addChild((createUrheilijalinjaRule(id)));
+        }
+
         if (formParameters.kysytaankoKaksoistutkinto()) {
             pr.addChild(createKaksoistutkintoQuestions(id, formParameters));
         }
@@ -292,6 +297,15 @@ public class HakutoiveetPhase {
         Element koulutusValittu = Rule(new Not(new Equals(new Variable(id + "-Koulutus-id"), new Value("")))).build();
         koulutusValittu.addChild(pohjakoulutusValidation);
         return koulutusValittu;
+    }
+
+    private static Element createUrheilijalinjaRule(final String index) {
+        HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
+        Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
+        Element rule = Rule(expr).build();
+        rule.addChild(hiddenValue);
+        return rule;
     }
 
     private static Element createKaksoistutkintoQuestions(final String index, final FormParameters formParameters) {
