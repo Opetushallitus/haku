@@ -23,6 +23,9 @@ log4j.logger.fi.vm.sade.haku.AuditHelper=INFO, AUDIT_VIRKAILIJA
 log4j.additivity.fi.vm.sade.haku.OppijaAuditHelper=false
 log4j.logger.fi.vm.sade.haku.OppijaAuditHelper=INFO, AUDIT_OPPIJA
 
+log4j.additivity.fi.vm.sade.haku.ApiAuditHelper=false
+log4j.logger.fi.vm.sade.haku.ApiAuditHelper=INFO, AUDIT_API
+
 log4j.appender.AUDIT_VIRKAILIJA=org.apache.log4j.FileAppender
 log4j.appender.AUDIT_VIRKAILIJA.immediateFlush=true
 log4j.appender.AUDIT_VIRKAILIJA.File=/root/logs/auditlog_haku_virkailija.log
@@ -38,6 +41,14 @@ log4j.appender.AUDIT_OPPIJA.Append=true
 log4j.appender.AUDIT_OPPIJA.layout=org.apache.log4j.PatternLayout
 log4j.appender.AUDIT_OPPIJA.layout.ConversionPattern=%m%n
 log4j.appender.AUDIT_OPPIJA.encoding=UTF-8
+
+log4j.appender.AUDIT_API=org.apache.log4j.FileAppender
+log4j.appender.AUDIT_API.immediateFlush=true
+log4j.appender.AUDIT_API.File=/root/logs/auditlog_haku_api.log
+log4j.appender.AUDIT_API.Append=true
+log4j.appender.AUDIT_API.layout=org.apache.log4j.PatternLayout
+log4j.appender.AUDIT_API.layout.ConversionPattern=%m%n
+log4j.appender.AUDIT_API.encoding=UTF-8
 
 {% endraw %}
 log4j.logger.fi.vm.sade.haku=INFO
