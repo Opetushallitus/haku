@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -32,7 +33,7 @@ public class I18nBundle {
 
     private void initializeBundle(final List<String> bundleNames){
         Set<String> propertyKeys = getPropertyKeys(bundleNames);
-
+        log.info("Intitialize bundle: " + String.join(", ", bundleNames));
         for (String key : propertyKeys) {
             Map<String, String> translations = new HashMap<String, String>();
             String lowerCaseKey = key.toLowerCase();
@@ -58,7 +59,7 @@ public class I18nBundle {
             }
         } catch (MissingResourceException mre) {
             //TODO: =RS= Change to load only once to stop flooding
-            log.debug("Bundle {} not found when loading translations for {}", bundleName, lang);
+            log.warn("Bundle {} not found when loading translations for {}", bundleName, lang);
         }
         return text;
     }
