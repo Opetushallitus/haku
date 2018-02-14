@@ -82,7 +82,9 @@ public class I18nBundle {
         final String keyLowerCase = key.toLowerCase().replaceAll("-", ".");
 
         if (this.i18nBundle.containsKey(keyLowerCase)) {
-            return TranslationsUtil.ensureDefaultLanguageTranslations(this.i18nBundle.get(keyLowerCase));
+            I18nText translations = this.i18nBundle.get(keyLowerCase);
+            log.info("Found translations for key " + keyLowerCase + " " + translations.getText("fi") + " " + translations.getText("sv") + " " + translations.getText("en"));
+            return TranslationsUtil.ensureDefaultLanguageTranslations(translations);
         } else {
             return null;
         }

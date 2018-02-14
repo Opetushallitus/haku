@@ -56,9 +56,12 @@ public class LocaleFilter implements ContainerRequestFilter {
     public ContainerRequest filter(ContainerRequest containerRequest) {
         HttpSession session = httpServletRequest.getSession();
         String lang = getLanguage(containerRequest);
+        log.info("lang: " + lang);
 
         Locale currentLocale = (Locale) Config.get(session, Config.FMT_LOCALE);
+        log.info("currentLocale: " + currentLocale);
         Locale newLocale = getNewLocale(lang, currentLocale);
+        log.info("newLocale: " + newLocale);
         Config.set(session, Config.FMT_LOCALE, newLocale);
         Config.set(session, Config.FMT_FALLBACK_LOCALE, DEFAULT_LOCALE);
         Config.set(httpServletRequest, Config.FMT_LOCALE, newLocale);
