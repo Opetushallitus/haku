@@ -75,6 +75,7 @@ public class LocaleFilter implements ContainerRequestFilter {
         }
 
         String host = containerRequest.getHeaderValue("Host");
+        log.info("HOST: " + host);
         if (host != null && host.endsWith("studieinfo.fi")) {
             lang = "sv";
         } else if (host != null && host.endsWith("studyinfo.fi")) {
