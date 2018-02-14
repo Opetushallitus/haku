@@ -64,6 +64,7 @@ public class LocaleFilter implements ContainerRequestFilter {
         Config.set(httpServletRequest, Config.FMT_LOCALE, newLocale);
         Config.set(httpServletRequest, Config.FMT_FALLBACK_LOCALE, DEFAULT_LOCALE);
         httpServletRequest.setAttribute("fi_vm_sade_oppija_language", newLocale.getLanguage());
+        log.info("fi_vm_sade_oppija_language: " + newLocale.getLanguage());
         return containerRequest;
     }
 
@@ -89,7 +90,7 @@ public class LocaleFilter implements ContainerRequestFilter {
         log.debug("Got person: " + personOid);
         if (person != null) {
             String contactLang = person.getContactLanguage();
-            log.debug("Person contactLang: " + contactLang);
+            log.info("Person contactLang: " + contactLang);
             if ("fi".equals(contactLang) || "sv".equals(contactLang) || "en".equals(contactLang)) {
                 lang = contactLang;
             }
