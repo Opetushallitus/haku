@@ -356,6 +356,8 @@ public class UIServiceImpl implements UIService {
         }
         String lang = request.getAttribute("fi_vm_sade_oppija_language").toString();
 
+        LOGGER.info("LANG1: " + lang);
+
         ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
         List<String> allowedLanguages = as.getAllowedLanguages();
         if (allowedLanguages != null && !allowedLanguages.contains(lang)) {
@@ -365,6 +367,7 @@ public class UIServiceImpl implements UIService {
             Config.set(session, Config.FMT_LOCALE, newLocale);
             request.setAttribute("fi_vm_sade_oppija_language", lang);
         }
+        LOGGER.info("LANG2: " + lang);
         return lang;
     }
 

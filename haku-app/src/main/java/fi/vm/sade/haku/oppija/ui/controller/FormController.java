@@ -167,6 +167,13 @@ public class FormController {
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) throws ExecutionException {
 
         LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
+
+        LOGGER.info("Reqeust - FMT_LOCALE:" + Config.get(request, Config.FMT_LOCALE));
+        LOGGER.info("Reqeust - FMT_FALLBACK_LOCALE:" + Config.get(request, Config.FMT_FALLBACK_LOCALE));
+
+        LOGGER.info("Session - FMT_LOCALE:" + Config.get(request.getSession(), Config.FMT_LOCALE));
+        LOGGER.info("Session - FMT_FALLBACK_LOCALE:" + Config.get(request.getSession(), Config.FMT_FALLBACK_LOCALE));
+
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.getPhase(applicationSystemId, phaseId, lang);
         Viewable viewable = new Viewable(ROOT_VIEW, modelResponse.getModel());
