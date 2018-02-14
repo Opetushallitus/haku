@@ -11,6 +11,7 @@ import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.MESSAGES_BUNDLE_NAME;
 
 public class I18nBundle {
 
@@ -18,8 +19,9 @@ public class I18nBundle {
     private final Map<String, I18nText> i18nBundle = new HashMap<String, I18nText>();
 
     public I18nBundle(final String... bundleNames) {
-        final List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 1);
+        final List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 2);
 
+        bundleNamesList.add(MESSAGES_BUNDLE_NAME);
         bundleNamesList.add(FORM_COMMON_BUNDLE_NAME);
         log.debug("Creating message bundle...");
         for (String bundleName : bundleNames) {
