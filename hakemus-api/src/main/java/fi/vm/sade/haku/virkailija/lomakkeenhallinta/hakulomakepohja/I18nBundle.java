@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -35,7 +34,7 @@ public class I18nBundle {
 
     private void initializeBundle(final List<String> bundleNames){
         Set<String> propertyKeys = getPropertyKeys(bundleNames);
-        log.info("Intitialize bundle: " + String.join(", ", bundleNames));
+
         for (String key : propertyKeys) {
             Map<String, String> translations = new HashMap<String, String>();
             String lowerCaseKey = key.toLowerCase();
@@ -44,7 +43,6 @@ public class I18nBundle {
                     String text = getString(bundleName, lowerCaseKey, lang);
                     if (text != null) {
                         translations.put(lang, text);
-                        log.info("Add translation " + lowerCaseKey + " " + lang + " " + text);
                     }
                 }
             }
@@ -62,7 +60,7 @@ public class I18nBundle {
             }
         } catch (MissingResourceException mre) {
             //TODO: =RS= Change to load only once to stop flooding
-            log.warn("Bundle {} not found when loading translations for {}", bundleName, lang);
+            log.debug("Bundle {} not found when loading translations for {}", bundleName, lang);
         }
         return text;
     }
@@ -72,7 +70,6 @@ public class I18nBundle {
         for (String bundleName : bundleNames) {
             try {
                 final ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale("fi"));
-                log.info("Bundle keys: " + bundleName + " " + String.join(", ", bundle.keySet()));
                 propertyKeys.addAll(bundle.keySet());
             } catch (MissingResourceException mre) {
                 log.warn("Bundle {} not found when loading properties", bundleName);
