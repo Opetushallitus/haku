@@ -58,7 +58,7 @@ public class I18nBundle {
             }
         } catch (MissingResourceException mre) {
             //TODO: =RS= Change to load only once to stop flooding
-            log.debug("Bundle {} not found when loading translations for {}", bundleName, lang);
+            log.warn("Bundle {} not found when loading translations for {}", bundleName, lang);
         }
         return text;
     }
