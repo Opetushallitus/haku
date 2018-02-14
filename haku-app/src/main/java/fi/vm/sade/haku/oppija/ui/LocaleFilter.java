@@ -94,7 +94,7 @@ public class LocaleFilter implements ContainerRequestFilter {
                 lang = contactLang;
             }
         }
-
+        log.info("LANG: " + lang);
         return lang;
     }
 
