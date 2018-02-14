@@ -358,11 +358,17 @@ var complexRule = {
         }
     },
 
+    timeout: undefined,
     refreshView: function (event) {
-        complexRule.bus.push(event.data.ruleId);
+        if (complexRule.timeout) {
+            clearTimeout(complexRule.timeout);
+        }
+        complexRule.timeout = setTimeout(function () {
+            complexRule.bus.push(event.data.ruleId)
+        }, 500) // wait 500ms before refresh
     }
 };
-complexRule.initBus()
+complexRule.initBus();
 
 window.elementAdder = {
     toggleAddRemoveButtons: function(el) {
