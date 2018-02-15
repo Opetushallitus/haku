@@ -349,23 +349,32 @@ var complexRule = {
                         }
                     }
                     if (bind == true) {
-                        question.on('change paste keyup input', ruleData, complexRule.refreshView);
+                        var delayedRefresh = question[0].type === 'text';
+                        question.on('change paste keyup input', ruleData, complexRule.refreshView(delayedRefresh));
                     }
                 } else {
-                    question.on('change paste keyup input', ruleData, complexRule.refreshView);
+                    question.on('change paste keyup input', ruleData, complexRule.refreshView());
                 }
             }
         }
     },
 
     timeout: undefined,
-    refreshView: function (event) {
-        if (complexRule.timeout) {
-            clearTimeout(complexRule.timeout);
+    refreshView: function (delayedRefresh) {
+        if (delayedRefresh) {
+            return function (event) {
+                if (complexRule.timeout) {
+                    clearTimeout(complexRule.timeout);
+                }
+                complexRule.timeout = setTimeout(function () {
+                    complexRule.bus.push(event.data.ruleId)
+                }, 500) // wait 500ms before refresh
+            }
+        } else {
+            return function (event) {
+                complexRule.bus.push(event.data.ruleId)
+            }
         }
-        complexRule.timeout = setTimeout(function () {
-            complexRule.bus.push(event.data.ruleId)
-        }, 500) // wait 500ms before refresh
     }
 };
 complexRule.initBus();
