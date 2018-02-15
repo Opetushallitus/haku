@@ -127,26 +127,10 @@ public class LisatiedotPhase {
         Element lupatietoGrp = TitledGroup("lupatiedot.ryhma").formParams(formParameters).build();
         lupatietoGrp.addChild(Checkbox("lupaMarkkinointi").formParams(formParameters).build());
         lupatietoGrp.addChild(Checkbox("lupaJulkaisu").formParams(formParameters).build());
-        if(!formParameters.isSahkoinenViestintaLupa()) {
-            lupatietoGrp.addChild(Checkbox("lupaSahkoisesti").formParams(formParameters).build());
-        }
         lupatietoGrp.addChild(Checkbox("lupaSms").formParams(formParameters).build());
         //lupatietoGrp.addChild(Checkbox("lupaKela").formParams(formParameters).build());
 
         lupatiedotTheme.addChild(lupatietoGrp);
-
-        if(formParameters.isSahkoinenViestintaLupa() && !formParameters.isHigherEd()) {
-            Element sahkoinenViestintaGrp = RadioBuilder.Radio("lupatiedot-sahkoinen-viestinta")
-                    .addOptions(ImmutableList.of(
-                            new Option(formParameters.getI18nText("lupatiedot.sahkoinen.suostun"), KYLLA),
-                            new Option(formParameters.getI18nText("lupatiedot.sahkoinen.ensuostu"), EI)))
-                    .i18nText(formParameters.getI18nText("lupatiedot.sahkoinen.viestinta"))
-                    .help(formParameters.getI18nText("lupatiedot.sahkoinen.viestinta.help"))
-                    .required()
-                    .formParams(formParameters).build();
-
-            lupatiedotTheme.addChild(sahkoinenViestintaGrp);
-        }
 
         OptionQuestionBuilder kieliRadioBuilder = Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)
                 .addOption("suomi", formParameters);
