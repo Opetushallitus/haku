@@ -280,7 +280,7 @@ public class ApplicationResourceTest {
 
         public ApplicationServiceMock() {
             super(null, null, null, null, null, null, null, applicationSystemService, null, null, null, null,
-                    null, null, null, null, "true");
+                    null, null, null, null, "true", mock(ApiAuditLogger.class));
         }
 
         @Override

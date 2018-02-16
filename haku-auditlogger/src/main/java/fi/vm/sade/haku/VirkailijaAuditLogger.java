@@ -8,4 +8,5 @@ public class VirkailijaAuditLogger extends HakuAuditLogger {
     public VirkailijaAuditLogger() {
         super(new AuditHelper(), "haku-app", ApplicationType.VIRKAILIJA);
     }
+
 }
