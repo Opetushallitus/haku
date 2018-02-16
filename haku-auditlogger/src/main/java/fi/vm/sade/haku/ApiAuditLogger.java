@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApiAuditLogger extends HakuAuditLogger {
-
     public ApiAuditLogger() {
         super(new ApiAuditHelper(), "haku-app", ApplicationType.BACKEND);
     }
