@@ -133,7 +133,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ValintaService valintaService;
     private final Boolean disableHistory;
     private final OhjausparametritService ohjausparametritService;
-    private final ApiAuditLogger apiAuditLogger;
+    private final ApiAuditLogger apiAuditLogger = new ApiAuditLogger();
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -156,8 +156,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ValintaService valintaService,
                                   OhjausparametritService ohjausparametritService,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation,
-                                  @Value("${disableHistory:false}") String disableHistory,
-                                  ApiAuditLogger apiAuditLogger) {
+                                  @Value("${disableHistory:false}") String disableHistory) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -175,7 +174,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
         this.disableHistory = Boolean.valueOf(disableHistory);
-        this.apiAuditLogger = apiAuditLogger;
     }
 
 

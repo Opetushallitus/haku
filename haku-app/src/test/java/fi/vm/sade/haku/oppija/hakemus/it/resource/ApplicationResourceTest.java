@@ -62,8 +62,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
                 new ValintaServiceMockImpl(),
                 ohjausparametritService,
                 "true",
-                "false",
-                mock(ApiAuditLogger.class)
+                "false"
         );
         applicationResource = new ApplicationResource(as, applicationSystemService, applicationOptionService, syntheticApplicationService, i18nBundleService,
                 mock(OfficerUIService.class), mock(VirkailijaAuditLogger.class));
