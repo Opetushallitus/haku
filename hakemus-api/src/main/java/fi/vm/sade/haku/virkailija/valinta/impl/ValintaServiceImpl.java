@@ -271,7 +271,7 @@ public class ValintaServiceImpl implements ValintaService {
                     + " casUrl: " + casUrl
                     + " casService: " + targetServiceKooste
                     + " username: " + clientAppUserKooste
-                    + " password: " + clientAppPassKooste
+                    + " password: [clientAppPassKooste]"
             );
             cachingRestClientKoosteWithTimeout.put(timeoutMillis, cachingRestClientKooste);
         }
@@ -290,7 +290,7 @@ public class ValintaServiceImpl implements ValintaService {
                     + " casUrl: " + casUrl
                     + " casService: " + targetServiceValinta
                     + " username: " + clientAppUserValinta
-                    + " password: " + clientAppPassValinta
+                    + " password: [clientAppPassValinta]"
             );
         }
         return cachingRestClientValinta;
