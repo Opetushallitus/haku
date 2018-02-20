@@ -1,12 +1,7 @@
 package fi.vm.sade.haku.virkailija.valinta.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-
+import com.google.api.client.util.Maps;
+import com.google.gson.*;
 import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.generic.PERA;
 import fi.vm.sade.generic.rest.CachingRestClient;
@@ -30,8 +25,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Type;
 import java.time.Duration;
@@ -79,7 +74,7 @@ public class ValintaServiceImpl implements ValintaService {
     private int valintaTulosServiceRequestTimeoutMilliseconds;
 
     private static CachingRestClient cachingRestClientValinta;
-    private static CachingRestClient cachingRestClientKooste;
+    private static Map<Integer, CachingRestClient> cachingRestClientKoosteWithTimeout = Maps.newHashMap();
     private static CachingRestClient cachingRestClientValintaTulosService;
 
     private String CAS_TICKET_FOR_VALINTAREKISTERI = "CAS_TICKET_FOR_VALINTAREKISTERI";
@@ -263,19 +258,22 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     private synchronized CachingRestClient getCachingRestClientKooste(Optional<Duration> valintaTimeout) {
+        int timeoutMillis = (int) valintaTimeout.orElse(Duration.ofMillis(defaultValintaHttpRequestTimeoutMilliseconds)).toMillis();
+        CachingRestClient cachingRestClientKooste = cachingRestClientKoosteWithTimeout.get(timeoutMillis);
         if (cachingRestClientKooste == null) {
-            int timeoutMillis = (int) valintaTimeout.orElse(Duration.ofMillis(defaultValintaHttpRequestTimeoutMilliseconds)).toMillis();
             cachingRestClientKooste = new CachingRestClient(timeoutMillis).setClientSubSystemCode("haku.hakemus-api");
             cachingRestClientKooste.setWebCasUrl(casUrl);
             cachingRestClientKooste.setCasService(targetServiceKooste);
             cachingRestClientKooste.setUsername(clientAppUserKooste);
             cachingRestClientKooste.setPassword(clientAppPassKooste);
-            log.debug("cachingRestClientKooste "
-                            + "casUrl: " + casUrl
-                            + " casService: " + targetServiceKooste
-                            + " username: " + clientAppUserKooste
-                            + " password: " + clientAppPassKooste
+            log.info("Initialised cachingRestClientKooste"
+                    + " timeout: " + timeoutMillis + " ms"
+                    + " casUrl: " + casUrl
+                    + " casService: " + targetServiceKooste
+                    + " username: " + clientAppUserKooste
+                    + " password: " + clientAppPassKooste
             );
+            cachingRestClientKoosteWithTimeout.put(timeoutMillis, cachingRestClientKooste);
         }
         return cachingRestClientKooste;
     }
@@ -287,11 +285,12 @@ public class ValintaServiceImpl implements ValintaService {
             cachingRestClientValinta.setCasService(targetServiceValinta);
             cachingRestClientValinta.setUsername(clientAppUserValinta);
             cachingRestClientValinta.setPassword(clientAppPassValinta);
-            log.debug("getCachingRestClientValinta "
-                            + "casUrl: " + casUrl
-                            + " casService: " + targetServiceValinta
-                            + " username: " + clientAppUserValinta
-                            + " password: " + clientAppPassValinta
+            log.info("Initialised getCachingRestClientValinta"
+                    + " timeout: " + defaultValintaHttpRequestTimeoutMilliseconds + " ms"
+                    + " casUrl: " + casUrl
+                    + " casService: " + targetServiceValinta
+                    + " username: " + clientAppUserValinta
+                    + " password: " + clientAppPassValinta
             );
         }
         return cachingRestClientValinta;
@@ -317,11 +316,5 @@ public class ValintaServiceImpl implements ValintaService {
 
     public void setCachingRestClientValinta(CachingRestClient cachingRestClientValinta) {
         ValintaServiceImpl.cachingRestClientValinta = cachingRestClientValinta;
-    }
-    public void setCachingRestClientKooste(CachingRestClient cachingRestClientKooste) {
-        ValintaServiceImpl.cachingRestClientKooste = cachingRestClientKooste;
-    }
-    public void setCachingRestClientValintaTulosService(CachingRestClient cachingRestClientValintaTulosService) {
-        ValintaServiceImpl.cachingRestClientValintaTulosService = cachingRestClientValintaTulosService;
     }
 }
