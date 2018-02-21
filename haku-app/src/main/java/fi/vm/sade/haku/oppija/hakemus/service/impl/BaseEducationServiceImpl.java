@@ -9,12 +9,14 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.HAKUKAUSI_KEVAT;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
@@ -68,10 +70,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         List<OpiskelijaDTO> opiskelijatiedot = suoritusrekisteriService.getOpiskelijatiedot(personOid);
 
         if (!opiskelijatiedot.isEmpty()) {
+            List<OpiskelijaDTO> validOpiskelijatiedot = opiskelijatiedot.stream().filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid())).collect(Collectors.toList());
             Date hakukausiStart = resolveHakukausiStart(as);
             OpiskelijaDTO opiskelija = null;
             boolean found = false;
-            for (OpiskelijaDTO dto : opiskelijatiedot) {
+            for (OpiskelijaDTO dto : validOpiskelijatiedot) {
                 if (dto.getLoppuPaiva() == null || dto.getLoppuPaiva().after(hakukausiStart)) {
                     if (found) {
                         throw new ResourceNotFoundException("Person " + personOid + " in enrolled in multiple schools");
