@@ -1,1 +1,68 @@
-{ "_id" : { "$oid" : "5614e3bce4b0c839a766faac" }, "type" : "RadioButton", "applicationSystemId" : "1.2.246.562.29.14662042044", "theme" : "hakutoiveet_teema", "learningOpportunityId" : "1.2.246.562.20.72271808098", "targetIsGroup" : false, "ordinal" : 1, "state" : "ACTIVE", "creatorPersonOid" : "1.2.246.562.24.60991580860", "ownerOrganizationOids" : [ "1.2.246.562.10.52129505609", "1.2.246.562.10.90008375488", "1.2.246.562.10.00000000001", "1.2.246.562.10.654578694710" ], "messageText" : { "translations" : { "fi" : "Mikä on painotuksesi pääaine lukiossa (pääaine myös pääsykokeessa)?" } }, "helpText" : { "translations" : { "fi" : "Valitse alla olevista pääaineesi. Valinta määrittää myös pääsykokeen sisällön." } }, "verboseHelpText" : { "translations" : {} }, "requiredFieldValidator" : false, "onCompletedPage" : false, "options" : [ { "id" : "option_0", "optionText" : { "translations" : { "fi" : "Biologia" } } }, { "id" : "option_1", "optionText" : { "translations" : { "fi" : "Fysiikka" } } }, { "id" : "option_2", "optionText" : { "translations" : { "fi" : "Kemia" } } }, { "id" : "option_3", "optionText" : { "translations" : { "fi" : "Matematiikka" } } } ] }
+{
+  "_id": {
+    "$oid": "5614e3bce4b0c839a766faac"
+  },
+  "type": "RadioButton",
+  "applicationSystemId": "1.2.246.562.29.14662042044",
+  "theme": "hakutoiveet_teema",
+  "learningOpportunityId": "1.2.246.562.20.72271808098",
+  "targetIsGroup": false,
+  "ordinal": 1,
+  "state": "ACTIVE",
+  "creatorPersonOid": "1.2.246.562.24.60991580860",
+  "ownerOrganizationOids": [
+    "1.2.246.562.10.52129505609",
+    "1.2.246.562.10.90008375488",
+    "1.2.246.562.10.00000000001",
+    "1.2.246.562.10.654578694710"
+  ],
+  "messageText": {
+    "translations": {
+      "fi": "Mikä on painotuksesi pääaine lukiossa (pääaine myös pääsykokeessa)?"
+    }
+  },
+  "helpText": {
+    "translations": {
+      "fi": "Valitse alla olevista pääaineesi. Valinta määrittää myös pääsykokeen sisällön."
+    }
+  },
+  "verboseHelpText": {
+    "translations": {}
+  },
+  "requiredFieldValidator": false,
+  "onCompletedPage": false,
+  "options": [
+    {
+      "id": "option_0",
+      "optionText": {
+        "translations": {
+          "fi": "Biologia"
+        }
+      }
+    },
+    {
+      "id": "option_1",
+      "optionText": {
+        "translations": {
+          "fi": "Fysiikka"
+        }
+      }
+    },
+    {
+      "id": "option_2",
+      "optionText": {
+        "translations": {
+          "fi": "Kemia"
+        }
+      }
+    },
+    {
+      "id": "option_3",
+      "optionText": {
+        "translations": {
+          "fi": "Matematiikka"
+        }
+      }
+    }
+  ]
+}

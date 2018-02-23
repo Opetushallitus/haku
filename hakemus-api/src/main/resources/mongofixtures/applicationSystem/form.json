@@ -1,0 +1,997 @@
+{
+  "_id": "pohjakoulutus_kk",
+  "i18nText": {
+    "translations": {
+      "fi": "Suomessa suoritettu korkeakoulututkinto"
+    }
+  },
+  "validators": [
+
+  ],
+  "children": [
+    {
+      "_id": "a2580ffda-15e8-45fb-b740-c3dfd659a967",
+      "expr": {
+        "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals",
+        "left": {
+          "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value",
+          "value": "true"
+        },
+        "right": {
+          "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Variable",
+          "value": "pohjakoulutus_kk"
+        }
+      },
+      "validators": [
+
+      ],
+      "children": [
+        {
+          "_id": "pohjakoulutus_kk_taso",
+          "options": [
+            {
+              "_id": "abc98d18a-37a6-4583-afc1-22420b4b2dee",
+              "value": "4",
+              "defaultOption": false,
+              "i18nText": {
+                "translations": {
+                  "fi": "Ylempi yliopistotutkinto (maisteri)",
+                  "sv": "H\u00f6gre universitetsexamen (magister)",
+                  "en": "Higher university degree (Master's)"
+                }
+              },
+              "validators": [
+
+              ],
+              "children": [
+
+              ],
+              "attributes": {
+
+              },
+              "inline": false
+            },
+            {
+              "_id": "a8f16eaed-8de0-49ff-ad71-21a55f3c1834",
+              "value": "3",
+              "defaultOption": false,
+              "i18nText": {
+                "translations": {
+                  "fi": "Ylempi ammattikorkeakoulututkinto",
+                  "sv": "H\u00f6gre yrkesh\u00f6gskoleexamen",
+                  "en": "Polytechnic\/UAS Master's degree"
+                }
+              },
+              "validators": [
+
+              ],
+              "children": [
+
+              ],
+              "attributes": {
+
+              },
+              "inline": false
+            },
+            {
+              "_id": "a032e7345-812c-44f8-94d3-844397f3e41b",
+              "value": "2",
+              "defaultOption": false,
+              "i18nText": {
+                "translations": {
+                  "fi": "Alempi yliopistotutkinto (kandidaatti)",
+                  "sv": "L\u00e4gre universitetsexamen (kandidat)",
+                  "en": "Lower university degree (Bachelor's)"
+                }
+              },
+              "validators": [
+
+              ],
+              "children": [
+
+              ],
+              "attributes": {
+
+              },
+              "inline": false
+            }
+          ],
+          "i18nText": {
+            "translations": {
+              "fi": "Tutkintotaso"
+            }
+          },
+          "validators": [
+            {
+              "validValues": [
+                "4",
+                "3",
+                "2",
+                "5",
+                "1"
+              ],
+              "errorMessageKey": "yleinen.virheellinenarvo",
+              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator"
+            },
+            {
+              "_id": null,
+              "errorMessageKey": "yleinen.pakollinen",
+              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+            }
+          ],
+          "children": [
+
+          ],
+          "attributes": {
+            "required": "required"
+          },
+          "inline": true,
+          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect"
+        },
+        {
+          "_id": "pohjakoulutus_kk_pvm",
+          "i18nText": {
+            "translations": {
+              "fi": "Suoritusvuosi ja p\u00e4iv\u00e4m\u00e4\u00e4r\u00e4"
+            }
+          },
+          "validators": [
+            {
+              "_id": null,
+              "errorMessageKey": "yleinen.pakollinen",
+              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+            }
+          ],
+          "children": [
+
+          ],
+          "attributes": {
+            "required": "required"
+          },
+          "inline": true,
+          "allowFutureDates": true,
+          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"
+        },
+        {
+          "_id": "pohjakoulutus_kk_nimike",
+          "i18nText": {
+            "translations": {
+              "fi": "Tutkintonimike"
+            }
+          },
+          "validators": [
+            {
+              "_id": null,
+              "errorMessageKey": "yleinen.pakollinen",
+              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+            }
+          ],
+          "children": [
+
+          ],
+          "attributes": {
+            "required": "required"
+          },
+          "inline": true,
+          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+        },
+        {
+          "_id": "pohjakoulutus_kk_oppilaitos",
+          "i18nText": {
+            "translations": {
+              "fi": "Korkeakoulu"
+            }
+          },
+          "validators": [
+            {
+              "_id": null,
+              "errorMessageKey": "yleinen.pakollinen",
+              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+            }
+          ],
+          "children": [
+            {
+              "_id": "addKKtutkintoRule2",
+              "relatedElementId": "pohjakoulutus_kk_oppilaitos",
+              "previousRules": [
+
+              ],
+              "text": {
+                "translations": {
+                  "fi": "Lis\u00e4\u00e4 uusi pohjakoulutus",
+                  "sv": "L\u00e4gg till ny grundutbildning",
+                  "en": "Add new qualification"
+                }
+              },
+              "validators": [
+
+              ],
+              "children": [
+                {
+                  "_id": "pohjakoulutus_kk_taso2",
+                  "options": [
+                    {
+                      "_id": "abc98d18a-37a6-4583-afc1-22420b4b2dee",
+                      "value": "4",
+                      "defaultOption": false,
+                      "i18nText": {
+                        "translations": {
+                          "fi": "Ylempi yliopistotutkinto (maisteri)",
+                          "sv": "H\u00f6gre universitetsexamen (magister)",
+                          "en": "Higher university degree (Master's)"
+                        }
+                      },
+                      "validators": [
+
+                      ],
+                      "children": [
+
+                      ],
+                      "attributes": {
+
+                      },
+                      "inline": false
+                    },
+                    {
+                      "_id": "a8f16eaed-8de0-49ff-ad71-21a55f3c1834",
+                      "value": "3",
+                      "defaultOption": false,
+                      "i18nText": {
+                        "translations": {
+                          "fi": "Ylempi ammattikorkeakoulututkinto",
+                          "sv": "H\u00f6gre yrkesh\u00f6gskoleexamen",
+                          "en": "Polytechnic\/UAS Master's degree"
+                        }
+                      },
+                      "validators": [
+
+                      ],
+                      "children": [
+
+                      ],
+                      "attributes": {
+
+                      },
+                      "inline": false
+                    },
+                    {
+                      "_id": "a032e7345-812c-44f8-94d3-844397f3e41b",
+                      "value": "2",
+                      "defaultOption": false,
+                      "i18nText": {
+                        "translations": {
+                          "fi": "Alempi yliopistotutkinto (kandidaatti)",
+                          "sv": "L\u00e4gre universitetsexamen (kandidat)",
+                          "en": "Lower university degree (Bachelor's)"
+                        }
+                      },
+                      "validators": [
+
+                      ],
+                      "children": [
+
+                      ],
+                      "attributes": {
+
+                      },
+                      "inline": false
+                    }
+                  ],
+                  "i18nText": {
+                    "translations": {
+                      "fi": "Tutkintotaso"
+                    }
+                  },
+                  "validators": [
+                    {
+                      "validValues": [
+                        "4",
+                        "3",
+                        "2",
+                        "5",
+                        "1"
+                      ],
+                      "errorMessageKey": "yleinen.virheellinenarvo",
+                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator"
+                    },
+                    {
+                      "_id": null,
+                      "errorMessageKey": "yleinen.pakollinen",
+                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                    }
+                  ],
+                  "children": [
+
+                  ],
+                  "attributes": {
+                    "required": "required"
+                  },
+                  "inline": true,
+                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect"
+                },
+                {
+                  "_id": "pohjakoulutus_kk_pvm2",
+                  "i18nText": {
+                    "translations": {
+                      "fi": "Suoritusvuosi ja p\u00e4iv\u00e4m\u00e4\u00e4r\u00e4"
+                    }
+                  },
+                  "validators": [
+                    {
+                      "_id": null,
+                      "errorMessageKey": "yleinen.pakollinen",
+                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                    }
+                  ],
+                  "children": [
+
+                  ],
+                  "attributes": {
+                    "required": "required"
+                  },
+                  "inline": true,
+                  "allowFutureDates": true,
+                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"
+                },
+                {
+                  "_id": "pohjakoulutus_kk_nimike2",
+                  "i18nText": {
+                    "translations": {
+                      "fi": "Tutkintonimike"
+                    }
+                  },
+                  "validators": [
+                    {
+                      "_id": null,
+                      "errorMessageKey": "yleinen.pakollinen",
+                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                    }
+                  ],
+                  "children": [
+
+                  ],
+                  "attributes": {
+                    "required": "required"
+                  },
+                  "inline": true,
+                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                },
+                {
+                  "_id": "pohjakoulutus_kk_oppilaitos2",
+                  "i18nText": {
+                    "translations": {
+                      "fi": "Korkeakoulu"
+                    }
+                  },
+                  "validators": [
+                    {
+                      "_id": null,
+                      "errorMessageKey": "yleinen.pakollinen",
+                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "_id": "addKKtutkintoRule3",
+                      "relatedElementId": "pohjakoulutus_kk_oppilaitos2",
+                      "previousRules": [
+                        "addKKtutkintoRule2"
+                      ],
+                      "text": {
+                        "translations": {
+                          "fi": "Lis\u00e4\u00e4 uusi pohjakoulutus",
+                          "sv": "L\u00e4gg till ny grundutbildning",
+                          "en": "Add new qualification"
+                        }
+                      },
+                      "validators": [
+
+                      ],
+                      "children": [
+                        {
+                          "_id": "pohjakoulutus_kk_taso3",
+                          "options": [
+                            {
+                              "_id": "abc98d18a-37a6-4583-afc1-22420b4b2dee",
+                              "value": "4",
+                              "defaultOption": false,
+                              "i18nText": {
+                                "translations": {
+                                  "fi": "Ylempi yliopistotutkinto (maisteri)",
+                                  "sv": "H\u00f6gre universitetsexamen (magister)",
+                                  "en": "Higher university degree (Master's)"
+                                }
+                              },
+                              "validators": [
+
+                              ],
+                              "children": [
+
+                              ],
+                              "attributes": {
+
+                              },
+                              "inline": false
+                            },
+                            {
+                              "_id": "a8f16eaed-8de0-49ff-ad71-21a55f3c1834",
+                              "value": "3",
+                              "defaultOption": false,
+                              "i18nText": {
+                                "translations": {
+                                  "fi": "Ylempi ammattikorkeakoulututkinto",
+                                  "sv": "H\u00f6gre yrkesh\u00f6gskoleexamen",
+                                  "en": "Polytechnic\/UAS Master's degree"
+                                }
+                              },
+                              "validators": [
+
+                              ],
+                              "children": [
+
+                              ],
+                              "attributes": {
+
+                              },
+                              "inline": false
+                            },
+                            {
+                              "_id": "a032e7345-812c-44f8-94d3-844397f3e41b",
+                              "value": "2",
+                              "defaultOption": false,
+                              "i18nText": {
+                                "translations": {
+                                  "fi": "Alempi yliopistotutkinto (kandidaatti)",
+                                  "sv": "L\u00e4gre universitetsexamen (kandidat)",
+                                  "en": "Lower university degree (Bachelor's)"
+                                }
+                              },
+                              "validators": [
+
+                              ],
+                              "children": [
+
+                              ],
+                              "attributes": {
+
+                              },
+                              "inline": false
+                            }
+                          ],
+                          "i18nText": {
+                            "translations": {
+                              "fi": "Tutkintotaso"
+                            }
+                          },
+                          "validators": [
+                            {
+                              "validValues": [
+                                "4",
+                                "3",
+                                "2",
+                                "5",
+                                "1"
+                              ],
+                              "errorMessageKey": "yleinen.virheellinenarvo",
+                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator"
+                            },
+                            {
+                              "_id": null,
+                              "errorMessageKey": "yleinen.pakollinen",
+                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                            }
+                          ],
+                          "children": [
+
+                          ],
+                          "attributes": {
+                            "required": "required"
+                          },
+                          "inline": true,
+                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect"
+                        },
+                        {
+                          "_id": "pohjakoulutus_kk_pvm3",
+                          "i18nText": {
+                            "translations": {
+                              "fi": "Suoritusvuosi ja p\u00e4iv\u00e4m\u00e4\u00e4r\u00e4"
+                            }
+                          },
+                          "validators": [
+                            {
+                              "_id": null,
+                              "errorMessageKey": "yleinen.pakollinen",
+                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                            }
+                          ],
+                          "children": [
+
+                          ],
+                          "attributes": {
+                            "required": "required"
+                          },
+                          "inline": true,
+                          "allowFutureDates": true,
+                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"
+                        },
+                        {
+                          "_id": "pohjakoulutus_kk_nimike3",
+                          "i18nText": {
+                            "translations": {
+                              "fi": "Tutkintonimike"
+                            }
+                          },
+                          "validators": [
+                            {
+                              "_id": null,
+                              "errorMessageKey": "yleinen.pakollinen",
+                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                            }
+                          ],
+                          "children": [
+
+                          ],
+                          "attributes": {
+                            "required": "required"
+                          },
+                          "inline": true,
+                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                        },
+                        {
+                          "_id": "pohjakoulutus_kk_oppilaitos3",
+                          "i18nText": {
+                            "translations": {
+                              "fi": "Korkeakoulu"
+                            }
+                          },
+                          "validators": [
+                            {
+                              "_id": null,
+                              "errorMessageKey": "yleinen.pakollinen",
+                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "_id": "addKKtutkintoRule4",
+                              "relatedElementId": "pohjakoulutus_kk_oppilaitos3",
+                              "previousRules": [
+                                "addKKtutkintoRule2",
+                                "addKKtutkintoRule3"
+                              ],
+                              "text": {
+                                "translations": {
+                                  "fi": "Lis\u00e4\u00e4 uusi pohjakoulutus",
+                                  "sv": "L\u00e4gg till ny grundutbildning",
+                                  "en": "Add new qualification"
+                                }
+                              },
+                              "validators": [
+
+                              ],
+                              "children": [
+                                {
+                                  "_id": "pohjakoulutus_kk_taso4",
+                                  "options": [
+                                    {
+                                      "_id": "abc98d18a-37a6-4583-afc1-22420b4b2dee",
+                                      "value": "4",
+                                      "defaultOption": false,
+                                      "i18nText": {
+                                        "translations": {
+                                          "fi": "Ylempi yliopistotutkinto (maisteri)",
+                                          "sv": "H\u00f6gre universitetsexamen (magister)",
+                                          "en": "Higher university degree (Master's)"
+                                        }
+                                      },
+                                      "validators": [
+
+                                      ],
+                                      "children": [
+
+                                      ],
+                                      "attributes": {
+
+                                      },
+                                      "inline": false
+                                    },
+                                    {
+                                      "_id": "a8f16eaed-8de0-49ff-ad71-21a55f3c1834",
+                                      "value": "3",
+                                      "defaultOption": false,
+                                      "i18nText": {
+                                        "translations": {
+                                          "fi": "Ylempi ammattikorkeakoulututkinto",
+                                          "sv": "H\u00f6gre yrkesh\u00f6gskoleexamen",
+                                          "en": "Polytechnic\/UAS Master's degree"
+                                        }
+                                      },
+                                      "validators": [
+
+                                      ],
+                                      "children": [
+
+                                      ],
+                                      "attributes": {
+
+                                      },
+                                      "inline": false
+                                    },
+                                    {
+                                      "_id": "a032e7345-812c-44f8-94d3-844397f3e41b",
+                                      "value": "2",
+                                      "defaultOption": false,
+                                      "i18nText": {
+                                        "translations": {
+                                          "fi": "Alempi yliopistotutkinto (kandidaatti)",
+                                          "sv": "L\u00e4gre universitetsexamen (kandidat)",
+                                          "en": "Lower university degree (Bachelor's)"
+                                        }
+                                      },
+                                      "validators": [
+
+                                      ],
+                                      "children": [
+
+                                      ],
+                                      "attributes": {
+
+                                      },
+                                      "inline": false
+                                    }
+                                  ],
+                                  "i18nText": {
+                                    "translations": {
+                                      "fi": "Tutkintotaso"
+                                    }
+                                  },
+                                  "validators": [
+                                    {
+                                      "validValues": [
+                                        "4",
+                                        "3",
+                                        "2",
+                                        "5",
+                                        "1"
+                                      ],
+                                      "errorMessageKey": "yleinen.virheellinenarvo",
+                                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator"
+                                    },
+                                    {
+                                      "_id": null,
+                                      "errorMessageKey": "yleinen.pakollinen",
+                                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                    }
+                                  ],
+                                  "children": [
+
+                                  ],
+                                  "attributes": {
+                                    "required": "required"
+                                  },
+                                  "inline": true,
+                                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect"
+                                },
+                                {
+                                  "_id": "pohjakoulutus_kk_pvm4",
+                                  "i18nText": {
+                                    "translations": {
+                                      "fi": "Suoritusvuosi ja p\u00e4iv\u00e4m\u00e4\u00e4r\u00e4"
+                                    }
+                                  },
+                                  "validators": [
+                                    {
+                                      "_id": null,
+                                      "errorMessageKey": "yleinen.pakollinen",
+                                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                    }
+                                  ],
+                                  "children": [
+
+                                  ],
+                                  "attributes": {
+                                    "required": "required"
+                                  },
+                                  "inline": true,
+                                  "allowFutureDates": true,
+                                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"
+                                },
+                                {
+                                  "_id": "pohjakoulutus_kk_nimike4",
+                                  "i18nText": {
+                                    "translations": {
+                                      "fi": "Tutkintonimike"
+                                    }
+                                  },
+                                  "validators": [
+                                    {
+                                      "_id": null,
+                                      "errorMessageKey": "yleinen.pakollinen",
+                                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                    }
+                                  ],
+                                  "children": [
+
+                                  ],
+                                  "attributes": {
+                                    "required": "required"
+                                  },
+                                  "inline": true,
+                                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                                },
+                                {
+                                  "_id": "pohjakoulutus_kk_oppilaitos4",
+                                  "i18nText": {
+                                    "translations": {
+                                      "fi": "Korkeakoulu"
+                                    }
+                                  },
+                                  "validators": [
+                                    {
+                                      "_id": null,
+                                      "errorMessageKey": "yleinen.pakollinen",
+                                      "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "_id": "addKKtutkintoRule5",
+                                      "relatedElementId": "pohjakoulutus_kk_oppilaitos4",
+                                      "previousRules": [
+                                        "addKKtutkintoRule2",
+                                        "addKKtutkintoRule3",
+                                        "addKKtutkintoRule4"
+                                      ],
+                                      "text": {
+                                        "translations": {
+                                          "fi": "Lis\u00e4\u00e4 uusi pohjakoulutus",
+                                          "sv": "L\u00e4gg till ny grundutbildning",
+                                          "en": "Add new qualification"
+                                        }
+                                      },
+                                      "validators": [
+
+                                      ],
+                                      "children": [
+                                        {
+                                          "_id": "pohjakoulutus_kk_taso5",
+                                          "options": [
+                                            {
+                                              "_id": "abc98d18a-37a6-4583-afc1-22420b4b2dee",
+                                              "value": "4",
+                                              "defaultOption": false,
+                                              "i18nText": {
+                                                "translations": {
+                                                  "fi": "Ylempi yliopistotutkinto (maisteri)",
+                                                  "sv": "H\u00f6gre universitetsexamen (magister)",
+                                                  "en": "Higher university degree (Master's)"
+                                                }
+                                              },
+                                              "validators": [
+
+                                              ],
+                                              "children": [
+
+                                              ],
+                                              "attributes": {
+
+                                              },
+                                              "inline": false
+                                            },
+                                            {
+                                              "_id": "a8f16eaed-8de0-49ff-ad71-21a55f3c1834",
+                                              "value": "3",
+                                              "defaultOption": false,
+                                              "i18nText": {
+                                                "translations": {
+                                                  "fi": "Ylempi ammattikorkeakoulututkinto",
+                                                  "sv": "H\u00f6gre yrkesh\u00f6gskoleexamen",
+                                                  "en": "Polytechnic\/UAS Master's degree"
+                                                }
+                                              },
+                                              "validators": [
+
+                                              ],
+                                              "children": [
+
+                                              ],
+                                              "attributes": {
+
+                                              },
+                                              "inline": false
+                                            },
+                                            {
+                                              "_id": "a032e7345-812c-44f8-94d3-844397f3e41b",
+                                              "value": "2",
+                                              "defaultOption": false,
+                                              "i18nText": {
+                                                "translations": {
+                                                  "fi": "Alempi yliopistotutkinto (kandidaatti)",
+                                                  "sv": "L\u00e4gre universitetsexamen (kandidat)",
+                                                  "en": "Lower university degree (Bachelor's)"
+                                                }
+                                              },
+                                              "validators": [
+
+                                              ],
+                                              "children": [
+
+                                              ],
+                                              "attributes": {
+
+                                              },
+                                              "inline": false
+                                            }
+                                          ],
+                                          "i18nText": {
+                                            "translations": {
+                                              "fi": "Tutkintotaso"
+                                            }
+                                          },
+                                          "validators": [
+                                            {
+                                              "validValues": [
+                                                "4",
+                                                "3",
+                                                "2",
+                                                "5",
+                                                "1"
+                                              ],
+                                              "errorMessageKey": "yleinen.virheellinenarvo",
+                                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator"
+                                            },
+                                            {
+                                              "_id": null,
+                                              "errorMessageKey": "yleinen.pakollinen",
+                                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                            }
+                                          ],
+                                          "children": [
+
+                                          ],
+                                          "attributes": {
+                                            "required": "required"
+                                          },
+                                          "inline": true,
+                                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect"
+                                        },
+                                        {
+                                          "_id": "pohjakoulutus_kk_pvm5",
+                                          "i18nText": {
+                                            "translations": {
+                                              "fi": "Suoritusvuosi ja p\u00e4iv\u00e4m\u00e4\u00e4r\u00e4"
+                                            }
+                                          },
+                                          "validators": [
+                                            {
+                                              "_id": null,
+                                              "errorMessageKey": "yleinen.pakollinen",
+                                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                            }
+                                          ],
+                                          "children": [
+
+                                          ],
+                                          "attributes": {
+                                            "required": "required"
+                                          },
+                                          "inline": true,
+                                          "allowFutureDates": true,
+                                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"
+                                        },
+                                        {
+                                          "_id": "pohjakoulutus_kk_nimike5",
+                                          "i18nText": {
+                                            "translations": {
+                                              "fi": "Tutkintonimike"
+                                            }
+                                          },
+                                          "validators": [
+                                            {
+                                              "_id": null,
+                                              "errorMessageKey": "yleinen.pakollinen",
+                                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                            }
+                                          ],
+                                          "children": [
+
+                                          ],
+                                          "attributes": {
+                                            "required": "required"
+                                          },
+                                          "inline": true,
+                                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                                        },
+                                        {
+                                          "_id": "pohjakoulutus_kk_oppilaitos5",
+                                          "i18nText": {
+                                            "translations": {
+                                              "fi": "Korkeakoulu"
+                                            }
+                                          },
+                                          "validators": [
+                                            {
+                                              "_id": null,
+                                              "errorMessageKey": "yleinen.pakollinen",
+                                              "_class": "fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"
+                                            }
+                                          ],
+                                          "children": [
+
+                                          ],
+                                          "attributes": {
+                                            "required": "required"
+                                          },
+                                          "inline": true,
+                                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                                        }
+                                      ],
+                                      "attributes": {
+
+                                      },
+                                      "inline": false,
+                                      "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule"
+                                    }
+                                  ],
+                                  "attributes": {
+                                    "required": "required"
+                                  },
+                                  "inline": true,
+                                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                                }
+                              ],
+                              "attributes": {
+
+                              },
+                              "inline": false,
+                              "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule"
+                            }
+                          ],
+                          "attributes": {
+                            "required": "required"
+                          },
+                          "inline": true,
+                          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                        }
+                      ],
+                      "attributes": {
+
+                      },
+                      "inline": false,
+                      "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule"
+                    }
+                  ],
+                  "attributes": {
+                    "required": "required"
+                  },
+                  "inline": true,
+                  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+                }
+              ],
+              "attributes": {
+
+              },
+              "inline": false,
+              "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule"
+            }
+          ],
+          "attributes": {
+            "required": "required"
+          },
+          "inline": true,
+          "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"
+        }
+      ],
+      "attributes": {
+
+      },
+      "inline": false,
+      "_class": "fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule"
+    }
+  ],
+  "attributes": {
+
+  },
+  "inline": false,
+  "_class": "fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox"
+}
