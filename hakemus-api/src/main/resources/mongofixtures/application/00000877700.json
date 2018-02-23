@@ -1,0 +1,100 @@
+{
+    "_id": {
+        "$oid": "507f191e810c19729de860ea"
+    },
+    "type": "Application",
+    "applicationSystemId": "1.2.246.562.29.95390561488",
+    "answers": {
+        "henkilotiedot": {
+            "preference3-yoLiite": "true",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
+            "Sukunimi": "Kukkanen",
+            "sukupuoli": "1",
+            "turvakielto": "false",
+            "Kutsumanimi": "Uniikki",
+            "Etunimet": "Uniikki",
+            "onkoSinullaSuomalainenHetu": "true",
+            "matkapuhelinnumero1": "",
+            "Postinumero": "00100",
+            "lahiosoite": "Urho Kekkosen katu 7 B",
+            "Sähköposti": "",
+            "kotikunta": "020",
+            "aidinkieli": "FI",
+            "syntymaaika": "01.01.1901",
+            "koulusivistyskieli": "FI"
+        },
+        "lisatiedot": {
+            "asiointikieli": "suomi"
+        },
+        "hakutoiveet": {
+            "preference1-Koulutus": "Insinööri (AMK), rakennus- ja yhdyskuntatekniikka, monimuotototeutus",
+            "preference1-Koulutus-educationDegree": "koulutusasteoph2002_62",
+            "preference1-Koulutus-id": "1.2.246.562.20.16534505017",
+            "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.55111965838,1.2.246.562.28.47896794071",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-athlete": "false",
+            "preference1-Koulutus-id-attachmentgroups": "",
+            "preference1-Koulutus-id-attachments": "true",
+            "preference1-Koulutus-id-discretionary": "false",
+            "preference1-Koulutus-id-educationcode": "koulutus_651501",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference1-Koulutus-id-sora": "false",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_100",
+            "preference1-Opetuspiste": "Hämeen ammattikorkeakoulu, Hämeenlinna, Visamäki",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.94665834845"
+        },
+        "koulutustausta": {
+            "pohjakoulutus_kk": "true",
+            "pohjakoulutus_kk_taso": "1",
+            "pohjakoulutus_kk_pvm": "01.01.2000",
+            "pohjakoulutus_kk_nimike": "Insinööri",
+            "pohjakoulutus_kk_oppilaitos": "Haagan AMK",
+            "pohjakoulutus_kk_taso2": "1",
+            "pohjakoulutus_kk_pvm2": "01.01.2004",
+            "pohjakoulutus_kk_nimike2": "Maisteri",
+            "pohjakoulutus_kk_oppilaitos2": "Elämänkoulu",
+            "suoritusoikeus_tai_aiempi_tutkinto": "false",
+            "toisen_asteen_suoritusmaa": "FIN",
+            "toisen_asteen_suoritus": "true"
+        },
+        "osaaminen": {}
+    },
+    "oid": "1.2.246.562.11.00000877700",
+    "state": "ACTIVE",
+    "studentIdentificationDone": false,
+    "personOid": "1.2.246.562.24.14229104472",
+    "lastAutomatedProcessingTime": 1408697524747,
+    "received": 1407486044009,
+    "updated": 1410516893464,
+    "redoPostProcess": "DONE",
+    "fullName": "Kukkanen Uniikki",
+    "searchNames": [
+        "uniikki",
+        "kukkanen",
+        "kukka"
+    ],
+    "meta": {
+        "sessionId": "anonymousUser"
+    },
+    "overriddenAnswers": {
+        "sukupuoli": "1",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Timo",
+        "Etunimet": "Timo",
+        "Sukunimi": "Testaaja",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "010100A939R",
+        "syntymaaika": "01.01.1901"
+    },
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1407486044009,
+            "user": "anonymousUser"
+        }
+    ]
+}
