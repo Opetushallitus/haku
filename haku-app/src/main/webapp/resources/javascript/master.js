@@ -349,7 +349,9 @@ var complexRule = {
                         }
                     }
                     if (bind == true) {
-                        question.on('change paste keyup input', ruleData, complexRule.refreshView);
+                        var refreshShouldBeDelayed = question[0].type === 'text';
+                        var refresh = refreshShouldBeDelayed ? _.throttle(function(event) { complexRule.refreshView(event); }, 500) : complexRule.refreshView;
+                        question.on('change paste keyup input', ruleData, refresh);
                     }
                 } else {
                     question.on('change paste keyup input', ruleData, complexRule.refreshView);
