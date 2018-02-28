@@ -281,7 +281,7 @@ var complexRule = {
         $.ajax({
             type: 'POST',
             url: complexRule.url(),
-            async: false,
+            async: true,
             data: mergedRequest,
 
             success: complexRule.doPostResult,
