@@ -286,7 +286,7 @@ var complexRule = {
 
             success: complexRule.doPostResult,
             error: function (e, ts, et) {
-                //console.log("refresh view error" + ts);
+                console.log("refresh view error", e, ts, et);
             }
         });
     },
