@@ -281,12 +281,12 @@ var complexRule = {
         $.ajax({
             type: 'POST',
             url: complexRule.url(),
-            async: false,
+            async: true,
             data: mergedRequest,
 
             success: complexRule.doPostResult,
             error: function (e, ts, et) {
-                //console.log("refresh view error" + ts);
+                console.log("refresh view error", e, ts, et);
             }
         });
     },
@@ -349,35 +349,22 @@ var complexRule = {
                         }
                     }
                     if (bind == true) {
-                        var delayedRefresh = question[0].type === 'text';
-                        question.on('change paste keyup input', ruleData, complexRule.refreshView(delayedRefresh));
+                        var refreshShouldBeDelayed = question[0].type === 'text';
+                        var refresh = refreshShouldBeDelayed ? _.throttle(function(event) { complexRule.refreshView(event); }, 500) : complexRule.refreshView;
+                        question.on('change paste keyup input', ruleData, refresh);
                     }
                 } else {
-                    question.on('change paste keyup input', ruleData, complexRule.refreshView());
+                    question.on('change paste keyup input', ruleData, complexRule.refreshView);
                 }
             }
         }
     },
 
-    timeout: undefined,
-    refreshView: function (delayedRefresh) {
-        if (delayedRefresh) {
-            return function (event) {
-                if (complexRule.timeout) {
-                    clearTimeout(complexRule.timeout);
-                }
-                complexRule.timeout = setTimeout(function () {
-                    complexRule.bus.push(event.data.ruleId)
-                }, 500) // wait 500ms before refresh
-            }
-        } else {
-            return function (event) {
-                complexRule.bus.push(event.data.ruleId)
-            }
-        }
+    refreshView: function (event) {
+        complexRule.bus.push(event.data.ruleId);
     }
 };
-complexRule.initBus();
+complexRule.initBus()
 
 window.elementAdder = {
     toggleAddRemoveButtons: function(el) {
