@@ -109,7 +109,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
         Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
                 applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), false, true);
 
-        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertEquals(23, applicationsByPersonOids.get(PERSON1_OID).size());
         assertNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
         assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
     }
@@ -122,7 +122,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
         Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
                 applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), true, true);
 
-        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertEquals(23, applicationsByPersonOids.get(PERSON1_OID).size());
         assertNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
         assertEquals(1, applicationsByPersonOids.get(PERSON2_OID).size());
     }
@@ -135,7 +135,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
         Map<String, Collection<Map<String, Object>>> applicationsByPersonOids =
                 applicationResource.findApplicationsByPersonOid(Sets.newHashSet(PERSON1_OID, PERSON2_OID), true, false);
 
-        assertEquals(22, applicationsByPersonOids.get(PERSON1_OID).size());
+        assertEquals(23, applicationsByPersonOids.get(PERSON1_OID).size());
         assertTrue(applicationsByPersonOids.get(PERSON1_OID) != null);
         assertTrue(applicationsByPersonOids.get(PERSON2_OID) != null);
         assertNotNull(getHenkilotunnus(applicationsByPersonOids.get(PERSON1_OID)));
