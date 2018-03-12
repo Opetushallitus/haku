@@ -948,7 +948,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             preferenceEligibility.setRejectionBasis(newRejectionBasis);
         }
         if (!newChecked.equals(preferenceChecked.isChecked())) {
-            changesBuilder.updated("rejectionBasis", preferenceChecked.getChecked().toString(), newChecked.toString());
+            changesBuilder.updated("checkedByOfficer", preferenceChecked.getChecked().toString(), newChecked.toString());
             preferenceChecked.setChecked(newChecked);
             if (newChecked) {
                 preferenceChecked.setCheckedByOfficerOid(officerOid);

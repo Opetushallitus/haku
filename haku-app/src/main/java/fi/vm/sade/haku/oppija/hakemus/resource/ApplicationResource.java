@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -601,9 +602,8 @@ public class ApplicationResource {
                             .setField("hakemusOid", applicationAdditionalDataDTO.getOid())
                             .build();
                     Changes.Builder changesBuilder = new Changes.Builder();
-                    for (Map.Entry<String, String> entry : applicationAdditionalDataDTO.getAdditionalData().entrySet()) {
-                        changesBuilder.added(entry.getKey(),entry.getValue());
-                    }
+                    Gson g = new Gson();
+                    changesBuilder.added("applicationAdditionalDataDTO", g.toJson(applicationAdditionalDataDTO));
                     auditLogRequest(HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
                 }
             }
@@ -629,9 +629,8 @@ public class ApplicationResource {
                             .setField("hakemusOid", applicationAdditionalDataDTO.getOid())
                             .build();
                     Changes.Builder changesBuilder = new Changes.Builder();
-                    for (Map.Entry<String, String> entry : applicationAdditionalDataDTO.getAdditionalData().entrySet()) {
-                        changesBuilder.added(entry.getKey(),entry.getValue());
-                    }
+                    Gson g = new Gson();
+                    changesBuilder.added("applicationAdditionalDataDTO", g.toJson(applicationAdditionalDataDTO));
                     auditLogRequest(HakuOperation.SAVE_ADDITIONAL_DATA, target, changesBuilder.build());
                 }
             }
