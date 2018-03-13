@@ -20,11 +20,7 @@ import static com.google.common.collect.Maps.filterKeys;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_BASE_EDUCATION;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.KESKEYTYNYT;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_DISCRETIONARY;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import com.google.common.collect.Multimaps;
@@ -89,7 +85,9 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -947,7 +945,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
             checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
-            removeDiscretionaryFlagFromKoulutuksesIfApplicantHasValmisPohjatutkinto(application, hakutoiveetAnswers);
+            removeDiscretionaryFlagFromKoulutuksesIfApplicantHasValmisPohjatutkinto(application, hakutoiveetAnswers, as);
         }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
 
@@ -972,8 +970,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private boolean checkSureForValmisAndVahvistettuKomoSuoritus(String personOid, String komoId) {
-        Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>();
+    private boolean checkSureForValmisAndVahvistettuKomoSuoritus(String personOid, String komoId, ApplicationSystem as) {
+        Map<String, List<SuoritusDTO>> suoritukset;
         try {
             suoritukset = suoritusrekisteriService.getSuoritukset(personOid, komoId);
             LOGGER.info(String.format("Saatiin suresta suoritukset: %s", suoritukset));
@@ -984,18 +982,18 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (suoritukset != null && !suoritukset.isEmpty()) {
             List<SuoritusDTO> pkSuoritukset = suoritukset.get(komoId);
             for (SuoritusDTO suoritus : pkSuoritukset) {
-                if (SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila()) && suoritus.getVahvistettu()) {
+                if (SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila()) && suoritus.getVahvistettu() && hakukaudella(suoritus, as)) {
                     return true;
                 } else {
-                    LOGGER.info("Ehdot eivät täyttyneet suoritukselle: " + suoritus);
+                    //LOGGER.info("Ehdot eivät täyttyneet suoritukselle: " + suoritus);
                 }
             }
         }
         return false;
     }
 
-    private void removeDiscretionaryFlagFromKoulutuksesIfApplicantHasValmisPohjatutkinto(final Application application, Map<String, String> hakutoiveetAnswers) {
-        if(checkSureForValmisAndVahvistettuKomoSuoritus(application.getPersonOid(), SuoritusrekisteriService.PERUSOPETUS_KOMO)) {
+    private void removeDiscretionaryFlagFromKoulutuksesIfApplicantHasValmisPohjatutkinto(final Application application, Map<String, String> hakutoiveetAnswers, ApplicationSystem as) {
+        if(checkSureForValmisAndVahvistettuKomoSuoritus(application.getPersonOid(), SuoritusrekisteriService.PERUSOPETUS_KOMO, as)) {
             LOGGER.info(String.format("(Hakemus %s ) : Valmis ja vahvistettu peruskoulusuoritus löytyi suresta", application.getOid()));
             removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application.getOid(), hakutoiveetAnswers);
         } else {
@@ -1074,5 +1072,22 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ResourceNotFoundException("User " + authenticationService.getCurrentHenkilo().getPersonOid() + " is not allowed to read application " + application.getOid());
         }
         return application;
+    }
+
+    private static boolean hakukaudella(SuoritusDTO suoritus, ApplicationSystem as) {
+        DateTime valmistuminen = new DateTime(suoritus.getValmistuminen());
+        int hakuvuosi = as.getHakukausiVuosi();
+        DateTime kStart = new DateTime(hakuvuosi, 1, 1, 0, 0).minus(1);
+        DateTime kEnd = new DateTime(hakuvuosi, 7, 31, 0, 0).plusDays(1);
+        DateTime sStart = new DateTime(hakuvuosi, 8, 1, 0, 0).minus(1);
+        DateTime sEnd = new DateTime(hakuvuosi, 12, 31, 0, 0).plusDays(1);
+        switch (as.getHakukausiUri()) {
+            case HAKUKAUSI_KEVAT:
+                return valmistuminen.isAfter(kStart) && valmistuminen.isBefore(kEnd);
+            case HAKUKAUSI_SYKSY:
+                return valmistuminen.isAfter(sStart) && valmistuminen.isBefore(sEnd);
+            default:
+                throw new RuntimeException(String.format("Tuntematon hakukausi %s", as.getHakukausiUri()));
+        }
     }
 }
