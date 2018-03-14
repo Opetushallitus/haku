@@ -39,4 +39,6 @@ public interface SuoritusrekisteriService {
     List<String> getChanges(String komoOid, Date since);
 
     Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid);
+
+    List<SuoritusDTO> getSuorituksetAsList(String personOid);
 }

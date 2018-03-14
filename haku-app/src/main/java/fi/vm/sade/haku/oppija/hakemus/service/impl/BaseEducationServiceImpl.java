@@ -74,13 +74,12 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             List<OpiskelijaDTO> validOpiskelijatiedot = opiskelijatiedot.stream()
                     .filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid()))
                     .collect(Collectors.toList());
-            Map<String, List<SuoritusDTO>> suoritustiedot = suoritusrekisteriService.getSuoritukset(personOid, "");
+            List<SuoritusDTO> suoritustiedot = suoritusrekisteriService.getSuorituksetAsList(personOid);
 
             //Yritetään ensin tuoreilla kesken olevilla luokkatiedoilla, sitten kaikilla ei-keskeytyneillä ja lopuksi kaikilla keskeytyneillä
             List<OpiskelijaDTO> tuoreetOpiskelijatiedot = validOpiskelijatiedot.stream().filter(o -> o.getLoppuPaiva().after(hakukausiStart)).collect(Collectors.toList());
             LOGGER.info("Jälkikäsittely - tuoreita opiskelijatietoja " + tuoreetOpiskelijatiedot.size());
-            //OpiskelijaDTO opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, false);
-            OpiskelijaDTO opiskelija = null;
+            OpiskelijaDTO opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, false);
             if (opiskelija == null) {
                 opiskelija = selectPreferredLuokkatieto(validOpiskelijatiedot, suoritustiedot, false);
                 if (opiskelija == null) {
@@ -108,17 +107,13 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     //    V	vammaisten valmentava ja kuntouttava opetus ja ohjaus
     //    VALMA	ammatilliseen peruskoulutukseen valmentava koulutus
 
-    private OpiskelijaDTO selectPreferredLuokkatieto(List<OpiskelijaDTO> opiskelijaDTOs, Map<String, List<SuoritusDTO>> suorituksetByKomoOids, boolean keskeytyneetSuorituksetOk) {
+    private OpiskelijaDTO selectPreferredLuokkatieto(List<OpiskelijaDTO> opiskelijaDTOs, List<SuoritusDTO> kaikkiSuoritukset, boolean keskeytyneetSuorituksetOk) {
         if (opiskelijaDTOs.isEmpty()) {
             return null;
         }
         //Preferenssijärjestys. Jos halutuimpia luokkatietoja löytyy tasan yksi, palautetaan se. Jos niitä löytyy useampia, kyseessä virhetilanne. Jos 0, siirrytään seuraavaan.
         List<String> luokkatasotJarj = Arrays.asList("10", "VALMA", "TELMA", "ML", "9", "AK", "L");
-        List<SuoritusDTO> kaikkiSuoritukset = new ArrayList<SuoritusDTO>();
-        for (List<SuoritusDTO> suoritukset : suorituksetByKomoOids.values()) {
-            LOGGER.info("Jälkikäsittely - size: " + suoritukset.size());
-            kaikkiSuoritukset = ListUtils.union(kaikkiSuoritukset, suoritukset);
-        }
+
         LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Suorituksia yhteensä %s kpl.", opiskelijaDTOs.get(0).getHenkiloOid(), kaikkiSuoritukset.size()));
 
         OpiskelijaDTO found = null;
