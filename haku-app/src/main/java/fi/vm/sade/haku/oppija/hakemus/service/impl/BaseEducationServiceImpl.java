@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.collections.ListUtils;
@@ -73,6 +74,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             Date hakukausiStart = resolveHakukausiStart(as);
             List<OpiskelijaDTO> validOpiskelijatiedot = opiskelijatiedot.stream()
                     .filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid()))
+                    .filter(o -> o.getLoppuPaiva() != null)
                     .collect(Collectors.toList());
             List<SuoritusDTO> suoritustiedot = suoritusrekisteriService.getSuorituksetAsList(personOid);
 
@@ -85,6 +87,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 if (opiskelija == null) {
                     opiskelija = selectPreferredLuokkatieto(validOpiskelijatiedot, suoritustiedot, true);
                 }
+            }
+            if (opiskelija != null) {
+                LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) Löydettiin yksiselitteinen luokkatieto, oppilaitos: %s.", opiskelija.getHenkiloOid(), opiskelija.getOppilaitosOid()));
+            } else {
+                LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) Ei löydetty soveltuvaa luokkatietoa Suresta.", opiskelija.getHenkiloOid()));
             }
 
             Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(PHASE_EDUCATION));
@@ -126,13 +133,15 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 for (OpiskelijaDTO luokkatieto : oikeantasoisetLuokkatiedot) {
                     String suorituksenTila = getSuorituksenTilaForLuokkatieto(luokkatieto, kaikkiSuoritukset);
                     if (suorituksenTila.isEmpty() || suorituksenTila.equals("TUNTEMATON")) {
-                        LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) : Luokkatiedon tilan selvittämisessä oli ongelmia. Tila: ", luokkatieto.getHenkiloOid(), suorituksenTila));
+                        LOGGER.error(String.format("Jälkikäsittely - (Henkilö %s) : Luokkatiedon tilan selvittämisessä oli ongelmia. Tila: ", luokkatieto.getHenkiloOid(), suorituksenTila));
+                        throw new ResourceNotFoundException("Luokkatiedon tilan selvittäminen ei onnistunut yksiselitteisesti.");
                     } else if (keskeytyneetSuorituksetOk == suorituksenTila.equals("KESKEYTYNYT")) {
                         if (found == null) {
                             found = luokkatieto;
                         } else {
-                            LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) : Palautetaan luokkatiedoksi null, koska soveltuvia luokkatietoja oli enemmän kuin yksi.", luokkatieto.getHenkiloOid()));
-                            return null;
+                            LOGGER.error(String.format("Jälkikäsittely - (Henkilö %s) : Palautetaan luokkatiedoksi null, koska soveltuvia luokkatietoja oli enemmän kuin yksi.", luokkatieto.getHenkiloOid()));
+                            throw new ResourceNotFoundException("Soveltuvia luokkatietoja oli enemmän kuin yksi.");
+
                         }
                     }
                 }
