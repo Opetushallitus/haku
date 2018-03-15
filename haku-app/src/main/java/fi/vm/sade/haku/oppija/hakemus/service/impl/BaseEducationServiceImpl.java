@@ -74,12 +74,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             Date hakukausiStart = resolveHakukausiStart(as);
             List<OpiskelijaDTO> validOpiskelijatiedot = opiskelijatiedot.stream()
                     .filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid()))
-                    .filter(o -> o.getLoppuPaiva() != null)
                     .collect(Collectors.toList());
             List<SuoritusDTO> suoritustiedot = suoritusrekisteriService.getSuorituksetAsList(personOid);
 
             //Yritetään ensin tuoreilla kesken olevilla luokkatiedoilla, sitten kaikilla ei-keskeytyneillä ja lopuksi kaikilla keskeytyneillä
-            List<OpiskelijaDTO> tuoreetOpiskelijatiedot = validOpiskelijatiedot.stream().filter(o -> o.getLoppuPaiva().after(hakukausiStart)).collect(Collectors.toList());
+            List<OpiskelijaDTO> tuoreetOpiskelijatiedot = validOpiskelijatiedot.stream().filter(o -> o.getLoppuPaiva() != null && o.getLoppuPaiva().after(hakukausiStart)).collect(Collectors.toList());
             LOGGER.info("Jälkikäsittely - tuoreita opiskelijatietoja " + tuoreetOpiskelijatiedot.size());
             OpiskelijaDTO opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, false);
             if (opiskelija == null) {
@@ -91,7 +90,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             if (opiskelija != null) {
                 LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) Löydettiin yksiselitteinen luokkatieto, oppilaitos: %s.", opiskelija.getHenkiloOid(), opiskelija.getOppilaitosOid()));
             } else {
-                LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) Ei löydetty soveltuvaa luokkatietoa Suresta.", opiskelija.getHenkiloOid()));
+                LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) Ei löydetty soveltuvaa luokkatietoa Suresta.", personOid));
             }
 
             Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(PHASE_EDUCATION));
