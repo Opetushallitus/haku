@@ -999,7 +999,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             LOGGER.info(String.format("(Hakemus %s ) : Valmis ja vahvistettu peruskoulusuoritus löytyi suresta", application.getOid()));
             removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application.getOid(), hakutoiveetAnswers);
         } else {
-            LOGGER.info(String.format("(Hakemus %s ) : Ei löydetty soveltuvaa pohjakoulutusta suresta hakemukselle.", application.getOid()));
+            //LOGGER.info(String.format("(Hakemus %s ) : Ei löydetty soveltuvaa pohjakoulutusta suresta hakemukselle.", application.getOid()));
         }
     }
 

@@ -122,6 +122,33 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     @Override
+    public List<SuoritusDTO> getSuorituksetAsList(String personOid) {
+        String response;
+        try {
+            InputStream is = getCachingRestClient().get(buildSuoritusUrl(personOid, "", null));
+            response = IOUtils.toString(is);
+        } catch (IOException e) {
+            log.error("Fetching suoritukset failed: {}", e);
+            throw new ResourceNotFoundException("Fetching suoritukset failed", e);
+        }
+
+        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
+        List<SuoritusDTO> suor = new ArrayList<>(1);
+        for (JsonElement elem : elements) {
+            SuoritusDTO suoritus = suoritusGson.fromJson(elem, SuoritusDTO.class);
+
+            if (!SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila())
+                    && !SuoritusDTO.TILA_KESKEN.equals(suoritus.getTila())
+                    && !SuoritusDTO.TILA_KESKEYTYNYT.equals(suoritus.getTila())) {
+                continue;
+            }
+            suor.add(suoritus);
+        }
+
+        return suor;
+    }
+
+    @Override
     public List<String> getChanges(String komoOid, Date since) {
         String response;
         try {
