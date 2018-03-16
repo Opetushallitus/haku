@@ -149,11 +149,15 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 }
             }
         }
-        return found;
+        return null;
     }
 
     private String getSuorituksenTilaForLuokkatieto(OpiskelijaDTO luokkatieto, List<SuoritusDTO> suoritukset) {
-        List<SuoritusDTO> found = suoritukset.stream().filter(s -> s.getVahvistettu() && s.getMyontaja().equals(luokkatieto.getOppilaitosOid())).collect(Collectors.toList());
+        List<SuoritusDTO> found = suoritukset.stream()
+                .filter(s -> (luokkatieto.getLoppuPaiva() == null || s.getValmistuminen() == null) || luokkatieto.getLoppuPaiva().equals(s.getValmistuminen()))
+                .filter(s -> s.getMyontaja().equals(luokkatieto.getOppilaitosOid()))
+                .filter(SuoritusDTO::getVahvistettu)
+                .collect(Collectors.toList());
         if (found.size() == 1) {
             LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), found.get(0).getTila()));
             return found.get(0).getTila();
