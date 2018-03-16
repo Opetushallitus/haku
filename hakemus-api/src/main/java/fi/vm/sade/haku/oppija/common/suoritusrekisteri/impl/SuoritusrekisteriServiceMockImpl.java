@@ -25,13 +25,13 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     }
 
     public List<SuoritusDTO> getSuorituksetAsList(String personOid) {
+        List<SuoritusDTO> suor = new ArrayList<>(1);
         Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
         final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "myontaja", "KESKEN",
                 tomorrow, personOid, "Ei", "FI", "source", true);
-
-        suoritukset.put("1.2.246.562.13.62959769647", new ArrayList<SuoritusDTO>() {{ add(suoritus); }});
-        return null;
+        suor.add(suoritus);
+        return suor;
     }
 
     @Override
