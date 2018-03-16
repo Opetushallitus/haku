@@ -13,11 +13,12 @@ import java.util.*;
 public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriService {
 
     private static final long ONE_DAY = 24 * 60 * 60 * 1000;
+    private final Date endDate = tomorrow();
 
     private Map<String, List<SuoritusDTO>> getSuoritukset(String personOid) {
         Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
-        final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "myontaja", "KESKEN",
+        final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "oppilaitos", "KESKEN",
                 tomorrow, personOid, "Ei", "FI", "source", true);
 
         suoritukset.put("1.2.246.562.13.62959769647", new ArrayList<SuoritusDTO>() {{ add(suoritus); }});
@@ -28,8 +29,8 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
         List<SuoritusDTO> suor = new ArrayList<>(1);
         Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
-        final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "myontaja", "KESKEN",
-                tomorrow, personOid, "Ei", "FI", "source", true);
+        final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "oppilaitos", "KESKEN",
+                endDate, personOid, "Ei", "FI", "source", true);
         suor.add(suoritus);
         return suor;
     }
@@ -37,7 +38,7 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     @Override
     public List<OpiskelijaDTO> getOpiskelijatiedot(String personOid) {
         List<OpiskelijaDTO> suoritukset = new ArrayList<>(1);
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("opiskelijaId", "oppilaitos", "9", "9A", personOid, yesterday(), tomorrow(), "source");
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("opiskelijaId", "oppilaitos", "9", "9A", personOid, yesterday(), endDate, "source");
         suoritukset.add(opiskelija);
         return suoritukset;
     }
