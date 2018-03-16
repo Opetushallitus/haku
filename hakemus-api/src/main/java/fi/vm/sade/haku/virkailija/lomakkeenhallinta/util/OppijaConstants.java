@@ -141,6 +141,7 @@ public final class OppijaConstants {
 
     public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
     public static final String PREFERENCE_FRAGMENT_DISCRETIONARY = "discretionary";
+    public static final String DISCRETIONARY_AUTOMATIC = "discretionary_automatic";
 
     public static final String NATIONALITY_CODE_FI = "FIN";
     public static final String ULKOMAINEN_TUTKINTO = "0";

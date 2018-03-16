@@ -140,7 +140,6 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                         } else {
                             LOGGER.error(String.format("Jälkikäsittely - (Henkilö %s) : Palautetaan luokkatiedoksi null, koska soveltuvia luokkatietoja oli enemmän kuin yksi.", luokkatieto.getHenkiloOid()));
                             throw new ResourceNotFoundException("Soveltuvia luokkatietoja oli enemmän kuin yksi.");
-
                         }
                     }
                 }
