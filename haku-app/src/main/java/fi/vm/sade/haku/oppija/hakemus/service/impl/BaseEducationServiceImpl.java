@@ -153,25 +153,32 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     }
 
     private String getSuorituksenTilaForLuokkatieto(OpiskelijaDTO luokkatieto, List<SuoritusDTO> suoritukset) {
-        List<SuoritusDTO> found = suoritukset.stream()
+        List<SuoritusDTO> foundMatchingOppilaitosOnly = suoritukset.stream()
+                .filter(s -> s.getMyontaja().equals(luokkatieto.getOppilaitosOid()))
+                .filter(SuoritusDTO::getVahvistettu)
+                .collect(Collectors.toList());
+        List<SuoritusDTO> foundMatchingOppilaitosAndLoppupaiva = suoritukset.stream()
                 .filter(s -> (luokkatieto.getLoppuPaiva() == null || s.getValmistuminen() == null) || luokkatieto.getLoppuPaiva().equals(s.getValmistuminen()))
                 .filter(s -> s.getMyontaja().equals(luokkatieto.getOppilaitosOid()))
                 .filter(SuoritusDTO::getVahvistettu)
                 .collect(Collectors.toList());
-        if (found.size() == 1) {
-            LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), found.get(0).getTila()));
-            return found.get(0).getTila();
-        } else if (found.size() > 1 ) {
+        if (foundMatchingOppilaitosOnly.size() == 1) {
+            LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), foundMatchingOppilaitosOnly.get(0).getTila()));
+            return foundMatchingOppilaitosOnly.get(0).getTila();
+        } else if (foundMatchingOppilaitosAndLoppupaiva.size() == 1) {
+            LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus oikealla päivämäärällä löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), foundMatchingOppilaitosAndLoppupaiva.get(0).getTila()));
+            return foundMatchingOppilaitosAndLoppupaiva.get(0).getTila();
+        } else if (foundMatchingOppilaitosOnly.size() > 1 ) {
             LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) : Sopivia suorituksia löytyi useita luokkatiedolle oppilaitoksessa %s. Tämä saattaa olla ongelma, mutta palautetaan kuitenkin niiden tila jos se sattuu olemaan kaikille sama.", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid()));
-            for (SuoritusDTO s : found) {
-                if (!found.get(0).getTila().equals(s.getTila())) {
+            for (SuoritusDTO s : foundMatchingOppilaitosOnly) {
+                if (!foundMatchingOppilaitosOnly.get(0).getTila().equals(s.getTila())) {
                     return "TUNTEMATON";
                 }
             }
-            return found.get(0).getTila();
+            return foundMatchingOppilaitosOnly.get(0).getTila();
         } else {
             return "TUNTEMATON";
-            //throw new ResourceNotFoundException(String.format("Opiskelijalle %s ei löytynyt yksiselitteistä luokkatietoa %s vastaavaa suoritusta. Sopivia suorituksia löytyi %s kpl.", luokkatieto.getHenkiloOid(), luokkatieto.toString(), found.size()));
+            //throw new ResourceNotFoundException(String.format("Opiskelijalle %s ei löytynyt yksiselitteistä luokkatietoa %s vastaavaa suoritusta. Sopivia suorituksia löytyi %s kpl.", luokkatieto.getHenkiloOid(), luokkatieto.toString(), foundMatchingOppilaitosAndLoppupaiva.size()));
         }
     }
 
