@@ -944,7 +944,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
-            checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
+            changeKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
             removeDiscretionaryFlagFromKoulutuksesIfItWasSetAutomaticallyAndApplicantHasValmisPohjatutkinto(application, hakutoiveetAnswers, as);
         }
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
@@ -1006,12 +1006,26 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
-    private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
+    private boolean checkIfDiscretionarityIsAlreadySet(Map<String,String> hakutoiveetAnswers) {
+        for (int i = 1; i< 20; i++) {
+            final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
+            if (hakutoiveetAnswers.getOrDefault(discretionary, "not_found").equals("true")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void changeKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
         final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
         if (onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers)) {
-            LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - setting hakutoiveetAnswers.DISCRETIONARY_AUTOMATIC -> %s", application.getOid(), DISCRETIONARY_AUTOMATIC_TRUE));
-            hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
-            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+            if (checkIfDiscretionarityIsAlreadySet(hakutoiveetAnswers)) {
+                LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - ei aseteta automaattista harkinnanvaraisuutta päälle, koska harkinnanvaraisuus on jo päällä ei-automaattisena.", application.getOid()));
+            } else {
+                LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - setting hakutoiveetAnswers.DISCRETIONARY_AUTOMATIC -> %s", application.getOid(), DISCRETIONARY_AUTOMATIC_TRUE));
+                hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
+                updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+            }
         }
     }
 
