@@ -1009,9 +1009,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     private void changeKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
         final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
         if (onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers)) {
-                LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - setting hakutoiveetAnswers.DISCRETIONARY_AUTOMATIC -> %s", application.getOid(), DISCRETIONARY_AUTOMATIC_TRUE));
-                hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
-                updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
+            LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - setting hakutoiveetAnswers.DISCRETIONARY_AUTOMATIC -> %s", application.getOid(), DISCRETIONARY_AUTOMATIC_TRUE));
+            hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
+            final ApplicationNote note = new ApplicationNote("Asetettu hakemukselle automaattinen harkinnanvaraisuus, koska hakijalla on joko keskeytynyt tai ulkomainen tutkinto.", new Date(), "jälkikäsittely");
+            application.addNote(note);
+            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
         }
     }
 
@@ -1022,7 +1024,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
                 final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
                 if (hakutoiveetAnswers.containsKey(followUp) && HakutoiveetPhase.TODISTUSTENPUUTTUMINEN.equals(hakutoiveetAnswers.get(followUp))) {
-                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - poistetaan tieto harkinnanvaraisuudesta", oid, discretionary));
+                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - poistetaan tieto harkinnanvaraisuudesta", oid));
                     hakutoiveetAnswers.remove(followUp);
                     hakutoiveetAnswers.remove(discretionary);
                 } else {
