@@ -20,11 +20,7 @@ import static com.google.common.collect.Maps.filterKeys;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_BASE_EDUCATION;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_PERSON_OID;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.KESKEYTYNYT;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_DISCRETIONARY;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ULKOMAINEN_TUTKINTO;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import com.google.common.collect.Multimaps;
@@ -90,6 +86,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -635,6 +632,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             questions.addAll(OppijaConstants.SENDING_SCHOOL_ELEMENT_IDS);
             questions.addAll(OppijaConstants.HENKILOTUNNUS_BASED_ELEMENT_IDS);
             questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
+            questions.add(OppijaConstants.DISCRETIONARY_AUTOMATIC);
 
             for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
                 String phaseId = phase.getKey();
@@ -945,14 +943,27 @@ public class ApplicationServiceImpl implements ApplicationService {
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
-            checkKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
-            removeDiscretionaryFlagFromKoulutuksesIfApplicantHasValmisPohjatutkinto(application, hakutoiveetAnswers);
+
+        boolean pohjakoulutusKeskenTaiUlkomainenTutkinto;
+        Application applicationWithValintaData = null;
+        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
+            applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
+            pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto(applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
+            LOGGER.info(String.format("Jälkikäsittely - hakemus %s : keskentaiulkomainen: %s", application.getOid(), pohjakoulutusKeskenTaiUlkomainenTutkinto));
+        } else {
+            pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto((application.getAnswers().get(OppijaConstants.PHASE_EDUCATION)));
         }
+        if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
+            if (pohjakoulutusKeskenTaiUlkomainenTutkinto) {
+                updateKoulutusToDiscretionary(application, hakutoiveetAnswers);
+            } else if (hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE)) {
+                removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application, hakutoiveetAnswers);
+            }
+        }
+
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
 
-        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
-            Application applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
+        if (applicationWithValintaData != null) {
             application = removeOrphanedAnswers(application, applicationWithValintaData);
             ValidationResult validationResult = validateApplication(applicationWithValintaData);
             if (validationResult.hasErrors()) {
@@ -972,67 +983,35 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private boolean checkSureForValmisAndVahvistettuKomoSuoritus(String personOid, String komoId) {
-        Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>();
-        try {
-            suoritukset = suoritusrekisteriService.getSuoritukset(personOid, komoId);
-            LOGGER.info(String.format("Saatiin suresta suoritukset: %s", suoritukset));
-        } catch (Exception e) {
-            LOGGER.error("Jokin meni vikaan sure-tietojen haussa: ", e);
-            throw e;
-        }
-        if (suoritukset != null && !suoritukset.isEmpty()) {
-            List<SuoritusDTO> pkSuoritukset = suoritukset.get(komoId);
-            for (SuoritusDTO suoritus : pkSuoritukset) {
-                if (SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila()) && suoritus.getVahvistettu()) {
-                    return true;
-                } else {
-                    LOGGER.info("Ehdot eivät täyttyneet suoritukselle: " + suoritus);
-                }
-            }
-        }
-        return false;
-    }
-
-    private void removeDiscretionaryFlagFromKoulutuksesIfApplicantHasValmisPohjatutkinto(final Application application, Map<String, String> hakutoiveetAnswers) {
-        if(checkSureForValmisAndVahvistettuKomoSuoritus(application.getPersonOid(), SuoritusrekisteriService.PERUSOPETUS_KOMO)) {
-            LOGGER.info(String.format("(Hakemus %s ) : Valmis ja vahvistettu peruskoulusuoritus löytyi suresta", application.getOid()));
-            removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application.getOid(), hakutoiveetAnswers);
-        } else {
-            //LOGGER.info(String.format("(Hakemus %s ) : Ei löydetty soveltuvaa pohjakoulutusta suresta hakemukselle.", application.getOid()));
-        }
-    }
-
-    private void checkKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
-        final Map<String, String> koulutustaustaAnswers = application.getAnswers().get(OppijaConstants.PHASE_EDUCATION);
-        if (onkoKeskeytynytTaiUlkomainenTutkinto(koulutustaustaAnswers)) {
-            updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
-        }
-    }
-
-    private void removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason (String oid, Map<String, String> hakutoiveetAnswers) {
+    private void removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason (Application application, Map<String, String> hakutoiveetAnswers) {
+        LOGGER.info(String.format("Jälkikäsittely - hakemus %s : Poistetaan automaattinen harkinnanvaraisuus", application.getOid()));
+        application.addNote(new ApplicationNote("Poistettu aiemmin automaattisesti asetettu harkinnanvaraisuus", new Date(), "jälkikäsittely"));
         for (int i = 1; i < 20; i++) {
             if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
                 final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
                 final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
                 if (hakutoiveetAnswers.containsKey(followUp) && HakutoiveetPhase.TODISTUSTENPUUTTUMINEN.equals(hakutoiveetAnswers.get(followUp))) {
-                    updateAndLog(oid, hakutoiveetAnswers, discretionary, "false");
-                    LOGGER.info(String.format("(Hakemus %s ) : Asetetaan %s = false sekä poistetaan syy", oid, discretionary));
+                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - poistetaan tieto harkinnanvaraisuudesta", application.getOid()));
                     hakutoiveetAnswers.remove(followUp);
+                    hakutoiveetAnswers.remove(discretionary);
+                    hakutoiveetAnswers.remove(DISCRETIONARY_AUTOMATIC);
                 } else {
-                    LOGGER.info(String.format("(Hakemus %s ) : Ei poisteta harkinnanvaraisuutta, koska syynä ei ollut todistusten puuttuminen.", oid));
+                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - ei poisteta harkinnanvaraisuutta, koska syynä ei ollut todistusten puuttuminen.", application.getOid()));
                 }
             }
         }
     }
 
-    private void updateKoulutusToDiscretionary(String oid, Map<String, String> hakutoiveetAnswers) {
+    private void updateKoulutusToDiscretionary(Application application, Map<String, String> hakutoiveetAnswers) {
+        LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - asetetaan automaattinen harkinnanvaraisuus", application.getOid()));
+        hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
+        application.addNote(new ApplicationNote("Asetettu hakemukselle automaattinen harkinnanvaraisuus", new Date(), "jälkikäsittely"));
         for (int i = 1; i < 20; i++) {
             if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
                 final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
                 final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
-                updateAndLog(oid, hakutoiveetAnswers, discretionary, "true");
-                updateAndLog(oid, hakutoiveetAnswers, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
+                updateAndLog(application.getOid(), hakutoiveetAnswers, discretionary, "true");
+                updateAndLog(application.getOid(), hakutoiveetAnswers, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
             }
         }
     }
