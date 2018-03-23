@@ -22,9 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.HAKUKAUSI_KEVAT;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.HAKUKAUSI_SYKSY;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static java.util.Calendar.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
@@ -72,10 +70,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             return application;
         }
 
+        Date hakukausiStart = resolveHakukausiStart(as);
         List<OpiskelijaDTO> opiskelijatiedot = suoritusrekisteriService.getOpiskelijatiedot(personOid);
         List<OpiskelijaDTO> tuoreetOpiskelijatiedot = opiskelijatiedot.stream()
                 .filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid()))
-                .filter(o -> o.getLoppuPaiva() != null && valmistuuHakukaudella(o, as))
+                .filter(o -> o.getLoppuPaiva() != null && o.getLoppuPaiva().after(hakukausiStart))
                 .collect(Collectors.toList());
 
         if (!tuoreetOpiskelijatiedot.isEmpty()) {
@@ -119,18 +118,20 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
         //Preferenssijärjestys. Jos halutuimpia luokkatietoja löytyy tasan yksi, palautetaan se. Jos niitä löytyy useampia, kyseessä virhetilanne. Jos 0, siirrytään seuraavaan.
         List<String> luokkatasotJarj = Arrays.asList("10", "VALMA", "TELMA", "ML", "9", "AK", "L");
-
+        List<String> luokkatasojenKomoOidsJarj = Arrays.asList(KOMO_OID_KYMPPI, KOMO_OID_VALMA, KOMO_OID_TELMA, KOMO_OID_MLV, KOMO_OID_PERUSOPETUS, KOMO_OID_AMMATILLINEN, KOMO_OID_LUKIO);
         LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Suorituksia yhteensä %s kpl.", opiskelijaDTOs.get(0).getHenkiloOid(), kaikkiSuoritukset.size()));
 
         OpiskelijaDTO found = null;
+        int komoIndex = 0;
         for (String luokkataso : luokkatasotJarj) {
+            String luokkatasonKomoOid = luokkatasojenKomoOidsJarj.get(komoIndex);
             List<OpiskelijaDTO> oikeantasoisetLuokkatiedot = opiskelijaDTOs.stream().filter(lt -> lt.getLuokkataso().equals(luokkataso)).collect(Collectors.toList());
+            LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Oikeantasoisia (%s) luokkatietoja: %s kpl. Haettava KomoOid: %s", opiskelijaDTOs.get(0).getHenkiloOid(), luokkataso, oikeantasoisetLuokkatiedot.size(), luokkatasonKomoOid));
             if (!oikeantasoisetLuokkatiedot.isEmpty()) {
-                LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Oikeantasoisia (%s) luokkatietoja: %s kpl", opiskelijaDTOs.get(0).getHenkiloOid(), luokkataso, oikeantasoisetLuokkatiedot.size()));
-            }
-            if (!oikeantasoisetLuokkatiedot.isEmpty()) {
+                //LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Oikeantasoisia (%s) luokkatietoja: %s kpl.", opiskelijaDTOs.get(0).getHenkiloOid(), luokkataso, oikeantasoisetLuokkatiedot.size()));
+
                 for (OpiskelijaDTO luokkatieto : oikeantasoisetLuokkatiedot) {
-                    String suorituksenTila = getSuorituksenTilaForLuokkatieto(luokkatieto, kaikkiSuoritukset);
+                    String suorituksenTila = getSuorituksenTilaForLuokkatieto(luokkatieto, kaikkiSuoritukset, luokkatasonKomoOid);
                     if (suorituksenTila.isEmpty() || suorituksenTila.equals("TUNTEMATON")) {
                         LOGGER.error(String.format("Jälkikäsittely - (Henkilö %s) : Luokkatiedon tilan selvittämisessä oli ongelmia. Tila: ", luokkatieto.getHenkiloOid(), suorituksenTila));
                         throw new ResourceNotFoundException("Luokkatiedon tilan selvittäminen ei onnistunut yksiselitteisesti.");
@@ -147,13 +148,15 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     return found;
                 }
             }
+            komoIndex++;
         }
         return null;
     }
 
-    private String getSuorituksenTilaForLuokkatieto(OpiskelijaDTO luokkatieto, List<SuoritusDTO> suoritukset) {
-        List<SuoritusDTO> foundMatchingOppilaitosOnly = suoritukset.stream()
+    private String getSuorituksenTilaForLuokkatieto(OpiskelijaDTO luokkatieto, List<SuoritusDTO> suoritukset, String haluttuKomoOid) {
+        List<SuoritusDTO> foundMatchingOppilaitosAndKomo = suoritukset.stream()
                 .filter(s -> s.getMyontaja().equals(luokkatieto.getOppilaitosOid()))
+                .filter(s -> s.getKomo() == null || s.getKomo().equals(haluttuKomoOid))
                 .filter(SuoritusDTO::getVahvistettu)
                 .collect(Collectors.toList());
         List<SuoritusDTO> foundMatchingOppilaitosAndLoppupaiva = suoritukset.stream()
@@ -161,20 +164,20 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 .filter(s -> s.getMyontaja().equals(luokkatieto.getOppilaitosOid()))
                 .filter(SuoritusDTO::getVahvistettu)
                 .collect(Collectors.toList());
-        if (foundMatchingOppilaitosOnly.size() == 1) {
-            LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), foundMatchingOppilaitosOnly.get(0).getTila()));
-            return foundMatchingOppilaitosOnly.get(0).getTila();
+        if (foundMatchingOppilaitosAndKomo.size() == 1) {
+            LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), foundMatchingOppilaitosAndKomo.get(0).getTila()));
+            return foundMatchingOppilaitosAndKomo.get(0).getTila();
         } else if (foundMatchingOppilaitosAndLoppupaiva.size() == 1) {
             LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Tasan yksi sopiva suoritus oikealla päivämäärällä löytyi luokkatiedolle oppilaitoksessa %s. Palautetaan suorituksen tila: %s", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid(), foundMatchingOppilaitosAndLoppupaiva.get(0).getTila()));
             return foundMatchingOppilaitosAndLoppupaiva.get(0).getTila();
-        } else if (foundMatchingOppilaitosOnly.size() > 1 ) {
+        } else if (foundMatchingOppilaitosAndKomo.size() > 1 ) {
             LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) : Sopivia suorituksia löytyi useita luokkatiedolle oppilaitoksessa %s. Tämä saattaa olla ongelma, mutta palautetaan kuitenkin niiden tila jos se sattuu olemaan kaikille sama.", luokkatieto.getHenkiloOid(), luokkatieto.getOppilaitosOid()));
-            for (SuoritusDTO s : foundMatchingOppilaitosOnly) {
-                if (!foundMatchingOppilaitosOnly.get(0).getTila().equals(s.getTila())) {
+            for (SuoritusDTO s : foundMatchingOppilaitosAndKomo) {
+                if (!foundMatchingOppilaitosAndKomo.get(0).getTila().equals(s.getTila())) {
                     return "TUNTEMATON";
                 }
             }
-            return foundMatchingOppilaitosOnly.get(0).getTila();
+            return foundMatchingOppilaitosAndKomo.get(0).getTila();
         } else {
             return "TUNTEMATON";
             //throw new ResourceNotFoundException(String.format("Opiskelijalle %s ei löytynyt yksiselitteistä luokkatietoa %s vastaavaa suoritusta. Sopivia suorituksia löytyi %s kpl.", luokkatieto.getHenkiloOid(), luokkatieto.toString(), foundMatchingOppilaitosAndLoppupaiva.size()));
@@ -217,22 +220,5 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         application.addOverriddenAnswer(key, oldValue);
         LOGGER.debug("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
-    }
-
-    private static boolean valmistuuHakukaudella(OpiskelijaDTO luokkatieto, ApplicationSystem as) {
-        DateTime valmistuminen = new DateTime(luokkatieto.getLoppuPaiva());
-        int hakuvuosi = as.getHakukausiVuosi();
-        DateTime kStart = new DateTime(hakuvuosi, 1, 1, 0, 0).minus(1);
-        DateTime kEnd = new DateTime(hakuvuosi, 7, 31, 0, 0).plusDays(1);
-        DateTime sStart = new DateTime(hakuvuosi, 8, 1, 0, 0).minus(1);
-        DateTime sEnd = new DateTime(hakuvuosi, 12, 31, 0, 0).plusDays(1);
-        switch (as.getHakukausiUri()) {
-            case HAKUKAUSI_KEVAT:
-            return valmistuminen.isAfter(kStart) && valmistuminen.isBefore(kEnd);
-            case HAKUKAUSI_SYKSY:
-            return valmistuminen.isAfter(sStart) && valmistuminen.isBefore(sEnd);
-            default:
-            throw new RuntimeException(String.format("Tuntematon hakukausi %s", as.getHakukausiUri()));
-        }
     }
 }

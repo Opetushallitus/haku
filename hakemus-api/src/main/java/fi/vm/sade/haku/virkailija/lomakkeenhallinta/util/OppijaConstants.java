@@ -204,6 +204,14 @@ public final class OppijaConstants {
     public static final String OPPILAITOS_TUNTEMATON = "1.2.246.562.10.57118763579";
     public static final String ROOT_ORGANIZATION_OID = "1.2.246.562.10.00000000001";
 
+    public static final String KOMO_OID_KYMPPI = "1.2.246.562.5.2013112814572435044876";
+    public static final String KOMO_OID_VALMA = "valma";
+    public static final String KOMO_OID_TELMA = "telma";
+    public static final String KOMO_OID_MLV = "1.2.246.562.5.2013112814572429142840";
+    public static final String KOMO_OID_PERUSOPETUS = "1.2.246.562.13.62959769647";
+    public static final String KOMO_OID_AMMATILLINEN = "TODO ammatillinen komo oid"; //Nää on oikeesti näin, joka päivä.
+    public static final String KOMO_OID_LUKIO = "TODO lukio komo oid";
+
     public static final Set<String> APPLICATION_BLACKLISTED_FIELDS = new HashSet<>(asList(new String[]{
             "vastauksetMerged", "overriddenAnswers"
     }));

@@ -949,7 +949,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
             pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto(applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
-            LOGGER.info(String.format("Jälkikäsittely - hakemus %s : keskentaiulkomainen: %s", application.getOid(), pohjakoulutusKeskenTaiUlkomainenTutkinto));
         } else {
             pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto((application.getAnswers().get(OppijaConstants.PHASE_EDUCATION)));
         }
