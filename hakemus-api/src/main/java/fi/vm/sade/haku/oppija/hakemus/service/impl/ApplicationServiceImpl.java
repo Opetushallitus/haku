@@ -943,7 +943,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         hakutoiveetAnswers = ensureApplicationOptionGroupData(hakutoiveetAnswers, lang);
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        boolean pohjakoulutusKeskenTaiUlkomainenTutkinto = false;
+
+        boolean pohjakoulutusKeskenTaiUlkomainenTutkinto;
         Application applicationWithValintaData = null;
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
             applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
@@ -954,13 +955,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
             if (pohjakoulutusKeskenTaiUlkomainenTutkinto) {
-                LOGGER.info(String.format("Jälkikäsittely - hakemus %s : Asetetaan automaattinen harkinnanvaraisuus", application.getOid()));
-                changeKoulutusToAutomaticDiscretionary(application, hakutoiveetAnswers);
-            } else {
-                LOGGER.info(String.format("Jälkikäsittely - hakemus %s : Poistetaan automaattinen harkinnanvaraisuus", application.getOid()));
-                removeDiscretionaryFlagFromKoulutuksesIfItWasSetAutomatically(application, hakutoiveetAnswers, as);
+                updateKoulutusToDiscretionary(application, hakutoiveetAnswers);
+            } else if (hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE)) {
+                removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application, hakutoiveetAnswers);
             }
         }
+
         application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveetAnswers);
 
         if (applicationWithValintaData != null) {
@@ -983,49 +983,35 @@ public class ApplicationServiceImpl implements ApplicationService {
         return elementTreeValidator.validate(validationInput);
     }
 
-    private void removeDiscretionaryFlagFromKoulutuksesIfItWasSetAutomatically(final Application application, Map<String, String> hakutoiveetAnswers, ApplicationSystem as) {
-        boolean discretionarityCanBeChanged = hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE);
-        if(discretionarityCanBeChanged) {
-            LOGGER.info(String.format("(Hakemus %s ) : Poistetaan automaattisesti asetettu harkinnanvaraisuus", application.getOid()));
-            application.addNote(new ApplicationNote("Poistettu aiemmin automaattisesti asetettu harkinnanvaraisuus", new Date(), "jälkikäsittely"));
-            removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application.getOid(), hakutoiveetAnswers);
-        } else {
-            LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - Harkinnanvaraisuutta ei voitu poistaa, koska se ei ollut automaattisesti asetettu", application.getOid()));
-
-        }
-    }
-
-    private void changeKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
-        LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - asetetaan automaattinen harkinnanvaraisuus -> %s", application.getOid(), DISCRETIONARY_AUTOMATIC_TRUE));
-        hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
-        application.addNote(new ApplicationNote("Asetettu hakemukselle automaattinen harkinnanvaraisuus", new Date(), "jälkikäsittely"));
-        updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
-    }
-
-    private void removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason (String oid, Map<String, String> hakutoiveetAnswers) {
+    private void removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason (Application application, Map<String, String> hakutoiveetAnswers) {
+        LOGGER.info(String.format("Jälkikäsittely - hakemus %s : Poistetaan automaattinen harkinnanvaraisuus", application.getOid()));
+        application.addNote(new ApplicationNote("Poistettu aiemmin automaattisesti asetettu harkinnanvaraisuus", new Date(), "jälkikäsittely"));
         for (int i = 1; i < 20; i++) {
             if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
                 final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
                 final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
                 if (hakutoiveetAnswers.containsKey(followUp) && HakutoiveetPhase.TODISTUSTENPUUTTUMINEN.equals(hakutoiveetAnswers.get(followUp))) {
-                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - poistetaan tieto harkinnanvaraisuudesta", oid));
+                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - poistetaan tieto harkinnanvaraisuudesta", application.getOid()));
                     hakutoiveetAnswers.remove(followUp);
                     hakutoiveetAnswers.remove(discretionary);
                     hakutoiveetAnswers.remove(DISCRETIONARY_AUTOMATIC);
                 } else {
-                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - ei poisteta harkinnanvaraisuutta, koska syynä ei ollut todistusten puuttuminen.", oid));
+                    LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - ei poisteta harkinnanvaraisuutta, koska syynä ei ollut todistusten puuttuminen.", application.getOid()));
                 }
             }
         }
     }
 
-    private void updateKoulutusToDiscretionary(String oid, Map<String, String> hakutoiveetAnswers) {
+    private void updateKoulutusToDiscretionary(Application application, Map<String, String> hakutoiveetAnswers) {
+        LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - asetetaan automaattinen harkinnanvaraisuus", application.getOid()));
+        hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
+        application.addNote(new ApplicationNote("Asetettu hakemukselle automaattinen harkinnanvaraisuus", new Date(), "jälkikäsittely"));
         for (int i = 1; i < 20; i++) {
             if (hakutoiveetAnswers.containsKey("preference" + i +"-Koulutus-id")) {
                 final String discretionary = String.format(PREFERENCE_DISCRETIONARY, i);
                 final String followUp = String.format(PREFERENCE_DISCRETIONARY, i) + "-follow-up";
-                updateAndLog(oid, hakutoiveetAnswers, discretionary, "true");
-                updateAndLog(oid, hakutoiveetAnswers, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
+                updateAndLog(application.getOid(), hakutoiveetAnswers, discretionary, "true");
+                updateAndLog(application.getOid(), hakutoiveetAnswers, followUp, HakutoiveetPhase.TODISTUSTENPUUTTUMINEN);
             }
         }
     }
