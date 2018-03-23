@@ -9,9 +9,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.HAKUKAUSI_KEVAT;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.HAKUKAUSI_SYKSY;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
 import static java.util.Calendar.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -70,23 +73,20 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
 
         List<OpiskelijaDTO> opiskelijatiedot = suoritusrekisteriService.getOpiskelijatiedot(personOid);
-        if (!opiskelijatiedot.isEmpty()) {
-            Date hakukausiStart = resolveHakukausiStart(as);
-            List<OpiskelijaDTO> validOpiskelijatiedot = opiskelijatiedot.stream()
-                    .filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid()))
-                    .collect(Collectors.toList());
+        List<OpiskelijaDTO> tuoreetOpiskelijatiedot = opiskelijatiedot.stream()
+                .filter(o -> StringUtils.isNotEmpty(o.getOppilaitosOid()))
+                .filter(o -> o.getLoppuPaiva() != null && valmistuuHakukaudella(o, as))
+                .collect(Collectors.toList());
+
+        if (!tuoreetOpiskelijatiedot.isEmpty()) {
             List<SuoritusDTO> suoritustiedot = suoritusrekisteriService.getSuorituksetAsList(personOid);
 
-            //Yritetään ensin tuoreilla kesken olevilla luokkatiedoilla, sitten kaikilla ei-keskeytyneillä ja lopuksi kaikilla keskeytyneillä
-            List<OpiskelijaDTO> tuoreetOpiskelijatiedot = validOpiskelijatiedot.stream().filter(o -> o.getLoppuPaiva() != null && o.getLoppuPaiva().after(hakukausiStart)).collect(Collectors.toList());
+            //Yritetään ensin tuoreilla kesken olevilla luokkatiedoilla, sitten tuoreilla keskeytyneillä.
             LOGGER.info("Jälkikäsittely - tuoreita opiskelijatietoja " + tuoreetOpiskelijatiedot.size());
             OpiskelijaDTO opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, false);
-            if (opiskelija == null) {
-                opiskelija = selectPreferredLuokkatieto(validOpiskelijatiedot, suoritustiedot, false);
                 if (opiskelija == null) {
-                    opiskelija = selectPreferredLuokkatieto(validOpiskelijatiedot, suoritustiedot, true);
+                    opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, true);
                 }
-            }
             if (opiskelija != null) {
                 LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) Löydettiin yksiselitteinen luokkatieto, oppilaitos: %s.", opiskelija.getHenkiloOid(), opiskelija.getOppilaitosOid()));
             } else {
@@ -219,4 +219,20 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         return answers;
     }
 
+    private static boolean valmistuuHakukaudella(OpiskelijaDTO luokkatieto, ApplicationSystem as) {
+        DateTime valmistuminen = new DateTime(luokkatieto.getLoppuPaiva());
+        int hakuvuosi = as.getHakukausiVuosi();
+        DateTime kStart = new DateTime(hakuvuosi, 1, 1, 0, 0).minus(1);
+        DateTime kEnd = new DateTime(hakuvuosi, 7, 31, 0, 0).plusDays(1);
+        DateTime sStart = new DateTime(hakuvuosi, 8, 1, 0, 0).minus(1);
+        DateTime sEnd = new DateTime(hakuvuosi, 12, 31, 0, 0).plusDays(1);
+        switch (as.getHakukausiUri()) {
+            case HAKUKAUSI_KEVAT:
+            return valmistuminen.isAfter(kStart) && valmistuminen.isBefore(kEnd);
+            case HAKUKAUSI_SYKSY:
+            return valmistuminen.isAfter(sStart) && valmistuminen.isBefore(sEnd);
+            default:
+            throw new RuntimeException(String.format("Tuntematon hakukausi %s", as.getHakukausiUri()));
+        }
+    }
 }
