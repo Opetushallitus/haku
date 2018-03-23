@@ -244,7 +244,7 @@ public class ApplicationResourceTest {
             Changes changes = (Changes) invocation.getArguments()[3];
 
             JsonObject jsonObject = changes.asJson();
-            assertTrue("auditlog changes json should only have ApplicationAdditionalDataDTO key", jsonObject.get("applicationAdditionalDataDTO") != null);
+            assertTrue("auditlog changes json should have ApplicationAdditionalDataDTO key and value for it", jsonObject.get("applicationAdditionalDataDTO") != null);
 
             Set<Map.Entry<String, JsonElement>> entries = changes.asJson().entrySet();
             assertEquals("Save only one updated field and wrap the DTO into a stringified json, otherwise auditlog indexing will explode",
