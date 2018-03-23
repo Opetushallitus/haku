@@ -26,7 +26,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.postprocess.PostProcessWorker;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,11 +107,6 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             application = applicationPostProcessorService.process(application);
             final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing");
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-
-            //String discretionaryAutomaticStatus = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS).getOrDefault(OppijaConstants.DISCRETIONARY_AUTOMATIC, "unknown");
-            //LOGGER.info("Discretionarity - Updating automatic status to: ( " + discretionaryAutomaticStatus + " )");
-            //this.applicationDAO.updateKeyValue(application.getOid(), OppijaConstants.DISCRETIONARY_AUTOMATIC, discretionaryAutomaticStatus);
-
             this.applicationDAO.update(queryApplication, application);
             loggerAspect.logUpdateApplicationInPostProcessing(application, changes, "Hakemuksen jälkikäsittely");
             if (sendMail) {
