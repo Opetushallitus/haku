@@ -946,14 +946,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         boolean pohjakoulutusKeskenTaiUlkomainenTutkinto = false;
         Application applicationWithValintaData = null;
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId()) && !application.isDraft()) {
-            try {
-                applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
-                pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto(applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
-                LOGGER.info(String.format("Jälkikäsittely - hakemus %s : keskentaiulkomainen: %s", application.getOid(), pohjakoulutusKeskenTaiUlkomainenTutkinto));
-            } catch (Exception e) {
-                LOGGER.error ("Jälkikäsittely - jokin meni vikaan valintadatan haussa. Käytetään hakemuksen tietoa.");
-                pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto((application.getAnswers().get(OppijaConstants.PHASE_EDUCATION)));
-            }
+            applicationWithValintaData = getApplicationWithValintadata(application.clone(), Optional.of(postProcessorValintaTimeout));
+            pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto(applicationWithValintaData.getAnswers().get(OppijaConstants.PHASE_EDUCATION));
+            LOGGER.info(String.format("Jälkikäsittely - hakemus %s : keskentaiulkomainen: %s", application.getOid(), pohjakoulutusKeskenTaiUlkomainenTutkinto));
         } else {
             pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto((application.getAnswers().get(OppijaConstants.PHASE_EDUCATION)));
         }
@@ -992,6 +987,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         boolean discretionarityCanBeChanged = hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE);
         if(discretionarityCanBeChanged) {
             LOGGER.info(String.format("(Hakemus %s ) : Poistetaan automaattisesti asetettu harkinnanvaraisuus", application.getOid()));
+            application.addNote(new ApplicationNote("Poistettu aiemmin automaattisesti asetettu harkinnanvaraisuus", new Date(), "jälkikäsittely"));
             removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application.getOid(), hakutoiveetAnswers);
         } else {
             LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - Harkinnanvaraisuutta ei voitu poistaa, koska se ei ollut automaattisesti asetettu", application.getOid()));
@@ -1002,8 +998,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private void changeKoulutusToAutomaticDiscretionary(final Application application, Map<String, String> hakutoiveetAnswers) {
         LOGGER.info(String.format("(Hakemus %s ) : Harkinnanvaraisuus - asetetaan automaattinen harkinnanvaraisuus -> %s", application.getOid(), DISCRETIONARY_AUTOMATIC_TRUE));
         hakutoiveetAnswers.put(DISCRETIONARY_AUTOMATIC, DISCRETIONARY_AUTOMATIC_TRUE);
-        final ApplicationNote note = new ApplicationNote("Asetettu hakemukselle automaattinen harkinnanvaraisuus, koska hakijalla on joko keskeytynyt tai ulkomainen pohjatutkinto.", new Date(), "jälkikäsittely");
-        application.addNote(note);
+        application.addNote(new ApplicationNote("Asetettu hakemukselle automaattinen harkinnanvaraisuus", new Date(), "jälkikäsittely"));
         updateKoulutusToDiscretionary(application.getOid(), hakutoiveetAnswers);
     }
 
@@ -1072,22 +1067,5 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ResourceNotFoundException("User " + authenticationService.getCurrentHenkilo().getPersonOid() + " is not allowed to read application " + application.getOid());
         }
         return application;
-    }
-
-    private static boolean valmistuuHakukaudella(SuoritusDTO suoritus, ApplicationSystem as) {
-        DateTime valmistuminen = new DateTime(suoritus.getValmistuminen());
-        int hakuvuosi = as.getHakukausiVuosi();
-        DateTime kStart = new DateTime(hakuvuosi, 1, 1, 0, 0).minus(1);
-        DateTime kEnd = new DateTime(hakuvuosi, 7, 31, 0, 0).plusDays(1);
-        DateTime sStart = new DateTime(hakuvuosi, 8, 1, 0, 0).minus(1);
-        DateTime sEnd = new DateTime(hakuvuosi, 12, 31, 0, 0).plusDays(1);
-        switch (as.getHakukausiUri()) {
-            case HAKUKAUSI_KEVAT:
-                return valmistuminen.isAfter(kStart) && valmistuminen.isBefore(kEnd);
-            case HAKUKAUSI_SYKSY:
-                return valmistuminen.isAfter(sStart) && valmistuminen.isBefore(sEnd);
-            default:
-                throw new RuntimeException(String.format("Tuntematon hakukausi %s", as.getHakukausiUri()));
-        }
     }
 }
