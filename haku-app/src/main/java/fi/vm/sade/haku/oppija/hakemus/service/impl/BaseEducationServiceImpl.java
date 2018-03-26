@@ -77,26 +77,28 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 .filter(o -> o.getLoppuPaiva() != null && o.getLoppuPaiva().after(hakukausiStart))
                 .collect(Collectors.toList());
 
+
+        OpiskelijaDTO opiskelija = null;
         if (!tuoreetOpiskelijatiedot.isEmpty()) {
             List<SuoritusDTO> suoritustiedot = suoritusrekisteriService.getSuorituksetAsList(personOid);
 
             //Yritetään ensin tuoreilla kesken olevilla luokkatiedoilla, sitten tuoreilla keskeytyneillä.
             LOGGER.info("Jälkikäsittely - tuoreita opiskelijatietoja " + tuoreetOpiskelijatiedot.size());
-            OpiskelijaDTO opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, false);
-                if (opiskelija == null) {
-                    opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, true);
-                }
+            opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, false);
+            if (opiskelija == null) {
+                opiskelija = selectPreferredLuokkatieto(tuoreetOpiskelijatiedot, suoritustiedot, true);
+            }
             if (opiskelija != null) {
                 LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) Löydettiin yksiselitteinen luokkatieto, oppilaitos: %s.", opiskelija.getHenkiloOid(), opiskelija.getOppilaitosOid()));
             } else {
                 LOGGER.warn(String.format("Jälkikäsittely - (Henkilö %s) Ei löydetty soveltuvaa luokkatietoa Suresta.", personOid));
             }
-
-            Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(PHASE_EDUCATION));
-
-            educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
-            application.setVaiheenVastauksetAndSetPhaseId(PHASE_EDUCATION, educationAnswers);
         }
+
+        Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(PHASE_EDUCATION));
+
+        educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
+        application.setVaiheenVastauksetAndSetPhaseId(PHASE_EDUCATION, educationAnswers);
 
         return application;
     }
