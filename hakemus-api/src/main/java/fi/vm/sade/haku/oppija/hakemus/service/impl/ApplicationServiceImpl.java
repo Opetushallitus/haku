@@ -955,7 +955,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
             if (pohjakoulutusKeskenTaiUlkomainenTutkinto && !hakutoiveetAnswers.containsValue((DISCRETIONARY_AUTOMATIC_TRUE))) {
                 updateKoulutusToDiscretionary(application, hakutoiveetAnswers);
-            } else if (hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE)) {
+            } else if (!pohjakoulutusKeskenTaiUlkomainenTutkinto && hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE)) {
                 removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application, hakutoiveetAnswers);
             }
         }
