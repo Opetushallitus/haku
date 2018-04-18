@@ -953,11 +953,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             pohjakoulutusKeskenTaiUlkomainenTutkinto = onkoKeskeytynytTaiUlkomainenTutkinto((application.getAnswers().get(OppijaConstants.PHASE_EDUCATION)));
         }
         if(FormParameters.kysytaankoHarkinnanvaraisuus(as)) {
-            if (pohjakoulutusKeskenTaiUlkomainenTutkinto) {
-                if (!hakutoiveetAnswers.containsValue(DISCRETIONARY_AUTOMATIC_TRUE)) {
-                    updateKoulutusToDiscretionary(application, hakutoiveetAnswers);
-                }
-
+            if (pohjakoulutusKeskenTaiUlkomainenTutkinto && !hakutoiveetAnswers.containsValue((DISCRETIONARY_AUTOMATIC_TRUE))) {
+                updateKoulutusToDiscretionary(application, hakutoiveetAnswers);
             } else if (hakutoiveetAnswers.getOrDefault(DISCRETIONARY_AUTOMATIC, "unknown").equalsIgnoreCase(DISCRETIONARY_AUTOMATIC_TRUE)) {
                 removeDiscretionarityFromKoulutuksesWithTodistustenpuuttuminenAsReason(application, hakutoiveetAnswers);
             }
