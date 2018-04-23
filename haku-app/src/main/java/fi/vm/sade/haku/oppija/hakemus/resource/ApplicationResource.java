@@ -291,12 +291,13 @@ public class ApplicationResource {
     @Consumes("application/json")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
 	@ApiOperation(
-            value = "Palauttaa useamman hakemuksen tiedot oid-listan perusteella. Oid:t json-listana POST-pyynnön bodyssa.",
+            value = "Palauttaa useamman hakemuksen tiedot oid-listan perusteella. Oid:t json-listana POST-pyynnön bodyssa. " +
+                "Huom! Muut rajaimet toimivat vain, kun myös keys-parametri on annettu.",
             response = Application.class,
 			responseContainer = "List")
     public List<?> getApplicationsByOidsPost(@ApiParam(value="Palautettavien tietojen rajaus avaimilla (valinnainen)") @QueryParam("keys") List<String> keys,
-                                             @ApiParam(value="Hakemusten tilarajaus (valinnainen)") @QueryParam("state") List<String> state,
-                                             @ApiParam(value="Haulla rajaus (valinnainen)") @QueryParam("asIds") List<String> asIds,
+                                             @ApiParam(value="Hakemusten tilarajaus, vain keys-parametrin kanssa (valinnainen)") @QueryParam("state") List<String> state,
+                                             @ApiParam(value="Haulla rajaus, vain keys-parametrin kanssa (valinnainen)") @QueryParam("asIds") List<String> asIds,
                                              final List<String> oids) {
         if(keys == null || keys.isEmpty()) {
             return getApplications(oids);
