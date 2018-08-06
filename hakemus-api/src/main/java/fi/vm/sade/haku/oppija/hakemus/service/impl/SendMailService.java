@@ -34,6 +34,7 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.HIGHER;
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.SECONDARY;
@@ -262,36 +263,33 @@ public class SendMailService {
     }
 
     private List<Map<String, String>> attachmentRequests(final Application application, final Locale locale) {
-        return Lists.transform(application.getAttachmentRequests(), new Function<ApplicationAttachmentRequest, Map<String, String>>() {
-            @Override
-            public Map<String, String> apply(ApplicationAttachmentRequest input) {
-                ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
+        return application.getAttachmentRequests().stream().map(input -> {
+            ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
 
-                //An application attachment needs to have either an address or an email address (or both).
-                //Normal address isn't required anymore.
-                if(applicationAttachment.getAddress() == null && applicationAttachment.getEmailAddress() == null) {
-                    throw new IllegalArgumentException("Application attachment had empty address and empty email address");
-                }
-
-                final Address address = applicationAttachment.getAddress() != null ?
-                    applicationAttachment.getAddress() : Address.EMPTY;
-
-                return ImmutableMap.<String, String>builder()
-                        .put("name", getTextOrEmpty(applicationAttachment.getName(), locale))
-                        .put("header", getTextOrEmpty(applicationAttachment.getHeader(), locale))
-                        .put("description", getTextOrEmpty(applicationAttachment.getDescription(), locale))
-                        .put("recipient", defaultString(address.getRecipient()))
-                        .put("streetAddress", defaultString(address.getStreetAddress()))
-                        .put("streetAddress2", defaultString(address.getStreetAddress2()))
-                        .put("postalCode", defaultString(address.getPostalCode()))
-                        .put("postOffice", defaultString(address.getPostOffice()))
-                        .put("emailAddress", defaultString(applicationAttachment.getEmailAddress()))
-                        .put("deadline", applicationAttachment.getDeadline() != null ?
-                                dateTimeFormatter(locale).format(applicationAttachment.getDeadline()) : "")
-                        .put("deliveryNote", getTextOrEmpty(applicationAttachment.getDeliveryNote(), locale))
-                        .build();
+            //An application attachment needs to have either an address or an email address (or both).
+            //Normal address isn't required anymore.
+            if (applicationAttachment.getAddress() == null && applicationAttachment.getEmailAddress() == null) {
+                throw new IllegalArgumentException("Application attachment had empty address and empty email address");
             }
-        });
+
+            final Address address = applicationAttachment.getAddress() != null ?
+                applicationAttachment.getAddress() : Address.EMPTY;
+
+            return ImmutableMap.<String, String>builder()
+                .put("name", getTextOrEmpty(applicationAttachment.getName(), locale))
+                .put("header", getTextOrEmpty(applicationAttachment.getHeader(), locale))
+                .put("description", getTextOrEmpty(applicationAttachment.getDescription(), locale))
+                .put("recipient", defaultString(address.getRecipient()))
+                .put("streetAddress", defaultString(address.getStreetAddress()))
+                .put("streetAddress2", defaultString(address.getStreetAddress2()))
+                .put("postalCode", defaultString(address.getPostalCode()))
+                .put("postOffice", defaultString(address.getPostOffice()))
+                .put("emailAddress", defaultString(applicationAttachment.getEmailAddress()))
+                .put("deadline", applicationAttachment.getDeadline() != null ?
+                    dateTimeFormatter(locale).format(applicationAttachment.getDeadline()) : "")
+                .put("deliveryNote", getTextOrEmpty(applicationAttachment.getDeliveryNote(), locale))
+                .build();
+        }).collect(Collectors.toList());
     }
 
     private String getApplicantName(Application application) {
