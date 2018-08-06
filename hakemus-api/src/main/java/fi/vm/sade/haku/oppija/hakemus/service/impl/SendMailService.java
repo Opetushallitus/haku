@@ -8,6 +8,7 @@ import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
+import fi.vm.sade.haku.oppija.hakemus.domain.Address;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
@@ -266,17 +267,28 @@ public class SendMailService {
             public Map<String, String> apply(ApplicationAttachmentRequest input) {
                 ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
 
-                notNull(applicationAttachment.getAddress());
+                //An application attachment needs to have either an address or an email address (or both).
+                //Normal address isn't required anymore.
+                if(applicationAttachment.getAddress() == null && applicationAttachment.getEmailAddress() == null) {
+                    throw new IllegalArgumentException("Application attachment had empty address and empty email address");
+                }
+
+                final Address address;
+                if (applicationAttachment.getAddress() != null) {
+                    address = applicationAttachment.getAddress();
+                } else {
+                    address = new Address("","","","","");
+                }
 
                 return ImmutableMap.<String, String>builder()
                         .put("name", getTextOrEmpty(applicationAttachment.getName(), locale))
                         .put("header", getTextOrEmpty(applicationAttachment.getHeader(), locale))
                         .put("description", getTextOrEmpty(applicationAttachment.getDescription(), locale))
-                        .put("recipient", defaultString(applicationAttachment.getAddress().getRecipient()))
-                        .put("streetAddress", defaultString(applicationAttachment.getAddress().getStreetAddress()))
-                        .put("streetAddress2", defaultString(applicationAttachment.getAddress().getStreetAddress2()))
-                        .put("postalCode", defaultString(applicationAttachment.getAddress().getPostalCode()))
-                        .put("postOffice", defaultString(applicationAttachment.getAddress().getPostOffice()))
+                        .put("recipient", defaultString(address.getRecipient()))
+                        .put("streetAddress", defaultString(address.getStreetAddress()))
+                        .put("streetAddress2", defaultString(address.getStreetAddress2()))
+                        .put("postalCode", defaultString(address.getPostalCode()))
+                        .put("postOffice", defaultString(address.getPostOffice()))
                         .put("emailAddress", defaultString(applicationAttachment.getEmailAddress()))
                         .put("deadline", applicationAttachment.getDeadline() != null ?
                                 dateTimeFormatter(locale).format(applicationAttachment.getDeadline()) : "")
