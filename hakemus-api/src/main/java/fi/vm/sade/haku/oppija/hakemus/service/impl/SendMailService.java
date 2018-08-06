@@ -273,12 +273,8 @@ public class SendMailService {
                     throw new IllegalArgumentException("Application attachment had empty address and empty email address");
                 }
 
-                final Address address;
-                if (applicationAttachment.getAddress() != null) {
-                    address = applicationAttachment.getAddress();
-                } else {
-                    address = new Address("","","","","");
-                }
+                final Address address = applicationAttachment.getAddress() != null ?
+                    applicationAttachment.getAddress() : Address.EMPTY;
 
                 return ImmutableMap.<String, String>builder()
                         .put("name", getTextOrEmpty(applicationAttachment.getName(), locale))
