@@ -269,7 +269,8 @@ public class SendMailService {
             //An application attachment needs to have either an address or an email address (or both).
             //Normal address isn't required anymore.
             if (applicationAttachment.getAddress() == null && applicationAttachment.getEmailAddress() == null) {
-                throw new IllegalArgumentException("Application attachment had empty address and empty email address");
+                String attachmentName = getTextOrEmpty(applicationAttachment.getName(), locale);
+                throw new IllegalArgumentException(String.format("Hakemuksen liitteen \"%s\" toimitusosoitteen sähköposti- ja postiosoite olivat kumpikin tyhjät.", attachmentName));
             }
 
             final Address address = applicationAttachment.getAddress() != null ?
