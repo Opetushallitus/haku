@@ -15,6 +15,8 @@ public class Address implements Serializable {
     private final String postalCode;
     private final String postOffice;
 
+    public static final Address EMPTY = new Address("", "", "", "", "");
+
     @JsonCreator
     public Address(@JsonProperty(value = "recipient") String recipient,
                    @JsonProperty(value = "streetAddress") String streetAddress,
