@@ -545,7 +545,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public int removeApplicationsReceivedBeforeDate(Date after) {
         String host = mongoTemplate.getDb().getMongo().getAddress().getHost();
-        if("oph-mongodb-hakemus-new.hard.ware.fi".equals(host) == false) {
+        if ("hakulomake-1.mongodb.demo-opintopolku.fi".equals(host) == false
+                && "hakulomake-2.mongodb.demo-opintopolku.fi".equals(host) == false
+                && "hakulomake-3.mongodb.demo-opintopolku.fi".equals(host) == false) {
             throw new RuntimeException("Tried to run cleanup on wrong database. Host: " + host);
         }
 
