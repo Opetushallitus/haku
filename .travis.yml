@@ -1,0 +1,58 @@
+sudo: required
+
+language: java
+
+jdk:
+- oraclejdk8
+
+services:
+- docker
+
+cache:
+  directories:
+  - $HOME/.m2
+
+env:
+  global:
+  # ARTIFACTORY_USERNAME
+  - secure: "H7XmuLJm0EhLZePrFZ3Cki4vgRVSdgMCQKf8tmf6DFeaGXdN4l6VUgczNP9+M07eG9wOHjnXNCRD5uKxz1xJRGAI/hpd16lHR185k5CBYDZux7Xd+QzoqjLeRrOdSEsRksaQX+/Rb7vr0OauBNEBtGfrRim7Fumen0GD4oT6a8KlV4ocQoaaqHWpTvzEx0k8itp5yvUTshh4ocRfdfOeB5VmI6p9x8awIIeZvQpxaGztOsXp7SVP/n05fkP76Woz77GbCk+h3JkeggAOsYklGmPsbMHVKpahSCScaIo1iDxCp6xEvdYYlan6oCyo2DuYI8c3RKjnVFmkauUfAomHY+ikTomzCvMYr8vZFNaIo/oUnb6xfFKPPqcOAIcXix/0eGYlVVYCvPw/U5yZcevo+CBMxPpSwJRp7eq95K4BwmUKydxt/hgZV4dgENi7kwmjNFw0uxdf3MQ6qdFq6czIqMjHyGKygqP4rEbyQMNUPcW8q4lmFlGVLjv7JA7yw6nrDNxISPhBVtdnAFyfMV9AHD6QZEd+cXr9liNI/nXs5e67O8gnRqgmP+7Y8m99iiHr+i+SzrDyVahKAacK5FrWgqMv4meOdgC5Blbf7f6xOnJl1wNGatoCc0cjQRJlCWkiXdA6awrMi69ngIlD67WBv8cUONaQQ6P/sqsArVErS54="
+  # ARTIFACTORY_PASSWORD
+  - secure: "rofZQIr5TrpmIpzHvFv3OCXfLlJQreRG317EvvPFYhoU77Zp0LFfX/+bTw084KAzU4SylVuV3g12PdoMutX1Z4lS7Fv6a/GirimZ5GATgK7XZXb36S/Xvf6ZH1xUINTk8kg6kPSn5utvlL9mIqaY4etZVl4n0jeKhHHZghFXcrS4zx/hluiio+smI38CtpMOQY2iYtwU9+5nNFyaZKwrGbLIDIlXhCq/BZqX4Xe6zM/QQCVZ4C22EjJQQvyLFyR8N0xYUvJn+UBRKYNwutQO0ULbmMFD4tm45A1M1MEZyuxuqxC53B4ZhwoythbXc5elD7gow2fy9Hz5kMMjUiV9sRe1A6cXVHV2YimMuFNBxiU+gqZ+0BCpyv9/zxGQMnzrNH9/NBNfobLd0cqen8dIcuRUSsyF31o79BPe66KlO30C1Yk/uWNELOr8TszQCFMphF8wmNFpkCeag6OTqqL25gC71fEbQld4q80cADOZDkdvRQ6FJy1m910w8KaURQpDM5c4u5MCcY9fEGA6KgX/nRL1B7ZImL4CjIkHyz0Bgs+Px0y0WoQ1FBdMpX7RlTLk5VteXWjV05rpl0ZQvgAzTLpYoynF6xOxNSrmGx9igmb2b5AnEVKtoCKKlhdI8nGwcGf3CcWcNNwlyP1Kw9Ea98WkOdEAUcCzrFHQ/I+Oof0="
+  # AWS_ACCESS_KEY_ID
+  - secure: "HLwTjD3dIg16kAgfxMCpG8sMWjp/E3dBZDfkQ4/q6+6YGDq2QeWlmmBkvYmSSRYR0gJHSstHK5vm2D2SUr2tUMJRxr1mQRPhpISZ+epgdkhSnsAHmt2Le4+Ma6uo5DlnVsj2AxeFT3AwGVf3lbHhOQoFyte19oF6J/aiToTTpqYwm914Hcsuxf8cpgtQyG643WIE8lJaedJJ+7e0JUkhKCxKvRGDUVjtUPVRHxKZxbpZi9/sPkyIi/yVnlmaGgeEnd9nh3TJuZJXAqSD6cqDIErnxJbjauv8E55g6cLoY+YdaciVhHdCFLS1CHUkkT1T7ombL/8bVJhMPJ4heaFTUjjhbl/7Ym6LLUz1q5Fr1duTLNcGPqI+S5MDEhaOoDc66ckcNHfC7o5w8bZyusPQMYZfMulHuORtrFHY0nGTAi1zcFeWMunmHsB0FVTYCckApOytLPxrj2HdO9O5yK7ik3Uf6rlmzfpk327Dl84dgz7ft7m81JCn5ydEoKGGyrNTT/7m640phbdEcei+EZ/EGDsJuLWYkIkkt3BKmCgBWYapOUzkehKVGkfJwmFiM0b/zy/Rb3BayqIRvb5VwZ3NFiokRP5SS47zzfsgql7DdaiaooCHkRMqVBVai6wX2UU28VattfRgeYWcLG5OP2ICc4bBb5y8kkKfddS2lEfrJEY="
+  # AWS_SECRET_ACCESS_KEY
+  - secure: "EQsQi1KCHt/L7hIq22mPuZFxaDSEgDVA5+HEYYR+aU0F9Hd5ppZWwd02POoNipbN0TTSaoVoEtNKoPajshha/d1eOva4zO5vfJ6O7B4omInoHDgmBaVqbclo+7Nz/n9kkcSEwl0yAW0TFK9wqqYcWZMd20WUgS0Eb3b4IpylUbzwfVPF+MiIAUa0zEjwh49wUkDjGmQdof34lA6F09yGUFZXnQPD4pLLnjAy0fKMbP1gc93a30g3CBLZmBAxVFE12wyp2DFa1enxqXIj7PP6mE8+LTOIMctAf7kixl5gQj9Bq5AMKnWG0/pGhIQXQyRSyIwjvnLSYiIRbbfTM5ni7ivMjCle0XOST/ib8g3SxJuoXRObdzcNG56dt/VEMTN3+0NWTenB66o8nrMtG+34eTKLtrLNApeiRprl42vTpUV4cvRbQs+Lz6NmZr7uiemR1tyo8b2xvNZCLa5ZUesswDBQpDYBk2SX3vKHqRCi40VE5ePfe03FYTNfQgQA0yPOoVBzY4737GohEZyf/ZTZKwliMBFUUggitfxXMhiwdxaT0a6qhBDCf4TxSFyWVXTr+qg3xAdzAwZfeixiOJSDe+NKA9+f0omJrVdQA89L/gssiXeccJXk8YQBN1POhY+gEJ4eHnvivVJ4hPStdt+cXf0z0XjzanIYcbKU2k4RUT0="
+
+install:
+- git clone https://github.com/Opetushallitus/ci-tools.git
+- source ci-tools/common/setup-tools.sh
+- sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
+- export TZ=Europe/Helsinki
+- date
+
+script:
+- mvn clean verify -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER} -Pit -Dit.usePhantomJs=true
+
+- mv haku-app/target/haku-app.war $DOCKER_BUILD_DIR/artifact/haku-app.war
+- cp -v src/main/resources/oph-configuration/haku.properties.template src/main/resources/oph-configuration/haku-virkailija.properties.template
+- cp -v src/main/resources/oph-configuration/haku.properties.template src/main/resources/oph-configuration/haku-oppija.properties.template
+- cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
+
+- export BASE_IMAGE="base-legacy:0.1"
+- ./ci-tools/common/pull-image.sh
+- ./ci-tools/build/build-war.sh haku-virkailija
+
+- export BASE_IMAGE="base-legacy:0.1"
+- ./ci-tools/common/pull-image.sh
+- ./ci-tools/build/build-war.sh haku-oppija
+
+deploy:
+- provider: script
+  script: mvn deploy -pl hakemus-api -DskipTests --settings ci-tools/common/maven-settings.xml
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: script
+  script: ./ci-tools/build/upload-image.sh haku-virkailija && ./ci-tools/build/upload-image.sh haku-oppija
+  on:
+    all_branches: true
