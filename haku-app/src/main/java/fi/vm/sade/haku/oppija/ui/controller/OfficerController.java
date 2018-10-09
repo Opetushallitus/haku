@@ -136,12 +136,11 @@ public class OfficerController {
         LOGGER.debug("create new application");
         Application application = officerUIService.createApplication(multiValues.getFirst("asId"));
 
-        Changes changes = new Changes.Builder().build();
         Target target = new Target.Builder()
                 .setField("hakuOid", multiValues.getFirst("asId"))
                 .setField("hakemusOid", application.getOid()).build();
 
-        auditLogRequest(HakuOperation.CREATE_NEW_APPLICATION, target, changes);
+        auditLogRequest(HakuOperation.CREATE_NEW_APPLICATION, target);
         return redirectToOidResponse(application.getOid());
     }
 
@@ -161,9 +160,7 @@ public class OfficerController {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", false);
 
-        Changes changes = new Changes.Builder().build();
-        auditLogRequest(HakuOperation.VIEW_APPLICATION,
-            createTargetBuilder(oid, modelResponse).build(), changes);
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, createTargetBuilder(oid, modelResponse).build());
 
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
@@ -174,10 +171,7 @@ public class OfficerController {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValintaTab(oid);
 
-        Changes changes = new Changes.Builder().build();
-
-        auditLogRequest(HakuOperation.VIEW_APPLICATION,
-            createTargetBuilder(oid, modelResponse).build(), changes);
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, createTargetBuilder(oid, modelResponse).build());
         return new Viewable(VALINTA_TAB_VIEW, modelResponse.getModel());
     }
     @GET
@@ -186,10 +180,7 @@ public class OfficerController {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", true);
 
-        Changes changes = new Changes.Builder().build();
-
-        auditLogRequest(HakuOperation.VIEW_APPLICATION,
-            createTargetBuilder(oid, modelResponse).build(), changes);
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, createTargetBuilder(oid, modelResponse).build());
 
         return new Viewable(KELPOISUUS_JA_LIITTEET_TAB_VIEW, modelResponse.getModel());
     }
@@ -205,12 +196,11 @@ public class OfficerController {
         modelResponse.setNoteMessages(this.userSession.getNotes());
         this.userSession.clearNotes();
 
-        Changes changes = new Changes.Builder().build();
         Target.Builder targetBuilder = new Target.Builder()
             .setField("oid", oid)
             .setField("hakuOid", applicationSystemId);
         addPersonOidIfPossible(modelResponse, targetBuilder);
-        auditLogRequest(HakuOperation.PREVIEW_APPLICATION, targetBuilder.build(), changes);
+        auditLogRequest(HakuOperation.PREVIEW_APPLICATION, targetBuilder.build());
 
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -242,10 +232,8 @@ public class OfficerController {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
 
-        Changes changes = new Changes.Builder().build();
-
         auditLogRequest(HakuOperation.PREVIEW_APPLICATION,
-            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build(), changes);
+            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build());
 
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -269,13 +257,12 @@ public class OfficerController {
                 userSession.getUser());
 
         Changes.Builder changesBuilder = new Changes.Builder();
-        for(Map.Entry<String, String> changesStr : values.entrySet()) {
+        for (Map.Entry<String, String> changesStr : values.entrySet()) {
             changesBuilder.added(changesStr.getKey(), changesStr.getValue());
         }
-        Changes changes = changesBuilder.build();
 
         auditLogRequest(HakuOperation.UPDATE_APPLICATION_PHASE,
-            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build(), changes);
+            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build(), changesBuilder.build());
 
         if (modelResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, modelResponse.getModel())).build();
