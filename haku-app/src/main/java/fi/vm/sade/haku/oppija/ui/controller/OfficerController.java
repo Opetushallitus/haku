@@ -156,7 +156,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/")
-    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", false);
 
@@ -167,7 +167,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/valinta")
-    public Viewable valintaTab(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    public Viewable valintaTab(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValintaTab(oid);
 
@@ -176,7 +176,7 @@ public class OfficerController {
     }
     @GET
     @Path("/hakemus/{oid}/kelpoisuus_ja_liitteet")
-    public Viewable kelpoisuusJaLiitteetTab(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    public Viewable kelpoisuusJaLiitteetTab(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", true);
 
@@ -407,7 +407,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public void processAttachmentAndEligibility(@PathParam(OID_PATH_PARAM) final String oid,
-                                                EligibilitiesDTO eligibilities) throws URISyntaxException {
+                                                EligibilitiesDTO eligibilities) {
         try {
             officerUIService.processAttachmentsAndEligibilities(oid, eligibilities);
         } catch (IllegalStateException ise) {
@@ -446,7 +446,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Deprecated // TODO NOT IN USE?
-    public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws URISyntaxException, IOException {
+    public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
     	String id = emailService.sendApplicationByEmail(applicationByEmail);
         Target target = new Target.Builder()
             .setField("oid", applicationByEmail.getApplicationOID())
