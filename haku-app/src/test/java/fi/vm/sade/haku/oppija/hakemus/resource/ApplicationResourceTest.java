@@ -16,17 +16,28 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
-import atg.taglib.json.util.HTTP;
-import com.google.common.collect.ImmutableList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.vm.sade.auditlog.Changes;
-import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
@@ -40,21 +51,17 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -67,7 +74,8 @@ public class ApplicationResourceTest {
     private Application application;
     private Application applicationWithPaymentState;
     private I18nBundleService i18nBundleService;
-    private VirkailijaAuditLogger virkailijaAuditLogger;
+    private OppijaAuditLogger oppijaAuditLogger = mock(OppijaAuditLogger.class);
+    private VirkailijaAuditLogger virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
 
     private final String OID = "1.2.3.4.5.100";
     private final String OID_WITH_PAYMENT_STATE = "1.2.3.4.5.101";
@@ -80,7 +88,6 @@ public class ApplicationResourceTest {
         this.applicationService = mock(ApplicationService.class);
         this.applicationSystemService = mock(ApplicationSystemService.class);
         this.i18nBundleService = mock(I18nBundleService.class);
-        this.virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
 
         Map<String, String> phase1 = new HashMap<String, String>();
         phase1.put("nimi", "Alan Turing");
@@ -250,7 +257,7 @@ public class ApplicationResourceTest {
             assertEquals("Save only one updated field and wrap the DTO into a stringified json, otherwise auditlog indexing will explode",
                     1,entries.size());
             return null;
-        }).when(virkailijaAuditLogger).log(any(),eq(HakuOperation.SAVE_ADDITIONAL_DATA), any(), any());
+        }).when(oppijaAuditLogger).log(any(),eq(HakuOperation.SAVE_ADDITIONAL_DATA), any(), any());
 
         applicationResource.putApplicationAdditionalData(asId,aoId,additionaldata);
     }

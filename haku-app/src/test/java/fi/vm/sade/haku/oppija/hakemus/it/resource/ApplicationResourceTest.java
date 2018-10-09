@@ -1,7 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl.KoulutusinformaatioServiceMockImpl;
 import fi.vm.sade.haku.oppija.common.organisaatio.impl.OrganizationServiceMockImpl;
@@ -29,9 +30,6 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-
 public class ApplicationResourceTest extends AuthedIntegrationTest {
 
     public static final String OID = "1.2.3.4";
@@ -40,6 +38,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
     public static final String OID_PAYMENT_DUE_DATE_IN_FUTURE = "1.2.3.4.3";
     public static final String OID_INVALID = "foobar";
     public static final String OID_DOES_NOT_EXIST = "1.2.3.4.111";
+    private final VirkailijaAuditLogger virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
 
     private ApplicationResource applicationResource;
 
@@ -65,7 +64,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
                 "false"
         );
         applicationResource = new ApplicationResource(as, applicationSystemService, applicationOptionService, syntheticApplicationService, i18nBundleService,
-                mock(OfficerUIService.class), mock(VirkailijaAuditLogger.class));
+                mock(OfficerUIService.class), virkailijaAuditLogger);
     }
 
     @Test

@@ -16,10 +16,17 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-import fi.vm.sade.haku.OppijaAuditLogger;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -31,24 +38,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
-
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Mikko Majapuro
@@ -88,7 +84,7 @@ public class OfficerControllerTest {
         when(officerApplicationService.getApplicationWithLastPhase(eq(OID))).thenReturn(app);
 
         officerController = new OfficerController(officerApplicationService, null, mock(UserSession.class), null,
-                null, mock(OppijaAuditLogger.class));
+                null, mock(VirkailijaAuditLogger.class));
     }
 
     @Test

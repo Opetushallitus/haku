@@ -26,7 +26,7 @@ import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
 import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.HakuOperation;
-import fi.vm.sade.haku.OppijaAuditLogger;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -104,18 +104,18 @@ public class OfficerController {
     private EmailService emailService;
 
     @Autowired
-    private OppijaAuditLogger oppijaAuditLogger;
+    private VirkailijaAuditLogger virkailijaAuditLogger;
 
     public OfficerController() {}
 
     @Autowired
-    public OfficerController(OfficerUIService officerUIService, UIService uiService, Session userSession, PDFService pdfService, EmailService emailService, OppijaAuditLogger oppijaAuditLogger) {
+    public OfficerController(OfficerUIService officerUIService, UIService uiService, Session userSession, PDFService pdfService, EmailService emailService, VirkailijaAuditLogger virkailijaAuditLogger) {
         this.officerUIService = officerUIService;
         this.uiService = uiService;
         this.userSession = userSession;
         this.pdfService = pdfService;
         this.emailService = emailService;
-        this.oppijaAuditLogger = oppijaAuditLogger;
+        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     @GET
@@ -556,8 +556,8 @@ public class OfficerController {
     }
 
     private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
-        User user = oppijaAuditLogger.getUser();
-        oppijaAuditLogger.log(user, operation, target, changes);
+        User user = virkailijaAuditLogger.getUser();
+        virkailijaAuditLogger.log(user, operation, target, changes);
     }
 
     private Target.Builder createTargetBuilder(String oid, ModelResponse modelResponse) {
