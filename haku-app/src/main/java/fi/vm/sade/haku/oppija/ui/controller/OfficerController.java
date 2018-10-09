@@ -552,13 +552,10 @@ public class OfficerController {
     }
 
     private void auditLogRequest(HakuOperation operation, Target target) {
-        auditLogRequest(operation, target, null);
+        auditLogRequest(operation, target, new Changes.Builder().build());
     }
 
     private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
-        if(changes == null) {
-            changes = new Changes.Builder().build();
-        }
         User user = oppijaAuditLogger.getUser();
         oppijaAuditLogger.log(user, operation, target, changes);
     }
