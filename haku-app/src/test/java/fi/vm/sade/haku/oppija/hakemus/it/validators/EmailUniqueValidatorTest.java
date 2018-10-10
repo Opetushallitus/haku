@@ -10,7 +10,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.ui.controller.FormController;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -71,6 +73,12 @@ public class EmailUniqueValidatorTest extends IntegrationTestSupport {
         answers.put("koulusivistyskieli", Lists.newArrayList("FI"));
         answers.put("aidinkieli", Lists.newArrayList("FI"));
         answers.put("huoltajanpuhelinnumero", Lists.newArrayList(""));
+        ThreadLocalStateForTesting.init();
+    }
+
+    @After
+    public void tearDown() {
+        ThreadLocalStateForTesting.reset();
     }
 
     @Test

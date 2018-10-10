@@ -5,7 +5,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.common.mongo.DBObjectUtils;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.hakutest.IntegrationTest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 

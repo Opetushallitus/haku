@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.hakutest;
 
+import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 import org.openqa.selenium.Dimension;
@@ -62,6 +63,12 @@ public class SeleniumContainer {
 
     public void logout() {
         getDriver().navigate().to(this.webDriverBaseUrl + "user/logout");
+    }
+
+    public void login(String usernameForLogin) {
+        final LoginPage loginPage = new LoginPage(getDriver());
+        getDriver().navigate().to(this.webDriverBaseUrl + "user/login");
+        loginPage.login(usernameForLogin);
     }
 
     public String getBaseUrl() {

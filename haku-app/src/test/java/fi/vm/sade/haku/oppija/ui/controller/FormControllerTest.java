@@ -29,9 +29,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -89,6 +91,12 @@ public class FormControllerTest {
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
 
         when(formService.getActiveForm(APPLICATION_SYSTEM_ID)).thenReturn(FORM);
+        ThreadLocalStateForTesting.init();
+    }
+
+    @After
+    public void tearDown() {
+        ThreadLocalStateForTesting.reset();
     }
 
     @Test(expected = NullPointerException.class)

@@ -38,6 +38,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -85,6 +87,13 @@ public class OfficerControllerTest {
 
         officerController = new OfficerController(officerApplicationService, null, mock(UserSession.class), null,
                 null, mock(VirkailijaAuditLogger.class));
+
+        ThreadLocalStateForTesting.init();
+    }
+
+    @After
+    public void tearDown() {
+        ThreadLocalStateForTesting.reset();
     }
 
     @Test

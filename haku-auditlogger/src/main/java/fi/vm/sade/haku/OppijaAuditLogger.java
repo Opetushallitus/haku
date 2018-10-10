@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class OppijaAuditLogger extends HakuAuditLogger {
     public OppijaAuditLogger() {
-        super(new OppijaAuditHelper(), "haku-app", ApplicationType.OPPIJA);
+        super(new OppijaAuditHelper(), "haku-app", ApplicationType.OPPIJA, true);
     }
 }

@@ -32,10 +32,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.HakuOperation;
 import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.VirkailijaAuditLogger;
@@ -50,8 +51,9 @@ import fi.vm.sade.haku.oppija.hakemus.service.impl.ApplicationServiceImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,6 +78,7 @@ public class ApplicationResourceTest {
     private I18nBundleService i18nBundleService;
     private OppijaAuditLogger oppijaAuditLogger = mock(OppijaAuditLogger.class);
     private VirkailijaAuditLogger virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
+    private ApiAuditLogger apiAuditLogger = mock(ApiAuditLogger.class);
 
     private final String OID = "1.2.3.4.5.100";
     private final String OID_WITH_PAYMENT_STATE = "1.2.3.4.5.101";
@@ -128,6 +131,12 @@ public class ApplicationResourceTest {
         this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService,
                 null, null, i18nBundleService,
                 null, virkailijaAuditLogger);
+        ThreadLocalStateForTesting.init();
+    }
+
+    @After
+    public void resetThreadLocalState() {
+        ThreadLocalStateForTesting.reset();
     }
 
     @Test
@@ -324,7 +333,7 @@ public class ApplicationResourceTest {
 
         public ApplicationServiceMock() {
             super(null, null, null, null, null, null, null, applicationSystemService, null, null, null, null,
-                    null, null, null, null, "true");
+                    null, null, null, null, "true", virkailijaAuditLogger, oppijaAuditLogger, apiAuditLogger);
         }
 
         @Override
