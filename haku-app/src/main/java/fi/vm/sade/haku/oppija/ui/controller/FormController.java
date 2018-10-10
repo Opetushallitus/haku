@@ -133,7 +133,7 @@ public class FormController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Path("/{applicationSystemId}/form")
     public Map getApplicationSystemForm(@Context HttpServletRequest request,
-                                   @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+                                   @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
         LOGGER.info("Getting form for as "+applicationSystemId);
         Form form = uiService.getApplicationSystemForm(applicationSystemId);
         Element element = form.getChildById("osaaminen");

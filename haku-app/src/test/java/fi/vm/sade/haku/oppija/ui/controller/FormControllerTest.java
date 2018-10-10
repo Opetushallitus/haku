@@ -44,9 +44,7 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,29 +70,23 @@ public class FormControllerTest {
     private final OppijaAuditLogger oppijaAuditLogger = mock(OppijaAuditLogger.class);
 
     private FormController formController;
-    private ApplicationService applicationService;
-    private AuthenticationService authenticationService;
     private final UIService uiService = mock(UIService.class);
-    private FormService formService;
-    private Application application;
     private ModelResponse modelResponse;
 
     @Before
     public void setUp() throws Exception {
-        this.application = new Application();
+        Application application = new Application();
         application.setPhaseId(FIRST_PHASE_ID);
-        modelResponse = new ModelResponse(this.application);
-        this.applicationService = mock(ApplicationService.class);
-        this.formService = mock(FormService.class);
-        this.authenticationService = mock(AuthenticationService.class);
-        PDFService pdfService = mock(PDFService.class);
-        when(uiService.ensureLanguage(Matchers.<HttpServletRequest>any(), Matchers.<String>any())).thenReturn("fi");
+        modelResponse = new ModelResponse(application);
+        ApplicationService applicationService = mock(ApplicationService.class);
+        FormService formService = mock(FormService.class);
+        when(uiService.ensureLanguage(Matchers.any(), Matchers.any())).thenReturn("fi");
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, "fi")).thenReturn(modelResponse);
-        when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any(), Matchers.<String>any())).thenReturn(modelResponse);
+        when(uiService.savePhase(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(modelResponse);
         this.formController = new FormController(uiService,null, oppijaAuditLogger);
 
         FORM.addChild(PHASE);
-        when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
+        when(applicationService.getApplication(Matchers.<String>any())).thenReturn(application);
 
         when(formService.getActiveForm(APPLICATION_SYSTEM_ID)).thenReturn(FORM);
 
@@ -132,7 +124,7 @@ public class FormControllerTest {
 
     @Test
     public void testSavePhaseInvalid() throws Exception {
-        HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
+        HashMap<String, I18nText> errorMessages = new HashMap<>();
         errorMessages.put("", ElementUtil.createI18NAsIs(""));
         this.modelResponse.setErrorMessages(errorMessages);
         HttpServletRequest request = createRequest();
