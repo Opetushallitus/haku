@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.configuration;
 
 import com.mongodb.MongoClient;
+
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -40,7 +41,7 @@ public class MongoServer {
         if (isFreeLocalPort(Integer.parseInt(port))) {
             logger.info("Starting embedded mongo on port " + port);
             IMongodConfig mongodConfig = new MongodConfigBuilder()
-                .version(Version.V2_4_5)
+                .version(Version.V3_4_15)
                 .net(new Net(NumberUtils.toInt(port), Network.localhostIsIPv6()))
                 .build();
             MongodStarter runtime = MongodStarter.getInstance(new RuntimeConfigBuilder()
