@@ -21,6 +21,7 @@ public class HakuAppTomcat {
     }
 
     public static EmbeddedTomcat create(int port, int ajpPort) {
+        System.setProperty("fi.vm.sade.javautils.http.HttpServletRequestUtils.SKIP_MISSING_HEADER_LOGGING", "true");
         useIntegrationTestSettingsIfNoProfileSelected();
         final EmbeddedTomcat embeddedTomcat = new EmbeddedTomcat(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
         if (System.getProperty("spring.profiles.active").equals("it")) {
