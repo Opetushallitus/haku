@@ -42,6 +42,7 @@ public class MongoServer {
             logger.info("Starting embedded mongo on port " + port);
             IMongodConfig mongodConfig = new MongodConfigBuilder()
                 .version(Version.V3_4_15)
+                .setParameter("maxBSONDepth", "1000")
                 .net(new Net(NumberUtils.toInt(port), Network.localhostIsIPv6()))
                 .build();
             MongodStarter runtime = MongodStarter.getInstance(new RuntimeConfigBuilder()
