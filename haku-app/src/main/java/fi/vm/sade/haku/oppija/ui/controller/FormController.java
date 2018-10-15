@@ -379,12 +379,12 @@ public class FormController {
     }
 
     private void auditLogApplicationView(ModelResponse modelResponse) {
+        Target.Builder targetBuilder = new Target.Builder();
         if (modelResponse.getApplication() != null) {
-            Target.Builder targetBuilder = new Target.Builder()
-                .setField("hakemusOid", modelResponse.getApplication().getOid())
+            targetBuilder.setField("hakemusOid", modelResponse.getApplication().getOid())
                 .setField("personOid", modelResponse.getApplication().getPersonOid());
-            auditLogRequest(HakuOperation.VIEW_APPLICATION, targetBuilder.build());
         }
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, targetBuilder.build());
     }
 
     private void auditLogRequest(HakuOperation operation, Target target) {
