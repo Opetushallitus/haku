@@ -155,6 +155,8 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 log.error("Couldn't parse date of birth: '"+dobStr+"' for user "+personBuilder.getPersonOid());
             } catch (NumberFormatException nfe) {
                 log.error("Couldn't format date of birth: '"+dobStr+"' for user "+personBuilder.getPersonOid());
+            } catch (Exception e) {
+                log.error("Unknown problem handling date of birth: '"+dobStr+"' for user "+personBuilder.getPersonOid() + " , handling JSON '" + personJson + "'");
             }
         }
 
