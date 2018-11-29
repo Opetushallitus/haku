@@ -356,7 +356,6 @@ public class SendMailService {
 
     private static boolean doesNotUseSecurelink(ApplicationSystem as) {
         return HAKUTAPA_JATKUVA_HAKU.equals(as.getHakutapa())
-                || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(as.getKohdejoukkoUri())
                 || KOHDEJOUKON_TARKENNE_SIIRTOHAKU.equals(as.getKohdejoukonTarkenne());
     }
 
