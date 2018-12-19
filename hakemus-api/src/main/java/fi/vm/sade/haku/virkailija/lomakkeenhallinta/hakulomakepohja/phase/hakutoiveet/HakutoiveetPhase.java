@@ -136,8 +136,13 @@ public class HakutoiveetPhase {
             pr.addChild(createSoraQuestions(id, formParameters));
         }
 
+        /*if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
+            pr.addChild(createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters));
+            //pr.addChild((createUrheilijalinjaRule(id)));
+        }*/
+
         if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
-            pr.addChild((createUrheilijalinjaRule(id)));
+            pr.addChild(createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters));
         }
 
         if (formParameters.kysytaankoKaksoistutkinto()) {
@@ -299,14 +304,40 @@ public class HakutoiveetPhase {
         return koulutusValittu;
     }
 
+    /*private static Element createUrheilijalinjaRule(final String index) {
+        HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
+        *//*Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));*//*
+        *//*Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-educationcode"), new Value("koulutus_301101"))); //koulutus_301101 = Ylioppilastutkinto*//*
+        Expr expr2 = new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA));
+        //Expr exprComb = new Or(expr, expr2);
+        Element rule = Rule(expr2).build();
+        rule.addChild(hiddenValue);
+        return rule;
+    }
+
     private static Element createUrheilijalinjaRule(final String index) {
         HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
-        /*Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
-                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));*/
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
-                new Equals(new Variable(index + "-Koulutus-id-educationcode"), new Value("koulutus_301101"))); //koulutus_301101 = Ylioppilastutkinto
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
         Element rule = Rule(expr).build();
         rule.addChild(hiddenValue);
+        return rule;
+    }*/
+
+    private static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {
+        Element radio = RadioBuilder.Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys")
+                .addOptions(ImmutableList.of(
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                .i18nText(formParameters.getI18nText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys"))
+                .required()
+                .formParams(formParameters).build();
+        Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
+        Element rule = Rule(expr).build();
+        rule.addChild(radio);
         return rule;
     }
 
