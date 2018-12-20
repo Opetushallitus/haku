@@ -30,6 +30,8 @@ import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
 import fi.vm.sade.haku.ApiAuditLogger;
 import fi.vm.sade.haku.HakuOperation;
+import fi.vm.sade.haku.OppijaAuditLogger;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -86,7 +88,6 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ValintaService valintaService;
     private final Boolean disableHistory;
     private final OhjausparametritService ohjausparametritService;
-    private final ApiAuditLogger apiAuditLogger = new ApiAuditLogger();
+    private final VirkailijaAuditLogger virkailijaAuditLogger;
+    private final OppijaAuditLogger oppijaAuditLogger;
+    private final ApiAuditLogger apiAuditLogger;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -153,7 +156,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ValintaService valintaService,
                                   OhjausparametritService ohjausparametritService,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation,
-                                  @Value("${disableHistory:false}") String disableHistory) {
+                                  @Value("${disableHistory:false}") String disableHistory,
+                                  VirkailijaAuditLogger virkailijaAuditLogger,
+                                  OppijaAuditLogger oppijaAuditLogger,
+                                  ApiAuditLogger apiAuditLogger) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -171,6 +177,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
         this.disableHistory = Boolean.valueOf(disableHistory);
+        this.virkailijaAuditLogger = virkailijaAuditLogger;
+        this.oppijaAuditLogger = oppijaAuditLogger;
+        this.apiAuditLogger = apiAuditLogger;
     }
 
 
@@ -258,14 +267,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.applicationDAO.save(application);
 
             Gson g = new Gson();
-            fi.vm.sade.auditlog.User apiUser = apiAuditLogger.getUser();
+            fi.vm.sade.auditlog.User userForAuditLog = oppijaAuditLogger.getUser();
             Target.Builder target = new Target.Builder();
             Changes.Builder changes = new Changes.Builder();
             target.setField("hakemusOid", application.getOid())
                     .setField("hakuOid", applicationSystem.getId());
             changes.added("hakemus", g.toJson(application));
 
-            apiAuditLogger.log(apiUser, HakuOperation.SAVE_APPLICATION, target.build(), changes.build());
+            oppijaAuditLogger.log(userForAuditLog, HakuOperation.SAVE_APPLICATION, target.build(), changes.build());
 
             this.userSession.removeApplication(application);
             return application;
@@ -880,7 +889,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .added("state", application.getState().name())
                 .added("received", application.getReceived().toString())
                 .added("appplicationOid", application.getOid());
-        apiAuditLogger.log(apiAuditLogger.getUser(), HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
+        virkailijaAuditLogger.log(virkailijaAuditLogger.getUser(), HakuOperation.CREATE_NEW_APPLICATION, target.build(), changes.build());
 
         return application;
     }

@@ -17,6 +17,8 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+
+import fi.vm.sade.haku.AuthenticationProviderForTesting;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -83,7 +85,7 @@ public class LoginControllerTest {
 
     @Test
     public void testPostLoginRedirectLocationOfficer() throws Exception {
-        testLocation("officer", "virkailija/hakemus");
+        testLocation(AuthenticationProviderForTesting.OFFICER_USER_OID, "virkailija/hakemus");
     }
 
     @Test

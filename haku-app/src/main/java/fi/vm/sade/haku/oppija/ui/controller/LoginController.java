@@ -16,13 +16,16 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static fi.vm.sade.haku.AuthenticationProviderForTesting.OFFICER_USER_OID;
+import static fi.vm.sade.haku.AuthenticationProviderForTesting.OPO_USER_OID;
+import static javax.ws.rs.core.Response.seeOther;
 import com.sun.jersey.api.view.Viewable;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -32,8 +35,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
-
-import static javax.ws.rs.core.Response.seeOther;
+import java.util.Arrays;
 
 @Component
 @Path("user")
@@ -70,8 +72,8 @@ public class LoginController {
         return new Viewable(LOGIN_VIEW);
     }
 
-    private Response getResponseByUsername(String username) throws URISyntaxException {
-        String path = "officer".equals(username) || "opo".equals(username) ? "virkailija/hakemus" : "/";
+    private Response getResponseByUsername(String oid) throws URISyntaxException {
+        String path = Arrays.asList(OFFICER_USER_OID, OPO_USER_OID).contains(oid) ? "virkailija/hakemus" : "/";
         return seeOther(new URI(path)).build();
     }
 }

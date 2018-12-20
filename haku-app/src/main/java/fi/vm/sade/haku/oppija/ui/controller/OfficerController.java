@@ -26,7 +26,7 @@ import fi.vm.sade.auditlog.Changes;
 import fi.vm.sade.auditlog.Target;
 import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.HakuOperation;
-import fi.vm.sade.haku.OppijaAuditLogger;
+import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -104,18 +104,18 @@ public class OfficerController {
     private EmailService emailService;
 
     @Autowired
-    private OppijaAuditLogger oppijaAuditLogger;
+    private VirkailijaAuditLogger virkailijaAuditLogger;
 
     public OfficerController() {}
 
     @Autowired
-    public OfficerController(OfficerUIService officerUIService, UIService uiService, Session userSession, PDFService pdfService, EmailService emailService, OppijaAuditLogger oppijaAuditLogger) {
+    public OfficerController(OfficerUIService officerUIService, UIService uiService, Session userSession, PDFService pdfService, EmailService emailService, VirkailijaAuditLogger virkailijaAuditLogger) {
         this.officerUIService = officerUIService;
         this.uiService = uiService;
         this.userSession = userSession;
         this.pdfService = pdfService;
         this.emailService = emailService;
-        this.oppijaAuditLogger = oppijaAuditLogger;
+        this.virkailijaAuditLogger = virkailijaAuditLogger;
     }
 
     @GET
@@ -136,12 +136,11 @@ public class OfficerController {
         LOGGER.debug("create new application");
         Application application = officerUIService.createApplication(multiValues.getFirst("asId"));
 
-        Changes changes = new Changes.Builder().build();
         Target target = new Target.Builder()
                 .setField("hakuOid", multiValues.getFirst("asId"))
                 .setField("hakemusOid", application.getOid()).build();
 
-        auditLogRequest(HakuOperation.CREATE_NEW_APPLICATION, target, changes);
+        auditLogRequest(HakuOperation.CREATE_NEW_APPLICATION, target);
         return redirectToOidResponse(application.getOid());
     }
 
@@ -157,39 +156,31 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/")
-    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", false);
 
-        Changes changes = new Changes.Builder().build();
-        Target target = new Target.Builder().setField("oid", oid).build();
-
-        auditLogRequest(HakuOperation.VIEW_APPLICATION, target, changes);
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, createTargetBuilder(oid, modelResponse).build());
 
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
+
     @GET
     @Path("/hakemus/{oid}/valinta")
-    public Viewable valintaTab(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    public Viewable valintaTab(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValintaTab(oid);
 
-        Changes changes = new Changes.Builder().build();
-        Target target = new Target.Builder().setField("oid", oid).build();
-
-        auditLogRequest(HakuOperation.VIEW_APPLICATION, target, changes);
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, createTargetBuilder(oid, modelResponse).build());
         return new Viewable(VALINTA_TAB_VIEW, modelResponse.getModel());
     }
     @GET
     @Path("/hakemus/{oid}/kelpoisuus_ja_liitteet")
-    public Viewable kelpoisuusJaLiitteetTab(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    public Viewable kelpoisuusJaLiitteetTab(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu", true);
 
-        Changes changes = new Changes.Builder().build();
-        Target target = new Target.Builder().setField("oid", oid).build();
-
-        auditLogRequest(HakuOperation.VIEW_APPLICATION, target, changes);
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, createTargetBuilder(oid, modelResponse).build());
 
         return new Viewable(KELPOISUUS_JA_LIITTEET_TAB_VIEW, modelResponse.getModel());
     }
@@ -205,13 +196,11 @@ public class OfficerController {
         modelResponse.setNoteMessages(this.userSession.getNotes());
         this.userSession.clearNotes();
 
-        Changes changes = new Changes.Builder().build();
-        Target target = new Target.Builder()
-                .setField("oid", oid)
-                .setField("hakuOid", applicationSystemId)
-                .build();
-
-        auditLogRequest(HakuOperation.PREVIEW_APPLICATION, target, changes);
+        Target.Builder targetBuilder = new Target.Builder()
+            .setField("oid", oid)
+            .setField("hakuOid", applicationSystemId);
+        addPersonOidIfPossible(modelResponse, targetBuilder);
+        auditLogRequest(HakuOperation.PREVIEW_APPLICATION, targetBuilder.build());
 
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -243,14 +232,8 @@ public class OfficerController {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
 
-        Changes changes = new Changes.Builder().build();
-        Target target = new Target.Builder()
-                .setField("oid", oid)
-                .setField("hakuOid", applicationSystemId)
-                .setField("phaseId", phaseId)
-                .build();
-
-        auditLogRequest(HakuOperation.PREVIEW_APPLICATION, target, changes);
+        auditLogRequest(HakuOperation.PREVIEW_APPLICATION,
+            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build());
 
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -274,18 +257,12 @@ public class OfficerController {
                 userSession.getUser());
 
         Changes.Builder changesBuilder = new Changes.Builder();
-        for(Map.Entry<String, String> changesStr : values.entrySet()) {
+        for (Map.Entry<String, String> changesStr : values.entrySet()) {
             changesBuilder.added(changesStr.getKey(), changesStr.getValue());
         }
-        Changes changes = changesBuilder.build();
 
-        Target target = new Target.Builder()
-                .setField("oid", oid)
-                .setField("hakuOid", applicationSystemId)
-                .setField("phaseId", phaseId)
-                .build();
-
-        auditLogRequest(HakuOperation.UPDATE_APPLICATION_PHASE, target, changes);
+        auditLogRequest(HakuOperation.UPDATE_APPLICATION_PHASE,
+            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build(), changesBuilder.build());
 
         if (modelResponse.hasErrors()) {
             return ok(new Viewable(DEFAULT_VIEW, modelResponse.getModel())).build();
@@ -310,13 +287,8 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
         modelResponse.addAnswers(toSingleValueMap(multiValues));
 
-        Target target = new Target.Builder()
-                .setField("oid", oid)
-                .setField("hakuOid", applicationSystemId)
-                .setField("phaseId", phaseId)
-                .build();
-
-        auditLogRequest(HakuOperation.REFRESH_APPLICATION_VIEW, target);
+        auditLogRequest(HakuOperation.REFRESH_APPLICATION_VIEW,
+            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build());
 
         return new Viewable("/elements/Root", modelResponse.getModel());
     }
@@ -335,13 +307,8 @@ public class OfficerController {
         List<String> ruleIds = multiValues.get("ruleIds[]");
         ModelResponse modelResponse = officerUIService.getApplicationMultiElement(oid, phaseId, ruleIds, false, toSingleValueMap(multiValues));
 
-        Target target = new Target.Builder()
-                .setField("oid", oid)
-                .setField("hakuOid", applicationSystemId)
-                .setField("phaseId", phaseId)
-                .build();
-
-        auditLogRequest(HakuOperation.REFRESH_APPLICATION_VIEW, target);
+        auditLogRequest(HakuOperation.REFRESH_APPLICATION_VIEW,
+            createTargetBuilder(applicationSystemId, phaseId, oid, modelResponse).build());
 
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
@@ -379,8 +346,8 @@ public class OfficerController {
         LOGGER.debug("getAdditionalInfo  {}, {}", new Object[]{oid});
         ModelResponse modelResponse = officerUIService.getAdditionalInfo(oid);
 
-        Target target = new Target.Builder().setField("oid", oid).build();
-        auditLogRequest(HakuOperation.VIEW_ADDITIONAL_INFO, target);
+        auditLogRequest(HakuOperation.VIEW_ADDITIONAL_INFO,
+            createTargetBuilder(oid, modelResponse).build());
 
         return new Viewable(ADDITIONAL_INFO_VIEW, modelResponse.getModel());
     }
@@ -440,7 +407,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public void processAttachmentAndEligibility(@PathParam(OID_PATH_PARAM) final String oid,
-                                                EligibilitiesDTO eligibilities) throws URISyntaxException {
+                                                EligibilitiesDTO eligibilities) {
         try {
             officerUIService.processAttachmentsAndEligibilities(oid, eligibilities);
         } catch (IllegalStateException ise) {
@@ -468,8 +435,8 @@ public class OfficerController {
     public Viewable getApplicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
 
-        Target target = new Target.Builder().setField("oid", oid).build();
-        auditLogRequest(HakuOperation.PRINT_PREVIEW_APPLICATION, target);
+        auditLogRequest(HakuOperation.PRINT_PREVIEW_APPLICATION,
+            createTargetBuilder(oid, modelResponse).build());
 
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
@@ -479,10 +446,12 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Deprecated // TODO NOT IN USE?
-    public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws URISyntaxException, IOException {
+    public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
     	String id = emailService.sendApplicationByEmail(applicationByEmail);
-
-        Target target = new Target.Builder().setField("oid", applicationByEmail.getApplicationOID()).build();
+        Target target = new Target.Builder()
+            .setField("oid", applicationByEmail.getApplicationOID())
+            .setField("personOid", applicationByEmail.getApplicantOID())
+            .build();
         auditLogRequest(HakuOperation.SEND_BY_EMAIL, target);
 
         return Response.ok(id).build();
@@ -505,7 +474,7 @@ public class OfficerController {
     	
     	ApplicationByEmailDTO applicationByEmail = new ApplicationByEmailDTO();
     	applicationByEmail.setApplicationTemplate(template);
-    	
+
     	return Response.ok(applicationByEmail).build();
     }
     
@@ -583,14 +552,35 @@ public class OfficerController {
     }
 
     private void auditLogRequest(HakuOperation operation, Target target) {
-        auditLogRequest(operation, target, null);
+        auditLogRequest(operation, target, new Changes.Builder().build());
     }
 
     private void auditLogRequest(HakuOperation operation, Target target, Changes changes) {
-        if(changes == null) {
-            changes = new Changes.Builder().build();
+        User user = virkailijaAuditLogger.getUser();
+        virkailijaAuditLogger.log(user, operation, target, changes);
+    }
+
+    private Target.Builder createTargetBuilder(String oid, ModelResponse modelResponse) {
+        Target.Builder targetBuilder = new Target.Builder().setField("oid", oid);
+        addPersonOidIfPossible(modelResponse, targetBuilder);
+        return targetBuilder;
+    }
+
+    private Target.Builder createTargetBuilder(String applicationSystemId,
+                                               String phaseId,
+                                               String oid,
+                                               ModelResponse modelResponse) {
+        Target.Builder targetBuilder = new Target.Builder()
+            .setField("oid", oid)
+            .setField("hakuOid", applicationSystemId)
+            .setField("phaseId", phaseId);
+        addPersonOidIfPossible(modelResponse, targetBuilder);
+        return targetBuilder;
+    }
+
+    private void addPersonOidIfPossible(ModelResponse modelResponse, Target.Builder targetBuilder) {
+        if (modelResponse.getApplication() != null) {
+            targetBuilder.setField("personOid", modelResponse.getApplication().getPersonOid());
         }
-        User user = oppijaAuditLogger.getUser();
-        oppijaAuditLogger.log(user, operation, target, changes);
     }
 }

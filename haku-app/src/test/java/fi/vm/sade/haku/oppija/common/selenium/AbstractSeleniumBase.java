@@ -16,15 +16,27 @@
 
 package fi.vm.sade.haku.oppija.common.selenium;
 
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_FIELD;
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_NAME;
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.fail;
 import com.google.common.base.Predicate;
 import com.mongodb.BasicDBObject;
+
 import fi.vm.sade.haku.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
-import fi.vm.sade.hakutest.SeleniumContainer;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
+import fi.vm.sade.hakutest.SeleniumContainer;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -40,11 +52,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_FIELD;
-import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_NAME;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.fail;
 
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     @Autowired
@@ -80,7 +87,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected ApplicationSystemHelper updateApplicationSystem(final ApplicationSystem applicationSystem) {
+        ThreadLocalStateForTesting.init();
         adminResourceClient.updateApplicationSystem(applicationSystem);
+        ThreadLocalStateForTesting.reset();
         return new ApplicationSystemHelper(applicationSystem);
     }
 

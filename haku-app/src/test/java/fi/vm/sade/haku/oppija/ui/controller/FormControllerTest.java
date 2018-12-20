@@ -16,8 +16,22 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static fi.vm.sade.haku.HakuOperation.SAVE_PHASE_TO_SESSION;
+import static fi.vm.sade.haku.HakuOperation.VIEW_APPLICATION;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+
+import fi.vm.sade.auditlog.Changes;
+import fi.vm.sade.auditlog.Target;
+import fi.vm.sade.auditlog.User;
 import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -29,29 +43,20 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
 
@@ -62,33 +67,35 @@ public class FormControllerTest {
     public static final  Element PHASE =  new PhaseBuilder(FIRST_PHASE_ID).setEditAllowedByRoles("TESTING")
       .i18nText(createI18NAsIs(PHASE_TITLE)).build();
     public static final Form FORM = new Form("id", createI18NAsIs("title"));
+    private final OppijaAuditLogger oppijaAuditLogger = mock(OppijaAuditLogger.class);
 
     private FormController formController;
-    private ApplicationService applicationService;
-    private AuthenticationService authenticationService;
-    private FormService formService;
-    private Application application;
+    private final UIService uiService = mock(UIService.class);
     private ModelResponse modelResponse;
 
     @Before
     public void setUp() throws Exception {
-        this.application = new Application();
+        Application application = new Application();
         application.setPhaseId(FIRST_PHASE_ID);
-        modelResponse = new ModelResponse(this.application);
-        this.applicationService = mock(ApplicationService.class);
-        this.formService = mock(FormService.class);
-        this.authenticationService = mock(AuthenticationService.class);
-        UIService uiService = mock(UIService.class);
-        PDFService pdfService = mock(PDFService.class);
-        when(uiService.ensureLanguage(Matchers.<HttpServletRequest>any(), Matchers.<String>any())).thenReturn("fi");
+        modelResponse = new ModelResponse(application);
+        ApplicationService applicationService = mock(ApplicationService.class);
+        FormService formService = mock(FormService.class);
+        when(uiService.ensureLanguage(Matchers.any(), Matchers.any())).thenReturn("fi");
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, "fi")).thenReturn(modelResponse);
-        when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any(), Matchers.<String>any())).thenReturn(modelResponse);
-        this.formController = new FormController(uiService,null, mock(OppijaAuditLogger.class));
+        when(uiService.savePhase(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(modelResponse);
+        this.formController = new FormController(uiService,null, oppijaAuditLogger);
 
         FORM.addChild(PHASE);
-        when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
+        when(applicationService.getApplication(Matchers.<String>any())).thenReturn(application);
 
         when(formService.getActiveForm(APPLICATION_SYSTEM_ID)).thenReturn(FORM);
+
+        ThreadLocalStateForTesting.init();
+    }
+
+    @After
+    public void tearDown() {
+        ThreadLocalStateForTesting.reset();
     }
 
     @Test(expected = NullPointerException.class)
@@ -117,7 +124,7 @@ public class FormControllerTest {
 
     @Test
     public void testSavePhaseInvalid() throws Exception {
-        HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
+        HashMap<String, I18nText> errorMessages = new HashMap<>();
         errorMessages.put("", ElementUtil.createI18NAsIs(""));
         this.modelResponse.setErrorMessages(errorMessages);
         HttpServletRequest request = createRequest();
@@ -130,6 +137,16 @@ public class FormControllerTest {
         Response response = formController.savePhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl());
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getPath(), actual);
+        verify(oppijaAuditLogger).log(any(User.class), eq(SAVE_PHASE_TO_SESSION), any(Target.class), any(Changes.class));
+    }
+
+    @Test
+    public void testPreview() {
+        when(uiService.getPreview(APPLICATION_SYSTEM_ID)).thenReturn(modelResponse);
+        Viewable viewable = formController.getPreview(APPLICATION_SYSTEM_ID);
+        assertEquals(modelResponse.getModel(), viewable.getModel());
+        assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());
+        verify(oppijaAuditLogger).log(any(User.class), eq(VIEW_APPLICATION), any(Target.class), any(Changes.class));
     }
 
     private HttpServletRequest createRequest() {

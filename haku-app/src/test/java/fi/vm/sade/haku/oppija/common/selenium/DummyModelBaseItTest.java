@@ -31,8 +31,10 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     public void setUDummyModelBaseIt() throws Exception {
         //FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl());
         //applicationSystemHelper = updateApplicationSystem(formGeneratorMock.generate(ASID));
+        seleniumContainer.login("master");
         seleniumContainer.getDriver().get((getBaseUrl() + "lomakkeenhallinta/ALL"));
         waitForElement(60, By.id("published"));
+        seleniumContainer.logout();
     }
 
 

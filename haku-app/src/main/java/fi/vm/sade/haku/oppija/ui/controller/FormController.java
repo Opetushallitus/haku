@@ -125,7 +125,7 @@ public class FormController {
         uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.getApplication(applicationSystemId);
         Response.ResponseBuilder builder = Response.seeOther(new URI(new RedirectToPhaseViewPath(applicationSystemId, modelResponse.getPhaseId()).getPath()));
-
+        auditLogApplicationView(modelResponse);
         return builder.build();
     }
 
@@ -133,7 +133,7 @@ public class FormController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Path("/{applicationSystemId}/form")
     public Map getApplicationSystemForm(@Context HttpServletRequest request,
-                                   @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+                                   @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
         LOGGER.info("Getting form for as "+applicationSystemId);
         Form form = uiService.getApplicationSystemForm(applicationSystemId);
         Element element = form.getChildById("osaaminen");
@@ -170,7 +170,7 @@ public class FormController {
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.getPhase(applicationSystemId, phaseId, lang);
         Viewable viewable = new Viewable(ROOT_VIEW, modelResponse.getModel());
-
+        auditLogApplicationView(modelResponse);
         Response.ResponseBuilder builder = Response.ok(viewable);
         return builder.build();
 
@@ -181,6 +181,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) {
         ModelResponse modelResponse = uiService.getPreview(applicationSystemId);
+        auditLogApplicationView(modelResponse);
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
@@ -192,6 +193,7 @@ public class FormController {
                                     @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
         LOGGER.debug("getPhaseElement {}, {}", applicationSystemId, phaseId);
         ModelResponse modelResponse = uiService.getPhaseElement(applicationSystemId, phaseId, elementId);
+        auditLogApplicationView(modelResponse);
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
@@ -206,6 +208,7 @@ public class FormController {
         final MultivaluedMap<String, String> multiValues = filterOPHParameters(post);
         LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId, elementId);
         ModelResponse modelResponse = uiService.updateRules(applicationSystemId, phaseId, elementId, toSingleValueMap(multiValues));
+        auditLogUpdateRules(multiValues, modelResponse);
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
 
@@ -220,7 +223,20 @@ public class FormController {
         LOGGER.debug("updateRulesMulti {}, {}, {}", applicationSystemId, phaseId);
         List<String> ruleIds = firstNonNull(multiValues.get("ruleIds[]"), ImmutableList.<String>of());
         ModelResponse modelResponse = uiService.updateRulesMulti(applicationSystemId, phaseId, ruleIds, toSingleValueMap(multiValues));
+        auditLogUpdateRules(multiValues, modelResponse);
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
+    }
+
+    private void auditLogUpdateRules(MultivaluedMap<String, String> rulesFromUi, ModelResponse modelResponse) {
+        if (modelResponse.getApplication() != null) {
+            Target.Builder targetBuilder = new Target.Builder()
+                .setField("hakemusOid", modelResponse.getApplication().getOid())
+                .setField("personOid", modelResponse.getApplication().getPersonOid());
+            for (Map.Entry<String, List<String>> rulesEntry : rulesFromUi.entrySet()) {
+                targetBuilder.setField(rulesEntry.getKey(), rulesEntry.getValue().toString());
+            }
+            auditLogRequest(HakuOperation.UPDATE_RULES, targetBuilder.build());
+        }
     }
 
     private Changes.Builder changesEntryNewApplication(fi.vm.sade.haku.oppija.hakemus.domain.Application app) {
@@ -319,6 +335,7 @@ public class FormController {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationSystemId});
         ModelResponse response = uiService.getCompleteApplication(applicationSystemId, oid);
+        auditLogApplicationView(response);
         return new Viewable(VALMIS_VIEW, response.getModel());
     }
 
@@ -329,6 +346,7 @@ public class FormController {
                              @PathParam("oid") final String oid) {
         LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
         ModelResponse modelResponse = uiService.getCompleteApplication(applicationSystemId, oid);
+        auditLogApplicationView(modelResponse);
         return new Viewable(PRINT_VIEW, modelResponse.getModel());
     }
 
@@ -358,6 +376,15 @@ public class FormController {
     @Produces(MediaType.TEXT_PLAIN)
     public String refreshSession() {
         return "OK";
+    }
+
+    private void auditLogApplicationView(ModelResponse modelResponse) {
+        Target.Builder targetBuilder = new Target.Builder();
+        if (modelResponse.getApplication() != null) {
+            targetBuilder.setField("hakemusOid", modelResponse.getApplication().getOid())
+                .setField("personOid", modelResponse.getApplication().getPersonOid());
+        }
+        auditLogRequest(HakuOperation.VIEW_APPLICATION, targetBuilder.build());
     }
 
     private void auditLogRequest(HakuOperation operation, Target target) {

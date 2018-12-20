@@ -1,6 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus.it;
 
 import com.google.common.collect.ImmutableList;
+
+import fi.vm.sade.haku.OppijaAuditLogger;
 import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;

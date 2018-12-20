@@ -18,15 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.it;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mongodb.DBObject;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
@@ -34,6 +25,13 @@ import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.util.JsonTestData;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ApplicationIT extends DummyModelBaseItTest {
     protected static List<DBObject> applicationTestDataObject = JsonTestData.readTestData("application-test-data.json");
@@ -50,8 +48,8 @@ public class ApplicationIT extends DummyModelBaseItTest {
     public void testFindAllApplications() throws IOException {
         navigateToPath("applications");
         ApplicationSearchResultDTO applications = responseToSearchResult();
-        assertEquals(3, applications.getResults().size());
         assertEquals(3, applications.getTotalCount());
+        assertEquals(3, applications.getResults().size());
     }
 
     @Test
@@ -59,8 +57,8 @@ public class ApplicationIT extends DummyModelBaseItTest {
         navigateToPath("applications");
         navigateToPath("applications?q=1.2.246.562.11.00000000259");
         ApplicationSearchResultDTO applications = responseToSearchResult();
-        assertEquals(1, applications.getResults().size());
         assertEquals(1, applications.getTotalCount());
+        assertEquals(1, applications.getResults().size());
     }
 
     //    @Test

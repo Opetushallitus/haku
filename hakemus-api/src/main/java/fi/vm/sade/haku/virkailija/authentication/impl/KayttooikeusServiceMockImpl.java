@@ -15,7 +15,11 @@
  */
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
+import static fi.vm.sade.haku.AuthenticationProviderForTesting.OFFICER_USER_OID;
+import static fi.vm.sade.haku.AuthenticationProviderForTesting.OTHER_OFFICER_USER_OID;
 import com.google.common.collect.Lists;
+
+import fi.vm.sade.haku.AuthenticationProviderForTesting;
 import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,10 +46,10 @@ public class KayttooikeusServiceMockImpl implements KayttooikeusService {
                 || SecurityContextHolder.getContext().getAuthentication().getName() == null) {
             return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
         }
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (username.equals("officer")) {
+        String userOid = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (userOid.equals(OFFICER_USER_OID)) {
             return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
-        } else if (username.equals("kkvirkailija") || username.equals("eikkvirkailija")) {
+        } else if (userOid.equals(OTHER_OFFICER_USER_OID)) {
             return Lists.newArrayList("1.2.246.562.10.61042218794");
         } else {
             return new ArrayList<>();

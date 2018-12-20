@@ -23,6 +23,7 @@ public class MochaIT extends AbstractSeleniumBase {
 
         driver.manage().deleteAllCookies();
 
+        seleniumContainer.login("master");
         driver.get((getBaseUrl() + "lomakkeenhallinta/ALL"));
         waitForElement(60, By.id("published"));
 

@@ -10,11 +10,14 @@ import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.postprocess.Scheduler;
+import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -73,4 +76,14 @@ public abstract class IntegrationTest {
 
     @Autowired
     protected OhjausparametritService ohjausparametritService;
+
+    @Before
+    public void initThreadLocalState() {
+        ThreadLocalStateForTesting.init();
+    }
+
+    @After
+    public void resetThreadLocalState() {
+        ThreadLocalStateForTesting.reset();
+    }
 }
