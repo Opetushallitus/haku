@@ -128,7 +128,7 @@ public class LisatiedotPhase {
         lupatietoGrp.addChild(Checkbox("lupaMarkkinointi").formParams(formParameters).build());
         lupatietoGrp.addChild(Checkbox("lupaJulkaisu").formParams(formParameters).build());
         lupatietoGrp.addChild(Checkbox("lupaSms").formParams(formParameters).build());
-        lupatietoGrp.addChild(Checkbox("lupaemail").formParams(formParameters).build());
+        lupatietoGrp.addChild(Checkbox("lupaTulosEmail").formParams(formParameters).build());
         //lupatietoGrp.addChild(Checkbox("lupaKela").formParams(formParameters).build());
 
         lupatiedotTheme.addChild(lupatietoGrp);
