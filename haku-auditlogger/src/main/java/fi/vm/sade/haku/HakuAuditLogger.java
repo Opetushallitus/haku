@@ -40,7 +40,7 @@ public class HakuAuditLogger extends Audit {
     private Oid getCurrentPersonOid() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String personOid = auth.getName();
-        if ("anonymousUser".equals(personOid) && allowEmptyPersonOid) { // See User class in hakemus-api module
+        if ("anonymousUser".equals(personOid)) { // See User class in hakemus-api module
             LOGGER.debug("Allowing empty person oid");
             return null;
         }
