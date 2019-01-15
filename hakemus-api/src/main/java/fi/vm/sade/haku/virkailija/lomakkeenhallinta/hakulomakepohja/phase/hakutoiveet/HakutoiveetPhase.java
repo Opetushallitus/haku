@@ -316,9 +316,6 @@ public class HakutoiveetPhase {
         Element rule = Rule(expr).build();
         rule.addChild(radio);
         return rule;
-
-
-
     }
 
     private static Element createLukionUrheilijalinjaHiddenField(final String index) {

@@ -64,10 +64,10 @@
 
     #if ($athlete)
         <p>
-            Du har sökt som idrottare. Kom ihåg att returnera tilläggsblanketten för idrottare direkt till läroanstalten. Tilläggsblanketten och tilläggsupgifter hittar du adressen<br /><br />
+            Du har sökt till gymnasiets idrottslinje eller du har anmält intresse att delta i yrkesutbildning för idrottare. Kom ihåg att fylla i tilläggsblanketten för idrottare. Skicka blanketten innan ansökningtiden utgår.<br /><br />
 
-            <a href="https://storage.googleapis.com/valo-production/2017/12/ansokningsblankett-idrottsskolor-2018.pdf">
-                https://storage.googleapis.com/valo-production/2017/12/ansokningsblankett-idrottsskolor-2018.pdf (pdf-fil)
+            <a href="https://www.olympiakomitea.fi/uploads/2018/11/ansokningsblankett-idrottsskolor-2019.pdf">
+                Tilläggsblanketten för idrottare
             </a>
         </p>
     #end
