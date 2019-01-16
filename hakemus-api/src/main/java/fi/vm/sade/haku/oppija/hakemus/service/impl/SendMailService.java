@@ -238,6 +238,10 @@ public class SendMailService {
     private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem, Locale locale, ResourceBundle resourceBundle) {
         VelocityContext ctx = new VelocityContext();
         DateFormat dateFmt = dateTimeFormatter(locale);
+        //Käytetään ruotsiksi samaa aikaformaattia kuin suomeksi
+        if (locale.toString().equals("sv")) {
+            dateFmt=dateTimeFormatter(new Locale("fi"));
+        }
         String receivedDate = dateFmt.format(application.getReceived());
         String modifiedDate = dateFmt.format(application.getUpdated());
         String applicationId = application.getOid();
