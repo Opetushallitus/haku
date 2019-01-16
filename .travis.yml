@@ -48,7 +48,7 @@ script:
 
 deploy:
 - provider: script
-  script: mvn deploy -pl hakemus-api -DskipTests --settings ci-tools/common/maven-settings.xml
+  script: mvn deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests --settings ci-tools/common/maven-settings.xml
   skip_cleanup: true
   on:
     branch: master
