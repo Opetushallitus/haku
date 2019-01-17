@@ -17,5 +17,5 @@
   ~ European Union Public Licence for more details.
   --%>
 <div class="form-item" id="${element.id}">
-    <b><haku:i18nText value="${element.i18nText}"/></b>
+    <b><haku:i18nText value="${element.i18nText}" escape="false"/></b>
 </div>

@@ -37,10 +37,10 @@
 
     #if ($athlete)
         <p>
-            Haet urheilijana ammatilliseen koulutukseen tai lukioon. Muistathan toimittaa urheilijan lisätietolomakkeen hakemaasi oppilaitokseen. Lisätietolomakkeen ja lisätietoja löydät osoitteesta:<br /><br />
+            Olet hakenut lukion urheilulinjalle tai ilmoittanut olevasi kiinnostunut urheilijoiden ammatillisesta koulutuksesta. Muistathan täyttää myös urheilijan lisätietolomakkeen ja palauttaa sen hakemaasi oppilaitokseen viimeistään hakuajan päättymiseen mennessä.<br /><br />
 
-            <a href="https://storage.googleapis.com/valo-production/2016/12/urheiluoppilaitosten-hakulomake-2018.pdf">
-                https://storage.googleapis.com/valo-production/2016/12/urheiluoppilaitosten-hakulomake-2018.pdf (pdf)
+            <a href="https://www.olympiakomitea.fi/huippu-urheilu/urheiluakatemiaohjelma-2/haku-urheiluoppilaitoksiin/">
+                Lisätietoa urheilijoiden koulutuksesta ja lisätietolomake
             </a>
         </p>
     #end

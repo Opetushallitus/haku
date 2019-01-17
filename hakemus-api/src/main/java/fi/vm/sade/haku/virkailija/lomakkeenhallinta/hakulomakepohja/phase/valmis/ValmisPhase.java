@@ -83,11 +83,7 @@ public class ValmisPhase {
                 "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys")).build();
         Element athleteGroup = TitledGroup("atheleteGroup").formParams(formParameters).build();
 
-        athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haetturheilijana").formParams(formParameters).build());
-        Link athleteLink = new Link("athleteLink", formParameters.getI18nText("form.valmis.haetturheilijana.linkki.url"),
-                formParameters.getI18nText("form.valmis.haetturheilijana.linkki.text"));
-        athleteLink.addAttribute("target", "_blank");
-        athleteGroup.addChild(athleteLink);
+        athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haettuurheilijana.muistutus").formParams(formParameters).build());
         athleteRule.addChild(athleteGroup);
 
         //Hait musiikki-, tanssi- tai liikunta-alan koulutukseen.

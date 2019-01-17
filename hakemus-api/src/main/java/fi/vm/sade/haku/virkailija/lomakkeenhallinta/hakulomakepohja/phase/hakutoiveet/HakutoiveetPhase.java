@@ -17,11 +17,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
 import com.google.common.collect.ImmutableList;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
@@ -38,16 +37,18 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+import org.w3c.dom.html.HTMLElement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Info;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator.ConfiguratorFilter;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -84,7 +85,6 @@ public class HakutoiveetPhase {
                 formParameters.getApplicationSystem().isUsePriorities(),
                 Math.min(6, formParameters.getApplicationSystem().getMaxApplicationOptions()),
                 formParameters.isOpetuspisteetVetovalikossa());
-
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);
         pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), "yleinen.pakollinen"));
@@ -137,7 +137,8 @@ public class HakutoiveetPhase {
         }
 
         if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
-            pr.addChild((createUrheilijalinjaRule(id)));
+            pr.addChild(createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
+                    createLukionUrheilijalinjaHiddenField(id));
         }
 
         if (formParameters.kysytaankoKaksoistutkinto()) {
@@ -299,10 +300,26 @@ public class HakutoiveetPhase {
         return koulutusValittu;
     }
 
-    private static Element createUrheilijalinjaRule(final String index) {
+    private static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {
+        Element radio = RadioBuilder.Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys")
+                .addOptions(ImmutableList.of(
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                .i18nText(formParameters.getI18nText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys"))
+                .required()
+                .formParams(formParameters).build();
+        Element athleteNotificationIfAnswerYes = createVarEqualsToValueRule(radio.getId(), KYLLA);
+        athleteNotificationIfAnswerYes.addChild(Info("athlete-notification").labelKey("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.infowithurl").formParams(formParameters).build());
+        radio.addChild(athleteNotificationIfAnswerYes);
+        Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
+                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
+        Element rule = Rule(expr).build();
+        rule.addChild(radio);
+        return rule;
+    }
+
+    private static Element createLukionUrheilijalinjaHiddenField(final String index) {
         HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
-        /*Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
-                new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));*/
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-educationcode"), new Value("koulutus_301101"))); //koulutus_301101 = Ylioppilastutkinto
         Element rule = Rule(expr).build();
