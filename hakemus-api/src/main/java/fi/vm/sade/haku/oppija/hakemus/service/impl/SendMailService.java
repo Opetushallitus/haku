@@ -240,7 +240,7 @@ public class SendMailService {
         DateFormat dateFmt = dateTimeFormatter(locale);
         //Käytetään ruotsiksi samaa aikaformaattia kuin suomeksi
         if (locale.toString().equals("sv")) {
-            dateFmt=dateTimeFormatter(new Locale("fi"));
+            dateFmt = dateTimeFormatter(new Locale("fi"));
         }
         String receivedDate = dateFmt.format(application.getReceived());
         String modifiedDate = dateFmt.format(application.getUpdated());
