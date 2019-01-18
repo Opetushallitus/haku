@@ -387,6 +387,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
         List<String> queryASIds = applicationQueryParameters.getAsIds();
 
+        /* TODO many "hakuPermissionService.user.*" calls seem to repeat the same call to kayttoikeusService.getOrganisaatioHenkilo().
+           Hopefully this does not constitute a problem. */
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
