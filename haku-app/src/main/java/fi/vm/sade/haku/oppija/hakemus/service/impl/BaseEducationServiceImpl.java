@@ -120,7 +120,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
         //Preferenssijärjestys. Jos halutuimpia luokkatietoja löytyy tasan yksi, palautetaan se. Jos niitä löytyy useampia, kyseessä virhetilanne. Jos 0, siirrytään seuraavaan.
         List<String> luokkatasotJarj = Arrays.asList("10", "VALMA", "TELMA", "ML", "9", "L");
-        List<String> luokkatasojenKomoOidsJarj = Arrays.asList(KOMO_OID_KYMPPI, KOMO_OID_VALMA, KOMO_OID_TELMA, KOMO_OID_MLV, KOMO_OID_PERUSOPETUS, KOMO_OID_AMMATILLINEN, KOMO_OID_LUKIO);
+        List<String> luokkatasojenKomoOidsJarj = Arrays.asList(KOMO_OID_KYMPPI, KOMO_OID_VALMA, KOMO_OID_TELMA, KOMO_OID_MLV, KOMO_OID_PERUSOPETUS, KOMO_OID_LUKIO);
         LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Suorituksia yhteensä %s kpl.", opiskelijaDTOs.get(0).getHenkiloOid(), kaikkiSuoritukset.size()));
 
         OpiskelijaDTO found = null;
