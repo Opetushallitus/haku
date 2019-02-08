@@ -1,12 +1,12 @@
 package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
-import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import fi.vm.sade.haku.oppija.hakemus.resource.PermissionResource;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.kayttooikeus.dto.permissioncheck.PermissionCheckRequestDto;
+import fi.vm.sade.kayttooikeus.dto.permissioncheck.PermissionCheckResponseDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -58,7 +58,7 @@ public class PermissionResourceTest extends IntegrationTestSupport {
     public void personWithInvalidAndValidOidMatchesOrganisation() {
         String studentOid = "InvalidOid";
         String organisationOid = "1.2.246.562.10.21989237215";
-        PermissionCheckRequestDTO request = getRequest(studentOid, organisationOid);
+        PermissionCheckRequestDto request = getRequest(studentOid, organisationOid);
         request.getPersonOidsForSamePerson().add("1.2.246.562.24.14229104472");
         validate(permissionResource.checkPermission(request), true, null);
     }
@@ -93,7 +93,7 @@ public class PermissionResourceTest extends IntegrationTestSupport {
         validate(permissionResource.checkPermission(getRequest("personoid", "")), false, BLANK_ORGANISATION_OID);
         validate(permissionResource.checkPermission(getRequest("personoid")), false, ORGANISATION_LIST_EMPTY);
 
-        PermissionCheckRequestDTO dto = getRequest("personoid", "organisationoid");
+        PermissionCheckRequestDto dto = getRequest("personoid", "organisationoid");
         dto.setOrganisationOids(null);
         validate(permissionResource.checkPermission(dto), false, NULL_ORGANISATION_OID_LIST);
 
@@ -116,13 +116,13 @@ public class PermissionResourceTest extends IntegrationTestSupport {
         validate(permissionResource.checkPermission(dto), false, BLANK_PERSON_OID);
     }
 
-    private void validate(PermissionCheckResponseDTO r, boolean b, String s) {
+    private void validate(PermissionCheckResponseDto r, boolean b, String s) {
         assertEquals("AccessAllowed was no correct.", b, r.isAccessAllowed());
         assertEquals("Wrong error message.", s, r.getErrorMessage());
     }
 
-    private PermissionCheckRequestDTO getRequest(String personoid, String... oids) {
-        PermissionCheckRequestDTO d = new PermissionCheckRequestDTO();
+    private PermissionCheckRequestDto getRequest(String personoid, String... oids) {
+        PermissionCheckRequestDto d = new PermissionCheckRequestDto();
         d.setPersonOidsForSamePerson(Lists.newArrayList(personoid));
         d.setOrganisationOids(Lists.newArrayList(oids));
         d.setLoggedInUserRoles(new HashSet<String>());

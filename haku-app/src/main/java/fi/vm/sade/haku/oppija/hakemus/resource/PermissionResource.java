@@ -3,15 +3,14 @@ package fi.vm.sade.haku.oppija.hakemus.resource;
 import com.google.common.base.Preconditions;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import fi.vm.sade.authentication.permissionchecker.PermissionCheckInterface;
-import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
-import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.Role;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.kayttooikeus.dto.permissioncheck.PermissionCheckRequestDto;
+import fi.vm.sade.kayttooikeus.dto.permissioncheck.PermissionCheckResponseDto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ import java.util.Set;
 @Component
 @Path("/permission")
 @Api(value = "/permission", description = "Oikeuksien tarkistuksen REST-rajapinta")
-public class PermissionResource implements PermissionCheckInterface {
+public class PermissionResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PermissionResource.class);
 
@@ -59,10 +58,9 @@ public class PermissionResource implements PermissionCheckInterface {
             notes = "Vain virkailijat hakemuksen hakukohteiden organisaatioista saavat katsella hakijan tietoja.\n" +
                     "personOids: Hakijan henkilöoidit\n" +
                     "organisationOids: Virkailijan organisaatiot ja niiden lapsiorganisaatiot",
-            response = PermissionCheckResponseDTO.class
+            response = PermissionCheckResponseDto.class
     )
-    @Override
-    public PermissionCheckResponseDTO checkPermission(PermissionCheckRequestDTO request) {
+    public PermissionCheckResponseDto checkPermission(PermissionCheckRequestDto request) {
         try {
             Preconditions.checkNotNull(request, NULL_REQUEST);
             Preconditions.checkNotNull(request.getPersonOidsForSamePerson(), NULL_PERSON_OID_LIST);
@@ -96,14 +94,14 @@ public class PermissionResource implements PermissionCheckInterface {
         }
     }
 
-    private PermissionCheckResponseDTO permissionAllowed() {
-        PermissionCheckResponseDTO result = new PermissionCheckResponseDTO();
+    private PermissionCheckResponseDto permissionAllowed() {
+        PermissionCheckResponseDto result = new PermissionCheckResponseDto();
         result.setAccessAllowed(true);
         return result;
     }
 
-    private PermissionCheckResponseDTO permissionDenied(String reason) {
-        PermissionCheckResponseDTO result = new PermissionCheckResponseDTO();
+    private PermissionCheckResponseDto permissionDenied(String reason) {
+        PermissionCheckResponseDto result = new PermissionCheckResponseDto();
         result.setErrorMessage(reason);
         return result;
     }
