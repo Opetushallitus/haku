@@ -52,4 +52,9 @@ public class SubjectRow extends Titled {
     public boolean isLanguage() {
         return language;
     }
+
+    public String toString() {
+        return "(Id: " + this.id + ", comprehensiveSchool: " + this.comprehensiveSchool + ", highSchool: "
+                + this.highSchool + ", optional: " + this.optional + ", language: " + this.language + ", translations: +"+ this.getI18nText().getText("fi") + ")";
+    }
 }

@@ -699,6 +699,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             } else if (isPreferenceKey(key)) {
                 preferenceAnswers.put(key, value);
             } else if (isArvosanaKey(key)) {
+                LOGGER.info("Processing ArvosanaKey: " + key) ;
                 newGradeAnswers.put(key, value);
             }
         }
@@ -736,6 +737,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             newAnswers.put(key, entry.getValue());
         }
+        LOGGER.info("Setting vaiheen vastaukset: " + newAnswers);
         application.setVaiheenVastauksetAndSetPhaseId(phaseId, newAnswers);
     }
 

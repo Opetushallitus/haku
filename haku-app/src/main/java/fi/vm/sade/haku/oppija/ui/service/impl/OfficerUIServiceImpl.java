@@ -274,6 +274,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         if(!virkailijaErrors.isEmpty()) {
             modelResponse.setErrorMessages(virkailijaErrors);
         }
+        LOGGER.error("GRADES: " + application.getPhaseAnswers(PHASE_GRADES));
         return modelResponse;
     }
 

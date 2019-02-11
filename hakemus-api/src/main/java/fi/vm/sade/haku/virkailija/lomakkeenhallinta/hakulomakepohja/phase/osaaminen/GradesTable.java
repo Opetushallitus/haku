@@ -14,11 +14,16 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaami
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.function.ElementToId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GradesTable {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(GradesTable.class);
+
 
     public static final String ADDITIONAL_LANGUAGES_GROUP = "additionalLanguages";
     public static final String NATIVE_LANGUAGE_GROUP = "nativeLanguage";
@@ -33,6 +38,9 @@ public class GradesTable {
         GradeGrid gradeGrid = new GradeGrid(id,
                 formParameters.getI18nText(id),
                 gradeGridHelper.isComprehensiveSchool());
+
+        LOGGER.info("Building GradeGrid. AI: " + gradeGridHelper.getNativeLanguages() + ", AI2: " + gradeGridHelper.getAdditionalNativeLanguages()
+                + ", defaultLangs: " + gradeGridHelper.getDefaultLanguages(isSv) + ", addLangs: " + gradeGridHelper.getAdditionalLanguages(isSv));
 
         ElementUtil.setVerboseHelp(gradeGrid, id + ".verboseHelp", formParameters);
 
