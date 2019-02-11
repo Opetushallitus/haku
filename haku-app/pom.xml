@@ -625,9 +625,9 @@
         </dependency>
 
         <dependency>
-            <groupId>fi.vm.sade.authentication</groupId>
-            <artifactId>authentication-api</artifactId>
-            <version>${authentication-api.version}</version>
+            <groupId>fi.vm.sade.kayttooikeus</groupId>
+            <artifactId>kayttooikeus-api</artifactId>
+            <version>${kayttooikeus-api.version}</version>
         </dependency>
 
         <!-- security -->
