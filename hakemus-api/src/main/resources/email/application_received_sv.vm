@@ -26,20 +26,14 @@
         </p>
     #else
         <p>
-            Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål kan du under ansökningstiden göra ändringar via följande länk:
+            Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål, kan du under ansökningstiden göra ändringar via följande länk:
             <a href="{{verification-link}}">{{verification-link}}</a>
         </p>
         <p>
-            Länken är i kraft till ${expires}.
-            Spara detta meddelande. Länken för bearbetning av ansökan skickas endast en gång,
-            och du kan inte beställa en ny.
+            Länken är i kraft till ${expires}. Spara detta meddelande. Länken är personlig.
         </p>
         <p>
-            Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort, kan du
-            alternativt logga in i Studieinfo.fi och under ansökningstiden göra ändringarna
-            i tjänsten Min Studieinfo. I tjänsten kan du förutom att ändra ansökningsönskemål
-            också bearbeta svaren på tilläggsfrågor i anknytning till ansökningsönskemålen,
-            uppdatera dina kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
+            Du kan alternativt göra ändringarna i Min Studieinfo-tjänsten, där du förutom att ändra ansökningsönskemålen kan bearbeta dina svar på eventuella tilläggsfrågor för dina ansökningsönskemål, uppdatera dina kontaktuppgifter, se ditt antagningsresultat och ta emot din studieplats. För att du ska kunna logga in i Min Studieinfo, bör du ha nätbankskoder, mobilcertifikat eller ett elektroniskt personkort. Inloggningen sker i <a href="https://studieinfo.fi">Studieinfo.fi</a>.
         </p>
     #end
 
