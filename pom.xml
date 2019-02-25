@@ -52,7 +52,7 @@
     <repositories>
         <repository>
             <id>oph-sade-artifactory-snapshots</id>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
+            <url>https://nexus.ops.opintopolku.fi/repository/oph-sade-snapshot-proxy/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -62,7 +62,7 @@
         </repository>
         <repository>
             <id>oph-sade-artifactory-releases</id>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local</url>
+            <url>https://nexus.ops.opintopolku.fi/repository/oph-sade-release-proxy/</url>
         </repository>
         <repository>
             <id>repository.jboss.org</id>
