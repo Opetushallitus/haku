@@ -63,6 +63,12 @@
         <repository>
             <id>oph-nexus-releases</id>
             <url>https://nexus.ops.opintopolku.fi/repository/oph-sade-release-proxy/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>repository.jboss.org</id>
