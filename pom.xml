@@ -51,8 +51,8 @@
 
     <repositories>
         <repository>
-            <id>oph-sade-artifactory-snapshots</id>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
+            <id>oph-nexus-snapshots</id>
+            <url>https://nexus.ops.opintopolku.fi/artifactory/oph-sade-snapshot-local/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -61,8 +61,8 @@
             </snapshots>
         </repository>
         <repository>
-            <id>oph-sade-artifactory-releases</id>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local</url>
+            <id>oph-nexus-releases</id>
+            <url>https://nexus.ops.opintopolku.fi/artifactory/oph-sade-release-local/</url>
         </repository>
         <repository>
             <id>repository.jboss.org</id>
@@ -79,12 +79,12 @@
         <repository>
             <id>oph-sade-artifactory</id>
             <name>oph-sade-artifactory-releases</name>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local</url>
+            <url>https://nexus.ops.opintopolku.fi/artifactory/oph-sade-release-local</url>
         </repository>
         <snapshotRepository>
             <id>oph-sade-artifactory</id>
             <name>oph-sade-artifactory-snapshots</name>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
+            <url>https://nexus.ops.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
     <build>
