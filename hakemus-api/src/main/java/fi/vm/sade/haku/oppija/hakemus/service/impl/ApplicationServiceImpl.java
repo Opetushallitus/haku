@@ -78,6 +78,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
@@ -134,6 +135,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final VirkailijaAuditLogger virkailijaAuditLogger;
     private final OppijaAuditLogger oppijaAuditLogger;
     private final ApiAuditLogger apiAuditLogger;
+    private final KoodistoService koodistoService;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -159,7 +161,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   @Value("${disableHistory:false}") String disableHistory,
                                   VirkailijaAuditLogger virkailijaAuditLogger,
                                   OppijaAuditLogger oppijaAuditLogger,
-                                  ApiAuditLogger apiAuditLogger) {
+                                  ApiAuditLogger apiAuditLogger,
+                                  KoodistoService koodistoService) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -180,6 +183,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.virkailijaAuditLogger = virkailijaAuditLogger;
         this.oppijaAuditLogger = oppijaAuditLogger;
         this.apiAuditLogger = apiAuditLogger;
+        this.koodistoService = koodistoService;
     }
 
 
@@ -694,6 +698,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
+            if (key.equals(PERUSOPETUS_KIELI) || key.equals( LUKIO_KIELI)){
+                if (!koodistoService.getTeachingLanguages().contains(key)){
+                    key = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
+                }
+            }
             if (educationElementIds.contains(key)) {
                 educationAnswers.put(key, value);
             } else if (isPreferenceKey(key)) {

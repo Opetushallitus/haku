@@ -53,6 +53,7 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.util.ThreadLocalStateForTesting;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +80,7 @@ public class ApplicationResourceTest {
     private OppijaAuditLogger oppijaAuditLogger = mock(OppijaAuditLogger.class);
     private VirkailijaAuditLogger virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
     private ApiAuditLogger apiAuditLogger = mock(ApiAuditLogger.class);
+    private KoodistoService koodistoService;
 
     private final String OID = "1.2.3.4.5.100";
     private final String OID_WITH_PAYMENT_STATE = "1.2.3.4.5.101";
@@ -333,7 +335,7 @@ public class ApplicationResourceTest {
 
         public ApplicationServiceMock() {
             super(null, null, null, null, null, null, null, applicationSystemService, null, null, null, null,
-                    null, null, null, null, "true", virkailijaAuditLogger, oppijaAuditLogger, apiAuditLogger);
+                    null, null, null, null, "true", virkailijaAuditLogger, oppijaAuditLogger, apiAuditLogger, koodistoService);
         }
 
         @Override
