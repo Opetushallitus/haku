@@ -700,7 +700,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             String value = entry.getValue();
             if (key.equals(PERUSOPETUS_KIELI) || key.equals( LUKIO_KIELI)){
                 if (!koodistoService.getTeachingLanguages().contains(key)){
-                    key = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
+                    value = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
                 }
             }
             if (educationElementIds.contains(key)) {
