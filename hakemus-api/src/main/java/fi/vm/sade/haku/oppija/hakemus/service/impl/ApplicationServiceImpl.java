@@ -64,6 +64,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
@@ -681,6 +682,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         return true;
     }
 
+    private boolean isValidTeachingLanguage(String lang) {
+        for (Option o : koodistoService.getTeachingLanguages()) {
+            if (o.getValue().equals(lang)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Application getApplicationWithValintadata(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
@@ -698,10 +708,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            if (key.equals(PERUSOPETUS_KIELI) || key.equals( LUKIO_KIELI)){
-                if (!koodistoService.getTeachingLanguages().contains(value)){
+            if ((key.equals(PERUSOPETUS_KIELI) || key.equals( LUKIO_KIELI)) && !isValidTeachingLanguage(value)) {
                     value = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
-                }
             }
             if (educationElementIds.contains(key)) {
                 educationAnswers.put(key, value);
