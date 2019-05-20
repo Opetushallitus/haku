@@ -431,6 +431,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getTeachingLanguagesFromCache() {
+        return getTeachingLanguages();
+    }
+
+    @Override
     public List<Option> getOpintoalat() {
         return listOfOpintoalat;
     }

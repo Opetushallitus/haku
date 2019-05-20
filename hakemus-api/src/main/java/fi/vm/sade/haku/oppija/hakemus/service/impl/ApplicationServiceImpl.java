@@ -110,6 +110,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -683,7 +684,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private boolean isValidTeachingLanguage(String lang) {
-        for (Option o : koodistoService.getTeachingLanguages()) {
+        List<Option> teachingLanguages;
+        try {
+            teachingLanguages = koodistoService.getTeachingLanguagesFromCache();
+        } catch (ExecutionException e) {
+            // If cache throws exception, get from koodisto:
+            teachingLanguages = koodistoService.getTeachingLanguages();
+        }
+        for (Option o : teachingLanguages) {
             if (o.getValue().equals(lang)) {
                 return true;
             }

@@ -32,11 +32,13 @@ import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
@@ -77,6 +79,15 @@ public final class HenkilotiedotPhase {
         return emailBuilder;
     }
     public static Element create(final FormParameters formParameters) {
+
+        KoodistoService koodistoService = formParameters.getKoodistoService();
+        List<Option> teachingLanguages;
+        try {
+            teachingLanguages = koodistoService.getTeachingLanguagesFromCache();
+        } catch (ExecutionException e) {
+            // If cache throws exception, get from koodisto:
+            teachingLanguages = koodistoService.getTeachingLanguages();
+        }
 
         // Henkilötiedot
         Element henkilotiedot = Phase(OppijaConstants.PHASE_PERSONAL).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_OPO).formParams(formParameters).build();
@@ -311,7 +322,7 @@ public final class HenkilotiedotPhase {
                     || formParameters.isAmmattillinenOpettajaKoulutus())) {
             henkilotiedotTeema.addChild(Dropdown("koulusivistyskieli")
                             .emptyOptionDefault()
-                            .addOptions(formParameters.getKoodistoService().getTeachingLanguages())
+                            .addOptions(teachingLanguages)
                             .requiredInline()
                             .formParams(formParameters)
                             .build()

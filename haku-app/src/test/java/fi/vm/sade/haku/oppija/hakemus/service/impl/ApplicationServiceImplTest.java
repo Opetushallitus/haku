@@ -46,6 +46,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametri;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
@@ -173,6 +174,7 @@ public class ApplicationServiceImplTest {
         koulutusinformaatioService = mock(KoulutusinformaatioService.class);
         i18nBundleService = mock(I18nBundleService.class);
         ohjausparametritService = mock(OhjausparametritService.class);
+        koodistoService = new KoodistoServiceMockImpl();
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
         when(applicationDAO.findAllQueried(eq(applicationQueryParametersWithPaymentState), eq(filterParameters))).thenReturn(searchResultDTO);
@@ -412,7 +414,7 @@ public class ApplicationServiceImplTest {
         Map<String, String> valintaEducationAnswers = new HashMap<>(originalEducationAnswers);
         valintaEducationAnswers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
         ValintaService valintaService = mock(ValintaService.class);
-        KoodistoService koodistoService = mock(KoodistoService.class);
+        KoodistoService koodistoService = new KoodistoServiceMockImpl();
         when(valintaService.fetchValintaData(Mockito.<Application>any(), Mockito.same(valintaTimeout))).thenReturn(valintaEducationAnswers);
 
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);

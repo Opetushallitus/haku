@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
@@ -90,6 +91,7 @@ public final class KoulutustaustaPhase {
     private static Element[] createOpetErkatJaOpotKoulutustausta(FormParameters formParameters) {
         ArrayList<Element> elements = new ArrayList<>();
         KoodistoService koodistoService = formParameters.getKoodistoService();
+
 
         // Tutkinto ja suoritusvuosi
         Element tutkinto = TextQuestion("amk_ope_tutkinto")
@@ -1005,6 +1007,13 @@ public final class KoulutustaustaPhase {
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         String hakukausiVuosiStr = String.valueOf(hakukausiVuosi);
         KoodistoService koodistoService = formParameters.getKoodistoService();
+        List<Option> teachingLanguages;
+        try {
+            teachingLanguages = koodistoService.getTeachingLanguagesFromCache();
+        } catch (ExecutionException e) {
+            // If cache throws exception, get from koodisto:
+            teachingLanguages = koodistoService.getTeachingLanguages();
+        }
 
         List<Code> baseEducationCodes = koodistoService.getCodes("pohjakoulutustoinenaste", 1);
 
@@ -1167,7 +1176,7 @@ public final class KoulutustaustaPhase {
             lukioRule.addChild(
                     Dropdown(LUKIO_KIELI)
                             .emptyOptionDefault()
-                            .addOptions(koodistoService.getTeachingLanguages())
+                            .addOptions(teachingLanguages)
                             .required()
                             .formParams(formParameters).build());
             baseEducation.addChild(lukioRule);
@@ -1189,7 +1198,7 @@ public final class KoulutustaustaPhase {
 
         pkKysymyksetRule.addChild(Dropdown(PERUSOPETUS_KIELI)
                 .emptyOptionDefault()
-                .addOptions(koodistoService.getTeachingLanguages())
+                .addOptions(teachingLanguages)
                 .required()
                 .formParams(formParameters).build());
 
