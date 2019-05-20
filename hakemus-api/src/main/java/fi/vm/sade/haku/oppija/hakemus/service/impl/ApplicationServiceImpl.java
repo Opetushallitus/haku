@@ -709,7 +709,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             String key = entry.getKey();
             String value = entry.getValue();
             if ((key.equals(PERUSOPETUS_KIELI) || key.equals( LUKIO_KIELI)) && !isValidTeachingLanguage(value)) {
-                    value = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
+                value = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
             }
             if (educationElementIds.contains(key)) {
                 educationAnswers.put(key, value);
