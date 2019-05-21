@@ -99,6 +99,10 @@
                     <groupId>commons-codec</groupId>
                     <artifactId>commons-codec</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>fi.vm.sade.generic</groupId>
+                    <artifactId>generic-common</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>

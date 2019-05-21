@@ -40,7 +40,7 @@
         <springProfileName>default</springProfileName>
 
         <kayttooikeus-api.version>1.0.1-SNAPSHOT</kayttooikeus-api.version>
-        <generic-common.version>9.4-SNAPSHOT</generic-common.version>
+        <generic-common.version>9.4.1-SNAPSHOT</generic-common.version>
 	      <koodisto-api.version>2016-04-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>2016-07-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>13.0-SNAPSHOT</log-client.version>
