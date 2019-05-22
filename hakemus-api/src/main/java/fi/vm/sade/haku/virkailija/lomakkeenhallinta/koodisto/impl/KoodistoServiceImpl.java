@@ -217,7 +217,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private void populateCache() {
         List<Option> teachingLanguages = koodistoCache.getUnchecked(CacheKeys.TEACHING_LANGUAGES);
         if (teachingLanguages.isEmpty()) {
-            String msg = "Koodisto cache failed: EAA countries cannot be empty!";
+            String msg = "Koodisto cache failed: teaching languages cannot be empty!";
             LOGGER.error(msg);
             throw new RuntimeException(msg);
         }
