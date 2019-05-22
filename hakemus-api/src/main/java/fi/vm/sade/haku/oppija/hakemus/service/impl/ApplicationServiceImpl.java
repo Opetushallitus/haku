@@ -64,6 +64,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
@@ -78,6 +79,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
@@ -108,6 +110,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -134,6 +137,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final VirkailijaAuditLogger virkailijaAuditLogger;
     private final OppijaAuditLogger oppijaAuditLogger;
     private final ApiAuditLogger apiAuditLogger;
+    private final KoodistoService koodistoService;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -159,7 +163,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   @Value("${disableHistory:false}") String disableHistory,
                                   VirkailijaAuditLogger virkailijaAuditLogger,
                                   OppijaAuditLogger oppijaAuditLogger,
-                                  ApiAuditLogger apiAuditLogger) {
+                                  ApiAuditLogger apiAuditLogger,
+                                  KoodistoService koodistoService) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -180,6 +185,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.virkailijaAuditLogger = virkailijaAuditLogger;
         this.oppijaAuditLogger = oppijaAuditLogger;
         this.apiAuditLogger = apiAuditLogger;
+        this.koodistoService = koodistoService;
     }
 
 
@@ -677,6 +683,22 @@ public class ApplicationServiceImpl implements ApplicationService {
         return true;
     }
 
+    private boolean isValidTeachingLanguage(String lang) {
+        List<Option> teachingLanguages;
+        try {
+            teachingLanguages = koodistoService.getTeachingLanguagesFromCache();
+        } catch (ExecutionException e) {
+            // If cache throws exception, get from koodisto:
+            teachingLanguages = koodistoService.getTeachingLanguages();
+        }
+        for (Option o : teachingLanguages) {
+            if (o.getValue().equals(lang)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Application getApplicationWithValintadata(Application application, Optional<Duration> valintaTimeout) throws ValintaServiceCallFailedException {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
@@ -694,6 +716,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (Map.Entry<String, String> entry : valintaData.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
+            if ((key.equals(PERUSOPETUS_KIELI) || key.equals( LUKIO_KIELI)) && !isValidTeachingLanguage(value)) {
+                value = OppijaConstants.EDUCATION_LANGUAGE_OTHER;
+            }
             if (educationElementIds.contains(key)) {
                 educationAnswers.put(key, value);
             } else if (isPreferenceKey(key)) {

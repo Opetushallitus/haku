@@ -18,6 +18,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.*;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -38,6 +41,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
@@ -105,6 +109,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         this.koodiService = koodiService;
         koodiService.setClientSubSystemCode("haku.hakemus-api");
         this.organisaatioService = organisaatioService;
+        populateCache();
     }
 
     @Override
@@ -199,6 +204,38 @@ public class KoodistoServiceImpl implements KoodistoService {
     public List<Option> getTeachingLanguages() {
         return codesToOptions(CODE_TEACHING_LANGUAGES);
     }
+
+    @Override
+    public List<Option> getTeachingLanguagesFromCache() throws ExecutionException {
+        return koodistoCache.get(CacheKeys.TEACHING_LANGUAGES);
+    }
+
+    public enum CacheKeys {
+        TEACHING_LANGUAGES
+    }
+
+    private void populateCache() {
+        List<Option> teachingLanguages = koodistoCache.getUnchecked(CacheKeys.TEACHING_LANGUAGES);
+        if (teachingLanguages.isEmpty()) {
+            String msg = "Koodisto cache failed: teaching languages cannot be empty!";
+            LOGGER.error(msg);
+            throw new RuntimeException(msg);
+        }
+    }
+
+    private final LoadingCache<CacheKeys, List<Option>> koodistoCache = CacheBuilder.newBuilder()
+            .maximumSize(1)
+            .build(new CacheLoader<CacheKeys, List<Option>> () {
+                public List<Option> load(CacheKeys cacheKey) {
+                    try {
+                        return getTeachingLanguages();
+                    } catch (Exception e) {
+                        String msg = "Koodisto cache failed to load: " + e.toString();
+                        LOGGER.error(msg);
+                        throw new RuntimeException(msg);
+                    }
+                }
+            });
 
     @Override
     public List<Option> getAmmatillisenTutkinnonArvosteluasteikko() {

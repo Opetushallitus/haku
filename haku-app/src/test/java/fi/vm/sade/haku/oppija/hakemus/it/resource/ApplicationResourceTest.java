@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
 import fi.vm.sade.hakutest.AuthedIntegrationTest;
@@ -44,7 +45,6 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
     private final OppijaAuditLogger oppijaAuditLogger = mock(OppijaAuditLogger.class);
     private final VirkailijaAuditLogger virkailijaAuditLogger = mock(VirkailijaAuditLogger.class);
     private final ApiAuditLogger apiAuditLogger = mock(ApiAuditLogger.class);
-
     private ApplicationResource applicationResource;
 
     @Before
@@ -69,7 +69,8 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
                 "false",
                 virkailijaAuditLogger,
                 oppijaAuditLogger,
-                apiAuditLogger);
+                apiAuditLogger,
+                new KoodistoServiceMockImpl());
         applicationResource = new ApplicationResource(as, applicationSystemService, applicationOptionService, syntheticApplicationService, i18nBundleService,
                 mock(OfficerUIService.class), virkailijaAuditLogger);
     }

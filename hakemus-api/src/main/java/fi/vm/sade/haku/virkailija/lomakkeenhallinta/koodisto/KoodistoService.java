@@ -23,6 +23,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface KoodistoService {
     List<SubjectRow> getSubjects();
@@ -50,6 +51,8 @@ public interface KoodistoService {
     List<Option> getHakukausi();
 
     List<Option> getTeachingLanguages();
+
+    List<Option> getTeachingLanguagesFromCache() throws ExecutionException;
 
     List<Option> getOpintoalat();
 
