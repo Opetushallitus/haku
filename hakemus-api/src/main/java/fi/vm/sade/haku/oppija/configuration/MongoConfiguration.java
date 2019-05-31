@@ -24,6 +24,11 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
     @Value("${mongodb.url}")
     private String mongoUri;
 
+    @Value("${mongo.socket.timeout.ms}")
+    private int mongoSocketTimeoutMs;
+
+
+
     @Override
     protected String getDatabaseName() {
         return databaseName;
@@ -33,7 +38,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
     public Mongo mongo() throws Exception {
         LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri));
         MongoClientOptions.Builder mongoClientOptionsBuilder = new MongoClientOptions.Builder()
-                .socketTimeout(10 * 1000);
+                .socketTimeout(mongoSocketTimeoutMs);
         MongoClientURI mongoClientURI = new MongoClientURI(mongoUri, mongoClientOptionsBuilder);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
