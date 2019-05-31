@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.configuration;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.WriteConcern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,9 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
     @Override
     public Mongo mongo() throws Exception {
         LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri));
-        MongoClientURI mongoClientURI = new MongoClientURI(mongoUri);
+        MongoClientOptions.Builder mongoClientOptionsBuilder = new MongoClientOptions.Builder()
+                .socketTimeout(10 * 1000);
+        MongoClientURI mongoClientURI = new MongoClientURI(mongoUri, mongoClientOptionsBuilder);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
         if (wc != null) {
