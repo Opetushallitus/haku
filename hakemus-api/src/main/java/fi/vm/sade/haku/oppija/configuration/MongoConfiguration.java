@@ -36,9 +36,10 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-        LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri));
+        int socketTimeoutMs = mongoSocketTimeoutS * 1000;
+        LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri) + " with socketTimeoutMs: " + socketTimeoutMs);
         MongoClientOptions.Builder mongoClientOptionsBuilder = new MongoClientOptions.Builder()
-                .socketTimeout(mongoSocketTimeoutS * 1000);
+                .socketTimeout(socketTimeoutMs);
         MongoClientURI mongoClientURI = new MongoClientURI(mongoUri, mongoClientOptionsBuilder);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
