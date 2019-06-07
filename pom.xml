@@ -17,8 +17,8 @@
 
     <properties>
         <junit.version>4.11</junit.version>
-        <spring.version>3.2.9.RELEASE</spring.version>
-        <spring-security.version>3.1.3.RELEASE</spring-security.version>
+        <spring.version>3.2.14.RELEASE</spring.version>
+        <spring-security.version>4.2.3.RELEASE</spring-security.version>
         <jersey.version>1.17.1</jersey.version>
         <servlet.version>3.0.1</servlet.version>
         <mongo-driver.version>2.13.3</mongo-driver.version>
@@ -27,9 +27,9 @@
         <cxf.version>2.7.3</cxf.version>
         <cxf-common-utilities.version>2.5.9</cxf-common-utilities.version>
         <mockito.version>1.9.5</mockito.version>
-        <guava.version>15.0</guava.version>
+        <guava.version>24.1.1-jre</guava.version>
         <ehcache.version>2.5.0</ehcache.version>
-        <flapdoodle.version>2.1.1</flapdoodle.version>
+        <flapdoodle.version>2.1.2</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.70</org.apache.tomcat.embed>
         <jackson.version>2.3.0</jackson.version>
 
