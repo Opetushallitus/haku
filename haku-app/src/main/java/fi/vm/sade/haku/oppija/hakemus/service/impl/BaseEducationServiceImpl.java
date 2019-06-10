@@ -131,7 +131,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Oikeantasoisia (%s) luokkatietoja: %s kpl. Haettava KomoOid: %s", opiskelijaDTOs.get(0).getHenkiloOid(), luokkataso, oikeantasoisetLuokkatiedot.size(), luokkatasonKomoOid));
             if (!oikeantasoisetLuokkatiedot.isEmpty()) {
                 //LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s) : Oikeantasoisia (%s) luokkatietoja: %s kpl.", opiskelijaDTOs.get(0).getHenkiloOid(), luokkataso, oikeantasoisetLuokkatiedot.size()));
-
+                if (luokkataso.equals("VALMA") && oikeantasoisetLuokkatiedot.size() == 1) {
+                    OpiskelijaDTO luokkatieto = oikeantasoisetLuokkatiedot.get(0);
+                    LOGGER.info(String.format("Jälkikäsittely - (Henkilö %s): vain yksi VALMA-luokkatieto löytyi. Valitaan se lähtökouluksi tutkimatta mahdollisen suorituksen tilaa tarkemmin.", luokkatieto.getHenkiloOid()));
+                    return luokkatieto;
+                }
                 for (OpiskelijaDTO luokkatieto : oikeantasoisetLuokkatiedot) {
                     String suorituksenTila = getSuorituksenTilaForLuokkatieto(luokkatieto, kaikkiSuoritukset, luokkatasonKomoOid);
                     if (suorituksenTila.isEmpty() || suorituksenTila.equals("TUNTEMATON")) {
