@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.haku</groupId>
     <artifactId>haku</artifactId>
-    <version>15.2-SNAPSHOT</version>
+    <version>15.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Haku :: Parent</name>
 
@@ -41,7 +41,7 @@
 
         <kayttooikeus-api.version>1.0.1-SNAPSHOT</kayttooikeus-api.version>
         <generic-common.version>9.4.1-SNAPSHOT</generic-common.version>
-	      <koodisto-api.version>2016-04-SNAPSHOT</koodisto-api.version>
+	      <koodisto-api.version>2019-06-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>2016-07-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>13.0-SNAPSHOT</log-client.version>
         <organisaatio-api.version>2015-04</organisaatio-api.version>
