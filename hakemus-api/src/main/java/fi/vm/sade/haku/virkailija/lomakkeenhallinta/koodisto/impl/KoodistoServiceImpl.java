@@ -107,7 +107,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Autowired
     public KoodistoServiceImpl(final KoodistoClient koodiService, final OrganizationService organisaatioService) {
         this.koodiService = koodiService;
-        koodiService.setClientSubSystemCode("haku.hakemus-api");
+        koodiService.setCallerId("haku.hakemus-api");
         this.organisaatioService = organisaatioService;
         populateCache();
     }
