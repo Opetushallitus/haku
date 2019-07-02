@@ -1,7 +1,7 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
 import com.google.gson.*;
-import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -188,7 +188,8 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
+            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+            cachingRestClient = new CachingRestClient(callerId);
             cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);
             cachingRestClient.setUsername(clientAppUser);

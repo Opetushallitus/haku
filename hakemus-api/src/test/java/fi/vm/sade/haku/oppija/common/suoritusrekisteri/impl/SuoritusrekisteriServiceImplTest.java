@@ -3,7 +3,7 @@ package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;

@@ -19,7 +19,7 @@ package fi.vm.sade.haku.virkailija.authentication.impl;
 import com.google.common.base.Optional;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
 import fi.vm.sade.properties.OphProperties;
@@ -64,7 +64,8 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
     @Value("${haku.app.password.to.usermanagement}") String clientAppPass) {
         this.urlConfiguration = urlConfiguration;
-        cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
+        String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+        cachingRestClient = new CachingRestClient(callerId);
         cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);
