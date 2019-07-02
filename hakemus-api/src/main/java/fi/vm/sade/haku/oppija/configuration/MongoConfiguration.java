@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.configuration;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.WriteConcern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,11 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
     @Value("${mongodb.url}")
     private String mongoUri;
 
+    @Value("${mongo.socket.timeout.s}")
+    private int mongoSocketTimeoutS;
+
+
+
     @Override
     protected String getDatabaseName() {
         return databaseName;
@@ -30,8 +36,11 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-        LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri));
-        MongoClientURI mongoClientURI = new MongoClientURI(mongoUri);
+        int socketTimeoutMs = mongoSocketTimeoutS * 1000;
+        LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri) + " with socketTimeoutMs: " + socketTimeoutMs);
+        MongoClientOptions.Builder mongoClientOptionsBuilder = new MongoClientOptions.Builder()
+                .socketTimeout(socketTimeoutMs);
+        MongoClientURI mongoClientURI = new MongoClientURI(mongoUri, mongoClientOptionsBuilder);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
         if (wc != null) {
