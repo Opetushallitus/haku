@@ -16,33 +16,24 @@
 
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
-import com.google.common.base.Optional;
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * @author Hannu Lyytikainen
