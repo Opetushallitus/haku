@@ -26,12 +26,10 @@ import org.springframework.context.annotation.Profile;
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class WebServices {
 
-    @Value("${host.virkailija}")
-    private String hostUrl;
-
     @Bean(name = "cachingKoodistoClient")
-    public KoodistoClient getCachingKoodistoClient() {
-        return new CachingKoodistoClient(hostUrl);
+    public KoodistoClient getCachingKoodistoClient(@Value("${host.virkailija}") String virkailijaHost) {
+        String virkailijaUrl = "https://" + virkailijaHost;
+        return new CachingKoodistoClient(virkailijaUrl);
     }
 
 }
