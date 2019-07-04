@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import fi.vm.sade.security.CustomCasAuthenticationFilter;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
