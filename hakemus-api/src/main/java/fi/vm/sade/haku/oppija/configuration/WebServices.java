@@ -17,7 +17,8 @@ package fi.vm.sade.haku.oppija.configuration;
 
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.koodisto.util.KoodistoClient;
-import org.springframework.beans.factory.annotation.Value;
+import fi.vm.sade.properties.OphProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,9 +27,10 @@ import org.springframework.context.annotation.Profile;
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class WebServices {
 
+    @Autowired
     @Bean(name = "cachingKoodistoClient")
-    public KoodistoClient getCachingKoodistoClient(@Value("${host.virkailija}") String virkailijaHost) {
-        String virkailijaUrl = "https://" + virkailijaHost;
+    public KoodistoClient getCachingKoodistoClient(OphProperties urlConfiguration) {
+        String virkailijaUrl = urlConfiguration.url("url-virkailija");
         return new CachingKoodistoClient(virkailijaUrl);
     }
 
