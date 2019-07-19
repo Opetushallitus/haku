@@ -213,7 +213,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private <T> T get(String url, Class<T> resultType) throws IOException {
         HttpGet get = new HttpGet(url);
-        get.setHeader("clientSubSystemCode", callerId);
         get.setHeader("Caller-Id", callerId);
         try {
             HttpResponse response = this.httpClient.execute(get);

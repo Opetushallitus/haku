@@ -41,7 +41,8 @@ public class UnknownPropertiesAllowingJacksonJsonClientFactory {
 
         private ClientRequest modifyRequest(ClientRequest cr) {
             MultivaluedMap<String, Object> headers = cr.getHeaders();
-            headers.add("clientSubSystemCode", "haku.hakemus-api");
+            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+            headers.add("Caller-Id", callerId);
             if(!HttpRestClient.ImmutableHttpMethods.contains(cr.getMethod())) {
                 headers.add("CSRF", "UnknownPropertiesAllowingJacksonJsonClientFactory");
                 headers.add("Cookie", new Cookie("CSRF","UnknownPropertiesAllowingJacksonJsonClientFactory"));

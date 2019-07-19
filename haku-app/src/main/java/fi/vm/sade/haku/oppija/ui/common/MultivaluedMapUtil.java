@@ -46,6 +46,6 @@ public final class MultivaluedMapUtil {
     }
 
     public static MultivaluedMap<String,String> filterOPHParameters(MultivaluedMap<String,String> post) {
-        return removeKeys(post, "CSRF", "clientSubSystemCode");
+        return removeKeys(post, "CSRF", "clientSubSystemCode", "Caller-Id");
     }
 }
