@@ -35,17 +35,17 @@
     <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/spin.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/underscore-min.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/haku-app-web-oph.js" type="text/javascript"></script>
-    <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/bacon.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="${contextPath}/resources/javascript/bootstrap-paginator.min.js"></script>
+    <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/haku-app-web-oph.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet"/>
     <link href="${contextPath}/resources/css/hakemus.css" type="text/css" rel="stylesheet"/>
+    <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
     <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">-->
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <haku:ie9StyleFix/>
