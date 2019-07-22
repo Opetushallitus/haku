@@ -21,6 +21,7 @@
   <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
   <!DOCTYPE HTML>
   <html>
+  <!-- error.jsp -->
   <head>
     <meta charset="utf-8"/>
     <title>Opintopolku.fi</title>

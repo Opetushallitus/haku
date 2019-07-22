@@ -24,6 +24,7 @@
 <!doctype html>
 <fmt:setBundle basename="messages" scope="application"/>
 <html>
+<!-- searchIndex.jsp -->
 <head>
     <haku:meta/>
     <haku:icons/>

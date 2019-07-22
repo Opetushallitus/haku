@@ -31,6 +31,7 @@
 <c:set var="completeElements" value="${it.applicationCompleteElements}" scope="request"/>
 <!DOCTYPE html>
 <html>
+<!-- valmis.jsp  -->
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>

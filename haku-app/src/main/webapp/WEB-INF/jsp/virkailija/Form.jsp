@@ -33,6 +33,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <html>
+<!-- virkailija/Form.jsp -->
 <head>
     <haku:meta/>
     <haku:icons/>
