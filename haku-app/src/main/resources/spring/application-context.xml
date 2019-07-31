@@ -38,6 +38,9 @@
                           file:///${user.home:''}/oph-configuration/override.properties"
                 ignore-resource-not-found="true" properties-ref="defaultProps"/>
 
+        <bean id="oidProvider" class="fi.vm.sade.javautils.opintopolku_spring_security.OidProvider"/>
+        <bean id="authorizer" class="fi.vm.sade.javautils.opintopolku_spring_security.OrganisationHierarchyAuthorizer"/>
+
         <bean id="defaultProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
             <property name="properties">
                 <util:properties local-override="true">
