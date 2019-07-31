@@ -40,14 +40,13 @@
         <springProfileName>default</springProfileName>
 
         <kayttooikeus-api.version>1.0.1-SNAPSHOT</kayttooikeus-api.version>
-        <generic-common.version>9.7-SNAPSHOT</generic-common.version>
         <legacy-caching-rest-client.version>0.3.0-SNAPSHOT</legacy-caching-rest-client.version>
 	      <koodisto-api.version>2019-06-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>2016-07-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>13.0-SNAPSHOT</log-client.version>
         <organisaatio-api.version>2015-04</organisaatio-api.version>
         <tarjonta-api.version>2016-07-SNAPSHOT</tarjonta-api.version>
-        <viestintapalvelu.version>9.8</viestintapalvelu.version>
+        <viestintapalvelu.version>14.8-SNAPSHOT</viestintapalvelu.version>
     </properties>
 
 
@@ -302,13 +301,6 @@
             </dependency>
 
 
-
-
-            <dependency>
-                <groupId>fi.vm.sade.generic</groupId>
-                <artifactId>generic-common</artifactId>
-                <version>${generic-common.version}</version>
-            </dependency>
 
 
 

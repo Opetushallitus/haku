@@ -91,17 +91,13 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>fi.vm.sade.ryhmasahkoposti</groupId>
+            <groupId>fi.vm.sade.viestintapalvelu</groupId>
             <artifactId>ryhmasahkoposti-api</artifactId>
             <version>${viestintapalvelu.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
                     <artifactId>commons-codec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>fi.vm.sade.generic</groupId>
-                    <artifactId>generic-common</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -482,11 +478,6 @@
         </dependency>
 
         <!-- cas -->
-
-        <dependency>
-            <groupId>fi.vm.sade.generic</groupId>
-            <artifactId>generic-common</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
