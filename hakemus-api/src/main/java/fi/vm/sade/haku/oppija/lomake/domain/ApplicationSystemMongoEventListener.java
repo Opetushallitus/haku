@@ -5,6 +5,8 @@ import com.mongodb.DBObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
+import org.springframework.data.mongodb.core.mapping.event.AfterLoadEvent;
+import org.springframework.data.mongodb.core.mapping.event.BeforeSaveEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,8 +29,9 @@ public class ApplicationSystemMongoEventListener extends AbstractMongoEventListe
      * migration needed for existing data.
      */
     @Override
-    public void onAfterLoad(DBObject dbo) {
+    public void onAfterLoad(AfterLoadEvent<ApplicationSystem> event) {
         try {
+            DBObject dbo = event.getDBObject();
             Object data = dbo.get(FORM_FIELD);
             if (data != null && data.getClass().equals(byte[].class)) {
                 byte[] compressedBinary = (byte[]) data;
@@ -43,8 +46,9 @@ public class ApplicationSystemMongoEventListener extends AbstractMongoEventListe
     }
 
     @Override
-    public void onBeforeSave(ApplicationSystem source, DBObject dbo) {
+    public void onBeforeSave(BeforeSaveEvent<ApplicationSystem> event) {
         try {
+            DBObject dbo = event.getDBObject();
             BasicDBObject form = (BasicDBObject) dbo.get(FORM_FIELD);
             if (form != null) {
                 dbo.put(FORM_FIELD, compressDBObject(form));
