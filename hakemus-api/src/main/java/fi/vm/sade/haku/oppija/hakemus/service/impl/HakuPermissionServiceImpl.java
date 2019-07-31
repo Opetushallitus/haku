@@ -3,7 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.generic.service.AbstractPermissionService;
+import fi.vm.sade.authorization.NotAuthorizedException;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -15,12 +15,14 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
+import fi.vm.sade.javautils.opintopolku_spring_security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -33,23 +35,27 @@ import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 
 @Service
 @Profile(value = {"default", "vagrant"})
-public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
+public class HakuPermissionServiceImpl implements HakuPermissionService {
 
     private AuthenticationService authenticationService;
     private KayttooikeusService kayttoikeusService;
     private ApplicationSystemService applicationSystemService;
+    private OrganisationHierarchyAuthorizer authorizer;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
+
+    private final String rootOrganizationOid;
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
                                      KayttooikeusService kayttoikeusService,
                                      ApplicationSystemService applicationSystemService,
-                                     OrganisationHierarchyAuthorizer authorizer) {
-        super("HAKEMUS");
+                                     OrganisationHierarchyAuthorizer authorizer,
+                                     @Value("${root.organisaatio.oid}") final String rootOrganizationOid) {
         this.authenticationService = authenticationService;
         this.kayttoikeusService = kayttoikeusService;
         this.applicationSystemService = applicationSystemService;
-        this.setAuthorizer(authorizer);
+        this.authorizer = authorizer;
+        this.rootOrganizationOid = rootOrganizationOid;
     }
 
     @Override
@@ -216,7 +222,10 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         }
 
         return false;
+    }
 
+    private String getRootOrgOid() {
+        return this.rootOrganizationOid;
     }
 
     public final String getRoleHetuttomienKasittely() {
@@ -225,6 +234,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     public final String getOpoRole() {
         return ROLE_OPO.casName;
+    }
+
+    public static String getReadRole() {
+        return ROLE_R.casName;
+    }
+
+    public static String getReadUpdateRole() {
+        return ROLE_RU.casName;
+    }
+
+    public static String getCreateReadUpdateDeleteRole() {
+        return ROLE_CRUD.casName;
     }
 
     public static String getRoleLisatietoRU() {
@@ -316,4 +337,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return false;
     }
 
+    private boolean checkAccess(String targetOrganisaatioOid, String... roles) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            authorizer.checkAccess(authentication, targetOrganisaatioOid, roles);
+            return true;
+        } catch (NotAuthorizedException e) {
+            log.debug("Not authorized for organization {}, exception: {}", targetOrganisaatioOid, e);
+        }
+        return false;
+    }
 }
