@@ -785,7 +785,7 @@ public class ValintaServiceMockImpl implements ValintaService {
         HakemusDTO hakemusDTO = gson.fromJson(response, HakemusDTO.class);
         return hakemusDTO;
     }
-
+/*
     @Override
     public HakijaDTO getHakija(String asOid, String application) {
         String response = "{"+
@@ -846,10 +846,68 @@ public class ValintaServiceMockImpl implements ValintaService {
         HakijaDTO hakijaDTO = gson.fromJson(response, HakijaDTO.class);
         return hakijaDTO;
     }
+    */
 
     @Override
     public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
-        return getHakija(asOid, applicationOid);
+        //return getHakija(asOid, applicationOid);
+        String response = "{"+
+                "\"hakemusOid\": \"1.2.246.562.11.00000005610\","+
+                "\"etunimi\": \"Neea V\","+
+                "\"sukunimi\": \"Ylävuori\","+
+                "\"hakutoiveet\": ["+
+                "{"+
+                "\"hakutoive\": 2,"+
+                "\"hakukohdeOid\": \"1.2.246.562.5.85532589612\","+
+                "\"tarjoajaOid\": \"1.2.246.562.10.60222091211\","+
+                "\"pistetiedot\": ["+
+                "{"+
+                "\"tunniste\": \"kielikoe_fi\","+
+                "\"arvo\": null,"+
+                "\"laskennallinenArvo\": \"false\","+
+                "\"osallistuminen\": \"MERKITSEMATTA\""+
+                "},"+
+                "{"+
+                "\"tunniste\": \"1_2_246_562_5_85532589612_urheilija_lisapiste\","+
+                "\"arvo\": null,"+
+                "\"laskennallinenArvo\": \"0.0\","+
+                "\"osallistuminen\": \"MERKITSEMATTA\""+
+                "},"+
+                "{"+
+                "\"tunniste\": \"Eläintenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pääsykoe\","+
+                "\"arvo\": \"10\","+
+                "\"laskennallinenArvo\": \"10\","+
+                "\"osallistuminen\": \"OSALLISTUI\""+
+                "}"+
+                "],"+
+                "\"hakutoiveenValintatapajonot\": ["+
+                "{"+
+                "\"valintatapajonoPrioriteetti\": 2,"+
+                "\"valintatapajonoOid\": \"1392297586537-8212850468668966009\","+
+                "\"valintatapajonoNimi\": \"Varsinaisen valinnanvaiheen valintatapajono\","+
+                "\"jonosija\": 16,"+
+                "\"paasyJaSoveltuvuusKokeenTulos\": null,"+
+                "\"varasijanNumero\": null,"+
+                "\"tila\": \"HYVAKSYTTY\","+
+                "\"tilanKuvaukset\": {},"+
+                "\"vastaanottotieto\": \"KESKEN\","+
+                "\"hyvaksyttyHarkinnanvaraisesti\": false,"+
+                "\"tasasijaJonosija\": 1,"+
+                "\"pisteet\": 18,"+
+                "\"alinHyvaksyttyPistemaara\": 18,"+
+                "\"hakeneet\": 209,"+
+                "\"hyvaksytty\": 1,"+
+                "\"varalla\": 0"+
+                "}"+
+                "]"+
+                "}"+
+                "]"+
+                "}"+
+                "";
+
+        Gson gson = new Gson();
+        HakijaDTO hakijaDTO = gson.fromJson(response, HakijaDTO.class);
+        return hakijaDTO;
     }
 
     @Override

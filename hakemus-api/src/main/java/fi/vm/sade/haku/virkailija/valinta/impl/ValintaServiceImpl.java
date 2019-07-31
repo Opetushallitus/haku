@@ -115,9 +115,10 @@ public class ValintaServiceImpl implements ValintaService {
             return new HakemusDTO();
         }
     }
-
+/*
     @Override
     public HakijaDTO getHakija(String asOid, String applicationOid) {
+
         String url = urlConfiguration.url("valinta-tulos-service.hakija", asOid, applicationOid);
         CachingRestClient client = getCachingRestClientValintaTulosService();
 
@@ -128,7 +129,9 @@ public class ValintaServiceImpl implements ValintaService {
         }
         return new HakijaDTO();
     }
+*/
 
+//TODO: remove unused parameter valinta-tulos-service.hakija from conf.
     @Override
     public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
         String url = urlConfiguration.url("valintarekisteri.hakija", asOid, applicationOid);

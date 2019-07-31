@@ -293,11 +293,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         HakijaDTO hakijaDTO = null;
-        if(readFromValintarekisteri) {
+        //if(readFromValintarekisteri) {
             hakijaDTO = valintaService.getHakijaFromValintarekisteri(application.getApplicationSystemId(), application.getOid());
-        } else {
-            hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
-        }
+        //} else {
+        //    hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
+        //}
         Map<String, String> aoAnswers = application.getPhaseAnswers(PHASE_APPLICATION_OPTIONS);
 
         Map<String, String> koulutusAnswers = application.getPhaseAnswers(PHASE_EDUCATION);
