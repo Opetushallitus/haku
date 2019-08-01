@@ -15,11 +15,9 @@ import org.springframework.stereotype.Component;
 public class EqualFieldValidator extends FieldValidator {
 
     final String otherFieldName;
-    final String errorMessageKey;
 
     public EqualFieldValidator(final String otherFieldName, final String errorMessageKey) {
         super(errorMessageKey);
-        this.errorMessageKey = errorMessageKey;
         this.otherFieldName = otherFieldName;
     }
 
@@ -33,5 +31,9 @@ public class EqualFieldValidator extends FieldValidator {
             return validValidationResult;
         }
         return getInvalidValidationResult(validationInput);
+    }
+
+    public String getErrorMessageKey() {
+        return super.getErrorMessageKey();
     }
 }
