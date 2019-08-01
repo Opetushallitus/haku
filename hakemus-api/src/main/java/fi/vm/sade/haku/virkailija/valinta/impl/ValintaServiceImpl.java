@@ -11,6 +11,8 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+import fi.vm.sade.javautils.httpclient.OphHttpClient;
+import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -23,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -82,6 +85,7 @@ public class ValintaServiceImpl implements ValintaService {
     private static final HashMap<String, SoftReference<String>>valintarekisteriTicket = new HashMap<String, SoftReference<String>>();
     private static final HashMap<String, SoftReference<Header[]>>valintarekisteriHeaders = new HashMap<String, SoftReference<Header[]>>();
     private HttpClient httpClient;
+    private OphHttpClient ophHttpClient;
 
     @Value("${valintarekisteri-default.timeout.millis:300000}")
     private int defaultValintarekisteriHttpRequestTimeoutMilliseconds;
@@ -136,6 +140,7 @@ public class ValintaServiceImpl implements ValintaService {
     public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
         String url = urlConfiguration.url("valintarekisteri.hakija", asOid, applicationOid);
         try {
+            //HakijaDTO hdto = makeAuthenticatedRequestToValintarekisteri(url);
             HakijaDTO hdto = makeAuthenticatedRequestToValintarekisteri(url);
             return hdto;
         } catch (Exception e) {
@@ -145,6 +150,30 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     private HakijaDTO makeAuthenticatedRequestToValintarekisteri(String url){
+        try {
+                ophHttpClient.get(url)
+                .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
+                .accept(OphHttpClient.JSON)
+                .execute((OphHttpResponse response) -> {
+                    HakijaDTO result = new HakijaDTO();
+                    if (response.getStatusCode() == 200){
+                         result = parseHakijaFromInputStream(response.asInputStream());
+                    } else if (response.getStatusCode() == 401) {
+                        authorizeValintarekisteri(true, true);
+                        makeAuthenticatedRequestToValintarekisteri(url);
+                        if(response.getStatusCode() == 200) {
+                            result = parseHakijaFromInputStream(response.asInputStream());
+                        }
+                    }
+                    return result;
+                }
+            );
+        } catch (Exception e){
+            log.error(String.format("GET %s failed: ", url), e);
+        }
+        return new HakijaDTO();
+/*
+        HakijaDTO result = new HakijaDTO();
         HttpGet req = new HttpGet(url);
         try {
             Header[] rekisteriHeaders = getCachedHeadersForValintarekisteri();
@@ -168,6 +197,7 @@ public class ValintaServiceImpl implements ValintaService {
             req.releaseConnection();
         }
         return new HakijaDTO();
+        */
     }
 
     private HakijaDTO parseHakijaFromInputStream(InputStream stream) throws IOException {
@@ -179,7 +209,9 @@ public class ValintaServiceImpl implements ValintaService {
         return hakijaDTO;
     }
 
-    private synchronized boolean authorizeValintarekisteri(boolean reloadHeaders, boolean reloadTicket){
+    //TODO pitäskö sync poistaa vai miten
+    //private synchronized boolean authorizeValintarekisteri(boolean reloadHeaders, boolean reloadTicket){
+    private boolean authorizeValintarekisteri(boolean reloadHeaders, boolean reloadTicket){
         if(reloadTicket) {
             valintarekisteriTicket.put(CAS_TICKET_FOR_VALINTAREKISTERI,null);
         }
