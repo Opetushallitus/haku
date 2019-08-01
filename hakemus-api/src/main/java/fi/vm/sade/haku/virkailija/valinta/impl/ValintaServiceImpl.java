@@ -140,7 +140,6 @@ public class ValintaServiceImpl implements ValintaService {
     public HakijaDTO getHakijaFromValintarekisteri(String asOid, String applicationOid) {
         String url = urlConfiguration.url("valintarekisteri.hakija", asOid, applicationOid);
         try {
-            //HakijaDTO hdto = makeAuthenticatedRequestToValintarekisteri(url);
             HakijaDTO hdto = makeAuthenticatedRequestToValintarekisteri(url);
             return hdto;
         } catch (Exception e) {
@@ -151,23 +150,22 @@ public class ValintaServiceImpl implements ValintaService {
 
     private HakijaDTO makeAuthenticatedRequestToValintarekisteri(String url){
         try {
-                ophHttpClient.get(url)
-                .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
-                .accept(OphHttpClient.JSON)
-                .execute((OphHttpResponse response) -> {
-                    HakijaDTO result = new HakijaDTO();
-                    if (response.getStatusCode() == 200){
-                         result = parseHakijaFromInputStream(response.asInputStream());
-                    } else if (response.getStatusCode() == 401) {
-                        authorizeValintarekisteri(true, true);
-                        makeAuthenticatedRequestToValintarekisteri(url);
-                        if(response.getStatusCode() == 200) {
-                            result = parseHakijaFromInputStream(response.asInputStream());
-                        }
+            ophHttpClient.get(url)
+            .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
+            .accept(OphHttpClient.JSON)
+            .execute((OphHttpResponse response) -> {
+                HakijaDTO result = new HakijaDTO();
+                if (response.getStatusCode() == 200){
+                     result = parseHakijaFromInputStream(response.asInputStream());
+                } else if (response.getStatusCode() == 401) {
+                    authorizeValintarekisteri(true, true);
+                    makeAuthenticatedRequestToValintarekisteri(url);
+                    if(response.getStatusCode() == 200) {
+                        result = parseHakijaFromInputStream(response.asInputStream());
                     }
-                    return result;
                 }
-            );
+                return result;
+            });
         } catch (Exception e){
             log.error(String.format("GET %s failed: ", url), e);
         }
@@ -210,7 +208,6 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     //TODO pitäskö sync poistaa vai miten
-    //private synchronized boolean authorizeValintarekisteri(boolean reloadHeaders, boolean reloadTicket){
     private boolean authorizeValintarekisteri(boolean reloadHeaders, boolean reloadTicket){
         if(reloadTicket) {
             valintarekisteriTicket.put(CAS_TICKET_FOR_VALINTAREKISTERI,null);
@@ -243,6 +240,7 @@ public class ValintaServiceImpl implements ValintaService {
         }
     }
 
+    //TODO: tarvitaanko tätä enää?
     private synchronized Header[] getCachedHeadersForValintarekisteri(){
         SoftReference<Header[]> headers = valintarekisteriHeaders.get(LOGIN_HEADERS_FOR_VALINTAREKISTERI);
         if(headers == null) {
@@ -252,7 +250,7 @@ public class ValintaServiceImpl implements ValintaService {
         return header;
     }
 
-    private String getTicketForValintarekisteri() {
+    private synchronized String getTicketForValintarekisteri() {
         if (valintarekisteriTicket.get(CAS_TICKET_FOR_VALINTAREKISTERI) == null) {
             String ticket = CasClient.getTicket(casUrl + "/v1/tickets", clientAppUserValintarekisteri, clientAppPassValintarekisteri, targetServiceValintarekisteri + "/auth/login", false);
             log.debug("ticket " + ticket);
@@ -265,7 +263,7 @@ public class ValintaServiceImpl implements ValintaService {
         }
     }
 
-    public void setValintarekisteriHeaders(Header[] headers){
+    public synchronized void setValintarekisteriHeaders(Header[] headers){
         valintarekisteriHeaders.put(LOGIN_HEADERS_FOR_VALINTAREKISTERI, new SoftReference<Header[]>(headers));
     }
 
