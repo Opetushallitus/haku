@@ -40,9 +40,13 @@ public class HakuAuditLogger extends Audit {
     private Oid getCurrentPersonOid() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String personOid = auth.getName();
-        if ("anonymousUser".equals(personOid) && allowEmptyPersonOid) { // See User class in hakemus-api module
-            LOGGER.debug("Allowing empty person oid");
-            return null;
+        if ("anonymousUser".equals(personOid)) {
+            if (allowEmptyPersonOid) { // See User class in hakemus-api module
+                LOGGER.info("Allowing empty person oid");
+                return null;
+            } else {
+                LOGGER.info("Not allowing empty person oid");
+            }
         }
         try {
             return new Oid(personOid);
