@@ -13,6 +13,7 @@ import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 import fi.vm.sade.javautils.httpclient.OphHttpClient;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
+import fi.vm.sade.javautils.httpclient.apache.ApacheOphHttpClient;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -95,6 +96,7 @@ public class ValintaServiceImpl implements ValintaService {
         this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
         setHttpClient(CachingRestClient.createDefaultHttpClient(defaultValintarekisteriHttpRequestTimeoutMilliseconds, 60));
+        this.ophHttpClient = ApacheOphHttpClient.createDefaultOphClient("haku.hakemus-api", null, 10000, 60);
     }
 
     public void setHttpClient(HttpClient client){
@@ -241,6 +243,7 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     //TODO: tarvitaanko tätä enää?
+    /*
     private synchronized Header[] getCachedHeadersForValintarekisteri(){
         SoftReference<Header[]> headers = valintarekisteriHeaders.get(LOGIN_HEADERS_FOR_VALINTAREKISTERI);
         if(headers == null) {
@@ -249,7 +252,7 @@ public class ValintaServiceImpl implements ValintaService {
         Header[] header = null == headers ? null : headers.get();
         return header;
     }
-
+*/
     private synchronized String getTicketForValintarekisteri() {
         if (valintarekisteriTicket.get(CAS_TICKET_FOR_VALINTAREKISTERI) == null) {
             String ticket = CasClient.getTicket(casUrl + "/v1/tickets", clientAppUserValintarekisteri, clientAppPassValintarekisteri, targetServiceValintarekisteri + "/auth/login", false);
