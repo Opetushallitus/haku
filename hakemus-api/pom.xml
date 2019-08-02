@@ -372,6 +372,12 @@
         </dependency>
 
         <dependency>
+            <groupId>fi.vm.sade.java-utils</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${java-utils-httpclient.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>fi.vm.sade.organisaatio</groupId>
             <artifactId>organisaatio-api</artifactId>
             <version>${organisaatio-api.version}</version>

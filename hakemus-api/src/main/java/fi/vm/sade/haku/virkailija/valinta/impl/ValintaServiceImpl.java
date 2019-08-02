@@ -2,7 +2,7 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.api.client.util.Maps;
 import com.google.gson.*;
-import fi.vm.sade.authentication.cas.CasClient;
+import fi.vm.sade.javautils.cas.CasClient;
 import fi.vm.sade.generic.PERA;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
