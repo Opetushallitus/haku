@@ -11,6 +11,7 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+import fi.vm.sade.javautils.http.OphHttpRequest;
 import fi.vm.sade.javautils.httpclient.OphHttpClient;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.javautils.httpclient.apache.ApacheOphHttpClient;
@@ -152,19 +153,28 @@ public class ValintaServiceImpl implements ValintaService {
 
     private HakijaDTO makeAuthenticatedRequestToValintarekisteri(String url){
         try {
+            HakijaDTO result = new HakijaDTO();
+
             ophHttpClient.get(url)
             .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
             .accept(OphHttpClient.JSON)
             .execute((OphHttpResponse response) -> {
-                HakijaDTO result = new HakijaDTO();
+                //HakijaDTO result = new HakijaDTO();
                 if (response.getStatusCode() == 200){
-                     result = parseHakijaFromInputStream(response.asInputStream());
+                     return parseHakijaFromInputStream(response.asInputStream());
                 } else if (response.getStatusCode() == 401) {
                     authorizeValintarekisteri(true, true);
                     makeAuthenticatedRequestToValintarekisteri(url);
-                    if(response.getStatusCode() == 200) {
-                        result = parseHakijaFromInputStream(response.asInputStream());
-                    }
+                    ophHttpClient.get(url)
+                            .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
+                            .accept(OphHttpClient.JSON)
+                            .execute((OphHttpResponse retryResponse) -> {
+                                if (response.getStatusCode() == 200) {
+                                    return parseHakijaFromInputStream(retryResponse.asInputStream());
+                                }
+                                return result;
+                            });
+
                 }
                 return result;
             });
