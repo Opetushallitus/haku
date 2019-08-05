@@ -173,15 +173,15 @@ public class ValintaServiceImpl implements ValintaService {
             ophHttpClient.<HakijaDTO>execute(request)
                     //.handleErrorStatus(HttpStatus.UNAUTHORIZED.value())
                     //.with(response -> Optional.empty())
+
                     .expectedStatus(HttpStatus.OK.value())
                     .mapWith(response -> {
                         try {
-
                             return parseHakijaFromInputStream(new ByteArrayInputStream(response.getBytes()));
-
                         } catch (IOException e){
-                            authorizeValintarekisteri(true, true);
-                            makeAuthenticatedRequestToValintarekisteri(url);
+                            log.error(String.format("GET %s with OphHttpClient failed: ", url), e);
+                            //authorizeValintarekisteri(true, true);
+                            //makeAuthenticatedRequestToValintarekisteri(url);
                         }
                         return new HakijaDTO();
                     });
