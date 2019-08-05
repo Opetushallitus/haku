@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.api.client.util.Maps;
 import com.google.gson.*;
+import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.generic.PERA;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -10,7 +11,6 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
-import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.javautils.http.OphHttpClient;
 import fi.vm.sade.javautils.http.OphHttpRequest;
 import fi.vm.sade.javautils.http.auth.CasAuthenticator;
