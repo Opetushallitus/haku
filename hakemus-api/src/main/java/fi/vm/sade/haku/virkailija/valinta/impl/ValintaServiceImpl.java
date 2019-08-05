@@ -11,10 +11,10 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.ValintaServiceCallFailedException;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+import fi.vm.sade.javautils.http.OphHttpClient;
 import fi.vm.sade.javautils.http.OphHttpRequest;
-import fi.vm.sade.javautils.httpclient.OphHttpClient;
+import fi.vm.sade.javautils.http.auth.CasAuthenticator;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
-import fi.vm.sade.javautils.httpclient.apache.ApacheOphHttpClient;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -30,6 +30,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
@@ -97,7 +99,19 @@ public class ValintaServiceImpl implements ValintaService {
         this.urlConfiguration=urlConfiguration;
         casUrl = urlConfiguration.url("cas.url");
         setHttpClient(CachingRestClient.createDefaultHttpClient(defaultValintarekisteriHttpRequestTimeoutMilliseconds, 60));
-        this.ophHttpClient = ApacheOphHttpClient.createDefaultOphClient("haku.hakemus-api", null, 10000, 60);
+        //this.ophHttpClient = ApacheOphHttpClient.createDefaultOphClient("haku.hakemus-api", null, 10000, 60);
+    }
+
+    @PostConstruct
+    private void setup() {
+        CasAuthenticator authenticator = new CasAuthenticator.Builder()
+                .username(clientAppUserValintarekisteri)
+                .password(clientAppPassValintarekisteri)
+                .webCasUrl(urlConfiguration.url("cas.url"))
+                .casServiceUrl(targetServiceValintarekisteri)
+                .build();
+
+        this.ophHttpClient = new OphHttpClient.Builder("haku.hakemus-api").authenticator(authenticator).build();
     }
 
     public void setHttpClient(HttpClient client){
@@ -152,35 +166,25 @@ public class ValintaServiceImpl implements ValintaService {
     }
 
     private HakijaDTO makeAuthenticatedRequestToValintarekisteri(String url){
-        try {
-            HakijaDTO result = new HakijaDTO();
+            OphHttpRequest request = OphHttpRequest.Builder
+                    .get(url)
+                    .build();
 
-            ophHttpClient.get(url)
-            .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
-            .accept(OphHttpClient.JSON)
-            .execute((OphHttpResponse response) -> {
-                //HakijaDTO result = new HakijaDTO();
-                if (response.getStatusCode() == 200){
-                     return parseHakijaFromInputStream(response.asInputStream());
-                } else if (response.getStatusCode() == 401) {
-                    authorizeValintarekisteri(true, true);
-                    makeAuthenticatedRequestToValintarekisteri(url);
-                    ophHttpClient.get(url)
-                            .expectStatus(HttpStatus.OK.value(), HttpStatus.UNAUTHORIZED.value())
-                            .accept(OphHttpClient.JSON)
-                            .execute((OphHttpResponse retryResponse) -> {
-                                if (response.getStatusCode() == 200) {
-                                    return parseHakijaFromInputStream(retryResponse.asInputStream());
-                                }
-                                return result;
-                            });
+            ophHttpClient.<HakijaDTO>execute(request)
+                    //.handleErrorStatus(HttpStatus.UNAUTHORIZED.value())
+                    //.with(response -> Optional.empty())
+                    .expectedStatus(HttpStatus.OK.value())
+                    .mapWith(response -> {
+                        try {
 
-                }
-                return result;
-            });
-        } catch (Exception e){
-            log.error(String.format("GET %s failed: ", url), e);
-        }
+                            return parseHakijaFromInputStream(new ByteArrayInputStream(response.getBytes()));
+
+                        } catch (IOException e){
+                            authorizeValintarekisteri(true, true);
+                            makeAuthenticatedRequestToValintarekisteri(url);
+                        }
+                        return new HakijaDTO();
+                    });
         return new HakijaDTO();
 /*
         HakijaDTO result = new HakijaDTO();
