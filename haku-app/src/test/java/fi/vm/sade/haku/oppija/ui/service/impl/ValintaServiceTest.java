@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import fi.vm.sade.authentication.cas.CasClient;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.VirkailijaAuditLogger;
 import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
@@ -24,9 +23,11 @@ import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceImpl;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.junit.Test;
 
 import java.io.IOException;
