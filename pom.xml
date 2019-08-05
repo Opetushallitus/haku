@@ -41,9 +41,9 @@
 
         <kayttooikeus-api.version>1.0.1-SNAPSHOT</kayttooikeus-api.version>
         <generic-common.version>9.5.callerid-SNAPSHOT</generic-common.version>
-        <legacy-caching-rest-client.version>0.3.0-SNAPSHOT</legacy-caching-rest-client.version>
+        <legacy-caching-rest-client.version>0.5.0-SNAPSHOT</legacy-caching-rest-client.version>
         <java-utils-httpclient.version>0.3.0-SNAPSHOT</java-utils-httpclient.version>
-	      <koodisto-api.version>2019-06-SNAPSHOT</koodisto-api.version>
+	      <koodisto-api.version>2019-08-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>2016-07-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>13.0-SNAPSHOT</log-client.version>
         <organisaatio-api.version>2015-04</organisaatio-api.version>
