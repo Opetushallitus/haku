@@ -125,7 +125,7 @@ public class HakumaksuUtil {
                         throw new RuntimeException(msg);
                     } catch (InterruptedException | ExecutionException e) {
                         String msg = "Koodisto cache failed to load: " + e.toString();
-                        LOGGER.error(msg);
+                        LOGGER.error(msg, e);
                         throw new RuntimeException(msg);
                     }
                 }
