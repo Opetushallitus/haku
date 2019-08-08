@@ -1,11 +1,10 @@
 package fi.vm.sade.haku;
 
-import javax.servlet.ServletException;
-
-import org.apache.catalina.LifecycleException;
-
 import fi.vm.sade.integrationtest.tomcat.EmbeddedTomcat;
 import fi.vm.sade.integrationtest.util.ProjectRootFinder;
+import org.apache.catalina.LifecycleException;
+
+import javax.servlet.ServletException;
 
 public class HakuAppTomcat {
     static final String HAKU_MODULE_ROOT = ProjectRootFinder.findProjectRoot() + "/haku-app";
