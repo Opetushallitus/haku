@@ -265,8 +265,8 @@ function login(username, password) {
                 return testFrame().document.getElementsByName(name)[0];
             }
 
-            elementByName("j_username").value = username;
-            elementByName("j_password").value = password;
+            elementByName("username").value = username;
+            elementByName("password").value = password;
             elementByName("login").click();
         },
         wait.until(function() {

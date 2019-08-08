@@ -53,7 +53,7 @@ public class SeleniumContainer {
                 PhantomJsDriverManager.getInstance().setup("2.1.1");
                 this.webDriver = new PhantomJSDriver();
             } else {
-                ChromeDriverManager.getInstance().setup();
+                ChromeDriverManager.getInstance().setup("76");
                 this.webDriver = new ChromeDriver();
             }
             webDriver.manage().window().setSize(new Dimension(1000, 800));

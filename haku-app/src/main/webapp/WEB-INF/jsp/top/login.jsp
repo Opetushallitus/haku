@@ -19,8 +19,8 @@
     <form id="loginForm" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
         <h1>Kirjautuminen</h1>
         <fieldset>
-            <input name="j_username" type="text" placeholder="Username" autofocus required></br>
-            <input name="j_password" type="password" placeholder="Password" required></br>
+            <input name="username" type="text" placeholder="Username" autofocus required></br>
+            <input name="password" type="password" placeholder="Password" required></br>
             <input name="login" id="login" value="Kirjaudu" type="submit"/>
         </fieldset>
     </form>
