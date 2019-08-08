@@ -37,6 +37,7 @@
                 logout-url="/user/logout"
                 logout-success-url="/"
         />
+        <csrf disabled="true"/>
     </http>
 
     <beans:bean id="authenticationProviderForTesting" class="fi.vm.sade.haku.AuthenticationProviderForTesting"/>
