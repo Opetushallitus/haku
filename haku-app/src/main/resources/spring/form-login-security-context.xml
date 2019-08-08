@@ -28,8 +28,8 @@
         <intercept-url pattern="/**" access="permitAll"/>
         <form-login login-page="/user/login"
                     login-processing-url="/j_spring_security_check"
-                    username-parameter="j_username"
-                    password-parameter="j_password"
+                    username-parameter="username"
+                    password-parameter="password"
                     default-target-url="/user/postLogin"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=1"/>
