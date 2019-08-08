@@ -32,8 +32,8 @@ public class LoginPage {
     }
 
     public void login(String user) {
-        driver.findElement(By.name("username")).sendKeys(user);
-        driver.findElement(By.name("password")).sendKeys(user);
+        driver.findElement(By.name("j_username")).sendKeys(user);
+        driver.findElement(By.name("j_password")).sendKeys(user);
         driver.findElement(By.id("login")).submit();
     }
 
