@@ -16,8 +16,9 @@ public final class SpringInjector implements ApplicationContextAware {
     }
 
     public static void injectSpringDependencies(Object object) {
-        if (inTestMode && null == CONTEXT)
+        if (inTestMode) {
             return;
+        }
         CONTEXT.getAutowireCapableBeanFactory().autowireBean(object);
     }
 
