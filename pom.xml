@@ -40,7 +40,7 @@
         <springProfileName>default</springProfileName>
 
         <kayttooikeus-api.version>1.0.1-SNAPSHOT</kayttooikeus-api.version>
-        <generic-common.version>9.5.callerid-SNAPSHOT</generic-common.version>
+        <generic-common.version>9.5.1-SNAPSHOT</generic-common.version>
         <legacy-caching-rest-client.version>0.5.0-SNAPSHOT</legacy-caching-rest-client.version>
         <java-utils-httpclient.version>0.3.0-SNAPSHOT</java-utils-httpclient.version>
 	      <koodisto-api.version>2019-08-SNAPSHOT</koodisto-api.version>
