@@ -170,7 +170,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             }
             LOG.debug("Got numbers");
             return orgs;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error("Couldn't find organization for oppilaitosnumero ("+ numero +")", e);
         }
         return null;
