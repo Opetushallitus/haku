@@ -352,9 +352,12 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
 
         List<Option> oppilaitokset = new ArrayList<>(oppilaitosnumerot.size());
-        for (Organization org : organisaatioService.findByOppilaitosnumero(oppilaitosnumerot)) {
-            if (org.getTypes().contains("Oppilaitos")) {
-                oppilaitokset.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
+        List<Organization> organizations = organisaatioService.findByOppilaitosnumero(oppilaitosnumerot);
+        if (organizations != null) {
+            for (Organization org : organizations) {
+                if (org.getTypes().contains("Oppilaitos")) {
+                    oppilaitokset.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
+                }
             }
         }
         return oppilaitokset;
