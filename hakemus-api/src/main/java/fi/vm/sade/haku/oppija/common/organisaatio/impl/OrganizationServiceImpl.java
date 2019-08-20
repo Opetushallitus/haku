@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import fi.vm.sade.haku.oppija.common.organisaatio.*;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
@@ -60,7 +61,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
     private static final String ORGANIZATION_PREFIX = "1.2.246.562.10";
     private static final Pattern SUFFIX_PATTERN = Pattern.compile("^[0-9]{11}$");
-    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static final String callerId = new HakemusApiCallerId().callerId;
 
     private final Map<String, SoftReference<Object>> cache;
     private HttpClient httpClient;

@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
@@ -23,7 +24,7 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     private String clientAppPass;
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
-    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static final String callerId = new HakemusApiCallerId().callerId;
 
     @Autowired
     public ApplicationPrintViewServiceImpl(OphProperties urlConfiguration) {

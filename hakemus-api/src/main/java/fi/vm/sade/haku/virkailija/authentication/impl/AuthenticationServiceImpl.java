@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -59,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final String userOidPrefix;
     private OphProperties urlConfiguration;
 
-    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static String callerId = new HakemusApiCallerId().callerId;
 
     @Autowired
     public AuthenticationServiceImpl(

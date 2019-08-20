@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
@@ -34,7 +35,7 @@ public class PDFServiceImpl implements PDFService {
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
     private final static Long MAX_LINE_LENGTH =  79L;
-    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static final String callerId = new HakemusApiCallerId().callerId;
 
     @Autowired
     public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, OphProperties urlConfiguration) {

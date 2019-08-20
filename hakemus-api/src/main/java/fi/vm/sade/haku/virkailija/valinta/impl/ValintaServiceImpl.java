@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.api.client.util.Maps;
 import com.google.gson.*;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.cas.CasClient;
 import fi.vm.sade.generic.PERA;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
@@ -86,7 +87,7 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${valintarekisteri-default.timeout.millis:300000}")
     private int defaultValintarekisteriHttpRequestTimeoutMilliseconds;
 
-    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static String callerId = new HakemusApiCallerId().callerId;
 
     @Autowired
     public ValintaServiceImpl(OphProperties urlConfiguration) {

@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import fi.vm.sade.haku.http.HttpRestClient;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,7 +18,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
 public class UnknownPropertiesAllowingJacksonJsonClientFactory {
-    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static final String callerId = new HakemusApiCallerId().callerId;
 
     public static Client create() {
         ObjectMapper mapper = new ObjectMapper();

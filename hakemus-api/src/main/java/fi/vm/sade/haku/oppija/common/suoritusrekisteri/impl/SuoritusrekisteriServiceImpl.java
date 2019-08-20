@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
 import com.google.gson.*;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
@@ -53,7 +54,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private String clientAppPass;
 
     private static CachingRestClient cachingRestClient;
-    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static String callerId = new HakemusApiCallerId().callerId;
 
     private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
     private Gson opiskelijaGson = new GsonBuilder().setDateFormat(ISO_DATE_FMT_STR).create();

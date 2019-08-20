@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import com.google.gson.*;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.authentication.KayttooikeusService;
@@ -47,7 +48,7 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
     private final String targetService;
     private final CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
-    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+    private static String callerId = new HakemusApiCallerId().callerId;
 
     @Autowired
     public KayttooikeusServiceImpl(

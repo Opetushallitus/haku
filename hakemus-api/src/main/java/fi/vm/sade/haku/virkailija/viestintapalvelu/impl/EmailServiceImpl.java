@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import com.google.gson.Gson;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
@@ -39,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private CachingRestClient cachingRestClient;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private OphProperties urlConfiguration;
-	private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+	private static final String callerId = new HakemusApiCallerId().callerId;
 
 	@Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, OphProperties urlConfiguration) {
