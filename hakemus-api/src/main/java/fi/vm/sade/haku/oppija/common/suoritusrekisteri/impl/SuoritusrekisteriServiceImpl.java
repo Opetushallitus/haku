@@ -54,7 +54,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private String clientAppPass;
 
     private static CachingRestClient cachingRestClient;
-    private static String callerId = new HakemusApiCallerId().callerId;
+    private static String callerId = HakemusApiCallerId.callerId;
 
     private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
     private Gson opiskelijaGson = new GsonBuilder().setDateFormat(ISO_DATE_FMT_STR).create();

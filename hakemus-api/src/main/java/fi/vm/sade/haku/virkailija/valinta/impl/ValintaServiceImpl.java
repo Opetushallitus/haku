@@ -87,7 +87,7 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${valintarekisteri-default.timeout.millis:300000}")
     private int defaultValintarekisteriHttpRequestTimeoutMilliseconds;
 
-    private static String callerId = new HakemusApiCallerId().callerId;
+    private static String callerId = HakemusApiCallerId.callerId;
 
     @Autowired
     public ValintaServiceImpl(OphProperties urlConfiguration) {

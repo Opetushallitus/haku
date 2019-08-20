@@ -60,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final String userOidPrefix;
     private OphProperties urlConfiguration;
 
-    private static String callerId = new HakemusApiCallerId().callerId;
+    private static String callerId = HakemusApiCallerId.callerId;
 
     @Autowired
     public AuthenticationServiceImpl(

@@ -18,7 +18,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
 public class UnknownPropertiesAllowingJacksonJsonClientFactory {
-    private static final String callerId = new HakemusApiCallerId().callerId;
+    private static final String callerId = HakemusApiCallerId.callerId;
 
     public static Client create() {
         ObjectMapper mapper = new ObjectMapper();

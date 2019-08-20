@@ -24,7 +24,7 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     private String clientAppPass;
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
-    private static final String callerId = new HakemusApiCallerId().callerId;
+    private static final String callerId = HakemusApiCallerId.callerId;
 
     @Autowired
     public ApplicationPrintViewServiceImpl(OphProperties urlConfiguration) {

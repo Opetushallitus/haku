@@ -35,7 +35,7 @@ public class PDFServiceImpl implements PDFService {
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
     private final static Long MAX_LINE_LENGTH =  79L;
-    private static final String callerId = new HakemusApiCallerId().callerId;
+    private static final String callerId = HakemusApiCallerId.callerId;
 
     @Autowired
     public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, OphProperties urlConfiguration) {

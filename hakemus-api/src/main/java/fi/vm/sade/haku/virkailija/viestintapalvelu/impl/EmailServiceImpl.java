@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private CachingRestClient cachingRestClient;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private OphProperties urlConfiguration;
-	private static final String callerId = new HakemusApiCallerId().callerId;
+	private static final String callerId = HakemusApiCallerId.callerId;
 
 	@Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, OphProperties urlConfiguration) {

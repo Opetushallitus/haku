@@ -31,7 +31,7 @@ public class HttpRestClient implements RestClient {
         }
     });
 
-    private static String callerId = new HakemusApiCallerId().callerId;
+    private static String callerId = HakemusApiCallerId.callerId;
 
     @Override
     public <T> ListenableFuture<Response<T>> get(final String url, final Class<T> responseClass) throws IOException {
