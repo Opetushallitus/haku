@@ -53,6 +53,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private String clientAppPass;
 
     private static CachingRestClient cachingRestClient;
+    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
 
     private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
     private Gson opiskelijaGson = new GsonBuilder().setDateFormat(ISO_DATE_FMT_STR).create();
@@ -188,7 +189,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             cachingRestClient = new CachingRestClient(callerId);
             cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);

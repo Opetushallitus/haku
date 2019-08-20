@@ -17,6 +17,8 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
 public class UnknownPropertiesAllowingJacksonJsonClientFactory {
+    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+
     public static Client create() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -41,7 +43,6 @@ public class UnknownPropertiesAllowingJacksonJsonClientFactory {
 
         private ClientRequest modifyRequest(ClientRequest cr) {
             MultivaluedMap<String, Object> headers = cr.getHeaders();
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             headers.add("Caller-Id", callerId);
             if(!HttpRestClient.ImmutableHttpMethods.contains(cr.getMethod())) {
                 headers.add("CSRF", "UnknownPropertiesAllowingJacksonJsonClientFactory");

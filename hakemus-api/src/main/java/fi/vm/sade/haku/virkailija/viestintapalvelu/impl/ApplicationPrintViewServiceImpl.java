@@ -23,6 +23,7 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     private String clientAppPass;
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
+    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
 
     @Autowired
     public ApplicationPrintViewServiceImpl(OphProperties urlConfiguration) {
@@ -46,7 +47,6 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
 
     private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             cachingRestClient = new CachingRestClient(callerId);
             cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);

@@ -39,6 +39,7 @@ public class EmailServiceImpl implements EmailService {
     private CachingRestClient cachingRestClient;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private OphProperties urlConfiguration;
+	private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
 
 	@Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, OphProperties urlConfiguration) {
@@ -58,7 +59,6 @@ public class EmailServiceImpl implements EmailService {
 
 	private synchronized CachingRestClient getCachingRestClient() {
 	    if (cachingRestClient == null) {
-			String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
 			cachingRestClient = new CachingRestClient(callerId);
 	        cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
 	        cachingRestClient.setCasService(targetService);

@@ -34,6 +34,7 @@ public class PDFServiceImpl implements PDFService {
     private CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
     private final static Long MAX_LINE_LENGTH =  79L;
+    private static final String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
 
     @Autowired
     public PDFServiceImpl(ApplicationPrintViewService applicationPrintViewService, OphProperties urlConfiguration) {
@@ -100,7 +101,6 @@ public class PDFServiceImpl implements PDFService {
 
 	private synchronized CachingRestClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             cachingRestClient = new CachingRestClient(callerId);
             cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
             cachingRestClient.setCasService(targetService);

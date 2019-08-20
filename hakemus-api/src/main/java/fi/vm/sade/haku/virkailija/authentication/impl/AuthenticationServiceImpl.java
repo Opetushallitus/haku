@@ -59,6 +59,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final String userOidPrefix;
     private OphProperties urlConfiguration;
 
+    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+
     @Autowired
     public AuthenticationServiceImpl(
             OphProperties urlConfiguration,
@@ -70,7 +72,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
-        String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
         cachingRestClient = new CachingRestClient(callerId);
         cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
         cachingRestClient.setCasService(targetService);

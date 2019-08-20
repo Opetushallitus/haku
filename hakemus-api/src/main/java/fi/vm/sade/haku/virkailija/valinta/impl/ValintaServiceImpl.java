@@ -86,6 +86,8 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${valintarekisteri-default.timeout.millis:300000}")
     private int defaultValintarekisteriHttpRequestTimeoutMilliseconds;
 
+    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
+
     @Autowired
     public ValintaServiceImpl(OphProperties urlConfiguration) {
         this.urlConfiguration=urlConfiguration;
@@ -261,7 +263,6 @@ public class ValintaServiceImpl implements ValintaService {
         int timeoutMillis = (int) valintaTimeout.orElse(Duration.ofMillis(defaultValintaHttpRequestTimeoutMilliseconds)).toMillis();
         CachingRestClient cachingRestClientKooste = cachingRestClientKoosteWithTimeout.get(timeoutMillis);
         if (cachingRestClientKooste == null) {
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             cachingRestClientKooste = new CachingRestClient(callerId, timeoutMillis);
             cachingRestClientKooste.setWebCasUrl(casUrl);
             cachingRestClientKooste.setCasService(targetServiceKooste);
@@ -281,7 +282,6 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientValinta() {
         if (cachingRestClientValinta == null) {
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             cachingRestClientValinta = new CachingRestClient(callerId, defaultValintaHttpRequestTimeoutMilliseconds);
             cachingRestClientValinta.setWebCasUrl(casUrl);
             cachingRestClientValinta.setCasService(targetServiceValinta);
@@ -305,7 +305,6 @@ public class ValintaServiceImpl implements ValintaService {
      */
     private synchronized CachingRestClient getCachingRestClientValintaTulosService() {
         if (cachingRestClientValintaTulosService == null) {
-            String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
             cachingRestClientValintaTulosService = new CachingRestClient(callerId, valintaTulosServiceRequestTimeoutMilliseconds);
             cachingRestClientValintaTulosService.setCasService(targetServiceValintatulosService);
 

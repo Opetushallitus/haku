@@ -47,6 +47,7 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
     private final String targetService;
     private final CachingRestClient cachingRestClient;
     private OphProperties urlConfiguration;
+    private static String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
 
     @Autowired
     public KayttooikeusServiceImpl(
@@ -55,7 +56,6 @@ public class KayttooikeusServiceImpl implements KayttooikeusService {
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
     @Value("${haku.app.password.to.usermanagement}") String clientAppPass) {
         this.urlConfiguration = urlConfiguration;
-        String callerId = "1.2.246.562.10.00000000001.haku.hakemus-api";
         cachingRestClient = new CachingRestClient(callerId);
         cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
         cachingRestClient.setCasService(targetService);
