@@ -17,15 +17,16 @@
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import com.google.common.base.Optional;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
+import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
 import fi.vm.sade.properties.OphProperties;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.slf4j.Logger;
@@ -39,9 +40,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -61,6 +60,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final String userOidPrefix;
     private OphProperties urlConfiguration;
 
+    private static String callerId = HakemusApiCallerId.callerId;
+
     @Autowired
     public AuthenticationServiceImpl(
             OphProperties urlConfiguration,
@@ -72,7 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
-        cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
+        cachingRestClient = new CachingRestClient(callerId);
         cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);

@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import fi.vm.sade.haku.http.HttpRestClient;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,6 +18,8 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
 public class UnknownPropertiesAllowingJacksonJsonClientFactory {
+    private static final String callerId = HakemusApiCallerId.callerId;
+
     public static Client create() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -41,7 +44,7 @@ public class UnknownPropertiesAllowingJacksonJsonClientFactory {
 
         private ClientRequest modifyRequest(ClientRequest cr) {
             MultivaluedMap<String, Object> headers = cr.getHeaders();
-            headers.add("clientSubSystemCode", "haku.hakemus-api");
+            headers.add("Caller-Id", callerId);
             if(!HttpRestClient.ImmutableHttpMethods.contains(cr.getMethod())) {
                 headers.add("CSRF", "UnknownPropertiesAllowingJacksonJsonClientFactory");
                 headers.add("Cookie", new Cookie("CSRF","UnknownPropertiesAllowingJacksonJsonClientFactory"));

@@ -7,6 +7,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.util.concurrent.*;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,7 @@ public class HttpRestClient implements RestClient {
         }
     });
 
-    private static String clientSubSystemCode = "haku.hakemus-api";
+    private static String callerId = HakemusApiCallerId.callerId;
 
     @Override
     public <T> ListenableFuture<Response<T>> get(final String url, final Class<T> responseClass) throws IOException {
@@ -61,7 +62,7 @@ public class HttpRestClient implements RestClient {
 
         @Override
         public HttpResponse call() throws Exception {
-            request.getHeaders().set("clientSubSystemCode", clientSubSystemCode);
+            request.getHeaders().set("Caller-Id", callerId);
             if(!ImmutableHttpMethods.contains(request.getRequestMethod())) {
                 request.getHeaders().set("CSRF", "HttpRestClient");
                 String cookie = request.getHeaders().getCookie();

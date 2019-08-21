@@ -138,7 +138,7 @@ function waitPageLoad(promise) {
 function waitForFormReady() {
     return seq(
         wait.until(function() {
-            return S("input[name=clientSubSystemCode]").length > 0;
+            return S("input[name=Caller-Id]").length > 0;
         }),
         wait.forMilliseconds(500)
     );

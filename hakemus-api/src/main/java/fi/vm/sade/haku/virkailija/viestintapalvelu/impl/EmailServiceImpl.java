@@ -1,7 +1,8 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import com.google.gson.Gson;
-import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
+import fi.vm.sade.javautils.legacy_caching_rest_client.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
@@ -39,6 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private CachingRestClient cachingRestClient;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private OphProperties urlConfiguration;
+	private static final String callerId = HakemusApiCallerId.callerId;
 
 	@Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder, OphProperties urlConfiguration) {
@@ -58,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
 
 	private synchronized CachingRestClient getCachingRestClient() {
 	    if (cachingRestClient == null) {
-	        cachingRestClient = new CachingRestClient().setClientSubSystemCode("haku.hakemus-api");
+			cachingRestClient = new CachingRestClient(callerId);
 	        cachingRestClient.setWebCasUrl(urlConfiguration.url("cas.url"));
 	        cachingRestClient.setCasService(targetService);
 	        cachingRestClient.setUsername(clientAppUser);

@@ -240,8 +240,9 @@ function initCSRF() {
         if (parts.length == 2) return parts.pop().split(";").shift();
     }
 
-    var ajaxHeaders = {
-        headers: { 'clientSubSystemCode': 'haku.haku-app.frontend'}
+  var callerId = '1.2.246.562.10.00000000001.haku.haku-app.frontend';
+  var ajaxHeaders = {
+        headers: { 'Caller-Id': callerId}
     };
 
     var csrf = getCookie("CSRF");
@@ -257,7 +258,7 @@ function initCSRF() {
         if(csrf) {
             forms.append($("<input name='CSRF' type='hidden'>").attr("value", csrf))
         }
-        forms.append($("<input name='clientSubSystemCode' type='hidden' value='haku.haku-app.frontend'>"))
+        forms.append($("<input name='Caller-Id' type='hidden'>").attr("value", callerId))
     })
 }
 
