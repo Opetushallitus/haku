@@ -9,7 +9,6 @@ import fi.vm.sade.haku.oppija.lomake.service.impl.ApplicationSystemServiceImpl;
 import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
 import fi.vm.sade.hakutest.ApiIntegrationTestSpringConfiguration;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.io.Resource;
@@ -25,11 +24,6 @@ public class IntegrationTestSupport {
     public static void createApplicationContextWithFixtures() throws IOException {
         appContext = ApiIntegrationTestSpringConfiguration.createApplicationContext();
         MongoFixtureImporter.importJsonFixtures(appContext.getBean(MongoTemplate.class), appContext.getBean(ApplicationDAO.class));
-    }
-
-    @AfterClass
-    public static void shutdownApplicationContext() { appContext.close();
-        appContext.stop();
     }
 
     public static String getResourceBaseName(Resource resource) {
