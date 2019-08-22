@@ -32,6 +32,9 @@
                     authentication-failure-url="/login?error=1"/>
         <logout logout-url="/user/logout"/>
         <csrf disabled="true"/>
+        <headers>
+            <frame-options disabled="true"/>
+        </headers>
     </http>
 
     <beans:bean id="authenticationProviderForTesting" class="fi.vm.sade.haku.AuthenticationProviderForTesting"/>
