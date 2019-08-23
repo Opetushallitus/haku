@@ -246,7 +246,7 @@ function openPage(path, predicate) {
 
 function logout() {
     return openPage("/haku-app/user/logout", function() {
-        return S("ul").is(":visible");
+        return testFrame().document.getElementById('loginForm') !== null;
     })();
 }
 
