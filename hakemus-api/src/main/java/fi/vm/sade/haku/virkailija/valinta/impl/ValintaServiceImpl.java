@@ -135,21 +135,6 @@ public class ValintaServiceImpl implements ValintaService {
             return new HakemusDTO();
         }
     }
-/*
-    @Override
-    public HakijaDTO getHakija(String asOid, String applicationOid) {
-
-        String url = urlConfiguration.url("valinta-tulos-service.hakija", asOid, applicationOid);
-        CachingRestClient client = getCachingRestClientValintaTulosService();
-
-        try {
-            return client.get(url, HakijaDTO.class);
-        } catch (Exception e) {
-            log.error(String.format("GET %s with parameters hakuOid / hakemusOid %s / %s failed: ", url, asOid, applicationOid), e);
-        }
-        return new HakijaDTO();
-    }
-*/
 
 //TODO: remove unused parameter valinta-tulos-service.hakija from conf.
     @Override
@@ -185,32 +170,6 @@ public class ValintaServiceImpl implements ValintaService {
                         return new HakijaDTO();
                     });
         return new HakijaDTO();
-/*
-        HakijaDTO result = new HakijaDTO();
-        HttpGet req = new HttpGet(url);
-        try {
-            Header[] rekisteriHeaders = getCachedHeadersForValintarekisteri();
-            req.setHeaders(rekisteriHeaders);
-            HttpResponse httpresponse = httpClient.execute(req);
-            int statusCode = httpresponse.getStatusLine().getStatusCode();
-            if(statusCode == 200){
-                return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
-            } else if (statusCode == 401) {
-                authorizeValintarekisteri(true, true);
-                rekisteriHeaders = getCachedHeadersForValintarekisteri();
-                req.setHeaders(rekisteriHeaders);
-                httpresponse = httpClient.execute(req);
-                if(httpresponse.getStatusLine().getStatusCode() == 200) {
-                    return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
-                }
-            }
-        } catch (IOException e){
-            log.error(String.format("GET %s failed: ", url), e);
-        } finally {
-            req.releaseConnection();
-        }
-        return new HakijaDTO();
-        */
     }
 
     private HakijaDTO parseHakijaFromInputStream(InputStream stream) throws IOException {
