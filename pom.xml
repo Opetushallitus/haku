@@ -304,6 +304,13 @@
                 <groupId>fi.vm.sade.generic</groupId>
                 <artifactId>generic-common</artifactId>
                 <version>${generic-common.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>fi.vm.sade.java-utils</groupId>
+                        <artifactId>java-cas</artifactId>
+
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>

@@ -364,7 +364,6 @@
             <groupId>fi.vm.sade.generic</groupId>
             <artifactId>generic-common</artifactId>
         </dependency>
-
         <dependency>
             <groupId>fi.vm.sade.organisaatio</groupId>
             <artifactId>organisaatio-api</artifactId>
