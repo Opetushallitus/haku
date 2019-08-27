@@ -20,6 +20,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,15 @@ public class SeleniumContainer {
 
     public RemoteWebDriver getDriver() {
         if (webDriver == null) {
-            if(Boolean.getBoolean("it.usePhantomJs")) {
-                PhantomJsDriverManager.getInstance().setup("2.1.1");
-                this.webDriver = new PhantomJSDriver();
+            if(Boolean.getBoolean("it.useHeadlessChrome")) {
+                ChromeDriverManager.getInstance().version("76").setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--headless");
+                chromeOptions.addArguments("--disable-gpu");
+                this.webDriver = new ChromeDriver(chromeOptions);
             } else {
-                ChromeDriverManager.getInstance().setup("76");
+                ChromeDriverManager.getInstance().version("76").setup();
                 this.webDriver = new ChromeDriver();
             }
             webDriver.manage().window().setSize(new Dimension(1000, 800));

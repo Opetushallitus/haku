@@ -8,6 +8,9 @@ jdk:
 services:
 - docker
 
+addons:
+  chrome: stable
+
 cache:
   directories:
   - $HOME/.m2
@@ -31,7 +34,7 @@ install:
 - date
 
 script:
-- mvn clean verify -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER} -Pit -Dit.usePhantomJs=true
+- mvn clean verify -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER} -Pit -Dit.useHeadlessChrome=true
 
 - mv haku-app/target/haku-app.war $DOCKER_BUILD_DIR/artifact/haku-app.war
 - cp -v src/main/resources/oph-configuration/haku.properties.template src/main/resources/oph-configuration/haku-virkailija.properties.template
