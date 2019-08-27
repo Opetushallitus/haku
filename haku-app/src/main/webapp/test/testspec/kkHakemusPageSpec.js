@@ -72,7 +72,7 @@ describe('KK-hakemus', function () {
                 click(virkailija.saveVaiheButton("koulutustausta")),
                 visible(virkailija.editVaiheButton(hakuOid, "koulutustausta"))
             ));
-
+/*
             describe("lisäämisen jälkeen", function() {
                 it("vastaukset näkyvät", function () {
                     expect(answerForQuestion('pohjakoulutus_am_vuosi')).to.equal('2000');
@@ -80,7 +80,7 @@ describe('KK-hakemus', function () {
                     expect(answerForQuestion('pohjakoulutus_avoin_ala2')).to.equal('Avoin ala 2');
                 });
             });
-
+*/
             describe("hakutoiveiden lisäys", function() {
 
                 var avoinKkTodistuskopio = 'Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista';
