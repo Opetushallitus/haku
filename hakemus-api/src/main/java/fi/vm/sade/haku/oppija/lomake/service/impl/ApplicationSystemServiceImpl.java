@@ -32,15 +32,17 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final LoadingCache<String, ApplicationSystem> cache;
     private final Boolean cacheApplicationSystems;
     private final ExecutorService executors = Executors.newFixedThreadPool(10);
-    private final ApiAuditLogger apiAuditLogger = new ApiAuditLogger();
+    private final ApiAuditLogger apiAuditLogger;
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
                                         @Value("${application.system.cache:true}") final boolean cacheApplicationSystems,
-                                        final CacheBuilder<String, ApplicationSystem> cacheBuilder) {
+                                        final CacheBuilder<String, ApplicationSystem> cacheBuilder,
+                                        final ApiAuditLogger apiAuditLogger) {
         this.applicationSystemRepository = applicationSystemRepository;
         this.cacheApplicationSystems = cacheApplicationSystems;
         this.cache = cacheBuilder.build(new ApplicationSystemCacheLoader());
+        this.apiAuditLogger = apiAuditLogger;
     }
 
     private Date getLastGeneratedForId(String key) {
