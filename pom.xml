@@ -31,7 +31,7 @@
         <ehcache.version>2.5.0</ehcache.version>
         <flapdoodle.version>2.1.1</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.94</org.apache.tomcat.embed>
-        <jackson.version>2.8.11</jackson.version>
+        <jackson.version>2.10.0.pr3</jackson.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
