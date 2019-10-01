@@ -19,7 +19,16 @@ import java.util.Optional;
 @Service
 @Profile(value = {"dev", "it"})
 public class ValintaServiceMockImpl implements ValintaService {
+    /*private OphHttpClientProxy httpClientProxyMock;
+    private OphHttpResponse httpResponseMock;
 
+    @Before
+    public void setup() throws IOException {
+        OphHttpClientProxyRequest httpClientProxyRequestMock = mock(OphHttpClientProxyRequest.class);
+        httpClientProxyMock = mock(OphHttpClientProxy.class);
+        when(httpClientProxyMock.createRequest(any())).thenReturn(httpClientProxyRequestMock);
+        OphHttpClient httpClient = new OphHttpClient(httpClientProxyMock, "haku.hakemus-api");
+    }*/
     @Override
     public HakemusDTO getHakemus(String asOid, String applicationOid) {
         String response = "\n" +

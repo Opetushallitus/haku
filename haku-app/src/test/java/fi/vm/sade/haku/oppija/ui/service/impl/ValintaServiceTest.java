@@ -22,6 +22,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceImpl;
+import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
+import fi.vm.sade.javautils.http.OphHttpClient;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -67,6 +69,9 @@ public class ValintaServiceTest {
     public void testOfficerUi() throws Exception {
         CachingRestClient sijoitteluClient = mock(CachingRestClient.class);
         CachingRestClient valintaClient = mock(CachingRestClient.class);
+        OphHttpClient ophHttpClient = mock(OphHttpClient.class);
+        ValintaServiceMockImpl valintaServiceMock = new ValintaServiceMockImpl();
+
 
         // mocking valintarekisteri
         HttpClient httpClient = mock(HttpClient.class);
@@ -132,7 +137,7 @@ public class ValintaServiceTest {
 
         OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
                 hakupermissionService, null, new UrlConfiguration(), elementTreeValidator, applicationSystemService,
-                null, null, valintaService, session, null, mock(VirkailijaAuditLogger.class),
+                null, null, valintaServiceMock, session, null, mock(VirkailijaAuditLogger.class),
                 mock(HakumaksuService.class), null, "true");
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu", true);
 
