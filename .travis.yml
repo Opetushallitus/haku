@@ -38,11 +38,11 @@ script:
 - cp -v src/main/resources/oph-configuration/haku.properties.template src/main/resources/oph-configuration/haku-oppija.properties.template
 - cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
 
-- export BASE_IMAGE="baseimage-war:master"
+- export BASE_IMAGE="baseimage-war-openjdk8:master"
 - ./ci-tools/common/pull-image.sh
 - ./ci-tools/build/build-war.sh haku-virkailija
 
-- export BASE_IMAGE="baseimage-war:master"
+- export BASE_IMAGE="baseimage-war-openjdk8:master"
 - ./ci-tools/common/pull-image.sh
 - ./ci-tools/build/build-war.sh haku-oppija
 
