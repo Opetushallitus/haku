@@ -232,32 +232,43 @@ $(document).ready(function () {
     checkAcceptCookie();
 });
 
-// Sets CSRF and Caller-Id headers for ajax and hidden fields for FORMs
-function initCSRFandCallerId() {
-    function getCookie(name) {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        if (parts.length == 2) return parts.pop().split(";").shift();
-    }
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
+function initCallerId() {
+    var callerId = '1.2.246.562.10.00000000001.haku.haku-app.frontend';
+    var ajaxHeaders = {
+        headers: { 'Caller-Id': callerId}
+    };
+
+    $.ajaxSetup(ajaxHeaders);
 
     $(document).ready(function () {
+        var forms = $("form[method='post']")
+        forms.append($("<input name='Caller-Id' type='hidden'>").attr("value", callerId))
+    })
+}
+
+function initCSRF() {
+    $(document).ready(function () {
         $("form[method='post']").submit(function (event) {
-            var callerId = '1.2.246.562.10.00000000001.haku.haku-app.frontend';
-            var ajaxHeaders = {
-                headers: { 'Caller-Id': callerId}
-            };
-            $(this).append($("<input name='Caller-Id' type='hidden'>").attr("value", callerId))
             var csrf = getCookie("CSRF");
             if(csrf) {
                 $(this).append($("<input name='CSRF' type='hidden'>").attr("value", csrf))
-                ajaxHeaders.headers['CSRF'] = csrf;
+                if(csrf) {
+                    ajaxHeaders.headers['CSRF'] = csrf;
+                }
+                $.ajaxSetup(ajaxHeaders);
             }
-            $.ajaxSetup(ajaxHeaders);
         });
     })
 }
 
-initCSRFandCallerId();
+initCallerId();
+initCSRF();
 
 var complexRule = {
     url: function() {
