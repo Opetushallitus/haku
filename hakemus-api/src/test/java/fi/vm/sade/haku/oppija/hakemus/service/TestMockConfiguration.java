@@ -6,6 +6,8 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.commons.httpclient.HttpClient;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,7 @@ public class TestMockConfiguration {
         return new HakumaksuService(
                 urlConfiguration,
                 restClient,
+                Mockito.mock(org.apache.http.client.HttpClient.class),
                 "",
                 ""
         );

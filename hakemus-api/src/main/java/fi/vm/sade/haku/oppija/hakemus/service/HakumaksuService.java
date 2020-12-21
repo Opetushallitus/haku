@@ -15,6 +15,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,11 +49,12 @@ public class HakumaksuService {
     public HakumaksuService(
             final OphProperties urlConfiguration,
             final RestClient restClient,
+            final org.apache.http.client.HttpClient httpClient,
             final String clientAppUser,
             final String clientAppPass
     ) {
         this.urlConfiguration = urlConfiguration;
-        util = new HakumaksuUtil(restClient, urlConfiguration, clientAppUser, clientAppPass);
+        util = new HakumaksuUtil(restClient, urlConfiguration, httpClient, clientAppUser, clientAppPass);
     }
 
     private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {

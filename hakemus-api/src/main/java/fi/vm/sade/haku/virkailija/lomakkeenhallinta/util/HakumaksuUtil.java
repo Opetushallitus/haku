@@ -62,16 +62,19 @@ public class HakumaksuUtil {
     public static final String TRUE = "true";
 
     private RestClient restClient;
+    private final HttpClient oppijanTunnistusClient;
     private final OphProperties urlConfiguration;
 
     final String clientAppUser;
     final String clientAppPass;
 
     public HakumaksuUtil(RestClient restClient, OphProperties urlConfiguration,
+                         HttpClient oppijanTunnistusClient,
                          final String clientAppUser,
                          final String clientAppPass) {
         this.restClient = restClient;
         this.urlConfiguration = urlConfiguration;
+        this.oppijanTunnistusClient = oppijanTunnistusClient;
         this.clientAppUser= clientAppUser;
         this.clientAppPass= clientAppPass;
         populateEaaCountriesCache();
@@ -93,7 +96,7 @@ public class HakumaksuUtil {
     public static final long APPLICATION_PAYMENT_WAITING_TIME_MILLIS = TimeUnit.DAYS.toMillis(APPLICATION_PAYMENT_WAITING_TIME);
 
     public volatile String OPPIJAN_TUNNISTUS_SESSION = "InvalidSession";
-    public final DefaultHttpClient oppijanTunnistusClient = oppijanTunnistusClient();
+
     public synchronized void updateOppijanTunnistusSession(String currentSession) {
         if(OPPIJAN_TUNNISTUS_SESSION.equals(currentSession)) {
             String ticket = getTicket();
@@ -112,19 +115,7 @@ public class HakumaksuUtil {
         }
         return new String(out.toByteArray());
     }
-    public DefaultHttpClient oppijanTunnistusClient() {
-        PoolingClientConnectionManager connectionManager;
-        connectionManager = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault(), 60, TimeUnit.MILLISECONDS);
-        connectionManager.setDefaultMaxPerRoute(100); // default 2
-        connectionManager.setMaxTotal(1000); // default 20
-        final DefaultHttpClient actualClient = new DefaultHttpClient(connectionManager);
-        HttpParams httpParams = actualClient.getParams();
-        httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, false);
-        HttpConnectionParams.setConnectionTimeout(httpParams, 300000);
-        HttpConnectionParams.setSoTimeout(httpParams, 300000);
-        HttpConnectionParams.setSoKeepalive(httpParams, true); // prevent firewall to reset idle connections?
-        return actualClient;
-    }
+
     public HttpPost postRequest(String uri, String session, String body) {
         HttpPost req2 = new HttpPost(uri);
 

@@ -13,6 +13,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOption
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.concurrent.ExecutionException;
 
@@ -34,7 +35,9 @@ public class HakumaksuServiceIT {
 
     public HakumaksuServiceIT() {
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
-        hakumaksuService = new HakumaksuService(urlConfiguration, new HttpRestClient(), "","");
+        hakumaksuService = new HakumaksuService(urlConfiguration, new HttpRestClient(),
+            Mockito.mock(org.apache.http.client.HttpClient.class),
+            "","");
     }
 
     @Test
