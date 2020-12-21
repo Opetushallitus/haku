@@ -59,7 +59,7 @@ public class HakumaksuTest {
 
     private final UrlConfiguration urls = new UrlConfiguration(UrlConfiguration.SPRING_IT_PROFILE);
 
-    HakumaksuService service;
+    public HakumaksuService service;
 
     public HakumaksuTest() {
         urls.addDefault("host.virkailija","localhost:9090")
