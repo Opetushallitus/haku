@@ -34,7 +34,7 @@ public class HakumaksuServiceIT {
 
     public HakumaksuServiceIT() {
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
-        hakumaksuService = new HakumaksuService(urlConfiguration, new HttpRestClient());
+        hakumaksuService = new HakumaksuService(urlConfiguration, new HttpRestClient(), "","");
     }
 
     @Test

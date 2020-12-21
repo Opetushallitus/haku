@@ -61,7 +61,7 @@ public class HakumaksuTest {
                 .addDefault("schema.alb.virkailija","https")
                 .addDefault("host.haku","localhost:9090")
                 .addDefault("host.haku.sv","localhost-sv");
-        service = new HakumaksuService(urls, mockRestClient);
+        service = new HakumaksuService(urls, mockRestClient, "","");
     }
 
     @Before

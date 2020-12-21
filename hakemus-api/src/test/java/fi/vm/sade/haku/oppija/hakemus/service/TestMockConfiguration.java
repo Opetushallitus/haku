@@ -30,11 +30,6 @@ public class TestMockConfiguration {
 
     EmailService emailService = new EmailServiceMockImpl();
 
-    @Value("${haku.app.username.to.valintarekisteri}")
-    private String clientAppUser;
-    @Value("${haku.app.password.to.valintarekisteri}")
-    private String clientAppPass;
-
     @PostConstruct
     private void setUrls() {
         urlConfiguration.addDefault("host.virkailija", "localhost:9090").addDefault("host.haku","localhost:9090");
@@ -45,8 +40,8 @@ public class TestMockConfiguration {
         return new HakumaksuService(
                 urlConfiguration,
                 restClient,
-                clientAppUser,
-                clientAppPass
+                "",
+                ""
         );
     }
 
