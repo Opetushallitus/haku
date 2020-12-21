@@ -37,7 +37,9 @@ public class HakumaksuServiceIT {
     public HakumaksuServiceIT() {
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
         hakumaksuService = new HakumaksuService(urlConfiguration,
-            Mockito.mock(HakumaksuUtil.class));
+            new HakumaksuUtil(new HttpRestClient(), urlConfiguration,
+                Mockito.mock(org.apache.http.client.HttpClient.class),
+                "",""));
     }
 
     @Test
