@@ -19,6 +19,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.testfixtures.Hakukelpoisuusvaatimus;
 import fi.vm.sade.haku.testfixtures.Pohjakoulutus;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
@@ -68,9 +69,12 @@ public class HakumaksuTest {
                 .addDefault("host.haku","localhost:9090")
                 .addDefault("host.haku.sv","localhost-sv");
 
-        service = new HakumaksuService(urls, mockRestClient,
-            mockHttpClient,
-            "","");
+        service = new HakumaksuService(urls,
+            new HakumaksuUtil(
+                mockRestClient,
+                urls,
+                mockHttpClient,
+                "",""));
     }
 
     @Before

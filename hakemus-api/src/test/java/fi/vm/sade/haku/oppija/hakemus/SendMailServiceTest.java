@@ -14,6 +14,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
@@ -22,6 +23,7 @@ import org.apache.commons.mail.EmailException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -48,40 +50,6 @@ public class SendMailServiceTest {
     Date modifiedDate = new Date();
     Date lastApplicationPeriodEndDate = new DateTime("2045-01-01T12:00:00+01:00").toDate();
 
-    @Test
-    public void testSendReceivedEmail() throws EmailException {
-        service.sendReceivedEmail(testApplication());
-
-        Captured firstCaptured = restClient.getCaptured().iterator().next();
-        OppijanTunnistusDTO capturedBody = (OppijanTunnistusDTO) firstCaptured.body;
-
-        assertEquals(lastApplicationPeriodEndDate.getTime(), capturedBody.expires);
-        assertEquals("https://localhost:9090/oppijan-tunnistus/api/v1/token", firstCaptured.url);
-        assertEquals("POST", firstCaptured.method);
-        assertEquals("https://localhost:9090/omatsivut/hakutoiveidenMuokkaus.html#/token/", capturedBody.url);
-        assertEquals(fi, capturedBody.lang);
-        assertEquals(emailAddress, capturedBody.email);
-        assertEquals(applicationOid, capturedBody.metadata.hakemusOid);
-        assertTrue(capturedBody.template.contains(hakuNimiFi));
-    }
-
-    @Test
-    public void testSendModifiedEmailSecondary() throws EmailException {
-        service.sendModifiedEmail(testApplicationSecondary());
-
-        Iterator<Captured> iterator = restClient.getCaptured().iterator();
-        OppijanTunnistusDTO oppijaEmailBody = (OppijanTunnistusDTO) iterator.next().body;
-        OppijanTunnistusDTO guardianEmailBody = (OppijanTunnistusDTO) iterator.next().body;
-
-        assertEquals(oppijaEmailBody.email, emailAddress);
-        assertEquals(guardianEmailBody.email, emailAddressGuardian);
-        assertEquals(oppijaEmailBody.metadata.hakemusOid, applicationOid);
-        assertEquals(guardianEmailBody.metadata.hakemusOid, applicationOid);
-        assertEquals(guardianEmailBody.metadata.hakemusOid, applicationOid);
-        assertTrue(guardianEmailBody.subject.contains("huoltaja"));
-        assertFalse(guardianEmailBody.template.contains("Liitepyynnöt"));
-        assertTrue(guardianEmailBody.template.contains(dateTimeFormatter(SendMailService.FI).format(receivedDate)));
-    }
 
     @Test
     public void testInDemoModeItShouldNotSendEmailRequest() throws EmailException {
@@ -90,12 +58,6 @@ public class SendMailServiceTest {
         service.sendReceivedEmail(testApplication());
 
         assertTrue(restClient.getCaptured().isEmpty());
-    }
-
-    @Test
-    public void testThatErkkaHakuSendsNonSecurelinkVersionOfEmail() throws EmailException {
-        service.sendReceivedEmail(testApplicationErkka());
-        assertNonSecurelinkMail();
     }
 
     @Test
@@ -147,7 +109,7 @@ public class SendMailServiceTest {
                 .addDefault("host.alb.virkailija","localhost:9090")
                 .addDefault("schema.alb.virkailija","https")
                 .addDefault("host.haku","localhost:9090").addDefault("host.virkailija","localhost");
-        service = new SendMailService(applicationSystemService, restClient, emailServiceMockImpl, urlConfiguration);
+        service = new SendMailService(Mockito.mock(HakumaksuUtil.class),applicationSystemService, restClient, emailServiceMockImpl, urlConfiguration);
     }
 
     private ApplicationSystem mockApplicationSystem(String oid, String kohdejoukkoUri) {

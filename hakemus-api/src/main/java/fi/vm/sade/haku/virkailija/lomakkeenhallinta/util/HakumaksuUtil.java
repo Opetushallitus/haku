@@ -127,37 +127,18 @@ public class HakumaksuUtil {
         req2.setEntity(EntityBuilder.create().setText(body).build());
         return req2;
     }
-    /**
-     * @return true if send was successful
-     */
-    public Integer sendPaymentRequest(final PaymentEmail paymentEmail,
-                                                        final String oppijanTunnistusUrl,
-                                                        final String redirectUrl,
-                                                        final ApplicationOid _hakemusOid,
-                                                        final PersonOid _personOid,
-                                                        final SafeString emailAddress) {
-        String body = toJson(new OppijanTunnistusDTO() {{
-            this.url = redirectUrl;
-            this.expires = paymentEmail.expirationDate.getTime();
-            this.email = emailAddress.getValue();
-            this.subject = paymentEmail.subject.getValue();
-            this.template = paymentEmail.template.getValue();
-            this.lang = paymentEmail.language;
-            this.metadata = new Metadata() {{
-                this.hakemusOid = _hakemusOid.getValue();
-                this.personOid = _personOid.getValue();
-            }};
-        }});
 
+    public Integer makeOppijanTunnistusCallWithBody(OppijanTunnistusDTO json) {
+        String body = toJson(json);
         final java.util.function.Function<String, Integer> callOppijanTunnistus = (session) -> {
             try {
                 return oppijanTunnistusClient.execute(
                     postRequest(
-                        oppijanTunnistusUrl,
+                        urlConfiguration.url("oppijan-tunnistus.create"),
                         session,
                         body)).getStatusLine().getStatusCode();
             } catch(Exception e) {
-                LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid " + _hakemusOid + ", personOid " + _personOid + ", emailAddress " + emailAddress, e);
+                LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid: " + body, e);
                 throw new RuntimeException(e);
             }
         };
@@ -170,6 +151,28 @@ public class HakumaksuUtil {
         } else {
             return statusCode;
         }
+    }
+
+    /**
+     * @return true if send was successful
+     */
+    public Integer sendPaymentRequest(final PaymentEmail paymentEmail,
+                                        final String redirectUrl,
+                                        final ApplicationOid _hakemusOid,
+                                        final PersonOid _personOid,
+                                        final SafeString emailAddress) {
+        return makeOppijanTunnistusCallWithBody(new OppijanTunnistusDTO() {{
+            this.url = redirectUrl;
+            this.expires = paymentEmail.expirationDate.getTime();
+            this.email = emailAddress.getValue();
+            this.subject = paymentEmail.subject.getValue();
+            this.template = paymentEmail.template.getValue();
+            this.lang = paymentEmail.language;
+            this.metadata = new Metadata() {{
+                this.hakemusOid = _hakemusOid.getValue();
+                this.personOid = _personOid.getValue();
+            }};
+        }});
     }
 
     public static class CodeElement {

@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
 import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -20,15 +21,11 @@ import java.util.concurrent.TimeUnit;
 @Profile({"default", "devluokka"})
 public class HakumaksuConfiguration {
 
-    @Autowired
-    RestClient restClient;
-
-    @Autowired
-    OphProperties urlConfiguration;
-
-    @Bean(name = "hakumaksuService")
-    public HakumaksuService hakumaksuService(@Value("${haku.app.username.to.valintarekisteri}") String clientAppUser,
-                                             @Value("${haku.app.password.to.valintarekisteri}") String clientAppPass) {
+    @Bean(name = "hakumaksuUtil")
+    public HakumaksuUtil hakumaksuUtil(RestClient restClient,
+                                       OphProperties urlConfiguration,
+                                       @Value("${haku.app.username.to.valintarekisteri}") String clientAppUser,
+                                       @Value("${haku.app.password.to.valintarekisteri}") String clientAppPass) {
         PoolingClientConnectionManager connectionManager;
         connectionManager = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault(), 60, TimeUnit.MILLISECONDS);
         connectionManager.setDefaultMaxPerRoute(100); // default 2
@@ -39,13 +36,15 @@ public class HakumaksuConfiguration {
         HttpConnectionParams.setConnectionTimeout(httpParams, 300000);
         HttpConnectionParams.setSoTimeout(httpParams, 300000);
         HttpConnectionParams.setSoKeepalive(httpParams, true); // prevent firewall to reset idle connections?
+        return new HakumaksuUtil(restClient, urlConfiguration, actualClient, clientAppUser, clientAppPass);
+    }
 
+    @Bean(name = "hakumaksuService")
+    public HakumaksuService hakumaksuService(OphProperties urlConfiguration,
+                                             HakumaksuUtil hakumaksuUtil) {
         return new HakumaksuService(
                 urlConfiguration,
-                restClient,
-                actualClient,
-                clientAppUser,
-                clientAppPass
+                hakumaksuUtil
         );
     }
 

@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import fi.vm.sade.properties.OphProperties;
@@ -41,16 +42,13 @@ public class TestMockConfiguration {
     public HakumaksuService hakumaksuService() {
         return new HakumaksuService(
                 urlConfiguration,
-                restClient,
-                Mockito.mock(org.apache.http.client.HttpClient.class),
-                "",
-                ""
+                Mockito.mock(HakumaksuUtil.class)
         );
     }
 
     @Bean(name = "sendMailService")
     public SendMailService sendMailService() {
-        return new SendMailService(applicationSystemService, restClient, emailService, urlConfiguration);
+        return new SendMailService(Mockito.mock(HakumaksuUtil.class),applicationSystemService, restClient, emailService, urlConfiguration);
     }
 
 }

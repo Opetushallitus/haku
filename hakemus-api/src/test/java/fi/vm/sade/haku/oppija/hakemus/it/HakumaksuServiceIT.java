@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.configuration.UrlConfiguration;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
@@ -35,9 +36,8 @@ public class HakumaksuServiceIT {
 
     public HakumaksuServiceIT() {
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
-        hakumaksuService = new HakumaksuService(urlConfiguration, new HttpRestClient(),
-            Mockito.mock(org.apache.http.client.HttpClient.class),
-            "","");
+        hakumaksuService = new HakumaksuService(urlConfiguration,
+            Mockito.mock(HakumaksuUtil.class));
     }
 
     @Test

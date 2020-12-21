@@ -48,13 +48,10 @@ public class HakumaksuService {
 
     public HakumaksuService(
             final OphProperties urlConfiguration,
-            final RestClient restClient,
-            final org.apache.http.client.HttpClient httpClient,
-            final String clientAppUser,
-            final String clientAppPass
+            final HakumaksuUtil hakumaksuUtil
     ) {
         this.urlConfiguration = urlConfiguration;
-        util = new HakumaksuUtil(restClient, urlConfiguration, httpClient, clientAppUser, clientAppPass);
+        util = hakumaksuUtil;
     }
 
     private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {
@@ -311,7 +308,6 @@ public class HakumaksuService {
                                        PersonOid personOid) throws ExecutionException, InterruptedException {
         if (util.sendPaymentRequest(
                 paymentEmail,
-                urlConfiguration.url("oppijan-tunnistus.create"),
                 urlConfiguration.url("hakuperusteet.tokenUrl." + paymentEmail.language.toString(), applicationOid),
                 applicationOid,
                 personOid,
