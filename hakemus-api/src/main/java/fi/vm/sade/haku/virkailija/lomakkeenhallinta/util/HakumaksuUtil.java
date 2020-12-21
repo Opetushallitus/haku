@@ -1,5 +1,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
+import com.google.api.client.json.JsonGenerator;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Charsets;
 import com.google.api.client.util.Key;
 import com.google.api.client.util.Throwables;
 import com.google.common.base.Function;
@@ -17,15 +20,30 @@ import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
+import fi.vm.sade.haku.oppija.configuration.HakemusApiCallerId;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.IsoCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
+import fi.vm.sade.javautils.cas.CasClient;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.impl.conn.SchemeRegistryFactory;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +64,16 @@ public class HakumaksuUtil {
     private RestClient restClient;
     private final OphProperties urlConfiguration;
 
-    public HakumaksuUtil(RestClient restClient, OphProperties urlConfiguration) {
+    final String clientAppUser;
+    final String clientAppPass;
+
+    public HakumaksuUtil(RestClient restClient, OphProperties urlConfiguration,
+                         final String clientAppUser,
+                         final String clientAppPass) {
         this.restClient = restClient;
         this.urlConfiguration = urlConfiguration;
+        this.clientAppUser= clientAppUser;
+        this.clientAppPass= clientAppPass;
         populateEaaCountriesCache();
     }
 
@@ -67,16 +92,60 @@ public class HakumaksuUtil {
     public static final int APPLICATION_PAYMENT_WAITING_TIME = 2;
     public static final long APPLICATION_PAYMENT_WAITING_TIME_MILLIS = TimeUnit.DAYS.toMillis(APPLICATION_PAYMENT_WAITING_TIME);
 
+    public volatile String OPPIJAN_TUNNISTUS_SESSION = "InvalidSession";
+    public final DefaultHttpClient oppijanTunnistusClient = oppijanTunnistusClient();
+    public synchronized void updateOppijanTunnistusSession(String currentSession) {
+        if(OPPIJAN_TUNNISTUS_SESSION.equals(currentSession)) {
+            String ticket = getTicket();
+            Header session = getSession(oppijanTunnistusClient, ticket)[0];
+            OPPIJAN_TUNNISTUS_SESSION = session.getElements()[0].getValue();
+        }
+    }
+    public String toJson(OppijanTunnistusDTO body) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            JsonGenerator generator = new JacksonFactory().createJsonGenerator(out, Charsets.UTF_8);
+            generator.serialize(body);
+            generator.flush();
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new String(out.toByteArray());
+    }
+    public DefaultHttpClient oppijanTunnistusClient() {
+        PoolingClientConnectionManager connectionManager;
+        connectionManager = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault(), 60, TimeUnit.MILLISECONDS);
+        connectionManager.setDefaultMaxPerRoute(100); // default 2
+        connectionManager.setMaxTotal(1000); // default 20
+        final DefaultHttpClient actualClient = new DefaultHttpClient(connectionManager);
+        HttpParams httpParams = actualClient.getParams();
+        httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, false);
+        HttpConnectionParams.setConnectionTimeout(httpParams, 300000);
+        HttpConnectionParams.setSoTimeout(httpParams, 300000);
+        HttpConnectionParams.setSoKeepalive(httpParams, true); // prevent firewall to reset idle connections?
+        return actualClient;
+    }
+    public HttpPost postRequest(String uri, String session, String body) {
+        HttpPost req2 = new HttpPost(uri);
+
+        req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
+        req2.setHeader("CSRF", "HttpRestClient");
+        req2.setHeader("Cookie", "CSRF=HttpRestClient");
+        req2.setHeader("Content-Type","application/json;charset=utf-8");
+        req2.setHeader("Cookie","ring-session="+session);
+        req2.setEntity(EntityBuilder.create().setText(body).build());
+        return req2;
+    }
     /**
      * @return true if send was successful
      */
-    public ListenableFuture<Boolean> sendPaymentRequest(final PaymentEmail paymentEmail,
+    public Integer sendPaymentRequest(final PaymentEmail paymentEmail,
                                                         final String oppijanTunnistusUrl,
                                                         final String redirectUrl,
                                                         final ApplicationOid _hakemusOid,
                                                         final PersonOid _personOid,
                                                         final SafeString emailAddress) {
-        OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
+        String body = toJson(new OppijanTunnistusDTO() {{
             this.url = redirectUrl;
             this.expires = paymentEmail.expirationDate.getTime();
             this.email = emailAddress.getValue();
@@ -87,17 +156,28 @@ public class HakumaksuUtil {
                 this.hakemusOid = _hakemusOid.getValue();
                 this.personOid = _personOid.getValue();
             }};
-        }};
-        try {
-            return Futures.transform(restClient.post(oppijanTunnistusUrl, body, Object.class), new Function<Response<Object>, Boolean>() {
-                @Override
-                public Boolean apply(Response<Object> input) {
-                    return input.isSuccessStatusCode();
-                }
-            });
-        } catch (IOException e) {
-            LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid " + _hakemusOid + ", personOid " + _personOid + ", emailAddress " + emailAddress, e);
-            return Futures.immediateFuture(false);
+        }});
+
+        final java.util.function.Function<String, Integer> callOppijanTunnistus = (session) -> {
+            try {
+                return oppijanTunnistusClient.execute(
+                    postRequest(
+                        oppijanTunnistusUrl,
+                        session,
+                        body)).getStatusLine().getStatusCode();
+            } catch(Exception e) {
+                LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid " + _hakemusOid + ", personOid " + _personOid + ", emailAddress " + emailAddress, e);
+                throw new RuntimeException(e);
+            }
+        };
+
+        final String session = OPPIJAN_TUNNISTUS_SESSION;
+        Integer statusCode = callOppijanTunnistus.apply(session);
+        if(statusCode.equals(401)) {
+            updateOppijanTunnistusSession(session);
+            return callOppijanTunnistus.apply(OPPIJAN_TUNNISTUS_SESSION);
+        } else {
+            return statusCode;
         }
     }
 
@@ -271,4 +351,33 @@ public class HakumaksuUtil {
             return paymentAnswers;
         }
     }
+    public String getTicket() {
+        return CasClient.getTicket(
+            urlConfiguration.url("cas.tickets"),
+            clientAppUser,
+            clientAppPass,
+            urlConfiguration.url("oppijan-tunnistus.auth"),
+            false);
+    }
+    public Header[] getSession(HttpClient httpClient, String ticket) {
+        ;
+        HttpGet req2 = new HttpGet(urlConfiguration.url("oppijan-tunnistus.cas",ticket));
+        req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
+        req2.setHeader("CSRF", "HttpRestClient");
+        req2.setHeader("Cookie", "CSRF=HttpRestClient");
+        try {
+
+            HttpResponse t = httpClient.execute(req2);
+            if (t.getStatusLine().getStatusCode() == 302) {
+                return t.getHeaders("Set-Cookie");
+            } else {
+                throw new RuntimeException(String.format("CAS ticket fetch failed with statuscode %s:", t.getStatusLine().getStatusCode()));
+            }
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            req2.releaseConnection();
+        }
+    }
+
 }

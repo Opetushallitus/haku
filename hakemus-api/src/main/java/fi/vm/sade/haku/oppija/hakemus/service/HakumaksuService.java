@@ -46,10 +46,12 @@ public class HakumaksuService {
 
     public HakumaksuService(
             final OphProperties urlConfiguration,
-            final RestClient restClient
+            final RestClient restClient,
+            final String clientAppUser,
+            final String clientAppPass
     ) {
         this.urlConfiguration = urlConfiguration;
-        util = new HakumaksuUtil(restClient, urlConfiguration);
+        util = new HakumaksuUtil(restClient, urlConfiguration, clientAppUser, clientAppPass);
     }
 
     private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {
@@ -304,13 +306,13 @@ public class HakumaksuService {
                                        SafeString emailAddress,
                                        ApplicationOid applicationOid,
                                        PersonOid personOid) throws ExecutionException, InterruptedException {
-        if (!util.sendPaymentRequest(
+        if (util.sendPaymentRequest(
                 paymentEmail,
                 urlConfiguration.url("oppijan-tunnistus.create"),
                 urlConfiguration.url("hakuperusteet.tokenUrl." + paymentEmail.language.toString(), applicationOid),
                 applicationOid,
                 personOid,
-                emailAddress).get()) {
+                emailAddress) != 200) {
             throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
                     applicationOid + ", personOid " + personOid + ", emailAddress " + emailAddress);
         }

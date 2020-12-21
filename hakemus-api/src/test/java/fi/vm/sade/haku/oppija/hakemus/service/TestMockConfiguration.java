@@ -7,6 +7,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,6 +30,11 @@ public class TestMockConfiguration {
 
     EmailService emailService = new EmailServiceMockImpl();
 
+    @Value("${haku.app.username.to.valintarekisteri}")
+    private String clientAppUser;
+    @Value("${haku.app.password.to.valintarekisteri}")
+    private String clientAppPass;
+
     @PostConstruct
     private void setUrls() {
         urlConfiguration.addDefault("host.virkailija", "localhost:9090").addDefault("host.haku","localhost:9090");
@@ -38,7 +44,9 @@ public class TestMockConfiguration {
     public HakumaksuService hakumaksuService() {
         return new HakumaksuService(
                 urlConfiguration,
-                restClient
+                restClient,
+                clientAppUser,
+                clientAppPass
         );
     }
 
