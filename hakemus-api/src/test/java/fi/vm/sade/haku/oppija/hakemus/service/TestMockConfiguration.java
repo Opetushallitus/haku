@@ -42,7 +42,11 @@ public class TestMockConfiguration {
     public HakumaksuService hakumaksuService() {
         return new HakumaksuService(
                 urlConfiguration,
-                Mockito.mock(HakumaksuUtil.class)
+            new HakumaksuUtil(
+                restClient,
+                urlConfiguration,
+                Mockito.mock(org.apache.http.client.HttpClient.class),
+                "","")
         );
     }
 
