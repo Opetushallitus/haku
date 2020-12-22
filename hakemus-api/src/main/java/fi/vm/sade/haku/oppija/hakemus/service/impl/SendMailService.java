@@ -204,7 +204,7 @@ public class SendMailService {
                     }};
                 }});
             if (successStatusCode != 200) {
-                throw new EmailException("Sähköpostin lähettäminen epäonnistui");
+                throw new EmailException("Sähköpostin lähettäminen epäonnistui! Status " + successStatusCode);
             }
         } catch (Exception e) {
             throw new EmailException("Sähköpostin lähettäminen epäonnistui", e);

@@ -347,14 +347,13 @@ public class HakumaksuUtil {
     }
     public String getTicket() {
         return CasClient.getTicket(
-            urlConfiguration.url("cas.tickets"),
+            urlConfiguration.url("cas.url") + "/v1/tickets",
             clientAppUser,
             clientAppPass,
             urlConfiguration.url("oppijan-tunnistus.auth"),
             false);
     }
     public Header[] getSession(HttpClient httpClient, String ticket) {
-        ;
         HttpGet req2 = new HttpGet(urlConfiguration.url("oppijan-tunnistus.cas",ticket));
         req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
         req2.setHeader("CSRF", "HttpRestClient");
