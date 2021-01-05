@@ -51,7 +51,7 @@ deploy:
   script: mvn deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests --settings ci-tools/common/maven-settings.xml
   skip_cleanup: true
   on:
-    branch: master
+    all_branches: true
 - provider: script
   script: ./ci-tools/build/upload-image.sh haku-virkailija && ./ci-tools/build/upload-image.sh haku-oppija
   on:
