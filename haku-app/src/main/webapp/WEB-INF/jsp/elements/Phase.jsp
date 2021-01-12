@@ -50,6 +50,7 @@
     <script src="${contextPath}/resources/javascript/oph_urls.js/index.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/haku-app-web-oph.js" type="text/javascript"></script>
     <script src="${contextPath}/rest/frontProperties" type="text/javascript"></script>
+    <script id="apply-modal" type="text/javascript" sdg="false" src="/oppija-raamit/js/apply-modal.js"></script>
     <!--[if lte IE 9]>
     <script src="${contextPath}/resources/javascript/ie9-help-fix.js"></script>
     <![endif]-->
