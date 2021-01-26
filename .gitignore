@@ -8,6 +8,5 @@ target/
 .settings/
 .DS_Store
 tomcat.*
-.java-version
 node_modules/
 package-lock.json

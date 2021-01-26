@@ -19,6 +19,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,7 @@ import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Type;
 import java.time.Duration;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
@@ -147,16 +145,14 @@ public class ValintaServiceImpl implements ValintaService {
     private HakijaDTO makeAuthenticatedRequestToValintarekisteri(String url){
         HttpGet req = new HttpGet(url);
         try {
-            Header[] rekisteriHeaders = getCachedHeadersForValintarekisteri();
-            req.setHeaders(rekisteriHeaders);
+            addHeadersToAuthenticatedValintarekisteriRequest(req);
             HttpResponse httpresponse = httpClient.execute(req);
             int statusCode = httpresponse.getStatusLine().getStatusCode();
             if(statusCode == 200){
                 return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
             } else if (statusCode == 401) {
                 authorizeValintarekisteri(true, true);
-                rekisteriHeaders = getCachedHeadersForValintarekisteri();
-                req.setHeaders(rekisteriHeaders);
+                addHeadersToAuthenticatedValintarekisteriRequest(req);
                 httpresponse = httpClient.execute(req);
                 if(httpresponse.getStatusLine().getStatusCode() == 200) {
                     return parseHakijaFromInputStream(httpresponse.getEntity().getContent());
@@ -168,6 +164,17 @@ public class ValintaServiceImpl implements ValintaService {
             req.releaseConnection();
         }
         return new HakijaDTO();
+    }
+
+    private void addHeadersToAuthenticatedValintarekisteriRequest(HttpGet req) {
+        Header[] rekisteriHeaders = getCachedHeadersForValintarekisteri();
+        req.setHeaders(rekisteriHeaders);
+        addCallerIdToRequest(req);
+    }
+
+    private void addCallerIdToRequest(HttpGet req) {
+        Header callerIdHeader = new BasicHeader("Caller-id", callerId);
+        req.addHeader(callerIdHeader);
     }
 
     private HakijaDTO parseHakijaFromInputStream(InputStream stream) throws IOException {
@@ -192,6 +199,7 @@ public class ValintaServiceImpl implements ValintaService {
         req2.setHeader(CachingRestClient.CAS_SECURITY_TICKET, ticket);
         req2.setHeader(PERA.X_KUTSUKETJU_ALOITTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
         req2.setHeader(PERA.X_PALVELUKUTSU_LAHETTAJA_KAYTTAJA_TUNNUS, clientAppUserValintarekisteri);
+        addCallerIdToRequest(req2);
         try {
             HttpResponse ticketResponse = httpClient.execute(req2);
             if (ticketResponse.getStatusLine().getStatusCode() == 200) {
