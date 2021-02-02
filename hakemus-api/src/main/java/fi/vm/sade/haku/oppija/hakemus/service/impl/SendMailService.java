@@ -15,6 +15,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.properties.OphProperties;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
@@ -72,14 +73,18 @@ public class SendMailService {
 
     final EmailService emailService;
 
+    final HakumaksuUtil hakumaksuUtil;
+
     @Autowired
-    public SendMailService(final ApplicationSystemService applicationSystemService,
+    public SendMailService(final HakumaksuUtil hakumaksuUtil,
+                           final ApplicationSystemService applicationSystemService,
                            final RestClient restClient,
                            final EmailService emailService, OphProperties urlConfiguration) {
         this.applicationSystemService = applicationSystemService;
         this.restClient = restClient;
         this.emailService = emailService;
         this.urlConfiguration = urlConfiguration;
+        this.hakumaksuUtil = hakumaksuUtil;
         initTemplateMaps();
     }
 
@@ -185,29 +190,23 @@ public class SendMailService {
     private void sendSecurelinkEmail(final Application application, final ApplicationSystem as, final String emailAddress,
                                      final String emailSubject, final String emailTemplate,
                                      final LanguageCodeISO6391 emailLang) throws EmailException {
-        OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
-            this.url = urlConfiguration.url("omatsivut.email.application.modify.link." + emailLang.toString());
-            this.expires = getModificationLinkExpiration(as);
-            this.email = emailAddress;
-            this.subject = emailSubject;
-            this.template = emailTemplate;
-            this.lang = emailLang;
-            this.metadata = new Metadata() {{
-                this.hakemusOid = application.getOid();
-            }};
-        }};
-
         try {
-            boolean successStatusCode = Futures.transform(restClient.post(urlConfiguration.url("oppijan-tunnistus.create"), body, Object.class), new Function<HttpRestClient.Response<Object>, Boolean>() {
-                @Override
-                public Boolean apply(HttpRestClient.Response<Object> input) {
-                    return input.isSuccessStatusCode();
-                }
-            }).get();
-            if (!successStatusCode) {
-                throw new EmailException("Sähköpostin lähettäminen epäonnistui");
+            int successStatusCode = hakumaksuUtil.makeOppijanTunnistusCallWithBody(
+                new OppijanTunnistusDTO() {{
+                    this.url = urlConfiguration.url("omatsivut.email.application.modify.link." + emailLang.toString());
+                    this.expires = getModificationLinkExpiration(as);
+                    this.email = emailAddress;
+                    this.subject = emailSubject;
+                    this.template = emailTemplate;
+                    this.lang = emailLang;
+                    this.metadata = new Metadata() {{
+                        this.hakemusOid = application.getOid();
+                    }};
+                }});
+            if (successStatusCode != 200) {
+                throw new EmailException("Sähköpostin lähettäminen epäonnistui! Status " + successStatusCode);
             }
-        } catch (IOException | InterruptedException | ExecutionException e) {
+        } catch (Exception e) {
             throw new EmailException("Sähköpostin lähettäminen epäonnistui", e);
         }
     }

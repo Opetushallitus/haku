@@ -15,6 +15,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,10 +48,10 @@ public class HakumaksuService {
 
     public HakumaksuService(
             final OphProperties urlConfiguration,
-            final RestClient restClient
+            final HakumaksuUtil hakumaksuUtil
     ) {
         this.urlConfiguration = urlConfiguration;
-        util = new HakumaksuUtil(restClient, urlConfiguration);
+        util = hakumaksuUtil;
     }
 
     private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {
@@ -304,13 +306,12 @@ public class HakumaksuService {
                                        SafeString emailAddress,
                                        ApplicationOid applicationOid,
                                        PersonOid personOid) throws ExecutionException, InterruptedException {
-        if (!util.sendPaymentRequest(
+        if (util.sendPaymentRequest(
                 paymentEmail,
-                urlConfiguration.url("oppijan-tunnistus.create"),
                 urlConfiguration.url("hakuperusteet.tokenUrl." + paymentEmail.language.toString(), applicationOid),
                 applicationOid,
                 personOid,
-                emailAddress).get()) {
+                emailAddress) != 200) {
             throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
                     applicationOid + ", personOid " + personOid + ", emailAddress " + emailAddress);
         }
