@@ -122,7 +122,7 @@ public class HakumaksuUtil {
         req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
         req2.setHeader("CSRF", "HttpRestClient");
         req2.setHeader("Cookie", "CSRF=HttpRestClient");
-        req2.setHeader("Content-Type","application/json;charset=utf-8");
+        req2.setHeader("Content-Type","application/json; charset=utf-8");
         req2.setHeader("Cookie","ring-session="+session);
         req2.setEntity(EntityBuilder.create().setText(body).build());
         return req2;
