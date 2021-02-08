@@ -25,6 +25,8 @@ import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -52,6 +54,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Service(value = "sendMailService")
 @Profile({"default", "devluokka"})
 public class SendMailService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendMailService.class);
 
     public static final Locale FI = new Locale("fi");
     public static final Locale SV = new Locale("sv");
@@ -190,6 +194,7 @@ public class SendMailService {
     private void sendSecurelinkEmail(final Application application, final ApplicationSystem as, final String emailAddress,
                                      final String emailSubject, final String emailTemplate,
                                      final LanguageCodeISO6391 emailLang) throws EmailException {
+        LOGGER.info("Email: {} | Template: {}", emailAddress, emailTemplate);
         try {
             int successStatusCode = hakumaksuUtil.makeOppijanTunnistusCallWithBody(
                 new OppijanTunnistusDTO() {{
