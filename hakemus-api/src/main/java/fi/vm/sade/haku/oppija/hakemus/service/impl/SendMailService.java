@@ -22,6 +22,8 @@ import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
 import org.apache.commons.mail.EmailException;
+import org.apache.tika.parser.txt.CharsetDetector;
+import org.apache.tika.parser.txt.CharsetMatch;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -34,6 +36,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -194,7 +197,10 @@ public class SendMailService {
     private void sendSecurelinkEmail(final Application application, final ApplicationSystem as, final String emailAddress,
                                      final String emailSubject, final String emailTemplate,
                                      final LanguageCodeISO6391 emailLang) throws EmailException {
-        LOGGER.info("Email: {} | Template: {}", emailAddress, emailTemplate);
+        CharsetDetector detector = new CharsetDetector();
+        detector.setText(emailTemplate.getBytes());
+        CharsetMatch charset = detector.detect();
+        LOGGER.info("Email: {} | Template: {} | TemplateCharset: {}", emailAddress, emailTemplate, charset.getName());
         try {
             int successStatusCode = hakumaksuUtil.makeOppijanTunnistusCallWithBody(
                 new OppijanTunnistusDTO() {{
