@@ -35,6 +35,7 @@ import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.impl.conn.SchemeRegistryFactory;
@@ -125,7 +126,7 @@ public class HakumaksuUtil {
         req2.setHeader("Cookie", "CSRF=HttpRestClient");
         req2.setHeader("Content-Type", MediaType.APPLICATION_JSON);
         req2.setHeader("Cookie","ring-session="+session);
-        req2.setEntity(EntityBuilder.create().setText(body).build());
+        req2.setEntity(EntityBuilder.create().setText(body).setContentType(ContentType.create("application/json", "UTF-8")).build());
         return req2;
     }
 
