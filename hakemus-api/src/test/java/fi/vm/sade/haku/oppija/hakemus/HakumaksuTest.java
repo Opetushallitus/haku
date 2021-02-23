@@ -27,6 +27,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -52,7 +54,7 @@ public class HakumaksuTest {
     private MockedRestClient mockRestClient = new MockedRestClient(testMappings());
     private String oppijanTunnistusUrl = "https://localhost:9090/oppijan-tunnistus/api/v1/token";
     private String hakuperusteetUrlSv = "https://localhost-sv";
-    private HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
+    private CloseableHttpClient mockHttpClient = Mockito.mock(CloseableHttpClient.class);
     private long PAYMENT_DUE_DATE_MILLIS = 1453893850027L;
     ImmutableList<ApplicationPeriod> applicationPeriods = ImmutableList.of(
             new ApplicationPeriod(new Date(0), new Date(new Date().getTime() + 20000))
@@ -184,7 +186,7 @@ public class HakumaksuTest {
             setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
                     String.format(PREFERENCE_ID, 1), hakutoiveenOid));
         }};
-        HttpResponse response = Mockito.mock(HttpResponse.class);
+        CloseableHttpResponse response = Mockito.mock(CloseableHttpResponse.class);
         Mockito.when(response.getStatusLine()).thenReturn(new StatusLine() {
             @Override
             public ProtocolVersion getProtocolVersion() {
