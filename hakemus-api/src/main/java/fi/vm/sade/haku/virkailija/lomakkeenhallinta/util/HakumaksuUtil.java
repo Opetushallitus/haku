@@ -32,10 +32,12 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.impl.conn.SchemeRegistryFactory;
@@ -64,14 +66,14 @@ public class HakumaksuUtil {
     public static final String TRUE = "true";
 
     private RestClient restClient;
-    private final HttpClient oppijanTunnistusClient;
+    private final CloseableHttpClient oppijanTunnistusClient;
     private final OphProperties urlConfiguration;
 
     final String clientAppUser;
     final String clientAppPass;
 
     public HakumaksuUtil(RestClient restClient, OphProperties urlConfiguration,
-                         HttpClient oppijanTunnistusClient,
+                         CloseableHttpClient oppijanTunnistusClient,
                          final String clientAppUser,
                          final String clientAppPass) {
         this.restClient = restClient;
@@ -133,17 +135,17 @@ public class HakumaksuUtil {
     public Integer makeOppijanTunnistusCallWithBody(OppijanTunnistusDTO json) {
         String body = toJson(json);
         final java.util.function.Function<String, Integer> callOppijanTunnistus = (session) -> {
-            HttpPost httpPost = postRequest(
-                urlConfiguration.url("oppijan-tunnistus.create"),
-                session,
-                body);
             try {
-                return oppijanTunnistusClient.execute(httpPost).getStatusLine().getStatusCode();
+                HttpPost httpPost = postRequest(
+                    urlConfiguration.url("oppijan-tunnistus.create"),
+                    session,
+                    body);
+                try (CloseableHttpResponse response = oppijanTunnistusClient.execute(httpPost)) {
+                    return response.getStatusLine().getStatusCode();
+                }
             } catch(Exception e) {
                 LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid: " + body, e);
                 throw new RuntimeException(e);
-            } finally {
-                httpPost.releaseConnection();
             }
         };
 
