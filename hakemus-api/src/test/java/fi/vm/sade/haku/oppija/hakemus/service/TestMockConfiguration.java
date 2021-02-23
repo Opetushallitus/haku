@@ -8,6 +8,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,7 @@ public class TestMockConfiguration {
             new HakumaksuUtil(
                 restClient,
                 urlConfiguration,
-                Mockito.mock(org.apache.http.client.HttpClient.class),
+                Mockito.mock(CloseableHttpClient.class),
                 "","")
         );
     }
