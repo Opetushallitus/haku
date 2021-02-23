@@ -12,6 +12,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -38,7 +39,7 @@ public class HakumaksuServiceIT {
         urlConfiguration.addDefault("host.virkailija","localhost:9090");
         hakumaksuService = new HakumaksuService(urlConfiguration,
             new HakumaksuUtil(new HttpRestClient(), urlConfiguration,
-                Mockito.mock(org.apache.http.client.HttpClient.class),
+                Mockito.mock(CloseableHttpClient.class),
                 "",""));
     }
 
