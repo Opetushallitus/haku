@@ -133,15 +133,17 @@ public class HakumaksuUtil {
     public Integer makeOppijanTunnistusCallWithBody(OppijanTunnistusDTO json) {
         String body = toJson(json);
         final java.util.function.Function<String, Integer> callOppijanTunnistus = (session) -> {
+            HttpPost httpPost = postRequest(
+                urlConfiguration.url("oppijan-tunnistus.create"),
+                session,
+                body);
             try {
-                return oppijanTunnistusClient.execute(
-                    postRequest(
-                        urlConfiguration.url("oppijan-tunnistus.create"),
-                        session,
-                        body)).getStatusLine().getStatusCode();
+                return oppijanTunnistusClient.execute(httpPost).getStatusLine().getStatusCode();
             } catch(Exception e) {
                 LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid: " + body, e);
                 throw new RuntimeException(e);
+            } finally {
+                httpPost.releaseConnection();
             }
         };
 
