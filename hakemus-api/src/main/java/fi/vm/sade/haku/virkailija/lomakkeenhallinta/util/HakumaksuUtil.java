@@ -135,17 +135,17 @@ public class HakumaksuUtil {
     public Integer makeOppijanTunnistusCallWithBody(OppijanTunnistusDTO json) {
         String body = toJson(json);
         final java.util.function.Function<String, Integer> callOppijanTunnistus = (session) -> {
-            HttpPost httpPost = postRequest(
-                urlConfiguration.url("oppijan-tunnistus.create"),
-                session,
-                body);
-            try (CloseableHttpResponse response = .execute(httpPost)) {
-                return response.getStatusLine().getStatusCode();
+            try {
+                HttpPost httpPost = postRequest(
+                    urlConfiguration.url("oppijan-tunnistus.create"),
+                    session,
+                    body);
+                try (CloseableHttpResponse response = oppijanTunnistusClient.execute(httpPost)) {
+                    return response.getStatusLine().getStatusCode();
+                }
             } catch(Exception e) {
                 LOGGER.error("Error connecting oppijan-tunnistus for hakemusOid: " + body, e);
                 throw new RuntimeException(e);
-            } finally {
-                httpPost.releaseConnection();
             }
         };
 
@@ -359,18 +359,20 @@ public class HakumaksuUtil {
             urlConfiguration.url("oppijan-tunnistus.auth"),
             false);
     }
-    public Header[] getSession(CloseableHttpClient httpClient, String ticket) {
+    public Header[] getSession(HttpClient httpClient, String ticket) {
         HttpGet req2 = new HttpGet(urlConfiguration.url("oppijan-tunnistus.cas",ticket));
         req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
         req2.setHeader("CSRF", "HttpRestClient");
         req2.setHeader("Cookie", "CSRF=HttpRestClient");
-        try (CloseableHttpResponse t = httpClient.execute(req2)) {
+        try {
+
+            HttpResponse t = httpClient.execute(req2);
             if (t.getStatusLine().getStatusCode() == 302) {
                 return t.getHeaders("Set-Cookie");
             } else {
                 throw new RuntimeException(String.format("CAS ticket fetch failed with statuscode %s:", t.getStatusLine().getStatusCode()));
             }
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new RuntimeException(e);
         } finally {
             req2.releaseConnection();
