@@ -1,4 +1,4 @@
-const WARNING_TIMEOUT_IN_MINUTES = 5;
+const WARNING_TIMEOUT_IN_MINUTES = 90;
 
 var g_timeoutCounter = getTimeoutCounter();
 var g_expiringTimeout = setExpiringTimeout(g_timeoutCounter);
