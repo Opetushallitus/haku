@@ -116,7 +116,7 @@
     </jsp-config>
 
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>150</session-timeout>
     </session-config>
 
     <error-page>
