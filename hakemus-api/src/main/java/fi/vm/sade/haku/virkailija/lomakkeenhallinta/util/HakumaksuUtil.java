@@ -123,11 +123,12 @@ public class HakumaksuUtil {
     public HttpPost postRequest(String uri, String session, String body) {
         HttpPost req2 = new HttpPost(uri);
 
+        String cookieHeader = String.format("ring-session=%s; CSRF=%s", session, HakemusApiCallerId.callerId);
+
         req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
-        req2.setHeader("CSRF", "HttpRestClient");
-        req2.setHeader("Cookie", "CSRF=HttpRestClient");
+        req2.setHeader("CSRF", HakemusApiCallerId.callerId);
         req2.setHeader("Content-Type", MediaType.APPLICATION_JSON);
-        req2.setHeader("Cookie","ring-session="+session);
+        req2.setHeader("Cookie", cookieHeader);
         req2.setEntity(EntityBuilder.create().setText(body).setContentType(ContentType.create("application/json", "UTF-8")).build());
         return req2;
     }
@@ -362,8 +363,8 @@ public class HakumaksuUtil {
     public Header[] getSession(HttpClient httpClient, String ticket) {
         HttpGet req2 = new HttpGet(urlConfiguration.url("oppijan-tunnistus.cas",ticket));
         req2.setHeader("Caller-Id", HakemusApiCallerId.callerId);
-        req2.setHeader("CSRF", "HttpRestClient");
-        req2.setHeader("Cookie", "CSRF=HttpRestClient");
+        req2.setHeader("CSRF", HakemusApiCallerId.callerId);
+        req2.setHeader("Cookie", HakemusApiCallerId.callerId);
         try {
 
             HttpResponse t = httpClient.execute(req2);
