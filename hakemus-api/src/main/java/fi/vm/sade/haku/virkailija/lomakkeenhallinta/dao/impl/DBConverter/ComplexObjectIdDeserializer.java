@@ -22,11 +22,8 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.ObjectCodec;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class ComplexObjectIdDeserializer extends JsonDeserializer<ObjectId> {
 
@@ -34,7 +31,7 @@ public class ComplexObjectIdDeserializer extends JsonDeserializer<ObjectId> {
     public ObjectId deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final ObjectCodec codec = jsonParser.getCodec();
         final JsonNode treeNode = codec.readTree(jsonParser);
-        if (treeNode.has("time")){
+        if (treeNode.has("time") && treeNode.has("machine") && treeNode.has("inc")) {
             return processSplinteredId(treeNode);
         }
         else if (treeNode.isTextual()) {
@@ -48,11 +45,10 @@ public class ComplexObjectIdDeserializer extends JsonDeserializer<ObjectId> {
     }
 
     private final ObjectId processSplinteredId(final JsonNode treeNode) {
-        final long time = treeNode.get("time").asLong();
+        final int time = treeNode.get("time").asInt();
         final int machine = treeNode.get("machine").asInt();
         final int inc = treeNode.get("inc").asInt();
-        final ObjectId objectId = new ObjectId(new Date(time), machine, inc);
-        objectId.notNew();
-        return objectId;
+
+        return ObjectId.createFromLegacyFormat(time, machine, inc);
     }
 }
