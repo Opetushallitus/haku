@@ -24,7 +24,6 @@ import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class ObjectIdDeserializer extends JsonDeserializer<ObjectId> {
 
@@ -32,12 +31,14 @@ public class ObjectIdDeserializer extends JsonDeserializer<ObjectId> {
     public ObjectId deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final ObjectCodec codec = jsonParser.getCodec();
         final JsonNode treeNode = codec.readTree(jsonParser);
-        final long time = treeNode.get("time").asLong();
-        final int machine = treeNode.get("machine").asInt();
-        final int inc = treeNode.get("inc").asInt();
 
-        final ObjectId objectId = new ObjectId(new Date(time), machine, inc);
-        objectId.notNew();
-        return objectId;
+        if (treeNode.has("time") && treeNode.has("machine") && treeNode.has("inc")) {
+            final int time = treeNode.get("time").asInt();
+            final int machine = treeNode.get("machine").asInt();
+            final int inc = treeNode.get("inc").asInt();
+
+            return ObjectId.createFromLegacyFormat(time, machine, inc);
+        }
+        return null;
     }
 }

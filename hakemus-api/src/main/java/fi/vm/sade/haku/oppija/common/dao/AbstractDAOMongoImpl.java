@@ -91,7 +91,7 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
             index.put(field, 1);
         }
         LOGGER.info(this.getClass().getSimpleName() +": Executin ensure index " + index+ " with options " + options);
-        getCollection().ensureIndex(index, options);
+        //getCollection().ensureIndex(index, options);
     }
 
     protected void checkIndexes(String message){
