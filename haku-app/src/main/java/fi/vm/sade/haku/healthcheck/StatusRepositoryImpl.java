@@ -167,6 +167,6 @@ public class StatusRepositoryImpl implements StatusRepository {
     void initIndexes(){
         if (!ensureIndex)
             return;
-        //this.mongo.getCollection(STATUS_COLLECTION).ensureIndex(new BasicDBObject(FIELD_HOST, 1).append(FIELD_OPERATION, 1),"index_update");
+        this.mongo.getCollection(STATUS_COLLECTION).createIndex(new BasicDBObject(FIELD_HOST, 1).append(FIELD_OPERATION, 1),"index_update");
     }
 }

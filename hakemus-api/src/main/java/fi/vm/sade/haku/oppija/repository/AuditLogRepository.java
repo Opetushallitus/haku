@@ -41,8 +41,8 @@ public class AuditLogRepository {
     private void initIndexes(){
         if (!ensureIndex)
             return;
-//        mongoOperations.getCollection(collectionName).ensureIndex(new BasicDBObject("_target",1), "index_target");
-//        mongoOperations.getCollection(collectionName).ensureIndex(new BasicDBObject("_targetType",1).append("_target",1), "index_targetType");
+        mongoOperations.getCollection(collectionName).createIndex(new BasicDBObject("_target",1), "index_target");
+        mongoOperations.getCollection(collectionName).createIndex(new BasicDBObject("_targetType",1).append("_target",1), "index_targetType");
     }
 
     public class TapahtumaToStringWrapper{
