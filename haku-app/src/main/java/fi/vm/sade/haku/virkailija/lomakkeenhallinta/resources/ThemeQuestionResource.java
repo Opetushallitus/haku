@@ -469,7 +469,9 @@ public class ThemeQuestionResource {
         queryParams.setApplicationSystemId(applicationSystemId);
 
         for (ThemeQuestion question : themeQuestionDAO.query(queryParams)) {
-            questionMap.put(question.getId(), themeQuestionConverter.convert(question, lang));
+            if (question.getId() != null) {
+                questionMap.put(question.getId(), themeQuestionConverter.convert(question, lang));
+            }
         }
 
         return ok(questionMap).build();
