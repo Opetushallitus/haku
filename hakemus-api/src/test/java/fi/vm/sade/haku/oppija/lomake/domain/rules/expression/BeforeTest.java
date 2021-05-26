@@ -29,7 +29,7 @@ public class BeforeTest {
 
     @Test
     public void testBeforeFalse() {
-        ctx.put("syntymaaika", "15.5.2005");
+        ctx.put("syntymaaika", "15.5.2020");
         assertFalse(olderThan.evaluate(ctx));
     }
 }
