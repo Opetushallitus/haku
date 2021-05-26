@@ -64,16 +64,24 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     }
 
     protected void ensureIndex(String name, String... fields){
-        _ensureIndex(name, false, fields);
+        _ensureIndex(name, false, false, fields);
+    }
+
+    protected void ensureIndex(String name, Boolean isSparse, String... fields){
+        _ensureIndex(name, false, isSparse, fields);
     }
 
     protected void ensureUniqueIndex(String name, String... fields){
-        _ensureIndex(name, true, fields);
+        _ensureIndex(name, true, false, fields);
     }
-    
-    private void _ensureIndex(String name, Boolean isUnique, String... fields) {
+
+    protected void ensureSparseIndex(String name, String... fields){
+        _ensureIndex(name, false, true, fields);
+    }
+
+    private void _ensureIndex(String name, Boolean isUnique, Boolean isSparse, String... fields) {
         final DBObject options = new BasicDBObject(OPTION_NAME, name);
-        options.put(OPTION_SPARSE, false);
+        options.put(OPTION_SPARSE, isSparse.booleanValue());
         if (isUnique){
             options.put(OPTION_UNIQUE, isUnique);
         }
@@ -83,7 +91,7 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
             index.put(field, 1);
         }
         LOGGER.info(this.getClass().getSimpleName() +": Executin ensure index " + index+ " with options " + options);
-        getCollection().createIndex(index, options);
+        getCollection().ensureIndex(index, options);
     }
 
     protected void checkIndexes(String message){

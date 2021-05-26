@@ -624,12 +624,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
         ensureIndex(INDEX_PERSON_OID, FIELD_PERSON_OID);
         ensureIndex(INDEX_EMAIL, FIELD_EMAIL);
-        ensureIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
+        ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME, META_ALL_ORGANIZATIONS);
 
-        ensureIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
-        ensureIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS);
+        ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
+        ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS);
         ensureIndex(INDEX_STATE_ASID_AO_OID, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, META_FIELD_AO, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_STATE_AO_OID, FIELD_APPLICATION_STATE, META_FIELD_AO, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ASID_AO_OID, FIELD_APPLICATION_SYSTEM_ID, META_FIELD_AO, FIELD_APPLICATION_OID);
@@ -640,17 +640,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_ORG_OID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_UPDATED, FIELD_UPDATED);
         ensureIndex(INDEX_UPDATED_RECEIVED, FIELD_RECEIVED, FIELD_UPDATED);
-        ensureIndex(INDEX_PAYMENT_DUE_DATE, PAYMENT_DUE_DATE);
+        ensureSparseIndex(INDEX_PAYMENT_DUE_DATE, PAYMENT_DUE_DATE);
 
         // System queries
-        ensureIndex(INDEX_STUDENT_IDENTIFICATION_DONE, INDEX_STUDENT_IDENTIFICATION_DONE_FIELDS);
+        ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, INDEX_STUDENT_IDENTIFICATION_DONE_FIELDS);
         ensureIndex(INDEX_POSTPROCESS, INDEX_POSTPROCESS_FIELDS);
         createIndexForSSNCheck();
         ensureIndex(INDEX_MODEL_VERSION, FIELD_MODEL_VERSION);
 
         // Preference Indexes
         for (int i = 1; i <= 8; i++) {
-            createPreferenceIndexes("preference" + i,
+            createPreferenceIndexes("preference" + i, i > 1,
                     format(FIELD_AO_T, i),
                     format(FIELD_AO_KOULUTUS_ID_T, i));
 
@@ -658,9 +658,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         checkIndexes("after ensures");
     }
 
-    private void createPreferenceIndexes(String preference, String fieldAo, String fieldAoIdentifier) {
-        ensureIndex("index_" + preference + "_ao", fieldAo);
-        ensureIndex("index_" + preference + "_ao_identifier", fieldAoIdentifier);
+    private void createPreferenceIndexes(String preference, boolean sparsePossible, String fieldAo, String fieldAoIdentifier) {
+        ensureIndex("index_" + preference + "_ao", sparsePossible, fieldAo);
+        ensureIndex("index_" + preference + "_ao_identifier", sparsePossible, fieldAoIdentifier);
     }
 
     @Override
