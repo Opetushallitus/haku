@@ -72,11 +72,7 @@ public class StatusRepositoryImpl implements StatusRepository {
         }
         newObject.put(FIELD_TIMESTAMP, new Date());
 
-        final WriteResult result = this.mongo.getCollection(STATUS_COLLECTION).update(query, newObject, true, false, WriteConcern.ACKNOWLEDGED);
-        final String error = result.getError();
-        if (isNotBlank(error)) {
-            log.error("Writing systemStatus failed: {}", error);
-        }
+        this.mongo.getCollection(STATUS_COLLECTION).update(query, newObject, true, false, WriteConcern.ACKNOWLEDGED);
     }
 
     @Override
@@ -88,11 +84,7 @@ public class StatusRepositoryImpl implements StatusRepository {
                 .append(FIELD_OPERATION, operation + LAST_SUCCESS)
                 .append(FIELD_TIMESTAMP, new Date())
                 .append(FIELD_STARTED, started);
-        final WriteResult result = mongo.getCollection(STATUS_COLLECTION).update(query, newRecord, true, false, WriteConcern.ACKNOWLEDGED);
-        final String error = result.getError();
-        if (isNotBlank(error)) {
-            log.error("Writing systemStatus failed: {}", error);
-        }
+        mongo.getCollection(STATUS_COLLECTION).update(query, newRecord, true, false, WriteConcern.ACKNOWLEDGED);
     }
 
     @Override
@@ -175,6 +167,6 @@ public class StatusRepositoryImpl implements StatusRepository {
     void initIndexes(){
         if (!ensureIndex)
             return;
-        this.mongo.getCollection(STATUS_COLLECTION).ensureIndex(new BasicDBObject(FIELD_HOST, 1).append(FIELD_OPERATION, 1),"index_update");
+        this.mongo.getCollection(STATUS_COLLECTION).createIndex(new BasicDBObject(FIELD_HOST, 1).append(FIELD_OPERATION, 1),"index_update");
     }
 }

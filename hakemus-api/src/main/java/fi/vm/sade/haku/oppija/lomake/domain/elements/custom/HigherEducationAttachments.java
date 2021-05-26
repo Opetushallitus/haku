@@ -17,11 +17,9 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mongodb.util.Hash;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class HigherEducationAttachments extends Titled {
