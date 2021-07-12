@@ -320,7 +320,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>2.7</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -683,7 +683,7 @@
                 <plugins>
                   <plugin>
                       <artifactId>maven-war-plugin</artifactId>
-                      <configuration combine.self="override"></configuration>
+                      <configuration combine.self="override"/>
                   </plugin>
                 </plugins>
             </build>
