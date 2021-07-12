@@ -36,6 +36,7 @@ public class DBObjectToMapFunction implements Function<DBObject, Map<String, Obj
             "state",
             "personOid",
             "studentOid",
+            "updated",
             "received",
             "authorizationMeta",
             "preferenceEligibilities",
