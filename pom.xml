@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fi.vm.sade.haku</groupId>
     <artifactId>haku</artifactId>
-    <version>16.0-SNAPSHOT</version>
+    <version>17.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Haku :: Parent</name>
 
@@ -17,11 +17,11 @@
 
     <properties>
         <junit.version>4.11</junit.version>
-        <spring.version>3.2.9.RELEASE</spring.version>
-        <spring-security.version>3.1.3.RELEASE</spring-security.version>
+        <spring.version>3.2.18.RELEASE</spring.version>
+        <spring-security.version>3.1.7.RELEASE</spring-security.version>
         <jersey.version>1.17.1</jersey.version>
         <servlet.version>3.0.1</servlet.version>
-        <mongo-driver.version>3.6.4</mongo-driver.version>
+        <mongo-driver.version>3.12.7</mongo-driver.version>
         <slf4j.version>1.7.6</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <cxf.version>2.7.3</cxf.version>
@@ -43,7 +43,7 @@
         <generic-common.version>9.5.1-SNAPSHOT</generic-common.version>
         <legacy-caching-rest-client.version>0.5.0-SNAPSHOT</legacy-caching-rest-client.version>
         <java-utils-httpclient.version>0.3.0-SNAPSHOT</java-utils-httpclient.version>
-	      <koodisto-api.version>2019-08-SNAPSHOT</koodisto-api.version>
+	    <koodisto-api.version>2019-08-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>2016-07-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>13.0-SNAPSHOT</log-client.version>
         <organisaatio-api.version>2015-04</organisaatio-api.version>
@@ -331,7 +331,7 @@
     <repositories>
         <repository>
             <id>oph-sade-artifactory-snapshots</id>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
+            <url>https://artifactory.opintopolku.fi/artifactory/repository/oph-sade-snapshot-local/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -341,7 +341,7 @@
         </repository>
         <repository>
             <id>oph-sade-artifactory-releases</id>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local</url>
+            <url>https://artifactory.opintopolku.fi/artifactory/repository/oph-sade-release-local/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -352,26 +352,14 @@
         <repository>
             <id>repository.jboss.org</id>
             <name>JBoss Repository</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
         </repository>
         <repository>
             <id>public</id>
-            <url>http://maven.nuxeo.org/nexus/content/repositories/public/</url>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
         </repository>
     </repositories>
 
-    <distributionManagement>
-        <repository>
-            <id>oph-sade-artifactory</id>
-            <name>oph-sade-artifactory-releases</name>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>oph-sade-artifactory</id>
-            <name>oph-sade-artifactory-snapshots</name>
-            <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
     <build>
         <plugins>
             <plugin>
@@ -459,6 +447,26 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>ghp</id>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>oph-github-releases</name>
+                    <url>https://maven.pkg.github.com/Opetushallitus/haku</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>ghgp</id>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>oph-github-releases</name>
+                    <url>https://maven.pkg.github.com/Opetushallitus/packages</url>
+                </repository>
+            </distributionManagement>
         </profile>
 
     </profiles>
