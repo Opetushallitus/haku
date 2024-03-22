@@ -353,6 +353,11 @@
             <name>Central maven</name>
             <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
+        <repository>
+            <id>Jahia</id>
+            <name>Jahia</name>
+            <url>https://maven.jahia.org/maven2/</url>
+        </repository>
     </repositories>
 
     <build>
