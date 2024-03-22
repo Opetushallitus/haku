@@ -51,7 +51,6 @@
         <viestintapalvelu.version>9.8</viestintapalvelu.version>
     </properties>
 
-
     <dependencyManagement>
         <dependencies>
 
@@ -302,16 +301,11 @@
                 </exclusions>
             </dependency>
 
-
-
-
             <dependency>
                 <groupId>fi.vm.sade.generic</groupId>
                 <artifactId>generic-common</artifactId>
                 <version>${generic-common.version}</version>
             </dependency>
-
-
 
             <dependency>
                 <groupId>fi.vm.sade.koodisto</groupId>
@@ -459,5 +453,4 @@
             </distributionManagement>
         </profile>
     </profiles>
-
 </project>
