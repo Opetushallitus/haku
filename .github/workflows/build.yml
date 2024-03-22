@@ -71,17 +71,10 @@ jobs:
           key: ${{ github.sha }}
 
       - name: Publish to Github packages
-        continue-on-error: true
         run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
-
-      - name: Publish to centralized Github packages repository
-        continue-on-error: true
-        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghgp
-        env:
-          GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
       
       - name: Build package
         run: |
