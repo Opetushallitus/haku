@@ -37,7 +37,7 @@ jobs:
         run: |
           git clone https://github.com/Opetushallitus/ci-tools.git
           source ci-tools/common/setup-tools.sh
-          mvn clean install
+          mvn clean install -q
     
       - uses: actions/cache@v4
         id: restore-build
@@ -71,14 +71,14 @@ jobs:
           key: ${{ github.sha }}
 
       - name: Publish to Github packages
-        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp
+        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -q
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
       
       - name: Build package
         run: |
-          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
+          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true -q
 
       - uses: actions/cache@v4
         id: cache-build
