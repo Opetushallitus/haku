@@ -71,6 +71,7 @@ jobs:
           key: ${{ github.sha }}
 
       - name: Publish to Github packages
+        if: ${{ github.event_name == 'release' }}
         run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -q
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
