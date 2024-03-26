@@ -86,6 +86,7 @@ jobs:
         with:
           path: haku-app/target
           key: ${{ github.sha }}
+
   deploy-virkailija:
     needs: [prepare]
     uses: Opetushallitus/.github/.github/workflows/push-scan-java-ecr.yml@main
