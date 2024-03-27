@@ -209,7 +209,7 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
+            <version>3.2.11</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -450,7 +450,7 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>3.2.5</version>
+            <version>3.2.11</version>
         </dependency>
     </dependencies>
 
