@@ -29,7 +29,7 @@
         <mockito.version>1.9.5</mockito.version>
         <guava.version>15.0</guava.version>
         <ehcache.version>2.5.0</ehcache.version>
-        <flapdoodle.version>2.1.1</flapdoodle.version>
+        <flapdoodle.version>4.12.3</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.94</org.apache.tomcat.embed>
         <jackson.version>2.8.11</jackson.version>
 
