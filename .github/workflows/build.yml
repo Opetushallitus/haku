@@ -37,7 +37,7 @@ jobs:
         run: |
           git clone https://github.com/Opetushallitus/ci-tools.git
           source ci-tools/common/setup-tools.sh
-          mvn clean install -q
+          mvn clean install
     
       - uses: actions/cache@v4
         id: restore-build
@@ -79,7 +79,7 @@ jobs:
       
       - name: Build package
         run: |
-          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true -q
+          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
 
       - uses: actions/cache@v4
         id: cache-build
