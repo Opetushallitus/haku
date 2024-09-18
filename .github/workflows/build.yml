@@ -56,13 +56,29 @@ jobs:
 
   deploy-virkailija:
     needs: [build-test-and-deploy-jar]
-    uses: Opetushallitus/.github/.github/workflows/push-scan-java-ecr.yml@main
-    with:
-      application: haku-virkailija
-      base-image: baseimage-war-openjdk8:master
-      configfolder: src/main/resources/oph-configuration
-      jarfile: haku-app
-      jarfolder: haku-app/target
-      type: war
-    secrets:
-      AWS_UTILITY_ROLE_ARN: ${{ secrets.AWS_OPH_UTILITY_ROLE_ARN }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        id: cache-build
+        with:
+          path: haku-app/target
+          key: ${{ github.sha }}
+
+      - name: Build and deploy Docker container
+        shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          git clone https://github.com/Opetushallitus/ci-tools.git
+          source ci-tools/common/setup-tools.sh
+          export ARTIFACT_NAME="haku-virkailija"
+          mv haku-app/target/haku-app.war $DOCKER_BUILD_DIR/artifact/haku-app.war
+          cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
+          export BASE_IMAGE="baseimage-war-tomcat9-openjdk8"
+          ./ci-tools/common/pull-image.sh
+          ./ci-tools/github-build/build-fatjar.sh $ARTIFACT_NAME
+          ./ci-tools/github-build/upload-image.sh $ARTIFACT_NAME
