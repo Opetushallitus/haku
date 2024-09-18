@@ -60,7 +60,7 @@ jobs:
       application: haku-virkailija
       base-image: baseimage-war-openjdk8:master
       configfolder: src/main/resources/oph-configuration
-      jarfile: haku-app.war
+      jarfile: haku-app
       jarfolder: haku-app/target
       type: war
     secrets:
