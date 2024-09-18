@@ -355,8 +355,8 @@
             <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
         </repository>
         <repository>
-            <id>public</id>
-            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+            <id>jahia</id>
+            <url>https://maven.jahia.org/maven2/</url>
         </repository>
     </repositories>
 
