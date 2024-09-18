@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: read
@@ -27,6 +27,7 @@ jobs:
           java-version: '8'
           distribution: 'corretto'
           cache: 'maven'
+          check-latest: 'true'
 
       - uses: szenius/set-timezone@v1.2
         with:
@@ -37,8 +38,8 @@ jobs:
         run: |
           git clone https://github.com/Opetushallitus/ci-tools.git
           source ci-tools/common/setup-tools.sh
-          mvn clean install
-    
+          mvn clean install -B
+
       - uses: actions/cache@v4
         id: restore-build
         with:
@@ -59,6 +60,7 @@ jobs:
           distribution: 'corretto'
           server-id: github
           cache: 'maven'
+          check-latest: 'true'
 
       - uses: szenius/set-timezone@v1.2
         with:
@@ -72,11 +74,11 @@ jobs:
 
       - name: Publish to Github packages
         if: ${{ github.event_name == 'release' }}
-        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -q
+        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -B
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
-      
+
       - name: Build package
         run: |
           mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
