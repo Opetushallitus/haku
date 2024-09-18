@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: '8'
-          distribution: 'corretto'
+          distribution: 'temurin'
           cache: 'maven'
           check-latest: 'true'
 
@@ -57,7 +57,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: '8'
-          distribution: 'corretto'
+          distribution: 'temurin'
           server-id: github
           cache: 'maven'
           check-latest: 'true'
