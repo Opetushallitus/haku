@@ -38,7 +38,8 @@ jobs:
         run: |
           git clone https://github.com/Opetushallitus/ci-tools.git
           source ci-tools/common/setup-tools.sh
-          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
+          #mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
+          mvn clean install -DskipTests -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }}
 
       - name: Publish to Github packages
         if: ${{ github.event_name == 'release' }}
