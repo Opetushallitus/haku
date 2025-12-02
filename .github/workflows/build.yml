@@ -29,9 +29,11 @@ jobs:
           cache: 'maven'
           check-latest: 'true'
 
-      - uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "Europe/Helsinki"
+      - name: Set timezone to Europe/Helsinki
+        shell: bash
+        run: |
+          sudo timedatectl set-timezone Europe/Helsinki
+          echo "Europe/Helsinki" | sudo tee /etc/timezone
 
       - name: Build with Maven
         shell: bash
