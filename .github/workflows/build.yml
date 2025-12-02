@@ -37,14 +37,17 @@ jobs:
 
       - name: Build with Maven
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           git clone https://github.com/Opetushallitus/ci-tools.git
           source ci-tools/common/setup-tools.sh
-          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
+          mvn clean verify -B --settings settings.xml -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
 
       - name: Publish to Github packages
         if: ${{ github.event_name == 'release' }}
-        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -B
+        run: mvn --settings settings.xml --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -B
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
