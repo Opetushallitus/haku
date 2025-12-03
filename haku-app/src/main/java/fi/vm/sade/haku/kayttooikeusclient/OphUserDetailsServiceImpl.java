@@ -18,8 +18,6 @@ public class OphUserDetailsServiceImpl implements AuthenticationUserDetailsServi
     @Override
     public UserDetails loadUserDetails(CasAssertionAuthenticationToken token) throws UsernameNotFoundException {
         Map<String, Object> attributes =  token.getAssertion().getPrincipal().getAttributes();
-        log.info("Roles of user {}: {}", attributes.get("oidHenkilo"), attributes.get("roles"));
-        attributes.forEach((k, v) -> log.info("Attribute '{}' (type '{}') = '{}'", k, v.getClass().getName(), v));
         String rolesString = attributes.containsKey("roles") ? (String) attributes.get("roles") : "";
         String[] rolesArray = rolesString.split("((?=ROLE_APP_))");
         List<String> roles = Arrays.asList(rolesArray);
