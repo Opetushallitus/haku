@@ -168,7 +168,7 @@
     </beans:bean>
     -->
 
-    <beans:bean id="authenticationUserDetailsService" class="fi.vm.sade.javautils.kayttooikeusclient.OphUserDetailsServiceImpl" />
+    <beans:bean id="authenticationUserDetailsService" class="fi.vm.sade.haku.kayttooikeusclient.OphUserDetailsServiceImpl" />
 
     <beans:bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
         <beans:property name="authenticationUserDetailsService" ref="authenticationUserDetailsService"/>
