@@ -29,20 +29,25 @@ jobs:
           cache: 'maven'
           check-latest: 'true'
 
-      - uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "Europe/Helsinki"
+      - name: Set timezone to Europe/Helsinki
+        shell: bash
+        run: |
+          sudo timedatectl set-timezone Europe/Helsinki
+          echo "Europe/Helsinki" | sudo tee /etc/timezone
 
       - name: Build with Maven
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           git clone https://github.com/Opetushallitus/ci-tools.git
           source ci-tools/common/setup-tools.sh
-          mvn clean verify -B -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true
+          mvn clean install -B --settings settings.xml -Dbranch=${{ github.ref_name }} -Drevision=${{ github.sha }} -DbuildNumber=${{ github.run_number }} -Pit -Dit.usePhantomJs=true -DskipTests
 
       - name: Publish to Github packages
         if: ${{ github.event_name == 'release' }}
-        run: mvn --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -B
+        run: mvn --settings settings.xml --batch-mode deploy -pl fi.vm.sade.haku:haku,hakemus-api,haku-auditlogger -DskipTests -Pghp -B
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
